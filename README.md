@@ -22,6 +22,8 @@ Origin is a universal progressive web app for online stores, using modern JavaSc
 
 ## Getting started
 
+Clone this project repository to your local machine and navigate to the project root.
+
 ### Connect to Swell
 
 Add your Swell store ID and public key to `nuxt.config.js`.
@@ -34,8 +36,6 @@ swell: {
 ```
 
 ### Install
-
-Clone this project repository to your local machine and navigate to the project root.
 
 ```bash
 # Install dependencies
