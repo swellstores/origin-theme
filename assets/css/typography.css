@@ -1,0 +1,93 @@
+/* Hide text visually, but not from screen readers */
+.reader-only {
+}
+
+body,
+html {
+  @apply text-primary-darker font-sans font-medium leading-normal antialiased;
+}
+
+button,
+a {
+  @apply rounded text-primary-darkest font-semibold;
+
+  &:hover {
+    @apply text-accent;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  @apply font-sans font-bold text-primary-darkest;
+}
+
+h1 {
+  @apply text-4xl mb-3;
+
+  @screen lg {
+    @apply text-6xl;
+  }
+
+  @screen xl {
+    @apply text-7xl;
+  }
+}
+
+h2 {
+  @apply text-3xl leading-tight mb-3;
+
+  @screen md {
+    @apply text-4xl;
+  }
+
+  @screen lg {
+    @apply text-5xl;
+  }
+}
+
+h3 {
+  @apply text-xl;
+}
+
+h4 {
+  @apply text-base;
+}
+
+b,
+strong {
+  @apply font-semibold;
+}
+
+ul li {
+  @apply mb-1;
+}
+
+input,
+textarea {
+  &::placeholder {
+    @apply opacity-100 text-primary-dark;
+  }
+}
+
+.label-xs-bold {
+  @apply text-xs font-semibold uppercase tracking-wide leading-tight;
+}
+
+.label-xs-bold-faded {
+  @apply text-xs font-semibold uppercase tracking-wide leading-tight text-primary-dark;
+}
+
+.label-sm {
+  @apply text-sm;
+}
+
+.label-sm-bold {
+  @apply text-sm font-semibold;
+}
+
+.label-sm-faded {
+  @apply text-sm text-primary-dark font-medium;
+}

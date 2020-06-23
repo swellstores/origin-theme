@@ -1,0 +1,45 @@
+{
+  "name": "Press mentions",
+  "description": "Logos of publications with quotes",
+  "fields": [
+    {
+      "label": "Content",
+      "type": "field_group",
+      "fields": [
+        {
+          "id": "mentions",
+          "label": "Mentions",
+          "type": "collection",
+          "fields": [
+            {
+              "id": "quote",
+              "label": "Quote",
+              "type": "long_text"
+            },
+            {
+              "id": "name",
+              "label": "Publication name",
+              "type": "text"
+            },
+            {
+              "id": "logo",
+              "label": "Publication logo",
+              "type": "image",
+              "required": true
+            },
+            {
+              "id": "logo_scale",
+              "label": "Logo scale",
+              "type": "slider",
+              "unit": "%",
+              "increment": 10,
+              "default": 100,
+              "min": 50,
+              "max": 200
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "store": {
+    "id": "test",
+    "name": "Test Store",
+    "currency": "USD",
+    "locale": "en-US",
+    "support_email": "test@asdasdas.com",
+    "support_phone": null,
+    "public_key": "pk_cn6XsV3m28OjPuN68JdqYbbWJSUGbCqG",
+    "url": "http://test.staging.swell.store"
+  },
+  "colors": {
+    "outline": "hsla(200, 100%, 36%, 0.75)",
+    "primary": {
+      "darkest": "rgba(141,6,24,1)",
+      "dark": "#1c1a17",
+      "med": "#8C8984",
+      "light": "#D9D5D0",
+      "lighter": "#F2EFEB",
+      "lightest": "#FAF8F5",
+      "white": "#FFFEFC",
+      "darker": "rgba(68,62,104,1)"
+    },
+    "accent": "#E63360",
+    "status": {
+      "ok": "#3d995e",
+      "ok-faded": "#c5e7d1",
+      "warn": "#ffca38",
+      "error": "#e61c1c",
+      "error-faded": "#ffd6d6"
+    }
+  },
+  "header": {
+    "logo": "",
+    "logo_width": 225,
+    "show_promo": ""
+  },
+  "footer": {},
+  "social": {},
+  "checkout": {},
+  "favicon": "",
+  "fonts": {
+    "body": {
+      "family": "",
+      "size": ""
+    },
+    "heading": {
+      "family": "",
+      "size": ""
+    }
+  },
+  "product_previews": {
+    "aspect_ratio": "1:1"
+  }
+}

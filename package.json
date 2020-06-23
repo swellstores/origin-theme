@@ -1,0 +1,61 @@
+{
+  "name": "swell-theme-origin",
+  "version": "1.0.46",
+  "description": "Origin PWA theme/starter for Swell ecommerce platform",
+  "author": "Swell",
+  "homepage": "https://www.swell.is/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/swellstores/swell-theme-origin"
+  },
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@nuxtjs/pwa": "^2.6.0",
+    "@nuxtjs/sentry": "3.2.2",
+    "algoliasearch": "4.3.0",
+    "chroma-js": "^2.0.3",
+    "cross-env": "^5.2.0",
+    "js-cookie": "2.2.1",
+    "lodash": "4.17.15",
+    "nuxt": "2.13.0",
+    "swell-js": "2.10.3",
+    "swell-node": "3.1.4",
+    "vue-balance-text": "1.2.3",
+    "vue-clipboard2": "^0.3.0",
+    "vue-glide-js": "1.3.14",
+    "vue-parallax-js": "0.2.3",
+    "vue-select": "^3.1.0",
+    "vue-slider-component": "3.0.44",
+    "vuelidate": "0.7.5"
+  },
+  "devDependencies": {
+    "@nuxtjs/eslint-config": "3.0.0",
+    "@nuxtjs/tailwindcss": "2.0.0",
+    "babel-eslint": "^10.0.2",
+    "eslint": "5.16.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-loader": "^2.2.1",
+    "eslint-plugin-import": ">=2.16.0",
+    "eslint-plugin-jest": ">=22.3.0",
+    "eslint-plugin-node": ">=8.0.1",
+    "eslint-plugin-nuxt": "1.0.0",
+    "eslint-plugin-prettier": "3.1.4",
+    "eslint-plugin-promise": ">=4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-unicorn": "^9.1.1",
+    "eslint-plugin-vue": "6.2.2",
+    "nodemon": "^1.18.9"
+  },
+  "scripts": {
+    "dev": "nuxt",
+    "watch": "npm run dev",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "export": "nuxt export",
+    "serve": "nuxt serve",
+    "lint": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  }
+}

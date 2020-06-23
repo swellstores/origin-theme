@@ -1,0 +1,74 @@
+{
+  "name": "Product detail page",
+  "description": "Page displaying a single product",
+  "model": "products",
+  "fields": [
+    {
+      "id": "show_quantity_input",
+      "label": "Show quantity input",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "id": "image_zoom",
+      "label": "Image zoom",
+      "type": "select",
+      "default": "zoom_in",
+      "options": [
+        {
+          "value": "none",
+          "label": "No zoom"
+        },
+        {
+          "value": "zoom_in",
+          "label": "Zoom in"
+        }
+      ]
+    },
+    {
+      "id": "show_related",
+      "label": "Show related products",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "id": "show_reviews",
+      "label": "Show customer reviews",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "id": "product_benefits",
+      "label": "Product benefits",
+      "type": "collection",
+      "fields": [
+        {
+          "id": "icon",
+          "label": "Icon",
+          "type": "icon",
+          "required": true
+        },
+        {
+          "id": "text",
+          "label": "Benefit text",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "default": [
+        {
+          "icon": "uil:truck",
+          "text": "Free US shipping on all orders over $100"
+        },
+        {
+          "icon": "uil:clock-two",
+          "text": "Free returns up to 30 days"
+        },
+        {
+          "icon": "uil:award",
+          "text": "97% customer satisfaction rating"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "name": "Instagram feed",
+  "description": "Instagram account preview with recent posts",
+  "fields": [
+    {
+      "label": "Content",
+      "type": "field_group",
+      "fields": [
+        {
+          "id": "heading",
+          "label": "Heading text",
+          "type": "text",
+          "default": "Follow us on Instagram"
+        },
+        {
+          "id": "username",
+          "label": "Username",
+          "type": "text",
+          "default": "unsplash"
+        }
+      ]
+    },
+    {
+      "label": "Styling",
+      "type": "field_group",
+      "fields": [
+        {
+          "id": "image_frame",
+          "label": "Image frame",
+          "description": "White space around each image",
+          "type": "select",
+          "default": "none",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "sm",
+              "label": "Small"
+            },
+            {
+              "value": "md",
+              "label": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "outer_spacing_x",
+          "label": "Horizontal outer spacing",
+          "description": "Padding around sides of block",
+          "type": "select",
+          "default": "none",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "sm",
+              "label": "Small"
+            },
+            {
+              "value": "md",
+              "label": "Medium"
+            },
+            {
+              "value": "lg",
+              "label": "Large"
+            }
+          ]
+        },
+        {
+          "id": "outer_spacing_y",
+          "label": "Vertical outer spacing",
+          "description": "Padding on top and bottom of block",
+          "type": "select",
+          "default": "none",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "sm",
+              "label": "Small"
+            },
+            {
+              "value": "md",
+              "label": "Medium"
+            },
+            {
+              "value": "lg",
+              "label": "Large"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

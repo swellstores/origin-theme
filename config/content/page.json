@@ -1,0 +1,42 @@
+{
+  "name": "Page",
+  "model": "content/pages",
+  "fields": [
+    {
+      "id": "sections",
+      "type": "collection",
+      "item_types": [
+        "collection_preview",
+        "customer_reviews",
+        "email_signup",
+        "full_width_media",
+        "instagram_feed",
+        "large_media",
+        "media_aside_text",
+        "multi_feature",
+        "multi_panel",
+        "press_mentions",
+        {
+          "id": "heading_with_text",
+          "label": "Heading with text",
+          "fields": [
+            {
+              "id": "heading",
+              "label": "Heading",
+              "type": "text",
+              "placeholder": "Some heading text",
+              "required": true
+            },
+            {
+              "id": "text",
+              "label": "Text",
+              "type": "long_text",
+              "placeholder": "Some longer text",
+              "required": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

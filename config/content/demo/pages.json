@@ -1,0 +1,493 @@
+[
+  {
+    "name": "Home",
+    "slug": "home",
+    "sections": [
+      {
+        "type": "full_width_media",
+        "heading": "Perfection is not enough",
+        "description": "Creating the best coffee in the world is no simple undertaking. We weren't willing to compromise on anything.",
+        "image": {
+          "url": "https://source.unsplash.com/GgRXF0pr6jU/2000x600"
+        },
+        "links": [
+          {
+            "style": "text",
+            "label": "Learn our secrets",
+            "url": "/about"
+          }
+        ],
+        "text_color": "light",
+        "outer_spacing_x": "none",
+        "outer_spacing_y": "none",
+        "inner_spacing": "md",
+        "align_x": "center",
+        "align_y": "center"
+      },
+      {
+        "type": "multi_feature",
+        "heading": "100% Arabica and beyond",
+        "features": [
+          {
+            "label": "Direct sourcing",
+            "icon": "uil:exchange"
+          },
+          {
+            "label": "Organic farming practices",
+            "icon": "uil:sunset"
+          },
+          {
+            "label": "Biodegradable packaging",
+            "icon": "uil:water"
+          },
+          {
+            "label": "Enjoyment garuantee",
+            "icon": "uil:thumbs-up"
+          }
+        ]
+      },
+      {
+        "type": "full_width_media",
+        "heading": "Fresh Origin",
+        "description": "What's better than having our amazing coffee at home? Getting it delivered so you never run out.",
+        "image": {
+          "url": "https://source.unsplash.com/eJtGk5APKe8/1500x800"
+        },
+        "links": [
+          {
+            "style": "button_primary",
+            "label": "Shop subscriptions",
+            "url": "/category/subscriptions"
+          }
+        ],
+        "text_color": "light",
+        "darken_bg": 40,
+        "inner_spacing": "md",
+        "outer_spacing_x": "md",
+        "outer_spacing_y": "none",
+        "align_x": "left",
+        "align_y": "top",
+        "use_parallax": false
+      },
+      {
+        "type": "collection_preview",
+        "category_id": "espresso-coffee"
+      },
+      {
+        "type": "large_media",
+        "heading": "Transparency and sustainability from bean to bag",
+        "image": {
+          "url": "https://source.unsplash.com/6HR8vpjYUHo/1500x800"
+        }
+      },
+      {
+        "type": "multi_panel",
+        "panels": [
+          {
+            "type": "text",
+            "heading": "Brewing guides",
+            "description": "You don't need a chemistry degree to make great coffee at home. We've done the lab work, so all you have to do is follow our step-by-step instructions.",
+            "bg_color": "primary-white",
+            "links": [
+              {
+                "style": "text",
+                "label": "Brew with confidence",
+                "url": "/about#process"
+              }
+            ]
+          },
+          {
+            "type": "image",
+            "image": {
+              "url": "https://source.unsplash.com/TYIzeCiZ_60/1500x1000"
+            },
+            "bg_color": "primary-white"
+          }
+        ]
+      },
+      {
+        "type": "multi_panel",
+        "panels": [
+          {
+            "type": "image",
+            "image": {
+              "url": "https://source.unsplash.com/T5qXJ2VpV6M/1500x1000"
+            },
+            "bg_color": "primary-white"
+          },
+          {
+            "type": "text",
+            "heading": "Latte art classes",
+            "description": "No, we aren't kidding. Spend the morning with a master barista learning how to pour a grammable rosetta in our well-lit and aesthetically pleasing Alexandria roastery.",
+            "bg_color": "primary-white",
+            "links": [
+              {
+                "style": "text",
+                "label": "View class details",
+                "url": "/products/latte-art-class"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "press_mentions",
+        "mentions": [
+          {
+            "quote": "We're never drinking supermarket coffee pods again",
+            "name": "Bustle",
+            "image": {
+              "url": "img/bustle.svg"
+            },
+            "logo_scale": 100
+          },
+          {
+            "quote": "Our publishing rate has increased 34% since getting an office subscription",
+            "name": "Refinery29",
+            "image": {
+              "url": "img/refinery29.svg"
+            },
+            "logo_scale": 190
+          },
+          {
+            "quote": "This story is available to BI Prime subscribers only",
+            "name": "Business Insider",
+            "image": {
+              "url": "img/business-insider.svg"
+            },
+            "logo_scale": 100
+          },
+          {
+            "quote": "Origin is disrupting the specialty coffee world in a big way",
+            "name": "Fast Company",
+            "image": {
+              "url": "img/fast-company.svg"
+            },
+            "logo_scale": 90
+          }
+        ]
+      },
+      {
+        "type": "instagram_feed",
+        "heading": "Follow for the good stuff",
+        "username": "unsplash",
+        "posts": [
+          {
+            "media": {
+              "url": "https://source.unsplash.com/collection/9318926/320x320"
+            }
+          },
+          {
+            "media": {
+              "url": "https://source.unsplash.com/collection/9318926/321x321"
+            }
+          },
+          {
+            "media": {
+              "url": "https://source.unsplash.com/collection/9318926/322x322"
+            }
+          },
+          {
+            "media": {
+              "url": "https://source.unsplash.com/collection/9318926/323x323"
+            }
+          },
+          {
+            "media": {
+              "url": "https://source.unsplash.com/collection/9318926/324x324"
+            }
+          },
+          {
+            "media": {
+              "url": "https://source.unsplash.com/collection/9318926/325x325"
+            }
+          },
+          {
+            "media": {
+              "url": "https://source.unsplash.com/collection/9318926/326x326"
+            }
+          }
+        ],
+        "image_frame": "md",
+        "outer_spacing_x": "lg",
+        "outer_spacing_y": "lg"
+      },
+      {
+        "type": "customer_reviews",
+        "heading": "Their words, not ours",
+        "view_all_label": "Read all reviews",
+        "reviews": [
+          {
+            "quote": "I was unsure about this product. I was unsure about a lot of things. But now I have found the answer. And it has changed me forever.",
+            "name": "Carmine R",
+            "location": "California",
+            "score": 4
+          },
+          {
+            "quote": "There are some things I like. There are some things I don't like. At the end of the day there are more things that I like.",
+            "name": "Davidson Pellar",
+            "location": "New Hampshire",
+            "score": 3.5
+          },
+          {
+            "quote": "There is no better product than this. The end",
+            "name": "Maria H",
+            "location": "Arizona",
+            "score": 5
+          }
+        ]
+      },
+      {
+        "type": "email_signup",
+        "heading": "Caffeinate your inbox",
+        "description": "If we could send you coffee via email we would. Until then, it's the most legit coffee-related stuff, every week or two.",
+        "image": {
+          "url": "https://source.unsplash.com/TD4DBagg2wE/2000x1000"
+        },
+        "darken_bg": 20,
+        "inner_spacing": "lg",
+        "outer_spacing_x": "none",
+        "outer_spacing_y": "none",
+        "use_parallax": true
+      }
+    ]
+  },
+  {
+    "name": "About",
+    "slug": "about",
+    "sections": [
+      {
+        "type": "full_width_media",
+        "heading": "Welcome to your new favourite coffee shop",
+        "description": "Flat white, light roast profile eu fair trade sit decaffeinated et Melbourne lungo steamed with a poached egg on top. Viennese skinny, plunger pot cup cup decaffeinated con panna froth latte art. Café au lait caramelization id so, cortado iced sugar steamed con panna. In rich milk et, doppio crema trifecta barista cortado flavour. Affogato, beans americano eu hole-in-the-wall, extraction roast sweet ut acidity. Berlin cultivar, medium cup ut batch brew cultivar americano to go. Avocado toast et microfoam steam La Marzocco third wave washed process direct trade origin eu grind size. Shot timer extra foam al EK-43 Scandanavian interior et so Instagram.",
+        "text_color": "dark",
+        "outer_spacing_x": "none",
+        "outer_spacing_y": "none",
+        "inner_spacing": "md",
+        "align_x": "center",
+        "align_y": "center"
+      }
+    ]
+  },
+  {
+    "name": "Help",
+    "slug": "help",
+    "sections": [
+      {
+        "type": "media_aside_text",
+        "heading": "It all starts with a cherry",
+        "description": "The majority of coffee drinkers know surprisingly little about the origins of their favorite bean — but we're here to change that.",
+        "image": {
+          "url": "https://source.unsplash.com/ym8hfg0rHPc/900x900"
+        },
+        "links": [
+          {
+            "style": "text",
+            "label": "Go to the origin",
+            "title": "Learn all about coffee production, from cherry to cup",
+            "url": "/coffee-production"
+          }
+        ],
+        "position": "left",
+        "outer_spacing_x": "md",
+        "outer_spacing_y": "md",
+        "use_parallax": true
+      },
+      {
+        "type": "full_width_media",
+        "heading": "An uncompromising commitment to quality",
+        "description": "We believe in not compromising. We believe in going above and beyond. We are everything you ever wished for.",
+        "image": {
+          "url": "https://source.unsplash.com/VAggpKuA2zU/1500x800"
+        },
+        "links": [
+          {
+            "style": "button_primary",
+            "label": "Discover the magic",
+            "title": "Browse the all-new Amazing Collection",
+            "url": "/categories/coffee"
+          }
+        ],
+        "text_color": "light",
+        "darken_bg": 40,
+        "inner_spacing": "sm",
+        "outer_spacing_x": "md",
+        "outer_spacing_y": "md",
+        "align_x": "left",
+        "align_y": "center",
+        "use_parallax": true
+      },
+      {
+        "type": "full_width_media",
+        "heading": "Magic Seaweed The Brand",
+        "description": "We believe in not compromising. We believe in going above and beyond. We are everything you ever wished for.",
+        "image": {
+          "url": "https://source.unsplash.com/VAggpKuA2zU/1500x800"
+        },
+        "links": [
+          {
+            "style": "button_primary",
+            "label": "Discover the magic",
+            "title": "Browse the all-new Amazing Collection",
+            "url": "#amazing-collection"
+          }
+        ],
+        "text_color": "light",
+        "darken_bg": 40,
+        "inner_spacing": "md",
+        "outer_spacing_x": "md",
+        "outer_spacing_y": "md",
+        "align_x": "left",
+        "align_y": "bottom",
+        "use_parallax": true
+      },
+      {
+        "type": "full_width_media",
+        "heading": "Magic Seaweed Comestibles",
+        "description": "Being immersed in the sea is not enough. Your food must be bathed in salt as well. Do more, be more, eat more.",
+        "image": {
+          "url": "https://source.unsplash.com/G61o_s1gBYI/1500x800"
+        },
+        "links": [
+          {
+            "style": "text",
+            "label": "Shop brined",
+            "title": "Things in salt and water",
+            "url": "5ca4d9508464f17je578451g"
+          },
+          {
+            "style": "text",
+            "label": "Shop cured",
+            "title": "Things in salt and air",
+            "url": "5ca4d9508464f17je578451g"
+          }
+        ],
+        "text_color": "dark",
+        "darken_bg": 0,
+        "inner_spacing": "md",
+        "outer_spacing_x": "md",
+        "outer_spacing_y": "lg",
+        "align_x": "left",
+        "align_y": "top",
+        "use_parallax": true
+      },
+      {
+        "type": "multi_panel",
+        "panels": [
+          {
+            "type": "text",
+            "heading": "Tired of the same old?",
+            "description": "Us too. That’s why we created the boom boom board. It’s everything you ever wanted, but with a little extra boom.",
+            "links": [
+              {
+                "style": "text",
+                "label": "Go to the origin",
+                "title": "Learn all about coffee production, from cherry to cup",
+                "url": "/about#process"
+              },
+              {
+                "style": "text",
+                "label": "Meet our producers",
+                "title": "Learn all about coffee production, from cherry to cup",
+                "url": "/producers"
+              }
+            ],
+            "bg_color": "primary-lightest"
+          },
+          {
+            "type": "text",
+            "heading": "Magic Seaweed The Brand",
+            "description": "We believe in not compromising. We believe in going above and beyond. We are everything you ever wished for.",
+            "bg_color": "primary-white"
+          }
+        ],
+        "text_align": "left"
+      }
+    ]
+  },
+  {
+    "name": "Privacy Policy",
+    "slug": "privacy-policy",
+    "sections": [
+      {
+        "type": "full_width_media",
+        "heading": "Privacy Policy",
+        "description": "Content TBD",
+        "text_color": "dark",
+        "outer_spacing_x": "none",
+        "outer_spacing_y": "none",
+        "inner_spacing": "md",
+        "align_x": "center",
+        "align_y": "center"
+      }
+    ]
+  },
+  {
+    "name": "Terms & Conditions",
+    "slug": "terms-conditions",
+    "sections": [
+      {
+        "type": "full_width_media",
+        "heading": "Terms & Conditions",
+        "description": "Content TBD",
+        "text_color": "dark",
+        "outer_spacing_x": "none",
+        "outer_spacing_y": "none",
+        "inner_spacing": "md",
+        "align_x": "center",
+        "align_y": "center"
+      }
+    ]
+  },
+  {
+    "name": "Shipping & Returns",
+    "slug": "shipping-returns",
+    "sections": [
+      {
+        "type": "full_width_media",
+        "heading": "Shipping & Returns",
+        "description": "Content TBD",
+        "text_color": "dark",
+        "outer_spacing_x": "none",
+        "outer_spacing_y": "none",
+        "inner_spacing": "md",
+        "align_x": "center",
+        "align_y": "center"
+      }
+    ]
+  },
+  {
+    "name": "The Academy",
+    "slug": "the-academy",
+    "sections": [
+      {
+        "type": "full_width_media",
+        "heading": "The Academy",
+        "description": "Content TBD",
+        "text_color": "dark",
+        "outer_spacing_x": "none",
+        "outer_spacing_y": "none",
+        "inner_spacing": "md",
+        "align_x": "center",
+        "align_y": "center"
+      }
+    ]
+  },
+  {
+    "name": "Sustainability & Transparency in Coffee Production",
+    "slug": "sustainability-transparency-coffee-production",
+    "sections": [
+      {
+        "type": "full_width_media",
+        "heading": "Sustainability & Transparency in Coffee Production",
+        "description": "Content TBD",
+        "text_color": "dark",
+        "outer_spacing_x": "none",
+        "outer_spacing_y": "none",
+        "inner_spacing": "md",
+        "align_x": "center",
+        "align_y": "center"
+      }
+    ]
+  }
+]

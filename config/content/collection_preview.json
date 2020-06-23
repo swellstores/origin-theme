@@ -1,0 +1,43 @@
+{
+  "name": "Collection preview",
+  "description": "Previews of several items from a collection with call-to-action",
+  "fields": [
+    {
+      "label": "Content",
+      "type": "field_group",
+      "fields": [
+        {
+          "id": "category",
+          "label": "Category",
+          "type": "category_lookup"
+        }
+      ]
+    },
+    {
+      "label": "Styling",
+      "type": "field_group",
+      "fields": [
+        {
+          "id": "display_style",
+          "label": "Display style",
+          "type": "select",
+          "default": "slider",
+          "options": [
+            {
+              "value": "slider",
+              "label": "Slider"
+            },
+            {
+              "value": "strip",
+              "label": "Filmstrip"
+            },
+            {
+              "value": "random",
+              "label": "Random"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
