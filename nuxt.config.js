@@ -50,7 +50,6 @@ export default {
   swell: {
     storeId: process.env.SWELL_STORE_ID,
     publicKey: process.env.SWELL_PUBLIC_KEY,
-    storeUrl: process.env.SWELL_STORE_URL // TODO remove when publishing on github
   },
 
   swellEditor: {
