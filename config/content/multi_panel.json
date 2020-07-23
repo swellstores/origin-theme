@@ -1,0 +1,122 @@
+{
+  "name": "Multiple panels",
+  "description": "Multiple panels with an image or text",
+  "fields": [
+    {
+      "label": "Content",
+      "type": "field_group",
+      "fields": [
+        {
+          "id": "panels",
+          "label": "Panels",
+          "type": "collection",
+          "min": 2,
+          "max": 4,
+          "item_types": [
+            {
+              "id": "text",
+              "label": "Text",
+              "fields": [
+                {
+                  "id": "heading",
+                  "label": "Heading text",
+                  "type": "text",
+                  "placeholder": "Some heading text",
+                  "required": true
+                },
+                {
+                  "id": "description",
+                  "label": "Description text",
+                  "type": "text",
+                  "placeholder": "Some other description text",
+                  "required": true
+                },
+                {
+                  "id": "label",
+                  "label": "Label text",
+                  "type": "text",
+                  "placeholder": "Label",
+                  "required": true
+                },
+                {
+                  "id": "links",
+                  "label": "Links",
+                  "type": "collection",
+                  "max": 2,
+                  "fields": [
+                    {
+                      "id": "label",
+                      "label": "Label text",
+                      "type": "text",
+                      "placeholder": "Label",
+                      "required": true
+                    },
+                    {
+                      "id": "url",
+                      "label": "Link URL",
+                      "type": "url",
+                      "required": true
+                    }
+                  ]
+                },
+                {
+                  "id": "bg_color",
+                  "label": "Background color",
+                  "type": "select",
+                  "default": "primary-lightest",
+                  "options": [
+                    {
+                      "value": "primary-lightest",
+                      "label": "White"
+                    },
+                    {
+                      "value": "primary-lighter",
+                      "label": "Light"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "image",
+              "label": "Image",
+              "fields": [
+                {
+                  "id": "image",
+                  "label": "Background image",
+                  "type": "image"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Styling",
+      "type": "field_group",
+      "fields": [
+        {
+          "id": "text_align",
+          "label": "Text alignment",
+          "type": "select",
+          "default": "center",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

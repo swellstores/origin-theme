@@ -1,0 +1,473 @@
+{
+  "label": "Origin",
+  "author": "Swell",
+  "description": "Swell's original storefront theme",
+  "settings": [
+    {
+      "label": "Style",
+      "fields": [
+        {
+          "label": "Primary colors",
+          "type": "heading"
+        },
+        {
+          "id": "colors.primary.darkest",
+          "label": "Headings & links",
+          "type": "color"
+        },
+        {
+          "id": "colors.primary.darker",
+          "label": "Body text",
+          "type": "color"
+        },
+        {
+          "id": "colors.primary.dark",
+          "label": "Labels & secondary text",
+          "type": "color"
+        },
+        {
+          "id": "colors.primary.med",
+          "label": "Borders",
+          "type": "color"
+        },
+        {
+          "id": "colors.primary.light",
+          "label": "Secondary buttons",
+          "type": "color"
+        },
+        {
+          "id": "colors.primary.lighter",
+          "label": "Background (lighter)",
+          "type": "color"
+        },
+        {
+          "id": "colors.primary.lightest",
+          "label": "Background (lightest)",
+          "type": "color"
+        },
+        {
+          "label": "Secondary colors",
+          "type": "heading"
+        },
+        {
+          "id": "colors.accent",
+          "label": "Accents",
+          "type": "color"
+        },
+        {
+          "label": "Status colors",
+          "type": "heading"
+        },
+        {
+          "id": "colors.status.ok",
+          "label": "Ok",
+          "type": "color"
+        },
+        {
+          "id": "colors.status.ok_faded",
+          "label": "Ok (light)",
+          "type": "color"
+        },
+        {
+          "id": "colors.status.warning",
+          "label": "Warning",
+          "type": "color"
+        },
+        {
+          "id": "colors.status.error",
+          "label": "Error",
+          "type": "color"
+        },
+        {
+          "id": "colors.status.error_faded",
+          "label": "Error (light)",
+          "type": "color"
+        },
+        {
+          "label": "Typography",
+          "type": "heading"
+        },
+        {
+          "id": "typography.heading_family",
+          "label": "Heading text font",
+          "type": "font_family"
+        },
+        {
+          "id": "typography.body_family",
+          "label": "Body text font",
+          "type": "font_family"
+        },
+        {
+          "id": "typography.scale_base_size",
+          "label": "Base text size",
+          "type": "font_size",
+          "default": "16px"
+        },
+        {
+          "id": "typography.scale_ratio",
+          "label": "Text size scale",
+          "type": "select",
+          "default": 1.125,
+          "options": [
+            {
+              "value": 1.067,
+              "label": "15:16 (minor second)"
+            },
+            {
+              "value": 1.125,
+              "label": "8:9 (major second)"
+            },
+            {
+              "value": 1.2,
+              "label": "5:6 (minor third)"
+            },
+            {
+              "value": 1.25,
+              "label": "4:5 (major third)"
+            },
+            {
+              "value": 1.333,
+              "label": "3:4 (perfect fourth)"
+            },
+            {
+              "value": 1.414,
+              "label": "1:√2  (augmented fourth)"
+            }
+          ]
+        },
+        {
+          "label": "Product previews",
+          "type": "heading"
+        },
+        {
+          "id": "product_previews.aspect_ratio",
+          "label": "Image aspect ratio",
+          "type": "select",
+          "default": "1:1",
+          "options": [
+            {
+              "value": "2:3",
+              "label": "Extra tall (2:3)"
+            },
+            {
+              "value": "3:4",
+              "label": "Tall (3:4)"
+            },
+            {
+              "value": "1:1",
+              "label": "Square (1:1)"
+            },
+            {
+              "value": "4:3",
+              "label": "Wide (4:3)"
+            },
+            {
+              "value": "3:2",
+              "label": "Extra wide (3:2)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Header",
+      "fields": [
+        {
+          "id": "header.logo",
+          "label": "Logo image",
+          "type": "image",
+          "hint": "450 x 200px recommended"
+        },
+        {
+          "id": "header.logo_width",
+          "label": "Logo width (pixels)",
+          "type": "number",
+          "default": 225
+        },
+        {
+          "id": "favicon",
+          "label": "Favicon",
+          "type": "image",
+          "max_width": 32,
+          "max_height": 32,
+          "hint": "32 x 32px recommended"
+        },
+        {
+          "id": "header.logo_position",
+          "label": "Logo position",
+          "type": "select",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "label": "Promotion bar"
+        },
+        {
+          "id": "header.show_promo",
+          "label": "Show promo bar",
+          "type": "toggle"
+        },
+        {
+          "id": "header.promo_text",
+          "condition": "header.show_promo",
+          "label": "Promo bar text",
+          "type": "short_text"
+        },
+        {
+          "id": "header.promo_url",
+          "condition": "header.show_promo",
+          "label": "Promo bar URL",
+          "type": "url"
+        },
+        {
+          "type": "heading",
+          "label": "Navigation menu"
+        },
+        {
+          "id": "header.menu",
+          "label": "Main menu",
+          "type": "menu",
+          "default": "header"
+        },
+        {
+          "id": "header.hide_on_scroll",
+          "label": "Hide header when scrolling down",
+          "type": "checkbox"
+        }
+      ]
+    },
+    {
+      "label": "Footer",
+      "fields": [
+        {
+          "id": "footer.menu",
+          "label": "Footer menu",
+          "type": "menu",
+          "default": "footer"
+        },
+        {
+          "id": "footer.show_secondary_menu",
+          "label": "Show secondary footer menu",
+          "type": "toggle",
+          "default": false
+        },
+        {
+          "id": "footer.secondary_menu",
+          "condition": "footer.show_secondary",
+          "label": "Secondary footer menu",
+          "type": "menu",
+          "default": "footer-secondary"
+        },
+        {
+          "id": "footer.show_social",
+          "label": "Show social icons",
+          "type": "toggle",
+          "help": "Add social media accounts in footer",
+          "default": true
+        },
+        {
+          "id": "footer.show_contact_info",
+          "label": "Show contact info",
+          "type": "toggle",
+          "default": true
+        },
+        {
+          "id": "footer.contact_info_text",
+          "condition": "footer.show_contact_info",
+          "label": "Contact info text",
+          "type": "long_text"
+        },
+        {
+          "id": "footer.show_email_signup",
+          "label": "Show email signup field",
+          "type": "checkbox",
+          "default": true
+        },
+        {
+          "id": "footer.email_signup_heading",
+          "condition": "footer.show_email_signup",
+          "label": "Email signup heading",
+          "type": "short_text"
+        },
+        {
+          "id": "footer.email_signup_text",
+          "condition": "footer.show_email_signup",
+          "label": "Show email signup text",
+          "type": "long_text"
+        }
+      ]
+    },
+    {
+      "label": "Cart",
+      "fields": [
+        {
+          "id": "cart.info_text",
+          "label": "Cart info text",
+          "type": "long_text"
+        }
+      ]
+    },
+    {
+      "label": "Social media & sharing",
+      "fields": [
+        {
+          "label": "Profiles",
+          "type": "heading"
+        },
+        {
+          "id": "social_links.twitter.show",
+          "label": "Twitter",
+          "type": "toggle"
+        },
+        {
+          "id": "social_links.twitter.url",
+          "label": "Twitter profile URL",
+          "type": "short_text",
+          "format": "url",
+          "hint": "https://twitter.com/mystore"
+        },
+        {
+          "id": "social_links.facebook.show",
+          "label": "Facebook",
+          "type": "toggle"
+        },
+        {
+          "id": "social_links.facebook.url",
+          "label": "Facebook page URL",
+          "type": "short_text",
+          "format": "url",
+          "hint": "https://www.facebook.com/mystore"
+        },
+        {
+          "id": "social_links.pinterest.show",
+          "label": "Pinterest",
+          "type": "toggle"
+        },
+        {
+          "id": "social_links.pinterest.url",
+          "label": "Pinterest profile URL",
+          "type": "short_text",
+          "format": "url",
+          "hint": "https://www.pinterest.com/mystore"
+        },
+        {
+          "id": "social_links.instagram.show",
+          "label": "Instagram",
+          "type": "toggle"
+        },
+        {
+          "id": "social_links.instagram.url",
+          "label": "Instagram profile URL",
+          "type": "short_text",
+          "format": "url",
+          "hint": "https://instagram.com/mystore"
+        },
+        {
+          "id": "social_links.youtube.show",
+          "label": "YouTube",
+          "type": "toggle"
+        },
+        {
+          "id": "social_links.youtube.url",
+          "label": "YouTube channel URL",
+          "type": "short_text",
+          "format": "url",
+          "hint": "https://www.youtube.com/user/mystore"
+        },
+        {
+          "id": "social_links.vimeo.show",
+          "label": "Vimeo",
+          "type": "toggle"
+        },
+        {
+          "id": "social_links.vimeo.url",
+          "label": "Vimeo profile URL",
+          "type": "short_text",
+          "format": "url",
+          "hint": "https://vimeo.com/mystore"
+        },
+        {
+          "label": "Sharing",
+          "type": "heading"
+        },
+        {
+          "id": "social.sharing",
+          "label": "Enable product sharing",
+          "type": "checkbox",
+          "default": true
+        },
+        {
+          "id": "social.share_facebook",
+          "label": "Share on Facebook",
+          "type": "checkbox",
+          "default": true
+        },
+        {
+          "id": "social.share_twitter",
+          "label": "Share on Twitter",
+          "type": "checkbox",
+          "default": true
+        },
+        {
+          "id": "social.share_pinterest",
+          "label": "Share on Pinterest",
+          "type": "checkbox",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "label": "Product detail pages",
+      "route": "/products/:slug/",
+      "content": "/products/{slug}"
+    },
+    {
+      "label": "Category detail pages",
+      "route": ["/categories/:slug/", "/products/"],
+      "content": "/categories/{slug}"
+    }
+  ],
+  "pageRoute": "/:slug/",
+  "menus": [
+    {
+      "id": "header",
+      "label": "Header menu",
+      "description": "Top-level navigation menu displayed at the top of the site",
+      "max_items": 6,
+      "item_types": ["url", "content", "product", "category"],
+      "child_items": {
+        "columns": true,
+        "max_columns": 4,
+        "item_types": ["heading", "url", "content", "product", "category"],
+        "child_items": false
+      }
+    },
+    {
+      "id": "footer",
+      "label": "Footer menu",
+      "description": "Menu displayed at the bottom of the site",
+      "columns": true,
+      "max_columns": 3,
+      "item_types": ["heading", "url", "content", "product", "category"],
+      "child_items": false
+    },
+    {
+      "id": "footer-secondary",
+      "label": "Footer secondary",
+      "description": "Small links displayed at the bottom of the site footer for store and legal policies",
+      "max_items": 5
+    }
+  ]
+}

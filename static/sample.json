@@ -1,0 +1,104 @@
+{
+  "block library": [
+    {
+      "id": "product_variant_link",
+      "label": "Product variant link",
+      "description": "Link to a specific variant of a product",
+      "fields": [
+        {
+          "id": "product_id",
+          "type": "objectid",
+          "required": true
+        },
+        {
+          "id": "product",
+          "type": "link",
+          "model": "products",
+          "key": "product_id"
+        },
+        {
+          "id": "variant_id",
+          "type": "objectid",
+          "conditions": {
+            "product_id": {
+              "$ne": null
+            }
+          }
+        },
+        {
+          "id": "variant",
+          "type": "link",
+          "model": "products:variants",
+          "key": "variant_id"
+        }
+      ]
+    },
+    {
+      "id": "design_notes",
+      "label": "Design notes",
+      "description": "The product's design story",
+      "fields": [
+        {
+          "id": "designer",
+          "type": "link",
+          "model": "custom.designers",
+          "key": "designer_id"
+        },
+        {
+          "id": "description",
+          "label": "Description",
+          "type": "rich_text"
+        }
+      ]
+    }
+  ],
+  "product fields": [
+    {
+      "id": "some_field",
+      "label": "Some field",
+      "type": "text"
+    },
+    {
+      "id": "product_info_sections",
+      "label": "Product info sections",
+      "type": "flex",
+      "blocks": [
+        "engineering_schematic",
+        "case_study",
+        "design_notes",
+        {
+          "id": "alternatives",
+          "label": "Room alternatives",
+          "fields": [
+            {
+              "id": "description_text",
+              "label": "Description text",
+              "type": "rich_text",
+              "default": "Some text that describes what the linked products are for."
+            },
+            {
+              "id": "products",
+              "label": "Product variants",
+              "type": "array",
+              "value_type": "blocks.product_variant_link"
+            }
+          ]
+        },
+        {
+          "id": "combine_with",
+          "label": "Combine with",
+          "description": "Products that go well together with this item",
+          "fields": [
+            {
+              "id": "product",
+              "label": "Product",
+              "type": "link",
+              "model": "products",
+              "key": "product_id"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

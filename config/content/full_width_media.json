@@ -1,0 +1,202 @@
+{
+  "name": "Full width media",
+  "description": "Large background image with text overlay",
+  "fields": [
+    {
+      "label": "Content",
+      "type": "field_group",
+      "fields": [
+        {
+          "id": "heading",
+          "label": "Heading text",
+          "type": "text",
+          "placeholder": "Some heading text",
+          "required": true
+        },
+        {
+          "id": "description",
+          "label": "Description text",
+          "type": "long_text",
+          "placeholder": "Some other description text",
+          "required": true
+        },
+        {
+          "id": "image",
+          "label": "Background image",
+          "type": "image"
+        },
+        {
+          "id": "links",
+          "label": "Links",
+          "type": "collection",
+          "max": 2,
+          "fields": [
+            {
+              "id": "style",
+              "label": "Style",
+              "type": "select",
+              "default": "button_primary",
+              "options": [
+                {
+                  "value": "text",
+                  "label": "Text"
+                },
+                {
+                  "value": "button_primary",
+                  "label": "Primary button"
+                }
+              ]
+            },
+            {
+              "id": "label",
+              "label": "Label text",
+              "type": "text",
+              "placeholder": "Label",
+              "required": true
+            },
+            {
+              "id": "url",
+              "label": "Link URL",
+              "type": "url",
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Styling",
+      "type": "field_group",
+      "fields": [
+        {
+          "id": "text_color",
+          "label": "Text color",
+          "type": "select",
+          "default": "dark",
+          "options": [
+            {
+              "value": "light",
+              "label": "Light"
+            },
+            {
+              "value": "dark",
+              "label": "Dark"
+            }
+          ]
+        },
+        {
+          "id": "darken_bg",
+          "label": "Darken background media",
+          "type": "slider",
+          "unit": "%",
+          "increment": 10,
+          "default": 20,
+          "min": 0,
+          "max": 50,
+          "conditions": {
+            "text_color": "light"
+          }
+        },
+        {
+          "id": "inner_spacing",
+          "label": "Inner spacing",
+          "description": "Padding on inside of block",
+          "type": "select",
+          "default": "sm",
+          "options": [
+            {
+              "value": "sm",
+              "label": "Small"
+            },
+            {
+              "value": "md",
+              "label": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "outer_spacing_x",
+          "label": "Horizontal outer spacing",
+          "description": "Padding around sides of block",
+          "type": "select",
+          "default": "none",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "md",
+              "label": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "outer_spacing_y",
+          "label": "Vertical outer spacing",
+          "description": "Padding on top and bottom of block",
+          "type": "select",
+          "default": "none",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "md",
+              "label": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "align_x",
+          "label": "Horizontal alignment",
+          "description": "Horizontal content position within block",
+          "type": "select",
+          "default": "center",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "id": "align_y",
+          "label": "Vertical alignment",
+          "description": "Vertical content position within block",
+          "type": "select",
+          "default": "center",
+          "options": [
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
+          ]
+        },
+        {
+          "id": "use_parallax",
+          "label": "Parallax effect",
+          "type": "toggle",
+          "default": true
+        }
+      ]
+    }
+  ]
+}

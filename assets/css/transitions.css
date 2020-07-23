@@ -1,0 +1,49 @@
+/* Fade in when element is added to DOM */
+.fade-in {
+  animation: fade-in 0.25s ease-out;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Vue fade-up transition */
+.fade-up-enter-active {
+  @apply transition duration-300 ease-out;
+}
+
+.fade-up-leave-active {
+  @apply transition duration-500 ease-in;
+}
+
+.fade-up-enter,
+.fade-up-leave-to {
+  @apply transform translate-y-6 opacity-0;
+}
+
+/* Vue fade transition */
+.fade-enter-active,
+.fade-leave-active {
+  @apply transition-opacity duration-300 ease-out;
+}
+
+.fade-enter,
+.fade-leave-to {
+  @apply opacity-0;
+}
+
+/* Vue page transition */
+.page-enter-active,
+.page-leave-active {
+  @apply transition-opacity duration-150 ease-out;
+}
+
+.page-enter,
+.page-leave-to {
+  @apply opacity-0;
+}

@@ -1,0 +1,60 @@
+{
+  "name": "Category list page",
+  "description": "Page displaying multiple products",
+  "model": "categories",
+  "fields": [
+    {
+      "id": "show_hero_image",
+      "label": "Show hero image",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "id": "text_color",
+      "label": "Text color",
+      "type": "select",
+      "default": "dark",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "conditions": {
+        "show_hero_image": true
+      }
+    },
+    {
+      "id": "darken_hero_image",
+      "label": "Darken hero image",
+      "type": "slider",
+      "unit": "%",
+      "increment": 10,
+      "default": 20,
+      "min": 0,
+      "max": 50,
+      "conditions": {
+        "text_color": "light"
+      }
+    },
+    {
+      "id": "product_cols",
+      "label": "Number of products per row",
+      "type": "select",
+      "options": [2, 3, 4],
+      "default": 3
+    },
+    {
+      "id": "product_rows",
+      "label": "Number of rows per page",
+      "type": "number",
+      "min": 1,
+      "max": 16,
+      "default": 3
+    }
+  ]
+}

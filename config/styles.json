@@ -1,0 +1,36 @@
+[
+  {
+    "id": "light",
+    "name": "Light",
+    "settings": {
+      "colors": {
+        "outline": "hsla(200, 100%, 36%, 0.75)",
+        "primary": {
+          "darkest": "#090602",
+          "darker": "#1c1a17",
+          "dark": "#8C8984",
+          "med": "#D9D5D0",
+          "light": "#F2EFEB",
+          "lighter": "#FAF8F5",
+          "lightest": "#FFFEFC"
+        },
+        "accent": "#E63360",
+        "ok": "#3d995e",
+        "ok_faded": "#c5e7d1",
+        "warn": "#ffca38",
+        "error": "#e61c1c",
+        "error_faded": "#ffd6d6"
+      },
+      "typography": {
+        "body": {
+          "family": "Google_Source+Sans+Pro_400_sans",
+          "size": "16px"
+        },
+        "heading": {
+          "family": "Google_Source+Sans+Pro_700_sans",
+          "size": "16px"
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,74 @@
+{
+  "name": "Customer reviews",
+  "description": "Selection of customer reviews or quotes",
+  "fields": [
+    {
+      "label": "Content",
+      "type": "field_group",
+      "fields": [
+        {
+          "id": "heading",
+          "label": "Heading text",
+          "type": "text",
+          "default": "What our customers say"
+        },
+        {
+          "id": "reviews",
+          "label": "Reviews",
+          "type": "collection",
+          "fields": [
+            {
+              "id": "quote",
+              "label": "Review text/Quote",
+              "type": "long_text"
+            },
+            {
+              "id": "name",
+              "label": "Customer's name",
+              "type": "text"
+            },
+            {
+              "id": "location",
+              "label": "Customer's location",
+              "type": "text"
+            },
+            {
+              "id": "score",
+              "label": "Score",
+              "type": "slider",
+              "unit": "stars",
+              "min": 0,
+              "max": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Styling",
+      "type": "field_group",
+      "fields": [
+        {
+          "id": "display_style",
+          "label": "Display style",
+          "type": "select",
+          "default": "slider",
+          "options": [
+            {
+              "value": "slider",
+              "label": "Slider"
+            },
+            {
+              "value": "strip",
+              "label": "Filmstrip"
+            },
+            {
+              "value": "random",
+              "label": "Random"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

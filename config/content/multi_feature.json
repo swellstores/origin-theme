@@ -1,0 +1,61 @@
+{
+  "name": "Multiple features",
+  "description": "Multiple features with an icon and label",
+  "fields": [
+    {
+      "label": "Content",
+      "type": "field_group",
+      "fields": [
+        {
+          "id": "heading",
+          "label": "Heading text",
+          "type": "text",
+          "placeholder": "Some heading text",
+          "required": true
+        },
+        {
+          "id": "features",
+          "label": "Features",
+          "type": "collection",
+          "fields": [
+            {
+              "id": "icon",
+              "label": "Icon",
+              "type": "icon",
+              "required": true
+            },
+            {
+              "id": "label",
+              "label": "Label",
+              "type": "text",
+              "placeholder": "Label text",
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Styling",
+      "type": "field_group",
+      "fields": [
+        {
+          "id": "column_width",
+          "label": "Column width",
+          "type": "select",
+          "default": "sm",
+          "options": [
+            {
+              "value": "sm",
+              "label": "Small"
+            },
+            {
+              "value": "md",
+              "label": "Medium"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
