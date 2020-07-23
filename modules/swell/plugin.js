@@ -1,3 +1,4 @@
+import get from 'lodash/get'
 import consola from 'consola'
 import swell from 'swell-js'
 import settingsJSON from '~/config/settings'
@@ -6,12 +7,15 @@ const logger = consola.withScope('swell')
 
 export default async (context, inject) => {
   const settings = settingsJSON || {}
-  const storeId = '<%= options.storeId || "" %>' || settings.store.id
-  const publicKey = '<%= options.publicKey || "" %>' || settings.store.public_key
+  const storeId = '<%= options.storeId || "" %>' || get(settings, 'store.id')
+  const publicKey = '<%= options.publicKey || "" %>' || get(settings, 'store.public_key')
 
   // Bail if options aren't provided
-  if (!storeId || !publicKey) {
-    throw new Error('[swell module]: a store ID and public API key must be provided')
+  if (!storeId) {
+    throw new Error('[swell module]: a store ID must be provided')
+  }
+  if (!publicKey) {
+    throw new Error('[swell module]: a public API key must be provided')
   }
 
   // Set up swell-js client
