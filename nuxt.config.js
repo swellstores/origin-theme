@@ -20,7 +20,12 @@ export default {
    ** Nuxt.js modules
    */
   modules: ['@nuxtjs/sentry', 'vue-balance-text/nuxt/module'],
-  buildModules: ['@nuxtjs/tailwindcss', '~/modules/swell-editor', '~/modules/swell'],
+  buildModules: [
+    //'@nuxtjs/eslint-module',
+    '@nuxtjs/tailwindcss',
+    '~/modules/swell-editor',
+    '~/modules/swell'
+  ],
 
   /*
    ** Sentry module configuration
@@ -68,7 +73,6 @@ export default {
    ** Build configuration
    */
   build: {
-    friendlyErrors: true, // Don't show error overlay in dev
     /*
      ** PostCSS setup
      */
@@ -77,26 +81,12 @@ export default {
       // Disable a plugin by passing false as value
     },
     /*
-+    ** Extract CSS
-+    */
-    // extractCSS: true,
-    /*
      ** You can extend webpack config here
      */
     extend(config, ctx) {
       // Fix for eslint error due to swell-js being linked
       // https://github.com/vuejs/vue-cli/issues/2948
       config.resolve.symlinks = false // TODO remove
-
-      // Run ESLint on save
-      if (ctx.isDev && ctx.isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-      }
     }
   },
 
