@@ -68,6 +68,7 @@ export default {
    ** Build configuration
    */
   build: {
+    friendlyErrors: true, // Don't show error overlay in dev
     /*
      ** PostCSS setup
      */
@@ -88,7 +89,7 @@ export default {
       config.resolve.symlinks = false // TODO remove
 
       // Run ESLint on save
-      if (!process.env.DISABLE_ESLINT && ctx.isDev && ctx.isClient) {
+      if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
