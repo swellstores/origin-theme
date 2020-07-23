@@ -57,8 +57,6 @@ const editor = {
   async handleIncomingMessage(event, context) {
     const { type, details } = event.data
 
-    console.log('received message', event.data) // TODO remove
-
     switch (type) {
       case 'content.selected':
         // Show content being edited
