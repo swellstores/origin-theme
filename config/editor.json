@@ -89,18 +89,19 @@
         },
         {
           "id": "typography.heading_family",
-          "label": "Heading text font",
+          "label": "Heading font family",
           "type": "font_family"
         },
         {
           "id": "typography.body_family",
-          "label": "Body text font",
+          "label": "Body font family",
           "type": "font_family"
         },
         {
           "id": "typography.scale_base_size",
           "label": "Base text size",
           "type": "font_size",
+          "mode": "body",
           "default": "16px"
         },
         {
@@ -111,27 +112,27 @@
           "options": [
             {
               "value": 1.067,
-              "label": "15:16 (minor second)"
+              "label": "Minor second (15:16)"
             },
             {
               "value": 1.125,
-              "label": "8:9 (major second)"
+              "label": "Major second (8:9)"
             },
             {
               "value": 1.2,
-              "label": "5:6 (minor third)"
+              "label": "Minor third (5:6)"
             },
             {
               "value": 1.25,
-              "label": "4:5 (major third)"
+              "label": "Major third (4:5)"
             },
             {
               "value": 1.333,
-              "label": "3:4 (perfect fourth)"
+              "label": "Perfect fourth (3:4)"
             },
             {
               "value": 1.414,
-              "label": "1:√2  (augmented fourth)"
+              "label": "Augmented fourth (1:√2)"
             }
           ]
         },

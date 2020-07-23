@@ -17,16 +17,6 @@
     "error": "#e61c1c",
     "error_faded": "#ffd6d6"
   },
-  "typography": {
-    "body": {
-      "family": "Google_Source+Sans+Pro_400_sans",
-      "size": "16px"
-    },
-    "heading": {
-      "family": "Google_Source+Sans+Pro_700_sans",
-      "size": "16px"
-    }
-  },
   "header": {
     "logo": "",
     "logo_width": 225,
@@ -65,6 +55,8 @@
   "checkout": {},
   "favicon": "",
   "typography": {
+    "heading_family": "Google_Source+Sans+Pro_900_sans",
+    "body_family": "Google_Source+Sans+Pro_400_sans",
     "scale_base_size": "16px",
     "scale_ratio": 1.125
   },

@@ -25,14 +25,23 @@
 <script>
 // Helpers
 import { mapState } from 'vuex'
+import { getFontLinks } from '~/modules/swell-editor/utils'
 
 export default {
+  fetch() {
+    const { headingFamily, bodyFamily } = this.$swell.settings.get('typography', {})
+    this.headingFontFamily = headingFamily
+    this.bodyFontFamily = bodyFamily
+  },
+
   data() {
     return {
       stripeIsLoaded: false,
       cartIsActive: false,
       searchIsActive: false,
-      cookieNotificationIsActive: false // TODO set true
+      cookieNotificationIsActive: false, // TODO set true
+      headingFontFamily: null,
+      bodyFontFamily: null
     }
   },
 
@@ -75,6 +84,7 @@ export default {
 
   head() {
     return {
+      link: [...getFontLinks([this.headingFontFamily, this.bodyFontFamily])],
       script: [
         // Iconify API script for loading SVG icons on demand
         {

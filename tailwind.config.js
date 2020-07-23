@@ -31,36 +31,8 @@ module.exports = {
       current: 'currentColor'
     },
     fontFamily: {
-      //body: 'var(--typography-body-family)',
-      body: [
-        "-apple-system",
-        "BlinkMacSystemFont",
-        '"Segoe UI"',
-        "Roboto",
-        '"Helvetica Neue"',
-        "Arial",
-        '"Noto Sans"',
-        "sans-serif",
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"',
-        '"Noto Color Emoji"',
-      ],
-      //heading: 'var(--typography-heading-family)'
-      heading: [
-        "-apple-system",
-        "BlinkMacSystemFont",
-        '"Segoe UI"',
-        "Roboto",
-        '"Helvetica Neue"',
-        "Arial",
-        '"Noto Sans"',
-        "sans-serif",
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"',
-        '"Noto Color Emoji"',
-      ]
+      body: 'var(--typography-body-family)',
+      heading: 'var(--typography-heading-family)'
     },
     fontSize: {
       '2xs': 'var(--type-scale--3)',

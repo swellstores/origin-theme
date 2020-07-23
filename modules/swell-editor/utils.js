@@ -1,6 +1,20 @@
 import _ from 'lodash'
 import VueQuery from 'vuequery'
 
+const systemFontStack = {
+  sans:
+    '-apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif',
+  serif:
+    'Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol',
+  mono: 'Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace'
+}
+const typographySettings = {
+  headingFamilyVarName: '--' + _.kebabCase('typography.heading_family'),
+  bodyFamilyVarName: '--' + _.kebabCase('typography.body_family'),
+  ratioVarName: '--' + _.kebabCase('typography.scale_ratio'),
+  baseSizeVarName: '--' + _.kebabCase('typography.scale_base_size') // TODO implement base factor
+}
+
 // Returns true if the component's parent tree contains <Nuxt>
 // (meaning it's part of the page, and not a global component)
 export function isPageChild(vm) {
@@ -47,9 +61,9 @@ export function generateCssVariables(storeSettings) {
   if (process.browser) {
     // Set variables on document root
     variables.map(cssVar => {
-      let [variableName, value] = cssVar.split(':')
-      value = value.slice(0, -1) // Remove the semicolon otherwise the value gets ignored
-      document.documentElement.style.setProperty(variableName, value)
+      const [name, value] = cssVar.split(':')
+      const rawValue = value.slice(0, -1) // Remove the semicolon otherwise the value gets ignored
+      document.documentElement.style.setProperty(name, rawValue)
     })
   } else {
     // Return variables as CSS stylesheet string
@@ -71,6 +85,23 @@ export function isCssVariableGroup(path) {
   return variableGroups.includes(groupKey)
 }
 
+// Returns array of stylesheet link objects for using with Nuxt's head function
+export function getFontLinks(families) {
+  return families
+    .map(family => {
+      const font = getFontInfo(family)
+      if (font.provider === 'Google') {
+        const fontFamilyDef = `family=${font.family}:wght@${font.weight};${font.weight}i`
+
+        return {
+          rel: 'stylesheet',
+          href: `https://fonts.googleapis.com/css2?${fontFamilyDef}&display=swap`
+        }
+      }
+    })
+    .filter(family => family || false)
+}
+
 // Returns array of settings object keys configured for CSS variable generation
 function getVariableGroups() {
   const defaultGroups = ['colors', 'typography']
@@ -83,12 +114,6 @@ function getVariableGroups() {
 
 // Generate array of CSS variables with values
 function generateVariableList(settings, keyNames) {
-  const typeScale = {
-    ratioVarName: '--' + _.kebabCase('typography.scale_ratio'),
-    baseSizeVarName: '--' + _.kebabCase('typography.scale_base_size'), // TODO implement base factor
-    steps: _.range(-6, 17),
-    getStepValue: (step, ratio) => _.round(ratio ** step, 3) + 'rem'
-  }
   const variables = []
 
   keyNames.map((group, index) => {
@@ -98,21 +123,45 @@ function generateVariableList(settings, keyNames) {
     // Turn each property into a CSS variable name with value
     for (const [key, value] of Object.entries(palette)) {
       const varName = `--${group}-${_.kebabCase(key)}`
+      const isRatioSetting = varName === typographySettings.ratioVarName
+      const isFontFamilySetting = [
+        typographySettings.headingFamilyVarName,
+        typographySettings.bodyFamilyVarName
+      ].includes(varName)
 
-      // Add variable to list
-      variables.push(`${varName}: ${value};`)
-
-      // Generate modular type scale
-      if (varName === typeScale.ratioVarName) {
+      if (isRatioSetting) {
+        // Generate modular type scale variables
         const ratio = parseFloat(value) || 1.125
-        typeScale.steps.map(step =>
-          variables.push(`--type-scale-${step}: ${typeScale.getStepValue(step, ratio)};`)
-        )
+        const steps = _.range(-6, 17) // Generate a reasonable range for the scale
+        steps.map(step => {
+          const typeSizeValue = _.round(ratio ** step, 3) + 'rem'
+          variables.push(`--type-scale-${step}: ${typeSizeValue};`)
+        })
+      } else if (isFontFamilySetting) {
+        // Generate font family variable
+        const { provider, family, fallback = 'sans' } = getFontInfo(value)
+        let fontStack = systemFontStack[fallback]
+
+        if (provider === 'Google') {
+          fontStack = `${family.replace(/[+]/g, ' ')}, ${fontStack}`
+        } else if (family) {
+          fontStack = `${family}, ${fontStack}`
+        }
+        variables.push(`${varName}: ${fontStack};`)
+      } else {
+        // Add arbitrary variable to list
+        variables.push(`${varName}: ${value};`)
       }
     }
   })
 
   return variables
+}
+
+function getFontInfo(fontFamily) {
+  if (typeof fontFamily !== 'string' || !fontFamily) return {}
+  const [provider, family, weight, fallback] = fontFamily.split('_')
+  return { provider, family, weight, fallback }
 }
 
 // Tailwind utility for transforming object into kebab-case string

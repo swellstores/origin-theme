@@ -17,8 +17,9 @@ These variables were set by the swell-editor module during server build.
 --colors-warn: #ffca38;
 --colors-error: #e61c1c;
 --colors-error-faded: #ffd6d6;
+--typography-heading-family: Source Sans Pro, -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif;
+--typography-body-family: Source Sans Pro, -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif;
 --typography-scale-base-size: 16px;
---typography-scale-ratio: 1.125;
 --type-scale--6: 0.493rem;
 --type-scale--5: 0.555rem;
 --type-scale--4: 0.624rem;
