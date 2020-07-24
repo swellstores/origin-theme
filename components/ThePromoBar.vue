@@ -23,7 +23,7 @@ export default {
     },
     text: {
       type: String,
-      default: '15% off espresso pods'
+      default: null
     },
     hidden: {
       type: Boolean,
