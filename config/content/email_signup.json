@@ -34,22 +34,6 @@
       "type": "field_group",
       "fields": [
         {
-          "id": "text_color",
-          "label": "Text color",
-          "type": "select",
-          "default": "dark",
-          "options": [
-            {
-              "value": "light",
-              "label": "Light"
-            },
-            {
-              "value": "dark",
-              "label": "Dark"
-            }
-          ]
-        },
-        {
           "id": "darken_bg",
           "label": "Darken background media",
           "type": "slider",
