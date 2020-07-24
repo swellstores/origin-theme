@@ -15,9 +15,6 @@ export default async (context, inject) => {
   Vue.use(SyncPlugin)
 
   if (window) {
-    editor.handleIncomingMessage({ data: { type: 'editor.connected' } }, context)
-    // TODO remove when this message is implemented in the editor
-
     // Listen for messages and pass to event bus
     window.addEventListener('message', event => editor.handleIncomingMessage(event, context), false)
 
