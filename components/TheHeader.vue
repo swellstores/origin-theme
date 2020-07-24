@@ -21,10 +21,10 @@
       <div class="w-full fixed transform translate-y-0 transition-all ease-in-out duration-200">
         <header
           class="transition-all duration-300 ease-in-out z-40"
-          :class="{ 'transform -translate-y-full': header.hideOnScroll && headerIsHidden }"
+          :class="[' bg-primary-lightest lg:shadow-md', { 'transform -translate-y-full': header.hideOnScroll && headerIsHidden }]"
         >
           <div
-            class="relative md:container flex items-stretch justify-between items-stretch bg-primary-lightest lg:shadow-md z-20"
+            class="relative md:container flex items-stretch justify-between items-stretch z-20"
           >
             <div class="py-3 pl-6"><StoreLogo /></div>
             <!-- Main nav -->
