@@ -1,5 +1,5 @@
 <template>
-  <div
+  <section
     class="relative md:mt-24 my-16"
     :class="{
       'mx-0': outerSpacingX === 'none',
@@ -52,7 +52,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

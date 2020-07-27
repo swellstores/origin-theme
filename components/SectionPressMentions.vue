@@ -1,5 +1,5 @@
 <template>
-  <div class="relative mx-6 lg:mx-8 my-8">
+  <section class="relative mx-6 lg:mx-8 my-8">
     <div class="flex flex-row flex-wrap">
       <div
         v-for="(mention, index) in mentions"
@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

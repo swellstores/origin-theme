@@ -12,7 +12,7 @@
   </div>
 
   <!-- Section content -->
-  <div
+  <section
     v-else
     :class="{
       'mx-6 lg:mx-8 xl:mx-20': outerSpacingX === 'md',
@@ -72,7 +72,7 @@
       </div>
       <!-- END Text content -->
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

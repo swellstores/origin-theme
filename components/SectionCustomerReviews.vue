@@ -1,5 +1,5 @@
 <template>
-  <div class="relative mx-6 my-14 lg:mx-8 lg:my-16">
+  <section class="relative mx-6 my-14 lg:mx-8 lg:my-16">
     <!-- Arrows -->
     <div class="absolute inset-x-0 bottom-0 md:inset-0 flex items-center justify-between">
       <button href="#" title="Previous review" class="rounded-full" @click.prevent="prevReview">
@@ -48,7 +48,7 @@
         </transition>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

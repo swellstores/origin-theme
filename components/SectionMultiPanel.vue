@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <section class="relative">
     <div class="flex flex-wrap">
       <div
         v-for="(panel, index) in panels"
@@ -43,7 +43,7 @@
         </template>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

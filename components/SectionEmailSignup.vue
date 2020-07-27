@@ -1,5 +1,5 @@
 <template>
-  <div :class="[outerSpacingXClass, outerSpacingYClass]" class="relative overflow-hidden">
+  <section :class="[outerSpacingXClass, outerSpacingYClass]" class="relative overflow-hidden">
     <VisualMedia
       v-if="image"
       :source="image.url"
@@ -19,7 +19,7 @@
         <EmailSignupForm />
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
