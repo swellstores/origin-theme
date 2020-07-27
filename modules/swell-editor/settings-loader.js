@@ -43,8 +43,7 @@ export default async (context, inject) => {
     context.app.$swell.settings.state = parseSerializedOption(`<%= options.settings %>`)
     context.app.$swell.settings.menuState = parseSerializedOption(`<%= options.menus %>`)
   } else {
-    // Get settings via API
-    await context.app.$swell.settings.get()
-    await context.app.$swell.settings.menus()
+    // Load all settings via API
+    await context.app.$swell.settings.load()
   }
 }

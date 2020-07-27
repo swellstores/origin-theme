@@ -49,7 +49,8 @@ export default {
   swell: {
     storeId: process.env.SWELL_STORE_ID,
     publicKey: process.env.SWELL_PUBLIC_KEY,
-    previewContent: process.env.SWELL_EDITOR ? true : false
+    previewContent: process.env.SWELL_EDITOR ? true : false,
+    storeUrl: process.env.SWELL_STORE_URL
   },
 
   swellEditor: {

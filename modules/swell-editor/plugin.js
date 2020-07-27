@@ -11,12 +11,14 @@ import {
 } from './swell-editor-utils'
 
 export default async (context, inject) => {
-  // Initialize data sync plugin
-  Vue.use(SyncPlugin)
+  const usingEditor = '<%= options.useLocalSettings %>' === 'false'
 
-  if (window) {
+  if (window && usingEditor) {
+    // Initialize data sync plugin
+    Vue.use(SyncPlugin)
+
+    // Flag editor connected immediately
     editor.handleIncomingMessage({ data: { type: 'editor.connected' } }, context)
-    // TODO remove when this message is implemented in the editor
 
     // Listen for messages and pass to event bus
     window.addEventListener('message', event => editor.handleIncomingMessage(event, context), false)
@@ -35,11 +37,22 @@ export default async (context, inject) => {
 }
 
 const editor = {
+  context: null,
+
   // Event bus for interacting with admin editor
   events: mitt(),
 
   // If we're currently connected to the admin editor
   isConnected: false,
+
+  // If we're currently processing a message
+  isReceiving: false,
+
+  // Buffer to make sure messages are received in strict order
+  messages: [],
+
+  // Count of the number of currently processing fetch handlersd
+  fetchCounter: 0,
 
   // Send a message to the parent window of the iframe, if available
   sendMessage(msg) {
@@ -57,6 +70,13 @@ const editor = {
   async handleIncomingMessage(event, context) {
     const { type, details } = event.data
 
+    if (this.isReceiving) {
+      this.messages.push(event)
+      return
+    }
+
+    this.isReceiving = true
+
     switch (type) {
       case 'content.selected':
         // Show content being edited
@@ -72,32 +92,50 @@ const editor = {
       case 'settings.updated':
         // Check if we only have to update CSS, and avoid refetch
         if (isCssVariableGroup(details.path)) {
-          return setCssVariable(details.path, details.value)
+          setCssVariable(details.path, details.value)
+        } else {
+          // Update settings and trigger refetch if component has dynamic data
+          context.$swell.settings.set(details.path, details.value)
+          this.events.emit('editor-update', details)
         }
-
-        // Update settings and trigger refetch if component has dynamic data
-        context.$swell.settings.set(details.path, details.value)
-        this.events.emit('editor-update', details)
         break
 
       case 'browser':
         // Emulate browser actions
         switch (details.action) {
           case 'back':
-            return context.app.router.back()
+            context.app.router.back()
+            break
           case 'forward':
-            return context.app.router.forward()
+            context.app.router.forward()
+            break
           case 'navigate':
-            return context.app.router.push(details.value)
+            context.app.router.push(details.value)
+            break
         }
         break
 
       case 'editor.connected':
-        this.isConnected = true
-        // Set CSS variables on document root during initial editor handshake
-        const settings = await context.$swell.settings.get()
-        generateCssVariables(settings)
+        if (!this.isConnected) {
+          this.context = context
+          this.isConnected = true
+          // Set CSS variables on document root during initial editor handshake
+          const settings = await context.$swell.settings.get()
+          generateCssVariables(settings)
+        }
         break
+    }
+
+    if (this.fetchCounter === 0) {
+      this.isReceiving = false
+      this.handleNextMessage()
+    }
+  },
+
+  handleNextMessage() {
+    if (this.messages.length > 0) {
+      const event = this.messages.shift()
+      this.handleIncomingMessage(event, this.context)
     }
   }
 }
@@ -123,9 +161,19 @@ function enableFetchListener(vm) {
     vm._fetchDelay = 0
 
     // Listen for editor updates and trigger component fetch method
-    editor.events.on('editor-update', () => {
-      vm.$fetch()
+    editor.events.on('editor-update', async () => {
       // console.log('FETCHING', vm._name, vm._uid)
+      try {
+        editor.fetchCounter++
+        await vm.$fetch()
+      } catch (err) {
+        // noop
+      }
+      editor.fetchCounter--
+      if (editor.fetchCounter === 0) {
+        editor.isReceiving = false
+        editor.handleNextMessage()
+      }
     })
   }
 }

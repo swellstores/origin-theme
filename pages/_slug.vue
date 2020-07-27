@@ -19,11 +19,13 @@ export default {
     const slug = $route.params.slug || 'home'
 
     // Set preload data
-    const preloaderSections = ['full_width_media', 'multi_feature', 'multi_panel']
-    this.sections = preloaderSections.map((type, index) => ({
-      id: 'pageSectionPreloader' + index,
-      type
-    }))
+    if (!this.sections.length) {
+      const preloaderSections = ['full_width_media', 'multi_feature', 'multi_panel']
+      this.sections = preloaderSections.map((type, index) => ({
+        id: 'pageSectionPreloader' + index,
+        type
+      }))
+    }
 
     const page = await $swell.content.get('pages', slug)
 
