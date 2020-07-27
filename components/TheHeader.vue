@@ -2,7 +2,11 @@
   <div>
     <!-- Duplicate elements to match header height and push main content down -->
     <div class="opacity-0">
-      <ThePromoBar v-if="header.showPromo" text="|" />
+      <ThePromoBar
+        v-if="header.showPromo"
+        text="|"
+        :hidden="header.hideOnScroll && headerIsHidden"
+      />
       <div class="py-3"><StoreLogo /></div>
     </div>
 
@@ -21,11 +25,12 @@
       <div class="w-full fixed transform translate-y-0 transition-all ease-in-out duration-200">
         <header
           class="transition-all duration-300 ease-in-out z-40"
-          :class="[' bg-primary-lightest lg:shadow-md', { 'transform -translate-y-full': header.hideOnScroll && headerIsHidden }]"
+          :class="[
+            ' bg-primary-lightest lg:shadow-md',
+            { 'transform -translate-y-full': header.hideOnScroll && headerIsHidden }
+          ]"
         >
-          <div
-            class="relative md:container flex items-stretch justify-between items-stretch z-20"
-          >
+          <div class="relative md:container flex items-stretch justify-between items-stretch z-20">
             <div class="py-3 pl-6"><StoreLogo /></div>
             <!-- Main nav -->
             <nav v-if="menu" class="w-full lg:w-auto hidden lg:flex">
@@ -119,12 +124,16 @@ export default {
 
     // Set component data
     this.header = $swell.settings.get('header', {})
+
+    // Reset scroll listener
+    this.setScrollListener(true);
   },
 
   data() {
     return {
       header: {},
       menu: {},
+      mounted: false,
       megaNavIsEnabled: true,
       mobileNavIsVisible: false,
       headerIsHidden: false,
@@ -141,16 +150,18 @@ export default {
   watch: {
     $route() {
       // Close mega/mobile nav menu when the page changes
-      this.setMobileNavVisibility(false)
+      this.headerIsHidden = false
     }
   },
 
   mounted() {
-    this.hideHeaderOnScroll(true)
+    this.mounted = true
+    this.setScrollListener(true)
   },
 
   beforeDestroy() {
-    this.hideHeaderOnScroll(false)
+    this.mounted = false
+    this.setScrollListener(false)
     cancelAnimationFrame(this.scrollRAF)
   },
 
@@ -166,9 +177,9 @@ export default {
 
       // Ensure the header is visible when mobile nav is open
       if (this.mobileNavIsVisible) {
-        this.hideHeaderOnScroll(false)
+        this.setScrollListener(false)
       } else {
-        this.hideHeaderOnScroll(true)
+        this.setScrollListener(true)
       }
     },
 
@@ -180,7 +191,7 @@ export default {
 
       // Stop executing this function if the difference between
       // current scroll position and last scroll position is less than some offset
-      if (Math.abs(currentScrollPosition - this.lastScrollPos) < 20) return
+      if (Math.abs(currentScrollPosition - this.lastScrollPos) < 50) return
 
       this.headerIsHidden = currentScrollPosition > this.lastScrollPos
       this.lastScrollPos = currentScrollPosition
@@ -193,9 +204,9 @@ export default {
       }
     },
 
-    hideHeaderOnScroll(value) {
+    setScrollListener(value) {
       // Ignore if hide on scroll is disabled in settings
-      if (!this.header.hideOnScroll) return
+      if (!this.mounted || !this.header.hideOnScroll) return
 
       if (value) {
         window.addEventListener('scroll', this.handleScroll)
