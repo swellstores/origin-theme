@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div v-for="(section, index) in sections" :key="JSON.stringify(section)">
+    <transition-group name="page-section" tag="div">
       <SectionAsyncLoader
+        v-for="(section, index) in sections"
+        :key="section.id"
         :section="section"
         :collection-index="index"
         :fetch-is-pending="$fetchState.pending"
       />
-    </div>
+    </transition-group>
   </div>
 </template>
 
@@ -49,3 +51,9 @@ export default {
   }
 }
 </script>
+
+<style lang="postcss">
+.page-section-move {
+  @apply transition-transform duration-500 ease-in-out;
+}
+</style>
