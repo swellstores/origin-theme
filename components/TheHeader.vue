@@ -124,9 +124,6 @@ export default {
 
     // Set component data
     this.header = $swell.settings.get('header', {})
-
-    // Reset scroll listener
-    this.setScrollListener(true);
   },
 
   data() {
@@ -206,7 +203,7 @@ export default {
 
     setScrollListener(value) {
       // Ignore if hide on scroll is disabled in settings
-      if (!this.mounted || !this.header.hideOnScroll) return
+      if (!this.mounted) return
 
       if (value) {
         window.addEventListener('scroll', this.handleScroll)
