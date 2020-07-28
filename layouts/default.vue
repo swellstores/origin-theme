@@ -65,9 +65,11 @@ export default {
       this.$store.commit('setState', { key: 'cookiesWereAccepted', value: true })
     }
 
-    this.$swellEditor.events.on('load-webfonts', () => {
-      this.$fetch()
-    })
+    if (this.$swellEditor) {
+      this.$swellEditor.events.on('load-webfonts', () => {
+        this.$fetch()
+      })
+    }
   },
 
   methods: {
