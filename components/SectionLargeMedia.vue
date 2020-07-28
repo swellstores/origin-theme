@@ -9,9 +9,6 @@
           aspect-ratio="16:9"
           class="rounded overflow-hidden mt-10 lg:mt-12"
         />
-        <div class="center-xy absolute rounded-full w-16 h-16 bg-primary-lighter lg:w-20 lg:h-20">
-          <BaseIcon icon="uil:play" size="lg" class="center-xy absolute" />
-        </div>
       </div>
     </div>
   </section>
@@ -41,5 +38,3 @@ export default {
   }
 }
 </script>
-
-<style lang="postcss" scoped></style>
