@@ -4,12 +4,6 @@
   "model": "products",
   "fields": [
     {
-      "id": "show_quantity_input",
-      "label": "Show quantity input",
-      "type": "toggle",
-      "default": true
-    },
-    {
       "id": "product_benefits",
       "label": "Product benefits",
       "type": "collection",
