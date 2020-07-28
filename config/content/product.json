@@ -4,12 +4,6 @@
   "model": "products",
   "fields": [
     {
-      "id": "show_quantity_input",
-      "label": "Show quantity input",
-      "type": "toggle",
-      "default": true
-    },
-    {
       "id": "product_benefits",
       "label": "Product benefits",
       "type": "collection",
@@ -38,7 +32,7 @@
         },
         {
           "icon": "uil:award",
-          "text": "97% customer satisfaction rating"
+          "text": "98% customer satisfaction rating"
         }
       ]
     }
