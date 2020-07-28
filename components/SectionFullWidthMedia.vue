@@ -57,18 +57,25 @@
         <p v-balance-text :class="{ 'text-primary-lighter': textColor === 'light' }">
           {{ description }}
         </p>
-        <NuxtLink
-          v-for="(link, index) in links"
-          :key="`link-${index}`"
-          to="/products/"
-          :title="link.title"
+        <div
           :class="{
-            'cta-link mt-5 mb-1 mr-6': link.style === 'text',
-            'btn mt-6 mr-2': link.style === 'button_primary',
-            light: textColor === 'light'
+            '-ml-3': alignX === 'left',
+            '-mr-3': alignX === 'right'
           }"
-          >{{ link.label }}</NuxtLink
         >
+          <NuxtLink
+            v-for="(link, index) in links"
+            :key="`link-${index}`"
+            to="/products/"
+            :title="link.title"
+            :class="{
+              'cta-link mt-5 mb-1 mx-3': link.style === 'text',
+              'btn mt-6 mx-3': link.style === 'button_primary',
+              light: textColor === 'light'
+            }"
+            >{{ link.label }}</NuxtLink
+          >
+        </div>
       </div>
       <!-- END Text content -->
     </div>
