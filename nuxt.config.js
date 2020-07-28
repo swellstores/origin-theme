@@ -55,7 +55,7 @@ export default {
 
   swellEditor: {
     // cssVariableGroups: [],
-    useLocalSettings: process.env.SWELL_EDITOR ? false : true
+    useEditorSettings: process.env.SWELL_EDITOR ? true : false
   },
 
   swellAnalytics: {

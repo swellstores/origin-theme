@@ -32,7 +32,8 @@ module.exports = {
     },
     fontFamily: {
       body: 'var(--typography-body-family)',
-      heading: 'var(--typography-heading-family)'
+      heading: 'var(--typography-heading-family)',
+      label: 'var(--typography-label-family)'
     },
     fontSize: {
       '2xs': 'var(--type-scale--3)',

@@ -24,7 +24,7 @@
       </div>
     </div>
     <!-- Product summary -->
-    <div class="py-3">
+    <div class="py-3 font-label font-semibold">
       <NuxtLink
         :to="parent.resolveUrl({ type: 'product', value: props.slug })"
         class="inline-block"

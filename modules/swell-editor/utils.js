@@ -11,6 +11,7 @@ const systemFontStack = {
 const typographySettings = {
   headingFamilyVarName: '--' + _.kebabCase('typography.heading_family'),
   bodyFamilyVarName: '--' + _.kebabCase('typography.body_family'),
+  labelFamilyVarName: '--' + _.kebabCase('typography.label_family'),
   ratioVarName: '--' + _.kebabCase('typography.scale_ratio'),
   baseSizeVarName: '--' + _.kebabCase('typography.scale_base_size') // TODO implement base factor
 }
@@ -41,15 +42,6 @@ export function selectContent(path) {
     behavior: 'smooth',
     block: 'center'
   })
-}
-
-// Override a root CSS variable on the document object
-export function setCssVariable(path, value) {
-  if (!isCssVariableGroup(path)) return
-
-  // Set variable on document root
-  const variableName = `--${path.replace(/\./g, '-')}`
-  document.documentElement.style.setProperty(variableName, value)
 }
 
 // Returns string of CSS variables to inject as a stylesheet
@@ -126,7 +118,8 @@ function generateVariableList(settings, keyNames) {
       const isRatioSetting = varName === typographySettings.ratioVarName
       const isFontFamilySetting = [
         typographySettings.headingFamilyVarName,
-        typographySettings.bodyFamilyVarName
+        typographySettings.bodyFamilyVarName,
+        typographySettings.labelFamilyVarName
       ].includes(varName)
 
       if (isRatioSetting) {

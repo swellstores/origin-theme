@@ -57,6 +57,7 @@
   "typography": {
     "heading_family": "Google_Source+Sans+Pro_900_sans",
     "body_family": "Google_Source+Sans+Pro_400_sans",
+    "label_family": "Google_Source+Sans+Pro_600_sans",
     "scale_base_size": "16px",
     "scale_ratio": 1.125
   },

@@ -98,6 +98,11 @@
           "type": "font_family"
         },
         {
+          "id": "typography.label_family",
+          "label": "Link/Label font family",
+          "type": "font_family"
+        },
+        {
           "id": "typography.scale_base_size",
           "label": "Base text size",
           "type": "font_size",

@@ -29,19 +29,15 @@ import { getFontLinks } from '~/modules/swell-editor/utils'
 
 export default {
   fetch() {
-    const { headingFamily, bodyFamily } = this.$swell.settings.get('typography', {})
-    this.headingFontFamily = headingFamily
-    this.bodyFontFamily = bodyFamily
+    this.typographySettings = this.$swell.settings.get('typography', {})
   },
 
   data() {
     return {
-      stripeIsLoaded: false,
       cartIsActive: false,
       searchIsActive: false,
       cookieNotificationIsActive: false, // TODO set true
-      headingFontFamily: null,
-      bodyFontFamily: null
+      typographySettings: {}
     }
   },
 
@@ -68,6 +64,10 @@ export default {
     if (this.getCookie('cookiesAccepted')) {
       this.$store.commit('setState', { key: 'cookiesWereAccepted', value: true })
     }
+
+    this.$swellEditor.events.on('load-webfonts', () => {
+      this.$fetch()
+    })
   },
 
   methods: {
@@ -83,8 +83,10 @@ export default {
   },
 
   head() {
+    const { headingFamily, bodyFamily, labelFamily } = this.typographySettings
+
     return {
-      link: [...getFontLinks([this.headingFontFamily, this.bodyFontFamily])],
+      link: [...getFontLinks([headingFamily, bodyFamily, labelFamily])],
       script: [
         // Iconify API script for loading SVG icons on demand
         {

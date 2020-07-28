@@ -36,9 +36,9 @@ function parseSerializedOption(value) {
 }
 
 export default async (context, inject) => {
-  const useLocalSettings = '<%= options.useLocalSettings %>' !== 'false'
+  const useEditorSettings = '<%= options.useEditorSettings %>' !== 'false'
 
-  if (process.env.NODE_ENV === 'production' || useLocalSettings) {
+  if (process.env.NODE_ENV === 'production' || !useEditorSettings) {
     // Load settings from filesystem
     context.app.$swell.settings.state = parseSerializedOption(`<%= options.settings %>`)
     context.app.$swell.settings.menuState = parseSerializedOption(`<%= options.menus %>`)

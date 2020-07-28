@@ -6,14 +6,13 @@ import {
   hasFetch,
   isCssVariableGroup,
   generateCssVariables,
-  setCssVariable,
   selectContent
 } from './swell-editor-utils'
 
 export default async (context, inject) => {
-  const usingEditor = '<%= options.useLocalSettings %>' === 'false'
+  const useEditorSettings = '<%= options.useEditorSettings %>' === 'true'
 
-  if (window && usingEditor) {
+  if (window && useEditorSettings) {
     // Initialize data sync plugin
     Vue.use(SyncPlugin)
 
@@ -51,7 +50,7 @@ const editor = {
   // Buffer to make sure messages are received in strict order
   messages: [],
 
-  // Count of the number of currently processing fetch handlersd
+  // Index of fetch handler currently being processed
   fetchCounter: 0,
 
   // Send a message to the parent window of the iframe, if available
@@ -69,6 +68,7 @@ const editor = {
 
   async handleIncomingMessage(event, context) {
     const { type, details } = event.data
+    const { app, $swell } = context
 
     if (this.isReceiving) {
       this.messages.push(event)
@@ -85,18 +85,21 @@ const editor = {
 
       case 'content.updated':
         // Set cache and trigger refetch if component has dynamic data
-        context.$swell.cache.setOnce(details)
-        this.events.emit('editor-update', details)
+        $swell.cache.setOnce(details)
+        this.events.emit('refetch', details)
         break
 
       case 'settings.updated':
-        // Check if we only have to update CSS, and avoid refetch
+        // Patch settings data cache
+        $swell.settings.set(details.path, details.value)
+
         if (isCssVariableGroup(details.path)) {
-          setCssVariable(details.path, details.value)
+          // Regenerate variables if setting is a CSS variable group
+          generateCssVariables($swell.settings.get())
+          this.events.emit('load-webfonts', details)
         } else {
-          // Update settings and trigger refetch if component has dynamic data
-          context.$swell.settings.set(details.path, details.value)
-          this.events.emit('editor-update', details)
+          // Trigger refetch if component has dynamic data
+          this.events.emit('refetch', details)
         }
         break
 
@@ -104,13 +107,13 @@ const editor = {
         // Emulate browser actions
         switch (details.action) {
           case 'back':
-            context.app.router.back()
+            app.router.back()
             break
           case 'forward':
-            context.app.router.forward()
+            app.router.forward()
             break
           case 'navigate':
-            context.app.router.push(details.value)
+            app.router.push(details.value)
             break
         }
         break
@@ -119,8 +122,8 @@ const editor = {
         if (!this.isConnected) {
           this.context = context
           this.isConnected = true
-          // Set CSS variables on document root during initial editor handshake
-          const settings = await context.$swell.settings.get()
+          // Set CSS variables on document root during initial editor connection
+          const settings = $swell.settings.get()
           generateCssVariables(settings)
         }
         break
@@ -161,7 +164,7 @@ function enableFetchListener(vm) {
     vm._fetchDelay = 0
 
     // Listen for editor updates and trigger component fetch method
-    editor.events.on('editor-update', async () => {
+    editor.events.on('refetch', async () => {
       // console.log('FETCHING', vm._name, vm._uid)
       try {
         editor.fetchCounter++
