@@ -91,7 +91,7 @@ export function getFontLinks(families) {
     .map(family => {
       const font = getFontInfo(family)
       if (font.provider === 'Google') {
-        const fontFamilyDef = `family=${font.family}:wght@${font.weight};${font.weight}i`
+        const fontFamilyDef = `family=${font.family}:ital,wght@0,${font.weight};1,${font.weight}`
 
         return {
           rel: 'stylesheet',

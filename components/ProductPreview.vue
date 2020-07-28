@@ -32,14 +32,14 @@
         <h4 v-balance-text>{{ props.name }}</h4>
       </NuxtLink>
       <!-- Sale price -->
-      <div v-if="props.origPrice" class="font-semibold">
+      <div v-if="props.origPrice">
         <span class="text-sm mr-1">{{ parent.formatMoney(props.price, currency) }}</span>
         <span class="uppercase text-xs text-error whitespace-no-wrap">
           Save {{ parent.formatMoney(props.origPrice - props.price, currency) }}
         </span>
       </div>
       <!-- Regular price -->
-      <div v-else class="font-semibold">
+      <div v-else>
         <span class="text-sm">{{ parent.formatMoney(props.price, currency) }}</span>
       </div>
     </div>
