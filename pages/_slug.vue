@@ -1,13 +1,13 @@
 <template>
   <div>
     <transition-group name="page-section" tag="div">
-      <SectionAsyncLoader
-        v-for="(section, index) in sections"
-        :key="section.id"
-        :section="section"
-        :collection-index="index"
-        :fetch-is-pending="$fetchState.pending"
-      />
+      <div v-for="(section, index) in sections" :key="section.id">
+        <SectionAsyncLoader
+          :section="section"
+          :collection-index="index"
+          :fetch-is-pending="$fetchState.pending"
+        />
+      </div>
     </transition-group>
   </div>
 </template>
