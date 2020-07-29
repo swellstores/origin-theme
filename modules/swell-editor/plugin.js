@@ -29,6 +29,19 @@ export default async (context, inject) => {
         location: window.location.pathname
       }
     })
+
+    // Listen for unload to tell the editor when we're gone
+    window.addEventListener(
+      'unload',
+      event =>
+        editor.sendMessage({
+          type: 'route.changed',
+          details: {
+            location: ''
+          }
+        }),
+      false
+    )
   }
 
   // Add editor to Nuxt context as $swellEditor
