@@ -59,8 +59,7 @@
         </p>
         <div
           :class="{
-            '-ml-3': alignX === 'left',
-            '-mr-3': alignX === 'right'
+            '-ml-3': alignX === 'left' || alignX === 'right'
           }"
         >
           <NuxtLink
