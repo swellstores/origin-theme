@@ -12,32 +12,6 @@
           "type": "category_lookup"
         }
       ]
-    },
-    {
-      "label": "Styling",
-      "type": "field_group",
-      "fields": [
-        {
-          "id": "display_style",
-          "label": "Display style",
-          "type": "select",
-          "default": "slider",
-          "options": [
-            {
-              "value": "slider",
-              "label": "Slider"
-            },
-            {
-              "value": "strip",
-              "label": "Filmstrip"
-            },
-            {
-              "value": "random",
-              "label": "Random"
-            }
-          ]
-        }
-      ]
     }
   ]
 }
