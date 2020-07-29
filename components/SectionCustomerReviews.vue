@@ -1,17 +1,24 @@
 <template>
   <section class="relative mx-6 my-14 lg:mx-8 lg:my-16">
     <!-- Arrows -->
-    <div class="absolute inset-x-0 bottom-0 md:inset-0 flex items-center justify-between">
-      <button href="#" title="Previous review" class="rounded-full" @click.prevent="prevReview">
-        <svg class="w-12 h-12 rotate-180">
-          <use xlink:href="#arrow-angle" />
-        </svg>
+    <div
+      v-if="reviews.length > 1"
+      class="absolute inset-x-0 bottom-0 md:inset-0 flex items-center justify-between"
+    >
+      <button
+        title="Previous review"
+        class="p-2 rounded-full bg-primary-lighter"
+        @click.prevent="prevReview"
+      >
+        <BaseIcon icon="uil:angle-left" size="lg" />
       </button>
 
-      <button title="Next review" class="rounded-full" @click.prevent="nextReview">
-        <svg class="w-12 h-12">
-          <use xlink:href="#arrow-angle" />
-        </svg>
+      <button
+        title="Next review"
+        class="p-2 rounded-full bg-primary-lighter"
+        @click.prevent="nextReview"
+      >
+        <BaseIcon icon="uil:angle-right" size="lg" />
       </button>
     </div>
 
@@ -56,9 +63,17 @@ export default {
   name: 'SectionCustomerReviews',
 
   props: {
+    type: {
+      type: String,
+      default: null
+    },
+    id: {
+      type: String,
+      default: null
+    },
     heading: {
       type: String,
-      default: 'Place heading here.'
+      default: 'What our customers say'
     },
     reviews: {
       type: Array,
@@ -75,8 +90,7 @@ export default {
 
   computed: {
     currentReview() {
-      const { reviews } = this
-      return reviews && reviews[this.currentReviewIndex]
+      return this.reviews[this.currentReviewIndex]
     }
   },
 
