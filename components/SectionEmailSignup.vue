@@ -1,5 +1,21 @@
 <template>
-  <section :class="[outerSpacingXClass, outerSpacingYClass]" class="relative overflow-hidden">
+  <section
+    :class="[
+      {
+        'mx-0': outerSpacingX === 'none',
+        'mx-2 lg:mx-4': outerSpacingX === 'sm',
+        'mx-6 lg:mx-8': outerSpacingX === 'md',
+        'mx-8 lg:mx-12 xl:mx-16': outerSpacingX === 'lg'
+      },
+      {
+        'my-0': outerSpacingY === 'none',
+        'my-2 lg:my-4': outerSpacingY === 'sm',
+        'my-6 lg:my-8': outerSpacingY === 'md',
+        'my-8 lg:my-12 xl:my-16': outerSpacingY === 'lg'
+      }
+    ]"
+    class="relative overflow-hidden"
+  >
     <VisualMedia
       v-if="image"
       :source="image.url"
@@ -10,7 +26,15 @@
       :style="{ opacity: darkenBg / 100 }"
       class="absolute inset w-full h-full bg-primary-darkest"
     ></div>
-    <div :class="innerSpacingClass" class="relative container">
+    <div
+      :class="{
+        'py-6 sm:py-8': innerSpacing === 'none',
+        'py-12 md:py-14 lg:py-16': innerSpacing === 'sm',
+        'py-24 lg:py-28 xl:py-32': innerSpacing === 'md',
+        'py-32 lg:py-36 xl:py-40': innerSpacing === 'lg'
+      }"
+      class="relative container"
+    >
       <div class="max-w-96 py-10 px-8 md:mx-4 md:px-12 md:py-14 bg-primary-lighter rounded">
         <h2 v-balance-text class="mb-3 text-3xl md:text-4xl lg:text-6xl">
           {{ heading }}
@@ -23,38 +47,25 @@
 </template>
 
 <script>
-const innerSpacing = {
-  none: 'py-6 sm:py-8',
-  sm: 'py-12 md:py-14 lg:py-16',
-  md: 'py-24 lg:py-28 xl:py-32',
-  lg: 'py-32 lg:py-36 xl:py-40'
-}
-
-const outerSpacingX = {
-  none: 'mx-0',
-  sm: 'mx-2 lg:mx-4',
-  md: 'mx-6 lg:mx-8',
-  lg: 'mx-8 lg:mx-12 xl:mx-16'
-}
-
-const outerSpacingY = {
-  none: 'my-0',
-  sm: 'my-2 lg:my-4',
-  md: 'my-6 lg:my-8',
-  lg: 'my-8 lg:my-12 xl:my-16'
-}
-
 export default {
   name: 'SectionEmailSignup',
 
   props: {
+    type: {
+      type: String,
+      default: null
+    },
+    id: {
+      type: String,
+      default: null
+    },
     heading: {
       type: String,
-      default: ''
+      default: null
     },
     description: {
       type: String,
-      default: ''
+      default: null
     },
     image: {
       type: [Object, String],
@@ -79,18 +90,6 @@ export default {
     useParallax: {
       type: Boolean,
       default: false
-    }
-  },
-
-  computed: {
-    innerSpacingClass() {
-      return innerSpacing[this.innerSpacing]
-    },
-    outerSpacingXClass() {
-      return outerSpacingX[this.outerSpacingX]
-    },
-    outerSpacingYClass() {
-      return outerSpacingY[this.outerSpacingY]
     }
   }
 }
