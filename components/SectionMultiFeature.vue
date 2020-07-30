@@ -1,10 +1,16 @@
 <template>
-  <section class="text-center px-6 py-16 lg:px-8 xl:px-20">
+  <!-- Error/empty state -->
+  <div v-if="!features.length" class="py-24 text-center">
+    <h3>Multiple features</h3>
+    <p>No items added</p>
+  </div>
+
+  <section v-else class="text-center px-6 py-16 lg:px-8 xl:px-20">
     <h3 class="mx-auto mt-6">{{ heading }}</h3>
     <div class="flex flex-wrap justify-center mt-6">
       <div
         v-for="(feature, index) in features"
-        :key="`feature-${index}`"
+        :key="id + 'multiFeature' + index"
         :class="{ 'w-48': columnWidth === 'sm' }"
         class="mx-3 my-6 lg:mx-5"
       >
@@ -37,5 +43,3 @@ export default {
   }
 }
 </script>
-
-<style lang="postcss" scoped></style>
