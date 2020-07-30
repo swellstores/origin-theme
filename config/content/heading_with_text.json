@@ -1,0 +1,52 @@
+{
+  "name": "Heading with text",
+  "description": "Large heading with single or multi-column text",
+  "fields": [
+    {
+      "label": "Content",
+      "type": "field_group",
+      "fields": [
+        {
+          "id": "heading",
+          "label": "Heading",
+          "type": "text",
+          "placeholder": "Some heading text",
+          "required": true
+        },
+        {
+          "id": "text",
+          "label": "Text",
+          "type": "long_text",
+          "placeholder": "Some longer text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "label": "Styling",
+      "type": "field_group",
+      "fields": [
+        {
+          "id": "heading_position",
+          "label": "Heading position",
+          "type": "select",
+          "default": "top",
+          "options": [
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -15,26 +15,7 @@
         "multi_feature",
         "multi_panel",
         "press_mentions",
-        {
-          "id": "heading_with_text",
-          "label": "Heading with text",
-          "fields": [
-            {
-              "id": "heading",
-              "label": "Heading",
-              "type": "text",
-              "placeholder": "Some heading text",
-              "required": true
-            },
-            {
-              "id": "text",
-              "label": "Text",
-              "type": "long_text",
-              "placeholder": "Some longer text",
-              "required": true
-            }
-          ]
-        }
+        "heading_with_text"
       ]
     }
   ]
