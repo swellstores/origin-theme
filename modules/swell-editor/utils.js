@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import VueQuery from 'vuequery'
+import mitt from 'mitt'
 
 const systemFontStack = {
   sans:
@@ -16,32 +16,148 @@ const typographySettings = {
   baseSizeVarName: '--' + _.kebabCase('typography.scale_base_size') // TODO implement base factor
 }
 
-// Returns true if the component's parent tree contains <Nuxt>
-// (meaning it's part of the page, and not a global component)
-export function isPageChild(vm) {
-  try {
-    return VueQuery(vm).parents('Nuxt').length || false
-  } catch {
-    return false
+export const editor = {
+  context: null,
+
+  // Event bus for interacting with admin editor
+  events: mitt(),
+
+  // If we're currently connected to the admin editor
+  isConnected: false,
+
+  // If we're currently processing a message
+  isReceiving: false,
+
+  // Buffer to make sure messages are received in strict order
+  messages: [],
+
+  // Index of fetch handler currently being processed
+  fetchCounter: 0,
+
+  // Send a message to the parent window of the iframe, if available
+  sendMessage(msg) {
+    const targetOrigin = '*'
+
+    try {
+      if (window && window.parent) {
+        window.parent.postMessage(msg, targetOrigin)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  },
+
+  async handleIncomingMessage(event, context) {
+    const { type, details } = event.data
+    const { app, $swell } = context
+
+    if (this.isReceiving) {
+      this.messages.push(event)
+      return
+    }
+
+    this.isReceiving = true
+
+    switch (type) {
+      case 'content.selected':
+        // Show content being edited
+        selectContent(details.path)
+        break
+
+      case 'content.updated':
+        // Show content being edited
+        selectContent(details.path)
+
+        // Set cache and trigger refetch if component has dynamic data
+        $swell.cache.setOnce(details)
+        this.events.emit('refetch', details)
+        break
+
+      case 'settings.updated':
+        // Patch settings data cache
+        $swell.settings.set(details.path, details.value)
+
+        if (isCssVariableGroup(details.path)) {
+          // Regenerate variables if setting is a CSS variable group
+          generateCssVariables($swell.settings.get())
+        } else {
+          // Trigger refetch if component has dynamic data
+          this.events.emit('refetch', details)
+        }
+        break
+
+      case 'browser':
+        // Emulate browser actions
+        switch (details.action) {
+          case 'back':
+            app.router.back()
+            break
+          case 'forward':
+            app.router.forward()
+            break
+          case 'navigate':
+            app.router.push(details.value)
+            break
+        }
+        break
+
+      case 'editor.connected':
+        if (!this.isConnected) {
+          this.context = context
+          this.isConnected = true
+          // Set CSS variables on document root during initial editor connection
+          const settings = $swell.settings.get()
+          generateCssVariables(settings)
+        }
+        break
+    }
+
+    if (this.fetchCounter === 0) {
+      this.isReceiving = false
+      this.handleNextMessage()
+    }
+  },
+
+  handleNextMessage() {
+    if (this.messages.length > 0) {
+      const event = this.messages.shift()
+      this.handleIncomingMessage(event, this.context)
+    }
   }
 }
 
-// Returns true if component has a fetch method defined on it
-export function hasFetch(vm) {
-  return vm.$options && typeof vm.$options.fetch === 'function' && !vm.$options.fetch.length
+export function enableFetchListener(vm) {
+  if (!vm._fetchSwellData && editor.isConnected && hasFetch(vm)) {
+    // Set fetch delay to zero to avoid flash while fetch is pending
+    vm._fetchDelay = 0
+
+    // Add fetch controller
+    vm._fetchSwellData = async () => {
+      try {
+        editor.fetchCounter++
+        await vm.$fetch()
+      } catch (err) {
+        // Noop
+      }
+      editor.fetchCounter--
+      if (editor.fetchCounter === 0) {
+        editor.isReceiving = false
+        editor.handleNextMessage()
+      }
+    }
+
+    // Start listening for editor updates
+    editor.events.on('refetch', vm._fetchSwellData)
+  }
 }
 
-// Scroll to a section/element on the page
-export function selectContent(path) {
-  const elements = Array.from(document.querySelectorAll('[data-sw-path]'))
-  const element = elements.find(el => el.dataset.swPath === path)
-
-  if (!element) return
-
-  element.scrollIntoView({
-    behavior: 'smooth',
-    block: 'center'
-  })
+export function disableFetchListener(vm) {
+  if (vm._fetchSwellData) {
+    // Stop listening for editor updates
+    editor.events.off('refetch', vm._fetchSwellData)
+    // Remove fetch controller
+    delete vm._fetchSwellData
+  }
 }
 
 // Returns string of CSS variables to inject as a stylesheet
@@ -69,14 +185,6 @@ export function generateCssVariables(storeSettings) {
   }
 }
 
-// Returns true if settings group key from the provided path
-// is configured used for CSS variable generation
-export function isCssVariableGroup(path) {
-  const groupKey = path.split('.')[0]
-  const variableGroups = getVariableGroups()
-  return variableGroups.includes(groupKey)
-}
-
 // Returns array of stylesheet link objects for using with Nuxt's head function
 export function getFontLinks(families) {
   return families
@@ -92,6 +200,32 @@ export function getFontLinks(families) {
       }
     })
     .filter(family => family || false)
+}
+
+// Returns true if component has a fetch method defined on it
+function hasFetch(vm) {
+  return vm.$options && typeof vm.$options.fetch === 'function' && !vm.$options.fetch.length
+}
+
+// Scroll to a section/element on the page
+function selectContent(path) {
+  const elements = Array.from(document.querySelectorAll('[data-sw-path]'))
+  const element = elements.find(el => el.dataset.swPath === path)
+
+  if (!element) return
+
+  element.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center'
+  })
+}
+
+// Returns true if settings group key from the provided path
+// is configured used for CSS variable generation
+function isCssVariableGroup(path) {
+  const groupKey = path.split('.')[0]
+  const variableGroups = getVariableGroups()
+  return variableGroups.includes(groupKey)
 }
 
 // Returns array of settings object keys configured for CSS variable generation
