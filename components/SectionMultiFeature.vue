@@ -28,9 +28,13 @@ export default {
   name: 'SectionMultiFeature',
 
   props: {
+    type: {
+      type: String,
+      default: null
+    },
     id: {
       type: String,
-      default: ''
+      default: null
     },
     heading: {
       type: String,

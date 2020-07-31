@@ -13,6 +13,9 @@
 </template>
 
 <script>
+// Helpers
+import get from 'lodash/get'
+
 export default {
   name: 'StandardPage',
 
@@ -37,11 +40,8 @@ export default {
     }
 
     // Set component data
-    const sections = (page.sections || []).filter(section => section && section.type)
-
-    if (sections && sections.length > 0) {
-      this.sections = sections
-    }
+    this.sections = get(page, 'sections', []).filter(section => section && section.type)
+    console.log(this.sections)
   },
 
   data() {

@@ -1,7 +1,3 @@
-.delay-200 {
-  transition-delay: 200ms;
-}
-
 .center-y {
   @apply top-1/2 transform -translate-y-1/2;
 }
