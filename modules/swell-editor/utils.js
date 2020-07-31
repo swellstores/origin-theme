@@ -34,7 +34,7 @@ export const editor = {
   // Index of fetch handler currently being processed
   fetchCounter: 0,
 
-  // Send a message to the parent window of the iframe, if available
+  // Send a message to the parent window of the iframe
   sendMessage(msg) {
     const targetOrigin = '*'
 
@@ -47,7 +47,8 @@ export const editor = {
     }
   },
 
-  async handleIncomingMessage(event, context) {
+  // Handle incoming message from the parent window of the iframe
+  async processMessage(event, context) {
     const { type, details } = event.data
     const { app, $swell } = context
 
@@ -114,49 +115,55 @@ export const editor = {
 
     if (this.fetchCounter === 0) {
       this.isReceiving = false
-      this.handleNextMessage()
+      this.processNextMessage()
     }
   },
 
-  handleNextMessage() {
+  processNextMessage() {
     if (this.messages.length > 0) {
       const event = this.messages.shift()
-      this.handleIncomingMessage(event, this.context)
+      this.processMessage(event, this.context)
     }
-  }
-}
+  },
 
-export function enableFetchListener(vm) {
-  if (!vm._fetchSwellData && editor.isConnected && hasFetch(vm)) {
-    // Set fetch delay to zero to avoid flash while fetch is pending
-    vm._fetchDelay = 0
+  // Attach refetch listener to a component
+  enableFetchListener(vm) {
+    // If component has a fetch method defined on it
+    const hasFetch =
+      vm.$options && typeof vm.$options.fetch === 'function' && !vm.$options.fetch.length
 
-    // Add fetch controller
-    vm._fetchSwellData = async () => {
-      try {
-        editor.fetchCounter++
-        await vm.$fetch()
-      } catch (err) {
-        // Noop
+    if (!vm._swellEditorFetchHandler && this.isConnected && hasFetch) {
+      // Set fetch delay to zero to avoid flash while fetch is pending
+      vm._fetchDelay = 0
+
+      // Add fetch controller
+      vm._swellEditorFetchHandler = async () => {
+        try {
+          this.fetchCounter++
+          await vm.$fetch()
+        } catch (err) {
+          // Noop
+        }
+        this.fetchCounter--
+        if (this.fetchCounter === 0) {
+          this.isReceiving = false
+          this.processNextMessage()
+        }
       }
-      editor.fetchCounter--
-      if (editor.fetchCounter === 0) {
-        editor.isReceiving = false
-        editor.handleNextMessage()
-      }
+
+      // Start listening for editor updates
+      this.events.on('refetch', vm._swellEditorFetchHandler)
     }
+  },
 
-    // Start listening for editor updates
-    editor.events.on('refetch', vm._fetchSwellData)
-  }
-}
-
-export function disableFetchListener(vm) {
-  if (vm._fetchSwellData) {
-    // Stop listening for editor updates
-    editor.events.off('refetch', vm._fetchSwellData)
-    // Remove fetch controller
-    delete vm._fetchSwellData
+  // Remove refetch listener from a component
+  disableFetchListener(vm) {
+    if (vm._swellEditorFetchHandler) {
+      // Stop listening for editor updates
+      this.events.off('refetch', vm._swellEditorFetchHandler)
+      // Remove fetch controller
+      delete vm._swellEditorFetchHandler
+    }
   }
 }
 
@@ -200,11 +207,6 @@ export function getFontLinks(families) {
       }
     })
     .filter(family => family || false)
-}
-
-// Returns true if component has a fetch method defined on it
-function hasFetch(vm) {
-  return vm.$options && typeof vm.$options.fetch === 'function' && !vm.$options.fetch.length
 }
 
 // Scroll to a section/element on the page

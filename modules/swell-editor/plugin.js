@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import middleware from './middleware'
-import { editor, enableFetchListener, disableFetchListener } from './swell-editor-utils'
+import { editor } from './swell-editor-utils'
 
 export default async (context, inject) => {
   const useEditorSettings = '<%= options.useEditorSettings %>' === 'true'
@@ -10,10 +10,10 @@ export default async (context, inject) => {
     Vue.use(SyncPlugin)
 
     // Flag editor connected immediately
-    editor.handleIncomingMessage({ data: { type: 'editor.connected' } }, context)
+    editor.processMessage({ data: { type: 'editor.connected' } }, context)
 
     // Listen for messages and pass to event bus
-    window.addEventListener('message', event => editor.handleIncomingMessage(event, context), false)
+    window.addEventListener('message', event => editor.processMessage(event, context), false)
 
     // Tell the editor we exist
     editor.sendMessage({
@@ -57,19 +57,19 @@ const SyncPlugin = {
   install: Vue => {
     Vue.mixin({
       mounted() {
-        enableFetchListener(this)
+        editor.enableFetchListener(this)
       },
 
       activated() {
-        enableFetchListener(this)
+        editor.enableFetchListener(this)
       },
 
       destroyed() {
-        disableFetchListener(this)
+        editor.disableFetchListener(this)
       },
 
       deactivated() {
-        disableFetchListener(this)
+        editor.disableFetchListener(this)
       }
     })
   }
