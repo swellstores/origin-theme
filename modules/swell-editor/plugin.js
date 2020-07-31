@@ -104,7 +104,7 @@ const editor = {
 
       case 'settings.updated':
         // Patch settings data cache
-        $swell.settings.set(details.path, details.value)
+        $swell.settings.set(details)
 
         if (isCssVariableGroup(details.path)) {
           // Regenerate variables if setting is a CSS variable group

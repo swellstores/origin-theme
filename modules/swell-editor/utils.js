@@ -71,7 +71,7 @@ export function generateCssVariables(storeSettings) {
 
 // Returns true if settings group key from the provided path
 // is configured used for CSS variable generation
-export function isCssVariableGroup(path) {
+export function isCssVariableGroup(path = '') {
   const groupKey = path.split('.')[0]
   const variableGroups = getVariableGroups()
   return variableGroups.includes(groupKey)
