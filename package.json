@@ -23,8 +23,7 @@
     "vue-glide-js": "1.3.14",
     "vue-select": "^3.1.0",
     "vue-slider-component": "3.0.44",
-    "vuelidate": "0.7.5",
-    "vuequery": "2.1.1"
+    "vuelidate": "0.7.5"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "3.0.0",
