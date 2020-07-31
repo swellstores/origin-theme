@@ -38,7 +38,7 @@
                 <li
                   v-for="item in menu.items"
                   :key="item.name"
-                  class="has-mega-nav inline-block flex-shrink-0 mb-0"
+                  class="has-mega-nav inline-block h-full flex-shrink-0 mb-0"
                 >
                   <NuxtLink
                     :to="resolveUrl(item)"
@@ -47,7 +47,7 @@
                     @click.native="megaNavIsEnabled = false"
                     @mouseleave.native="resetMegaNav"
                   >
-                    <span class="relative inline-block top-1/2 transform">
+                    <span class="relative inline-block top-1/2 transform -translate-y-1/2">
                       {{ item.name }}
                     </span>
                   </NuxtLink>
@@ -61,7 +61,6 @@
                 </li>
               </ul>
             </nav>
-
             <!-- END Main nav -->
 
             <div class="flex flex-row pr-6 items-center lg:order-2 -mr-2">
