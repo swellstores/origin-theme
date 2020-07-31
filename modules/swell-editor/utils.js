@@ -69,7 +69,7 @@ export const editor = {
         selectContent(details.path)
 
         // Set cache and trigger refetch if component has dynamic data
-        $swell.cache.setOnce(details)
+        $swell.cache.set(details)
         this.events.emit('refetch', details)
         break
 

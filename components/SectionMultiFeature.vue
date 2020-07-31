@@ -28,6 +28,10 @@ export default {
   name: 'SectionMultiFeature',
 
   props: {
+    id: {
+      type: String,
+      default: ''
+    },
     heading: {
       type: String,
       default: ''
