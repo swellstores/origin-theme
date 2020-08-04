@@ -9,17 +9,9 @@
           class="flex-initial px-4 mb-6 w-1/4 min-w-48"
         >
           <li v-for="(item, i) in column.items" :key="'megaNavItem' + i" class="mb-0 font-semibold">
-            <!-- Heading -->
-            <h5
-              v-if="item.type === 'heading'"
-              :class="{ 'mt-4': i > 0 }"
-              class="label-sm-faded mb-2"
-            >
-              {{ item.name }}
-            </h5>
             <!-- Product preview -->
             <NuxtLink
-              v-else-if="item.type === 'product' && typeof item.value === 'object'"
+              v-if="item.type === 'product' && typeof item.value === 'object'"
               :to="parent.resolveUrl(item)"
               class="block mt-1"
               @click.native="listeners.click"
@@ -37,6 +29,18 @@
                 </p>
               </div>
             </NuxtLink>
+            <!-- Heading -->
+            <h5
+              v-else-if="item.type === 'heading'"
+              :class="{ 'mt-4': i > 0 }"
+              class="label-sm-faded mb-2"
+            >
+              {{ item.name }}
+            </h5>
+            <!-- Callout -->
+            <h5 v-else-if="item.type === 'callout'" :class="{ 'mt-4': i > 0 }" class="btn">
+              {{ item.name }}
+            </h5>
             <!-- Standard link -->
             <NuxtLink
               v-else
