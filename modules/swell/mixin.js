@@ -26,7 +26,7 @@ Vue.use({
 })
 
 function settings(self, id, def = undefined) {
-  return get(self, `$store.$swell.settings.state.${id}`, def);
+  return get(self, `$store.$swell.settings.state.${id}`, def)
 }
 
 function formatMoney(valueAmount, valueCurrency) {
@@ -92,7 +92,10 @@ function resolveUrl(item) {
 }
 
 function getContentPath({ type, value }) {
-  // Get slug from linked object, fall back to value itself
+  // Return URL value as-is
+  if (type === 'url') return value
+
+  // Get slug from linked object slug or id, fall back to value itself
   const slug = get(value, 'slug', get(value, 'id', value)) || ''
 
   // Build path based on content type of item
