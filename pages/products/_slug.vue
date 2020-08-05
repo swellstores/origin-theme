@@ -168,11 +168,13 @@ export default {
     }
 
     // Compute initial values for options
-    const currentOptionValues = (product.options || []).reduce((options, { name, values }) => {
-      // Set first available value for current option
-      options[name] = get(values, '0.name')
-      return options
-    }, {})
+    const currentOptionValues =
+      this.currentOptionValues ||
+      (product.options || []).reduce((options, { name, values }) => {
+        // Set first available value for current option
+        options[name] = get(values, '0.name')
+        return options
+      }, {})
 
     // TODO generate related products
     const relatedProducts = []
@@ -188,7 +190,7 @@ export default {
     return {
       product: {},
       relatedProducts: [], // TODO
-      currentOptionValues: {},
+      currentOptionValues: null,
       productBenefits: [],
       attributes: [
         // TODO hook up to product.attributes

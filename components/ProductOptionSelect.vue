@@ -139,6 +139,7 @@ export default {
         return 'menu'
       }
     },
+
     swatchColor() {
       const currentValue = this.option.values.find(value => value.name === this.currentValue)
       return currentValue.color
@@ -149,7 +150,9 @@ export default {
     toggleDropdown() {
       this.dropdownIsActive = !this.dropdownIsActive
     },
+
     selectValue(value) {
+      this.$emit('value-changed', { option: this.option.name, value: value.name })
       this.dropdownIsActive = false
     }
   }

@@ -46,10 +46,12 @@
           <span class="-mb-px">Remove</span>
         </button>
 
+        <!-- TBD list support
         <button type="button" class="flex items-center pr-1">
           <BaseIcon icon="uil:star" class="mr-1" />
           <span class="-mb-px">Move to saved</span>
         </button>
+        -->
 
         <!-- Quantity adjustment -->
         <div class="flex ml-auto">
