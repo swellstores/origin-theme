@@ -128,15 +128,18 @@
             <!-- Details & attributes -->
             <div v-for="attribute in attributes" :key="attribute.id">
               <AccordionItem
-                v-if="attribute.type === 'long_text'"
+                v-if="typeof attribute.value === 'string' && attribute.value.length > 50"
                 :heading="attribute.name"
                 class="mt-6"
               >
                 <div class="pb-3" v-html="attribute.value" />
               </AccordionItem>
               <div v-else class="py-3 flex flex-no-wrap border-b">
-                <strong class="w-1/3 text-primary-darkest pr-6">{{ attribute.name }}</strong>
-                <span class="w-2/3">{{ attribute.value }}</span>
+                <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
+                <span v-if="attribute.value instanceof Array" class="w-3/4">
+                  {{ attribute.value.join(', ') }}
+                </span>
+                <span v-else class="w-3/4">{{ attribute.value }}</span>
               </div>
             </div>
           </div>
@@ -150,6 +153,7 @@
 // Helpers
 import { mapState } from 'vuex'
 import get from 'lodash/get'
+import reduce from 'lodash/reduce'
 import pageMeta from '~/mixins/pageMeta'
 
 export default {
@@ -181,9 +185,12 @@ export default {
 
     // Set component data
     this.product = product
-    this.productBenefits = get(product, 'content.productBenefits', [])
     this.currentOptionValues = currentOptionValues
     this.relatedProducts = relatedProducts
+    this.productBenefits = get(product, 'content.productBenefits', [])
+    this.attributes = reduce(product.attributes, (acc, attr) => [...acc, attr], []).filter(
+      attr => attr.visible
+    )
   },
 
   data() {
@@ -192,40 +199,7 @@ export default {
       relatedProducts: [], // TODO
       currentOptionValues: null,
       productBenefits: [],
-      attributes: [
-        // TODO hook up to product.attributes
-        {
-          id: 'origin',
-          type: 'short_text',
-          name: 'Origin',
-          value: 'Huila, Colombia'
-        },
-        {
-          id: 'altitude',
-          type: 'short_text',
-          name: 'Altitude (ft)',
-          value: 3440
-        },
-        {
-          id: 'producer',
-          type: 'short_text',
-          name: 'Producer',
-          value: 'Ricardo Alpina'
-        },
-        {
-          id: 'notes',
-          type: 'short_text',
-          name: 'Notes',
-          value: 'Plum, Red Wine, Honeydew'
-        },
-        {
-          id: 'brewing_guide',
-          type: 'long_text',
-          name: 'Brewing guide',
-          value:
-            '<ol><li>Heat fresh water to 205°F (96°C)</li><li>Grind coffee</li><li>Pour water over coffee</li><li>Enjoy.</li></ol>'
-        }
-      ]
+      attributes: []
     }
   },
 
