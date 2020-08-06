@@ -18,7 +18,7 @@
   >
     <VisualMedia
       v-if="image"
-      :source="image.url"
+      :source="image"
       :is-background="true"
       :use-parallax="{ enabled: useParallax, speed: -14, minW: 768 }"
     />
