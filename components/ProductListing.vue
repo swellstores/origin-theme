@@ -1,6 +1,6 @@
 <template>
   <section class="mt-6 -mx-1 flex flex-wrap sm:-mx-2 xl:-mx-3">
-    <div v-if="!parentFetchState.pending && products.length === 0" class="px-1 sm:px-2 xl:px-3">
+    <div v-if="!fetchPending && products.length === 0" class="px-1 sm:px-2 xl:px-3">
       No products found.
     </div>
 
@@ -20,6 +20,9 @@
 </template>
 
 <script>
+// Helpers
+import get from 'lodash/get'
+
 export default {
   name: 'ProductListing',
 
@@ -35,7 +38,7 @@ export default {
   },
 
   async fetch() {
-    this.aspectRatio = await this.$swell.settings.get('productPreviews.aspectRatio', '1:1')
+    this.aspectRatio = this.$swell.settings.get('productPreviews.aspectRatio', '1:1')
   },
 
   data() {
@@ -45,8 +48,8 @@ export default {
   },
 
   computed: {
-    parentFetchState() {
-      return this.$parent.$fetchState ? this.$parent.$fetchState : {}
+    fetchPending() {
+      return !this.$parent.loaded && get(this.$parent.$fetchState, 'pending', false)
     }
   }
 }
