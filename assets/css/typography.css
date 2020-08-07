@@ -4,7 +4,7 @@
 
 body,
 html {
-  @apply text-primary-darker font-body font-medium leading-normal antialiased;
+  @apply text-primary-darker font-body text-base font-medium leading-normal antialiased;
 }
 
 button,

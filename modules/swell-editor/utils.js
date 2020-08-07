@@ -8,12 +8,12 @@ const systemFontStack = {
     'Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol',
   mono: 'Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace'
 }
-const typographySettings = {
-  headingFamilyVarName: '--' + _.kebabCase('typography.heading_family'),
-  bodyFamilyVarName: '--' + _.kebabCase('typography.body_family'),
-  labelFamilyVarName: '--' + _.kebabCase('typography.label_family'),
-  ratioVarName: '--' + _.kebabCase('typography.scale_ratio'),
-  baseSizeVarName: '--' + _.kebabCase('typography.scale_base_size') // TODO implement base factor
+const typographyVarPaths = {
+  headingFamily: 'typography.headingFamily',
+  bodyFamily: 'typography.bodyFamily',
+  labelFamily: 'typography.labelFamily',
+  ratio: 'typography.scaleRatio',
+  baseSize: 'typography.scaleBaseSize'
 }
 
 export const editor = {
@@ -242,6 +242,7 @@ function getVariableGroups() {
 
 // Generate array of CSS variables with values
 function generateVariableList(settings, keyNames) {
+  const typeScaleBase = parseInt(_.get(settings, typographyVarPaths.baseSize, 16))
   const variables = []
 
   keyNames.map(group => {
@@ -251,11 +252,12 @@ function generateVariableList(settings, keyNames) {
     // Turn each property into a CSS variable name with value
     for (const [key, value] of Object.entries(palette)) {
       const varName = `--${group}-${_.kebabCase(key)}`
-      const isRatioSetting = varName === typographySettings.ratioVarName
+      const convertPathToVarName = path => '--' + _.kebabCase(path)
+      const isRatioSetting = varName === convertPathToVarName(typographyVarPaths.ratio)
       const isFontFamilySetting = [
-        typographySettings.headingFamilyVarName,
-        typographySettings.bodyFamilyVarName,
-        typographySettings.labelFamilyVarName
+        convertPathToVarName(typographyVarPaths.headingFamily),
+        convertPathToVarName(typographyVarPaths.bodyFamily),
+        convertPathToVarName(typographyVarPaths.labelFamily)
       ].includes(varName)
 
       if (isRatioSetting) {
@@ -263,7 +265,7 @@ function generateVariableList(settings, keyNames) {
         const ratio = parseFloat(value) || 1.125
         const steps = _.range(-6, 17) // Generate a reasonable range for the scale
         steps.map(step => {
-          const typeSizeValue = _.round(ratio ** step, 3) + 'rem'
+          const typeSizeValue = _.round(ratio ** step * (typeScaleBase / 16), 3) + 'rem'
           variables.push(`--type-scale-${step}: ${typeSizeValue};`)
         })
       } else if (isFontFamilySetting) {
