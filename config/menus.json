@@ -119,26 +119,31 @@
     "id": "footer",
     "items": [
       {
-        "type": "category",
-        "name": "Shop"
-      },
-      {
-        "type": "content",
-        "model": "pages",
-        "name": "The Academy",
-        "value": "the-academy"
-      },
-      {
-        "type": "content",
-        "model": "pages",
-        "name": "About",
-        "value": "about"
-      },
-      {
-        "type": "content",
-        "model": "pages",
-        "name": "Help",
-        "value": "help"
+        "type": "column",
+        "items": [
+          {
+            "type": "category",
+            "name": "Shop"
+          },
+          {
+            "type": "content",
+            "model": "pages",
+            "name": "The Academy",
+            "value": "the-academy"
+          },
+          {
+            "type": "content",
+            "model": "pages",
+            "name": "About",
+            "value": "about"
+          },
+          {
+            "type": "content",
+            "model": "pages",
+            "name": "Help",
+            "value": "help"
+          }
+        ]
       }
     ]
   },
