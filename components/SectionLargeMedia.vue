@@ -28,7 +28,7 @@ export default {
       default: ''
     },
     image: {
-      type: Object,
+      type: [Object, String],
       default: () => ({})
     },
     bgColor: {
