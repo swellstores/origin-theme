@@ -2,6 +2,9 @@
   <section :class="[`bg-${bgColor}`]" class="text-center py-16 lg:py-24 xl:py-28">
     <div class="container">
       <h2 v-balance-text class="mx-auto px-4 max-w-160">{{ heading }}</h2>
+      <p v-balance-text>
+        {{ description }}
+      </p>
       <div class="relative xl:mx-12">
         <VisualMedia
           v-if="image"
