@@ -134,7 +134,7 @@ export default {
       mobileNavIsVisible: false,
       headerIsHidden: false,
       lastScrollPos: 0,
-      scrolled: false,
+      isScrolled: false,
       scrollRAF: null
     }
   },
@@ -151,12 +151,10 @@ export default {
   },
 
   mounted() {
-    this.mounted = true
     this.setScrollListener(true)
   },
 
   beforeDestroy() {
-    this.mounted = false
     this.setScrollListener(false)
     cancelAnimationFrame(this.scrollRAF)
   },
@@ -180,8 +178,8 @@ export default {
     },
 
     setHeaderVisibility() {
-      this.scrolled = false
-      // Check how far page is scrolled
+      this.isScrolled = false
+      // Check how far page has scrolled
       const currentScrollPosition = window.pageYOffset || document.documentElement.scrollTop
       if (currentScrollPosition < 0) return
 
@@ -194,15 +192,15 @@ export default {
     },
 
     handleScroll() {
-      if (!this.scrolled) {
-        this.scrolled = true
+      if (!this.isScrolled) {
+        this.isScrolled = true
         this.scrollRAF = requestAnimationFrame(this.setHeaderVisibility)
       }
     },
 
     setScrollListener(value) {
       // Ignore if hide on scroll is disabled in settings
-      if (!this.mounted) return
+      if (!this.header.hideOnScroll) return
 
       if (value) {
         window.addEventListener('scroll', this.handleScroll)
