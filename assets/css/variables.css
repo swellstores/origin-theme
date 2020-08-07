@@ -12,11 +12,11 @@ These variables were set by the swell-editor module during server build.
 --colors-primary-lighter: #FAF8F5;
 --colors-primary-lightest: #FFFEFC;
 --colors-accent: #E63360;
---colors-ok: #3d995e;
---colors-ok-faded: #c5e7d1;
---colors-warn: #ffca38;
---colors-error: #e61c1c;
---colors-error-faded: #ffd6d6;
+--colors-status-ok: #3d995e;
+--colors-status-ok-faded: #c5e7d1;
+--colors-status-warn: #ffca38;
+--colors-status-error: #e61c1c;
+--colors-status-error-faded: #ffd6d6;
 --typography-heading-family: Source Sans Pro, -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif;
 --typography-body-family: Source Sans Pro, -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif;
 --typography-label-family: Source Sans Pro, -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif;
