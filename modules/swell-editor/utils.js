@@ -244,7 +244,7 @@ function getVariableGroups() {
 function generateVariableList(settings, keyNames) {
   const variables = []
 
-  keyNames.map((group, index) => {
+  keyNames.map(group => {
     // Convert nested properties into flattened kebab case object
     const palette = flattenColorPalette(settings[group])
 
@@ -275,6 +275,8 @@ function generateVariableList(settings, keyNames) {
           fontStack = `${family.replace(/[+]/g, ' ')}, ${fontStack}`
         } else if (family) {
           fontStack = `${family}, ${fontStack}`
+        } else {
+          fontStack = value
         }
         variables.push(`${varName}: ${fontStack};`)
       } else {
