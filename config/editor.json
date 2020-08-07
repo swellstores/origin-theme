@@ -191,7 +191,7 @@
           "default": 225
         },
         {
-          "id": "favicon",
+          "id": "header.favicon",
           "label": "Favicon",
           "type": "image",
           "max_width": 32,
@@ -221,7 +221,8 @@
         {
           "id": "header.show_promo",
           "label": "Show promo bar",
-          "type": "toggle"
+          "type": "toggle",
+          "default": false
         },
         {
           "id": "header.promo_text",
@@ -248,7 +249,8 @@
         {
           "id": "header.hide_on_scroll",
           "label": "Hide header when scrolling down",
-          "type": "checkbox"
+          "type": "checkbox",
+          "default": true
         }
       ]
     },
@@ -352,7 +354,7 @@
           "label": "Facebook page URL",
           "type": "short_text",
           "format": "url",
-          "hint": "https://www.facebook.com/mystore"
+          "placeholder": "https://www.facebook.com/mystore"
         },
         {
           "id": "social_links.pinterest.show",
@@ -364,7 +366,7 @@
           "label": "Pinterest profile URL",
           "type": "short_text",
           "format": "url",
-          "hint": "https://www.pinterest.com/mystore"
+          "placeholder": "https://www.pinterest.com/mystore"
         },
         {
           "id": "social_links.instagram.show",
@@ -376,7 +378,7 @@
           "label": "Instagram profile URL",
           "type": "short_text",
           "format": "url",
-          "hint": "https://instagram.com/mystore"
+          "placeholder": "https://instagram.com/mystore"
         },
         {
           "id": "social_links.youtube.show",
@@ -388,7 +390,7 @@
           "label": "YouTube channel URL",
           "type": "short_text",
           "format": "url",
-          "hint": "https://www.youtube.com/user/mystore"
+          "placeholder": "https://www.youtube.com/c/mystore"
         },
         {
           "id": "social_links.vimeo.show",
@@ -400,7 +402,7 @@
           "label": "Vimeo profile URL",
           "type": "short_text",
           "format": "url",
-          "hint": "https://vimeo.com/mystore"
+          "placeholder": "https://vimeo.com/mystore"
         },
         {
           "label": "Sharing",
