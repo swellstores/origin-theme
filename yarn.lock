@@ -9339,10 +9339,10 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-swell-js@2.11.1:
-  version "2.11.1"
-  resolved "https://registry.yarnpkg.com/swell-js/-/swell-js-2.11.1.tgz#3c0892f6d4286019f003e3836de2dcea0a666ff1"
-  integrity sha512-OQfGXjYI++qvlxz6vthohgJmxWFVw0zlQmmvQ3cU3lfXVp8A4cHy2isr9wfW6UsgU8ur+UYgjfkNdH+N7/eGKw==
+swell-js@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/swell-js/-/swell-js-3.1.0.tgz#188eadbde096c9422509a3f626a0fc285c77c9ea"
+  integrity sha512-dtpxymuzUQOTWeZNOg7ZDbKH1TV4uRlEzA6Vmz+s162rQc1AmsA90x4mLb031qzyVxhPY7vQzyZpfYeoIpTqAg==
   dependencies:
     "@babel/runtime" "7.4.5"
     deepmerge "4.2.2"
