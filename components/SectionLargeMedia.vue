@@ -5,7 +5,7 @@
       <div class="relative xl:mx-12">
         <VisualMedia
           v-if="image"
-          :source="image.url"
+          :source="image"
           aspect-ratio="16:9"
           class="rounded overflow-hidden mt-10 lg:mt-12"
         />
