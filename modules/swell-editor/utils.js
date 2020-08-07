@@ -66,9 +66,6 @@ export const editor = {
         break
 
       case 'content.updated':
-        // Show content being edited
-        selectContent(details.path)
-
         // Set cache and trigger refetch if component has dynamic data
         $swell.cache.set(details)
         this.events.emit('refetch', details)
@@ -211,15 +208,17 @@ export function getFontLinks(families) {
 
 // Scroll to a section/element on the page
 function selectContent(path) {
-  const elements = Array.from(document.querySelectorAll('[data-sw-path]'))
-  const element = elements.find(el => el.dataset.swPath === path)
+  setTimeout(() => {
+    const elements = Array.from(document.querySelectorAll('[data-sw-path]'))
+    const element = elements.find(el => el.dataset.swPath === path)
 
-  if (!element) return
+    if (!element) return
 
-  element.scrollIntoView({
-    behavior: 'smooth',
-    block: 'center'
-  })
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    })
+  }, 500);
 }
 
 // Returns true if settings group key from the provided path
