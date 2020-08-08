@@ -274,7 +274,8 @@
           "condition": "footer.show_secondary",
           "label": "Secondary footer menu",
           "type": "menu",
-          "default": "footer-secondary"
+          "default": "footer-secondary",
+          "condition": "footer.show_secondary_menu"
         },
         {
           "id": "footer.show_social",
@@ -298,7 +299,7 @@
         {
           "id": "footer.show_email_signup",
           "label": "Show email signup field",
-          "type": "checkbox",
+          "type": "toggle",
           "default": true
         },
         {
