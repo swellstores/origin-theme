@@ -2,7 +2,9 @@
   <div class="relative">
     <div :class="{ 'overflow-y-hidden': searchIsActive }">
       <TheHeader @click-cart="cartIsActive = true" @click-search="searchIsActive = true" />
-      <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
+      <div style="min-height: 100vh">
+        <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
+      </div>
       <TheFooter />
     </div>
     <transition name="fade-up">
