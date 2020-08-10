@@ -176,6 +176,7 @@
       ]
     },
     {
+      "id": "header",
       "label": "Header",
       "fields": [
         {
@@ -255,6 +256,7 @@
       ]
     },
     {
+      "id": "footer",
       "label": "Footer",
       "fields": [
         {
@@ -317,6 +319,7 @@
       ]
     },
     {
+      "id": "cart",
       "label": "Cart",
       "fields": [
         {
@@ -327,6 +330,7 @@
       ]
     },
     {
+      "id": "social",
       "label": "Social media & sharing",
       "fields": [
         {
