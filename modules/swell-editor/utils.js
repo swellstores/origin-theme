@@ -22,8 +22,8 @@ export const editor = {
   // Event bus for interacting with admin editor
   events: mitt(),
 
-  // If we're currently connected to the admin editor
-  isConnected: false,
+  // If we're done loading
+  isLoaded: false,
 
   // If we're currently processing a message
   isReceiving: false,
@@ -84,6 +84,16 @@ export const editor = {
         }
         break
 
+      case 'settings.loaded':
+        if (!this.isLoaded) {
+          this.context = context
+          this.isLoaded = true
+          // Set CSS variables on document root during initial editor connection
+          const settings = $swell.settings.get()
+          generateCssVariables(settings)
+        }
+        break
+
       case 'browser':
         // Emulate browser actions
         switch (details.action) {
@@ -96,16 +106,6 @@ export const editor = {
           case 'navigate':
             app.router.push(details.value)
             break
-        }
-        break
-
-      case 'editor.connected':
-        if (!this.isConnected) {
-          this.context = context
-          this.isConnected = true
-          // Set CSS variables on document root during initial editor connection
-          const settings = $swell.settings.get()
-          generateCssVariables(settings)
         }
         break
     }
@@ -129,7 +129,7 @@ export const editor = {
     const hasFetch =
       vm.$options && typeof vm.$options.fetch === 'function' && !vm.$options.fetch.length
 
-    if (!vm._swellEditorFetchHandler && this.isConnected && hasFetch) {
+    if (!vm._swellEditorFetchHandler && this.isLoaded && hasFetch) {
       // Set fetch delay to zero to avoid flash while fetch is pending
       vm._fetchDelay = 0
 
