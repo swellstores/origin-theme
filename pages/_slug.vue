@@ -1,6 +1,6 @@
 <template>
   <div v-if="sections">
-    <div v-for="(section, index) in sections" :key="section.id">
+    <div v-for="(section, index) in sections" :key="JSON.stringify(section)">
       <SectionAsyncLoader
         :section="section"
         :collection-index="index"
