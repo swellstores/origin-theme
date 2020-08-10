@@ -39,8 +39,7 @@
             <div class="loader-el w-40 h-3 mb-4"></div>
             <div class="loader-el w-20 h-4 mb-12"></div>
             <div
-              v-for="index in [1, 2, 3, 4, 5, 6, 7]"
-              :key="index"
+              v-for="index in 7"
               :style="`width: ${100 - Math.random() * 20}%`"
               class="loader-el h-2 mb-4"
             ></div>
@@ -49,7 +48,7 @@
               <div class="loader-el w-48 h-3"></div>
             </div>
             <div class="loader-el h-12 mb-10"></div>
-            <div v-for="index in [8, 9, 10]" :key="index" class="flex items-center mb-2">
+            <div v-for="index in 3" class="flex items-center mb-2">
               <div class="loader-el w-5 h-5 mr-2 rounded-full"></div>
               <div :style="`width: ${80 - Math.random() * 30}%`" class="loader-el h-2"></div>
             </div>
