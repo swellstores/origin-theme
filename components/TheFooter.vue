@@ -1,9 +1,9 @@
 <template>
-  <footer class="bg-primary-darkest text-primary-lightest border-t border-primary-darker">
+  <footer class="bg-primary-darkest text-primary-lightest border-t border-primary-darker" data-sw-path="footer">
     <!-- Main footer -->
     <div class="container py-16 text-center lg:flex lg:flex-row lg:text-left">
       <!-- Store info -->
-      <div class="lg:w-1/4 lg:pr-6">
+      <div v-if="footer.showContactInfo" class="lg:w-1/4 lg:pr-6">
         <p class="text-primary-med mb-5">Contact us</p>
         <p>
           <span class="block">{{ store.supportPhone }}</span>
@@ -11,7 +11,7 @@
         </p>
 
         <!-- Social links-->
-        <ul class="mx-auto pt-5 lg:-ml-2">
+        <ul class="mx-auto pt-5 lg:-ml-2" data-sw-path="social">
           <li v-for="(link, network) in socialLinks" :key="network" class="inline-block mb-0">
             <a
               v-if="link.show && link.url"

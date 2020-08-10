@@ -214,6 +214,11 @@ function selectContent(path) {
 
     if (!element) return
 
+    if (element.dataset.swClick === "true") {
+      element.click()
+      return
+    }
+
     element.scrollIntoView({
       behavior: 'smooth',
       block: 'center'
