@@ -57,15 +57,11 @@
         <p v-balance-text :class="{ 'text-primary-lighter': textColor === 'light' }">
           {{ description }}
         </p>
-        <div
-          :class="{
-            '-ml-3': alignX === 'left' || alignX === 'right'
-          }"
-        >
+        <div :class="{ '-ml-3': alignX !== 'center' }">
           <NuxtLink
             v-for="(link, index) in links"
-            :key="`link-${index}`"
-            to="/products/"
+            :key="`${id}link${index}`"
+            :to="resolveUrl(link)"
             :title="link.title"
             :class="{
               'cta-link mt-5 mb-1 mx-3': link.style === 'text',
