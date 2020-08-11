@@ -4,6 +4,9 @@ import get from 'lodash/get'
 // Components
 import VisualMedia from '~/modules/swell/components/VisualMedia'
 
+// Directives
+import lazysizes from '~/modules/swell/directives/lazysizes'
+
 Vue.use({
   install(Vue) {
     // Check if browser supports lazy-loading images
@@ -22,6 +25,7 @@ Vue.use({
     })
 
     Vue.component('VisualMedia', VisualMedia)
+    Vue.directive('lazysizes', lazysizes)
   }
 })
 

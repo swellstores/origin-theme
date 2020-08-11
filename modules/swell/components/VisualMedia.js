@@ -124,7 +124,7 @@ export default {
       return contextClasses ? `${classes} ${contextClasses}` : classes
     }
 
-    // set lazy-load attributes
+    // Set lazy-load attributes
     if (lazyLoad && browserCanLazyLoad) {
       image.loading = 'lazy'
       image.width = dimensions[0]
@@ -146,6 +146,7 @@ export default {
         style={isBackground ? null : `padding-bottom: ${ratioPadding}`}
       >
         <img
+          v-lazysizes
           {...{ attrs: image }}
           class={`${
             isBackground
