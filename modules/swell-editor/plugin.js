@@ -5,7 +5,7 @@ import { editor } from './swell-editor-utils'
 export default async (context, inject) => {
   const useEditorSettings = '<%= options.useEditorSettings %>' === 'true'
 
-  if (window && useEditorSettings) {
+  if (process.browser && useEditorSettings) {
     // Initialize data sync plugin
     Vue.use(SyncPlugin)
 

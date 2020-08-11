@@ -39,7 +39,7 @@ export const editor = {
     const targetOrigin = '*'
 
     try {
-      if (window && window.parent) {
+      if (process.browser && window.parent) {
         window.parent.postMessage(msg, targetOrigin)
       }
     } catch (err) {
@@ -214,7 +214,7 @@ function selectContent(path) {
 
     if (!element) return
 
-    if (element.dataset.swClick === "true") {
+    if (element.dataset.swClick === 'true') {
       element.click()
       return
     }
@@ -223,7 +223,7 @@ function selectContent(path) {
       behavior: 'smooth',
       block: 'center'
     })
-  }, 500);
+  }, 500)
 }
 
 // Returns true if settings group key from the provided path
