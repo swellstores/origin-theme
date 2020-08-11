@@ -1,6 +1,8 @@
 <template>
   <section
     :class="[
+      `bg-${bgColor}`,
+      { 'flex-row-reverse': alignX === 'right', 'text-center': alignX === 'center' },
       {
         'mx-0': outerSpacingX === 'none',
         'mx-2 lg:mx-4': outerSpacingX === 'sm',
@@ -14,29 +16,17 @@
         'my-8 lg:my-12 xl:my-16': outerSpacingY === 'lg'
       }
     ]"
-    class="relative overflow-hidden"
+    class="relative flex flex-wrap"
   >
-    <VisualMedia v-if="image" :source="image" :is-background="true" />
-    <div
-      :style="{ opacity: darkenBg / 100 }"
-      class="absolute inset w-full h-full bg-primary-darkest"
-    ></div>
-    <div
-      :class="{
-        'py-6 sm:py-8': innerSpacing === 'none',
-        'py-12 md:py-14 lg:py-16': innerSpacing === 'sm',
-        'py-24 lg:py-28 xl:py-32': innerSpacing === 'md',
-        'py-32 lg:py-36 xl:py-40': innerSpacing === 'lg'
-      }"
-      class="relative container"
-    >
-      <div class="max-w-96 py-10 px-8 md:mx-4 md:px-12 md:py-14 bg-primary-lighter rounded">
-        <h2 v-balance-text class="mb-3 text-3xl md:text-4xl lg:text-6xl">
-          {{ heading }}
-        </h2>
-        <p v-balance-text class="mb-6">{{ description }}</p>
-        <EmailSignupForm />
-      </div>
+    <div class="relative w-full px-6 py-20 md:w-1/2 md:px-12 md:py-16 lg:px-26 lg:py-32">
+      <h2 v-balance-text class="mb-3 text-3xl md:text-4xl lg:text-6xl">
+        {{ heading }}
+      </h2>
+      <p v-balance-text class="mb-6">{{ description }}</p>
+      <EmailSignupForm />
+    </div>
+    <div class="relative w-full md:w-1/2">
+      <VisualMedia :source="image" :is-background="true" />
     </div>
   </section>
 </template>
@@ -64,15 +54,11 @@ export default {
     },
     image: {
       type: [Object, String],
-      default: () => ({})
+      default: null
     },
-    darkenBg: {
-      type: Number,
-      default: 0
-    },
-    innerSpacing: {
+    bgColor: {
       type: String,
-      default: 'md'
+      default: 'primary-lighter'
     },
     outerSpacingX: {
       type: String,
@@ -81,6 +67,10 @@ export default {
     outerSpacingY: {
       type: String,
       default: 'lg'
+    },
+    alignX: {
+      type: String,
+      default: 'left'
     }
   }
 }

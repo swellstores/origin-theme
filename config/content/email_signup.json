@@ -34,32 +34,18 @@
       "type": "field_group",
       "fields": [
         {
-          "id": "darken_bg",
-          "label": "Darken background media",
-          "type": "slider",
-          "unit": "%",
-          "increment": 10,
-          "default": 20,
-          "min": 0,
-          "max": 50,
-          "conditions": {
-            "text_color": "light"
-          }
-        },
-        {
-          "id": "inner_spacing",
-          "label": "Inner spacing",
-          "description": "Padding on inside of block",
+          "id": "bg_color",
+          "label": "Background color",
           "type": "select",
-          "default": "md",
+          "default": "primary-lightest",
           "options": [
             {
-              "value": "sm",
-              "label": "Small"
+              "value": "primary-lightest",
+              "label": "White"
             },
             {
-              "value": "md",
-              "label": "Medium"
+              "value": "primary-lighter",
+              "label": "Light"
             }
           ]
         },
@@ -100,7 +86,7 @@
         {
           "id": "align_x",
           "label": "Horizontal alignment",
-          "description": "Horizontal content position within block",
+          "description": "Horizontal form position within block",
           "type": "select",
           "default": "center",
           "options": [
@@ -109,33 +95,8 @@
               "label": "Left"
             },
             {
-              "value": "center",
-              "label": "Center"
-            },
-            {
               "value": "right",
               "label": "Right"
-            }
-          ]
-        },
-        {
-          "id": "align_y",
-          "label": "Vertical alignment",
-          "description": "Vertical content position within block",
-          "type": "select",
-          "default": "center",
-          "options": [
-            {
-              "value": "top",
-              "label": "Top"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "bottom",
-              "label": "Bottom"
             }
           ]
         }
