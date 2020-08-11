@@ -34,20 +34,16 @@
             <div class="py-3 pl-6"><StoreLogo /></div>
             <!-- Main nav -->
             <nav v-if="menu" class="w-full lg:w-auto hidden lg:flex">
-              <ul class="sw-nav-links flex justify-center items-center">
-                <li
-                  v-for="item in menu.items"
-                  :key="item.name"
-                  class="has-mega-nav inline-block h-full flex-shrink-0 mb-0"
-                >
+              <ul class="flex justify-center">
+                <li v-for="item in menu.items" :key="item.name" class="sw-nav-link-wrapper mb-0">
                   <NuxtLink
                     :to="resolveUrl(item)"
                     :title="item.description"
-                    class="sw-nav-link relative block h-full pt-1 px-5 rounded-none border-transparent border-b-4"
+                    class="sw-nav-link relative flex items-center h-full px-5 rounded-none border-transparent border-b-4"
                     @click.native="megaNavIsEnabled = false"
                     @mouseleave.native="resetMegaNav"
                   >
-                    <span class="relative inline-block top-1/2 transform -translate-y-1/2">
+                    <span class="relative">
                       {{ item.name }}
                     </span>
                   </NuxtLink>
@@ -77,9 +73,9 @@
               <!-- Cart icon -->
               <button
                 class="relative h-10 p-2"
-                @click.prevent="$emit('click-cart')"
                 data-sw-path="cart"
                 data-sw-click="true"
+                @click.prevent="$emit('click-cart')"
               >
                 <BaseIcon icon="uil:cart" />
                 <div
@@ -239,7 +235,7 @@ export default {
 }
 
 .mega-nav:hover,
-.has-mega-nav a:hover + .mega-nav {
+.sw-nav-link-wrapper a:hover + .mega-nav {
   @apply block;
 }
 
