@@ -9,9 +9,6 @@ export default async (context, inject) => {
     // Initialize data sync plugin
     Vue.use(SyncPlugin)
 
-    // Flag editor connected immediately
-    editor.processMessage({ data: { type: 'editor.connected' } }, context)
-
     // Listen for messages and pass to event bus
     window.addEventListener('message', event => editor.processMessage(event, context), false)
 

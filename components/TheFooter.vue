@@ -1,21 +1,26 @@
 <template>
-  <footer class="bg-primary-darkest text-primary-lightest border-t border-primary-darker">
+  <footer
+    class="bg-primary-darkest text-primary-lightest border-t border-primary-darker"
+    data-sw-path="footer"
+  >
     <!-- Main footer -->
     <div class="container py-16 text-center lg:flex lg:flex-row lg:text-left">
       <!-- Store info -->
-      <div class="lg:w-1/4 lg:pr-6">
-        <p class="text-primary-med mb-5">Contact us</p>
-        <p>
-          <span class="block">{{ store.supportPhone }}</span>
-          <span class="block">{{ store.supportEmail }}</span>
-        </p>
+      <div v-if="footer.showContactInfo || footer.showSocial" class="lg:w-1/4 lg:pr-6">
+        <div v-if="footer.showContactInfo">
+          <p class="text-primary-med mb-5">Contact us</p>
+          <p>
+            <span class="block">{{ store.supportPhone }}</span>
+            <span class="block">{{ store.supportEmail }}</span>
+          </p>
+        </div>
 
         <!-- Social links-->
-        <ul class="mx-auto pt-5 lg:-ml-2">
-          <li v-for="(link, network) in socialLinks" :key="network" class="inline-block mb-0">
+        <ul v-if="footer.showSocial" class="mx-auto pt-5 lg:-ml-2" data-sw-path="social">
+          <li v-for="network of socialNetworks" :key="network" class="inline-block mb-0">
             <a
-              v-if="link.show && link.url"
-              :href="link.url"
+              v-if="showingSocialLink(network)"
+              :href="socialLinks[network].url"
               target="_blank"
               :title="`Join us on ${network}`"
               class="block mx-2 text-current"
@@ -139,10 +144,18 @@ export default {
       footer: {},
       store: {},
       socialLinks: {},
+      socialNetworks: ['twitter', 'facebook', 'pinterest', 'instagram', 'youtube', 'vimeo'],
       menu: null,
       secondaryMenu: null,
       paymentMethods: null,
       currentYear: new Date().getFullYear()
+    }
+  },
+
+  methods: {
+    showingSocialLink(network) {
+      const link = this.socialLinks[network] || {}
+      return link.show
     }
   }
 }

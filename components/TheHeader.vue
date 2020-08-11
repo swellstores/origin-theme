@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-sw-path="header">
     <!-- Duplicate elements to match header height and push main content down -->
     <div class="opacity-0">
       <ThePromoBar
@@ -75,7 +75,12 @@
               </a>
               -->
               <!-- Cart icon -->
-              <button class="relative h-10 p-2" @click.prevent="$emit('click-cart')">
+              <button
+                class="relative h-10 p-2"
+                @click.prevent="$emit('click-cart')"
+                data-sw-path="cart"
+                data-sw-click="true"
+              >
                 <BaseIcon icon="uil:cart" />
                 <div
                   v-if="cart && cart.itemQuantity"

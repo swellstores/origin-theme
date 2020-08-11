@@ -1,5 +1,6 @@
 import camelCase from 'lodash/camelCase'
 import snakeCase from 'lodash/snakeCase'
+import { editor } from './swell-editor-utils'
 
 function normalizeKeys(obj, params) {
   const options = {
@@ -45,5 +46,9 @@ export default async (context, inject) => {
   } else {
     // Load all settings via API
     await context.app.$swell.settings.load()
+    // Notify editor when settings are loaded
+    if (useEditorSettings) {
+      editor.processMessage({ data: { type: 'settings.loaded' } }, context)
+    }
   }
 }
