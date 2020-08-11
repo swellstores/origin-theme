@@ -14,14 +14,14 @@ export default {
   /*
    ** Vue plugins to load before mounting the App
    */
-  plugins: [{ src: '~/plugins/vue-slider-component', mode: 'client' }, '~/plugins/directives.js'],
+  plugins: [{ src: '~/plugins/vue-slider-component', mode: 'client' }],
 
   /*
    ** Nuxt.js modules
    */
   modules: ['@nuxtjs/sentry', 'vue-balance-text/nuxt/module'],
   buildModules: [
-    //'@nuxtjs/eslint-module',
+    // '@nuxtjs/eslint-module',
     '@nuxtjs/tailwindcss',
     '~/modules/swell-editor',
     '~/modules/swell'
@@ -49,13 +49,13 @@ export default {
   swell: {
     storeId: process.env.SWELL_STORE_ID,
     publicKey: process.env.SWELL_PUBLIC_KEY,
-    previewContent: process.env.SWELL_EDITOR ? true : false,
+    previewContent: !!process.env.SWELL_EDITOR,
     storeUrl: process.env.SWELL_STORE_URL
   },
 
   swellEditor: {
     // cssVariableGroups: [],
-    useEditorSettings: process.env.SWELL_EDITOR ? true : false
+    useEditorSettings: !!process.env.SWELL_EDITOR
   },
 
   swellAnalytics: {

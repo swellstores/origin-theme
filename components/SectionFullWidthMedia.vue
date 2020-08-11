@@ -21,7 +21,7 @@
     class="relative bg-primary-light overflow-hidden"
   >
     <!-- Background image -->
-    <VisualMedia v-if="image" :source="image" :is-background="true" :use-parallax="useParallax" />
+    <VisualMedia v-if="image" :source="image" :is-background="true" />
     <!-- Background darkening overlay -->
     <div
       class="absolute inset w-full h-full bg-primary-darkest"
@@ -141,10 +141,6 @@ export default {
     alignY: {
       type: String,
       default: 'top'
-    },
-    useParallax: {
-      type: Boolean,
-      default: false
     }
   }
 }

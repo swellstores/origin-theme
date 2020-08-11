@@ -10,7 +10,6 @@
   >
     <div class="relative md:flex md:justify-end">
       <div
-        v-parallax="{ enabled: useParallax, speed: 16, minW: 768 }"
         class="w-full relative md:w-1/2 md:absolute md:top-0"
         :class="{ 'md:left-0': mediaPosition === 'left', 'md:right-0': mediaPosition === 'right' }"
       >
@@ -91,10 +90,6 @@ export default {
     mediaPosition: {
       type: String,
       default: 'left'
-    },
-    useParallax: {
-      type: Boolean,
-      default: false
     }
   }
 }

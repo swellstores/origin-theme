@@ -22,7 +22,7 @@
     >
       <!-- Image panel -->
       <template v-if="panel.type === 'image'">
-        <VisualMedia :source="panel.image.url" :is-background="true" :use-parallax="false" />
+        <VisualMedia :source="panel.image.url" :is-background="true" />
         <!-- TODO Fixed aspect ratio + background behavior? -->
       </template>
       <!-- Text panel -->

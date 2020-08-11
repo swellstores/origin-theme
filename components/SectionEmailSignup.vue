@@ -16,12 +16,7 @@
     ]"
     class="relative overflow-hidden"
   >
-    <VisualMedia
-      v-if="image"
-      :source="image"
-      :is-background="true"
-      :use-parallax="{ enabled: useParallax, speed: -14, minW: 768 }"
-    />
+    <VisualMedia v-if="image" :source="image" :is-background="true" />
     <div
       :style="{ opacity: darkenBg / 100 }"
       class="absolute inset w-full h-full bg-primary-darkest"
@@ -86,10 +81,6 @@ export default {
     outerSpacingY: {
       type: String,
       default: 'lg'
-    },
-    useParallax: {
-      type: Boolean,
-      default: false
     }
   }
 }

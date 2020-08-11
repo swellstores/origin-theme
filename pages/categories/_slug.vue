@@ -10,7 +10,6 @@
           v-if="category && category.images"
           :source="category.images[0]"
           :is-background="true"
-          :use-parallax="false"
         />
       </div>
       <!-- Darkening overlay -->

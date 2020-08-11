@@ -138,12 +138,6 @@
               "label": "Bottom"
             }
           ]
-        },
-        {
-          "id": "use_parallax",
-          "label": "Parallax effect",
-          "type": "toggle",
-          "default": true
         }
       ]
     }

@@ -71,11 +71,6 @@ export default {
       type: Boolean,
       default: false
     },
-    // Parallax media on scroll
-    parallax: {
-      type: [Object, Boolean, Number],
-      default: false
-    },
     // Determines if media should be lazy-loaded
     lazyLoad: {
       type: Boolean,
@@ -97,7 +92,6 @@ export default {
       widths,
       sizes,
       isBackground,
-      parallax,
       lazyLoad,
       browserCanLazyLoad
     } = context.props
@@ -130,21 +124,6 @@ export default {
       return contextClasses ? `${classes} ${contextClasses}` : classes
     }
 
-    let parallaxOptions
-
-    // ser parallax options
-    if (parallax) {
-      parallaxOptions = {
-        enabled: true,
-        speed: typeof parallax === 'number' ? parallax : -16,
-        minW: 768
-      }
-    } else {
-      parallaxOptions = {
-        enabled: false
-      }
-    }
-
     // set lazy-load attributes
     if (lazyLoad && browserCanLazyLoad) {
       image.loading = 'lazy'
@@ -167,12 +146,11 @@ export default {
         style={isBackground ? null : `padding-bottom: ${ratioPadding}`}
       >
         <img
-          v-parallax={parallaxOptions}
           {...{ attrs: image }}
           class={`${
             isBackground
-              ? `absolute top-0 left-0 w-full h-full object-cover ${parallax ? 'h-6/5' : ''}`
-              : `absolute inset-0 w-full h-full object-cover`
+              ? 'absolute top-0 left-0 w-full h-full object-cover'
+              : 'absolute inset-0 w-full h-full object-cover'
           } ${lazyLoad && !browserCanLazyLoad ? 'lazyload' : ''}
           `}
         />
