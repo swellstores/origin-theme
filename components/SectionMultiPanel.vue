@@ -1,8 +1,8 @@
 <template>
   <!-- Error/empty state -->
-  <div v-if="!panels.length" class="py-24 text-center">
+  <div v-if="!panels.length" class="m-6 border border-dashed py-24 text-center">
     <h3>Multiple panels</h3>
-    <p>No items added</p>
+    <p>No panels added</p>
   </div>
 
   <section v-else class="relative flex flex-wrap">
@@ -26,7 +26,7 @@
         <!-- TODO Fixed aspect ratio + background behavior? -->
       </template>
       <!-- Text panel -->
-      <template v-else>
+      <template v-else-if="panel.type === 'text'">
         <h2 class="mb-3">{{ panel.heading }}</h2>
         <p class="mb-2">{{ panel.description }}</p>
         <div :class="{ '-ml-3': textAlign !== 'center' }">
@@ -46,6 +46,12 @@
               >{{ link.label }}</NuxtLink
             >
           </div>
+        </div>
+      </template>
+      <template v-else>
+        <div class="m-6 p-12 border border-dashed">
+          <h3>Panel {{ index + 1 }}</h3>
+          <p>No type chosen</p>
         </div>
       </template>
     </div>
