@@ -150,8 +150,10 @@ module.exports = {
     }
   },
   variants: {
+    borderWidth: ['responsive', 'first', 'last', 'odd', 'even'],
     margin: ['responsive', 'first', 'last'],
-    borderWidth: ['responsive', 'first', 'last', 'odd', 'even']
+    opacity: ['responsive', 'hover', 'focus', 'group-hover'],
+    translate: ['responsive', 'hover', 'focus', 'group-hover']
   },
   plugins: [
     function({ addUtilities, config, e }) {
