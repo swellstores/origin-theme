@@ -1,6 +1,6 @@
 <template>
   <div
-    class="my-12 flex flex-col justify-center items-center md:container border-4 border-dashed rounded text-center"
+    class="my-12 flex flex-col justify-center items-center md:container border border-dashed text-center"
     :class="[
       { 'py-40': !heading && !description },
       { 'py-32': heading || description }
