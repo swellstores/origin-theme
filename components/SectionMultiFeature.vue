@@ -14,10 +14,10 @@
         :class="{ 'w-48': columnWidth === 'sm' }"
         class="mx-3 my-6 lg:mx-5"
       >
-        <div class="relative rounded-full bg-primary-light mx-auto w-16 h-16">
+        <div v-if="feature" class="relative rounded-full bg-primary-light mx-auto w-16 h-16">
           <BaseIcon :icon="feature.icon" size="lg" class="absolute center-xy" />
         </div>
-        <p class="text-lg mt-4">{{ feature.label }}</p>
+        <p v-if="feature" class="text-lg mt-4">{{ feature.label }}</p>
       </div>
     </div>
   </section>
