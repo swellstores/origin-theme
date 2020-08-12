@@ -1,5 +1,11 @@
 <template>
-  <section class="relative mx-6 lg:mx-8 my-8">
+  <!-- Error/empty state -->
+  <div v-if="!mentions.length" class="m-6 border border-dashed py-24 text-center">
+    <h3>Press mentions</h3>
+    <p>No mentions added</p>
+  </div>
+
+  <section v-else class="relative mx-6 lg:mx-8 my-8">
     <div class="flex flex-row flex-wrap text-sm text-center">
       <div
         v-for="(mention, index) in mentions"
@@ -27,7 +33,7 @@
           class="absolute w-full md:px-4"
         >
           <p v-balance-text class="">&ldquo;{{ mention.quote }}&rdquo;</p>
-          <span v-if="!mention.image" class="block mt-2 font-semibold">— {{ mention.name }}</span>
+          <span v-if="mention.name" class="block mt-2 font-semibold">— {{ mention.name }}</span>
         </div>
       </div>
     </div>
