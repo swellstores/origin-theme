@@ -1,5 +1,5 @@
 <template>
-  <keep-alive v-if="component">
+  <keep-alive>
     <component
       :is="component"
       v-bind="section"
@@ -7,7 +7,6 @@
       :data-sw-path="`${collectionFieldId}.${collectionIndex}`"
     />
   </keep-alive>
-  <div v-else :data-sw-path="`${collectionFieldId}.${collectionIndex}`" />
 </template>
 
 <script>
@@ -15,13 +14,19 @@
 import get from 'lodash/get'
 import camelCase from 'lodash/camelCase'
 
+// Components
+import SectionLoader from '~/components/SectionLoader'
+import SectionError from '~/components/SectionError'
+
+const capitalCase = str => str.charAt(0).toUpperCase() + camelCase(str.slice(1))
+
 export default {
   name: 'SectionAsyncLoader',
 
   props: {
     section: {
       type: Object,
-      default: () => ({})
+      default: null
     },
     collectionFieldId: {
       type: String,
@@ -39,15 +44,13 @@ export default {
 
   computed: {
     component() {
-      try {
-        if (this.section) {
-          const capitalCase = str => str.charAt(0).toUpperCase() + camelCase(str.slice(1))
-          return () => import(`~/components/Section${capitalCase(String(this.section.type))}`)
-        }
-        return
-      } catch (err) {
-        return 'Error loading ' + this.section.type
-      }
+      if (!this.section) return
+
+      return () => ({
+        component: import(`~/components/Section${capitalCase(String(this.section.type))}`),
+        loading: SectionLoader,
+        error: SectionError
+      })
     }
   }
 }
