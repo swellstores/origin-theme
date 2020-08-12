@@ -37,12 +37,12 @@
         },
         {
           "id": "colors.primary.lighter",
-          "label": "Background (lighter)",
+          "label": "Background (secondary)",
           "type": "color"
         },
         {
           "id": "colors.primary.lightest",
-          "label": "Background (lightest)",
+          "label": "Background (primary)",
           "type": "color"
         },
         {
