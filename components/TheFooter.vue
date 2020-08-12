@@ -17,15 +17,14 @@
 
         <!-- Social links-->
         <ul v-if="footer.showSocial" class="mx-auto pt-5 lg:-ml-2" data-sw-path="social">
-          <li v-for="network of socialNetworks" :key="network" class="inline-block mb-0">
+          <li v-for="link of orderedSocialLinks" :key="link.id" class="inline-block mb-0">
             <a
-              v-if="showingSocialLink(network)"
-              :href="socialLinks[network].url"
+              :href="link.url"
               target="_blank"
-              :title="`Join us on ${network}`"
+              :title="`Join us on ${link.id}`"
               class="block mx-2 text-current"
             >
-              <BaseIcon :icon="`mdi:${network}`" />
+              <BaseIcon :icon="`mdi:${link.id}`" />
             </a>
           </li>
         </ul>
@@ -119,6 +118,9 @@
 </template>
 
 <script>
+// Helpers
+import get from 'lodash/get'
+
 export default {
   name: 'TheFooter',
 
@@ -144,7 +146,6 @@ export default {
       footer: {},
       store: {},
       socialLinks: {},
-      socialNetworks: ['twitter', 'facebook', 'pinterest', 'instagram', 'youtube', 'vimeo'],
       menu: null,
       secondaryMenu: null,
       paymentMethods: null,
@@ -152,10 +153,11 @@ export default {
     }
   },
 
-  methods: {
-    showingSocialLink(network) {
-      const link = this.socialLinks[network] || {}
-      return link.show
+  computed: {
+    orderedSocialLinks() {
+      return ['twitter', 'facebook', 'pinterest', 'instagram', 'youtube', 'vimeo']
+        .map(id => ({ id, ...get(this, `socialLinks.${id}`, {}) })) // Get the network's link value from settings
+        .filter(link => link.show && link.url) // Only include if it's switched on and  has a url
     }
   }
 }
