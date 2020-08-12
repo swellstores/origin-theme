@@ -33,6 +33,7 @@
           <div
             v-for="(link, i) in panel.links"
             :key="`link-${i}`"
+            class="m-1 mx-2"
             :class="{ 'inline-block': panel.links.length < 3 }"
           >
             <NuxtLink
