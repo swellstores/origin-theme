@@ -1,13 +1,7 @@
 <template>
-  <div
-    class="my-16 flex flex-col justify-center items-center md:container border-2 border-dashed rounded text-center"
-    :class="[
-      { 'py-40': !heading && !description },
-      { 'py-32': heading || description }
-    ]"
-  >
-    <h3 v-if="heading">{{ heading }}</h3>
-    <p v-if="description">{{ description }}</p>
+  <div class="m-6 border border-dashed py-24 text-center">
+    <h3>{{ heading }}</h3>
+    <p>{{ description }}</p>
   </div>
 </template>
 
@@ -18,11 +12,11 @@ export default {
   props: {
     heading: {
       type: String,
-      default: null
+      default: 'New section'
     },
     description: {
       type: String,
-      default: null
+      default: 'No type chosen'
     }
   }
 }
