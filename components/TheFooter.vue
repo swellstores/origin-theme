@@ -8,7 +8,7 @@
       <!-- Store info -->
       <div v-if="footer.showContactInfo || footer.showSocial" class="lg:w-1/4 lg:pr-6">
         <div v-if="footer.showContactInfo">
-          <p class="text-primary-med mb-5">Contact us</p>
+          <p class="font-label text-primary-med mb-5">{{ footer.contactInfoHeading }}</p>
           <p>
             <span class="block">{{ store.supportPhone }}</span>
             <span class="block">{{ store.supportEmail }}</span>
@@ -43,7 +43,7 @@
               <p
                 v-if="item.type === 'heading'"
                 :class="{ 'mt-6': i > 0 }"
-                class="text-primary-med mb-4"
+                class="font-label text-primary-med mb-4"
               >
                 {{ item.name }}
               </p>
@@ -64,7 +64,7 @@
       <template v-if="footer.showEmailSignup">
         <div class="max-w-96 mx-auto lg:w-1/4 lg:flex-shrink-0">
           <!-- Heading + text -->
-          <p class="text-primary-med mb-4">
+          <p class="font-label text-primary-med mb-4">
             {{ footer.emailSignupHeading }}
           </p>
           <p class="mb-6">{{ footer.emailSignupText }}</p>

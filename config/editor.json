@@ -293,6 +293,13 @@
           "default": true
         },
         {
+          "id": "footer.contact_info_heading",
+          "condition": "footer.show_contact_info",
+          "label": "Contact info heading",
+          "type": "short_text",
+          "default": "Contact us"
+        },
+        {
           "id": "footer.contact_info_text",
           "condition": "footer.show_contact_info",
           "label": "Contact info text",
@@ -300,7 +307,7 @@
         },
         {
           "id": "footer.show_email_signup",
-          "label": "Show email signup field",
+          "label": "Show email signup",
           "type": "toggle",
           "default": true
         },
@@ -308,7 +315,8 @@
           "id": "footer.email_signup_heading",
           "condition": "footer.show_email_signup",
           "label": "Email signup heading",
-          "type": "short_text"
+          "type": "short_text",
+          "default": "Email newsletter"
         },
         {
           "id": "footer.email_signup_text",
