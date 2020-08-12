@@ -27,8 +27,8 @@
       </template>
       <!-- Text panel -->
       <template v-else-if="panel.type === 'text'">
-        <h2 class="mb-3">{{ panel.heading }}</h2>
-        <p class="mb-2">{{ panel.description }}</p>
+        <h2>{{ panel.heading }}</h2>
+        <p class="mt-4">{{ panel.description }}</p>
         <div :class="{ '-ml-3': textAlign !== 'center' }">
           <div
             v-for="(link, i) in panel.links"
@@ -39,8 +39,8 @@
               v-if="link"
               :to="resolveUrl(link)"
               :class="{
-                'cta-link mt-3 mb-1 mx-3': link.style === 'text',
-                'btn mt-4 mx-3': link.style === 'button_primary'
+                'cta-link mt-4 mb-1 mx-3': link.style === 'text',
+                'btn mt-5 mx-3': link.style === 'button_primary'
               }"
               class="inline-block"
               >{{ link.label }}</NuxtLink
