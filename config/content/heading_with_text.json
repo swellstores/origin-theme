@@ -30,19 +30,35 @@
           "id": "heading_position",
           "label": "Heading position",
           "type": "select",
-          "default": "top",
+          "default": "top-center",
           "options": [
             {
-              "value": "top",
-              "label": "Top"
+              "value": "top-center",
+              "label": "Top center"
+            },
+            {
+              "value": "top-left",
+              "label": "Top left"
             },
             {
               "value": "left",
               "label": "Left"
+            }
+          ]
+        },
+        {
+          "id": "text_columns",
+          "label": "Text columns",
+          "type": "select",
+          "default": "Dual column",
+          "options": [
+            {
+              "value": "dual",
+              "label": "Dual column"
             },
             {
-              "value": "right",
-              "label": "Right"
+              "value": "single",
+              "label": "Single column"
             }
           ]
         }

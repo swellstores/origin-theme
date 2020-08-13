@@ -1,29 +1,29 @@
 <template>
   <!-- Error/empty state -->
-  <div v-if="!heading && !text" class="py-24 text-center">
+  <div v-if="!heading && !text" class="m-6 border border-dashed py-24 text-center">
     <h3>Heading with text</h3>
     <p>No heading or text added</p>
   </div>
 
   <section v-else class="container py-16 lg:py-24 xl:py-32">
-    <div
-      :class="{
-        'md:flex': heading_position !== 'top',
-        'flex-reverse': heading_position === 'right'
-      }"
-    >
+    <div :class="{ 'md:flex': headingPosition === 'left' }">
       <h2
         v-balance-text
-        :class="{ 'md:w-1/3': heading_position !== 'top' }"
+        :class="{
+          'md:w-1/3': headingPosition === 'left',
+          'text-center mx-auto': headingPosition === 'top-center'
+        }"
         class="mb-8 max-w-2/3 md:mb-0 md:text-5xl xl:text-7xl"
       >
         {{ heading }}
       </h2>
       <div
         :class="{
-          'sw-multi-column md:mt-8 lg:mt-10 xl:mt-12': heading_position === 'top',
-          'md:w-2/3 md:pl-12 lg:pl-16 xl:pl-20': heading_position === 'left',
-          'md:w-2/3 md:pr-12 lg:pr-16 xl:pr-20': heading_position === 'right'
+          'mx-auto': headingPosition === 'top-center' && textColumns === 'single',
+          'md:w-2/3': headingPosition.includes('top') && textColumns === 'single',
+          'sw-multi-column': headingPosition.includes('top') && textColumns === 'dual',
+          'text-justify md:mt-8 lg:mt-10 xl:mt-12': headingPosition.includes('top'),
+          'mt-1 md:w-2/3 md:pl-12 lg:pl-16 xl:pl-20': headingPosition === 'left'
         }"
         class="lg:text-lg"
       >
@@ -54,9 +54,13 @@ export default {
       type: String,
       default: null
     },
-    heading_position: {
+    headingPosition: {
       type: String,
-      default: 'top'
+      default: 'top-center'
+    },
+    textColumns: {
+      type: String,
+      default: 'dual'
     }
   }
 }
@@ -66,7 +70,7 @@ export default {
 .sw-multi-column {
   @screen md {
     column-count: 2;
-    column-gap: 3rem;
+    column-gap: 2rem;
   }
 }
 </style>
