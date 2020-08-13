@@ -7,8 +7,10 @@
     <div class="container py-16 text-center lg:flex lg:flex-row lg:text-left">
       <!-- Store info -->
       <div v-if="footer.showContactInfo || footer.showSocial" class="lg:w-1/4 lg:pr-6">
-        <div v-if="footer.showContactInfo">
-          <p class="font-label text-primary-med mb-5">{{ footer.contactInfoHeading }}</p>
+        <div v-if="footer.showContactInfo" class="mb-5">
+          <p v-if="footer.contactInfoHeading" class="font-label text-primary-med mb-5">
+            {{ footer.contactInfoHeading }}
+          </p>
           <p>
             <span class="block">{{ store.supportPhone }}</span>
             <span class="block">{{ store.supportEmail }}</span>
@@ -16,7 +18,7 @@
         </div>
 
         <!-- Social links-->
-        <ul v-if="footer.showSocial" class="mx-auto pt-5 lg:-ml-2" data-sw-path="social">
+        <ul v-if="footer.showSocial" class="mx-auto lg:-ml-2" data-sw-path="social">
           <li v-for="link of orderedSocialLinks" :key="link.id" class="inline-block mb-0">
             <a
               :href="link.url"
@@ -37,8 +39,8 @@
           :key="'footerMenuCol' + index"
           class="my-10 lg:w-1/4 lg:my-0"
         >
-          <ul v-if="column.items" class="">
-            <li v-for="(item, i) in column.items" :key="item.name">
+          <ul v-if="column.items">
+            <li v-for="(item, i) in column.items" :key="item.name" class="mb-0">
               <!-- Heading -->
               <p
                 v-if="item.type === 'heading'"
@@ -51,7 +53,7 @@
               <NuxtLink
                 v-else
                 :to="resolveUrl(item)"
-                class="block -mx-1 p-1 leading-tight text-xl text-primary-lightest"
+                class="block py-1 leading-tight text-xl text-primary-lightest"
                 @click.native="listeners.click"
                 >{{ item.name }}</NuxtLink
               >
@@ -64,10 +66,10 @@
       <template v-if="footer.showEmailSignup">
         <div class="max-w-96 mx-auto lg:w-1/4 lg:flex-shrink-0">
           <!-- Heading + text -->
-          <p class="font-label text-primary-med mb-4">
+          <p v-if="footer.emailSignupHeading" class="font-label text-primary-med mb-4">
             {{ footer.emailSignupHeading }}
           </p>
-          <p class="mb-6">{{ footer.emailSignupText }}</p>
+          <p v-if="footer.emailSignupText" class="mb-6">{{ footer.emailSignupText }}</p>
           <EmailSignupForm />
         </div>
       </template>
