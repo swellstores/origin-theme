@@ -31,8 +31,10 @@
           ]"
         >
           <div class="relative md:container flex items-stretch justify-between items-stretch z-20">
-            <div class="py-3 pl-6"><StoreLogo /></div>
-            <!-- Main nav -->
+            <!-- Logo -->
+            <div class="py-3 pl-6 lg:w-1/4"><StoreLogo /></div>
+
+            <!-- Main nav menu -->
             <nav v-if="menu" class="w-full lg:w-auto hidden lg:flex">
               <ul class="flex justify-center">
                 <li v-for="item in menu.items" :key="item.name" class="sw-nav-link-wrapper mb-0">
@@ -57,9 +59,10 @@
                 </li>
               </ul>
             </nav>
-            <!-- END Main nav -->
+            <!-- END Main nav menu -->
 
-            <div class="flex flex-row pr-6 items-center lg:order-2 -mr-2">
+            <!-- Action menu -->
+            <div class="flex flex-row items-center justify-end -mr-2 pr-6 lg:w-1/4">
               <!-- Search icon -->
               <button class="h-10 p-2" @click.prevent="$emit('click-search')">
                 <BaseIcon icon="uil:search" />
@@ -98,11 +101,10 @@
               </button>
             </div>
           </div>
-
-          <!-- END Main nav -->
         </header>
       </div>
     </div>
+    <!-- END Main header -->
   </div>
 </template>
 

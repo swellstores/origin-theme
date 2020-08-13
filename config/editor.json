@@ -200,22 +200,6 @@
           "hint": "32 x 32px recommended"
         },
         {
-          "id": "header.logo_position",
-          "label": "Logo position",
-          "type": "select",
-          "default": "left",
-          "options": [
-            {
-              "value": "left",
-              "label": "Left"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            }
-          ]
-        },
-        {
           "type": "heading",
           "label": "Promotion bar"
         },
