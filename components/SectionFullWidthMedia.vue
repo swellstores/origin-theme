@@ -54,13 +54,18 @@
         >
           {{ heading }}
         </h2>
-        <p v-balance-text :class="{ 'text-primary-lighter': textColor === 'light' }">
-          {{ description }}
+        <!-- Tell prettier not to add extra whitespace -->
+        <!-- display: inline -->
+        <p
+          v-balance-text
+          :class="{ 'text-primary-lighter': textColor === 'light' }"
+          class="whitespace-pre-line"
+          >{{ description }}
         </p>
         <div :class="{ '-ml-3': alignX !== 'center' }">
           <NuxtLink
             v-for="(link, index) in links"
-            :key="`${id}link${index}`"
+            :key="id + 'link' + index"
             :to="resolveUrl(link)"
             :title="link.title"
             :class="{
