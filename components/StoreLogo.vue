@@ -9,6 +9,7 @@
       :src="logo.file.url"
       :width="logoWidth || ''"
       :height="!logoWidth ? 32 : ''"
+      style="max-width: none;"
     />
     <svg
       v-else-if="name == 'Origin'"
