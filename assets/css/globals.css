@@ -131,54 +131,5 @@ img {
 }
 
 .loader-el {
-  @apply bg-primary-light rounded-sm;
-  background: linear-gradient(
-    270deg,
-    theme('colors.primary.lighter'),
-    theme('colors.primary.light'),
-    theme('colors.primary.lighter')
-  );
-  background-size: 400% 400%;
-  animation: LoadingGradient 2s ease-out infinite;
-}
-
-@keyframes LoadingGradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  70% {
-    background-position: -100% 0%;
-  }
-  100% {
-    background-position: -95% 50%;
-  }
-}
-
-/* Loading spinner */
-.spinner {
-  @apply w-8 h-8 mx-auto bg-primary-dark rounded-full;
-  -webkit-animation: sk-scaleout 1s infinite ease-in-out;
-  animation: sk-scaleout 1s infinite ease-in-out;
-}
-
-@-webkit-keyframes sk-scaleout {
-  0% {
-    -webkit-transform: scale(0);
-  }
-  100% {
-    -webkit-transform: scale(1);
-    opacity: 0;
-  }
-}
-
-@keyframes sk-scaleout {
-  0% {
-    -webkit-transform: scale(0);
-    transform: scale(0);
-  }
-  100% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    opacity: 0;
-  }
+  @apply bg-primary-light rounded-sm animate-pulse;
 }
