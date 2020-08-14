@@ -186,10 +186,14 @@
           "hint": "450 x 200px recommended"
         },
         {
-          "id": "header.logo_width",
-          "label": "Logo width (pixels)",
+          "id": "header.logo_height",
+          "label": "Logo height",
           "type": "number",
-          "default": 225
+          "default": 45,
+          "ui": "slider",
+          "unit": "px",
+          "min": 30,
+          "max": 90
         },
         {
           "id": "header.favicon",

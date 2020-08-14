@@ -1,14 +1,16 @@
 <template>
   <div data-sw-path="header">
     <!-- Duplicate elements to match header height and push main content down -->
-    <div class="opacity-0"
-      style="min-height: 83px">
+    <div class="opacity-0" :style="{ height: header.logoHeight + 'px' }">
       <ThePromoBar
         v-if="header.showPromo"
         text="|"
         :hidden="header.hideOnScroll && headerIsHidden"
       />
-      <div class="py-3"><StoreLogo /></div>
+      <div class="my-3">
+        <span v-if="logoSrc" :style="{ height: logoHeight + 'px' }" class="block"></span>
+        <span v-else class="text-3xl sm:text-4xl">|</span>
+      </div>
     </div>
 
     <!-- Full screen nav for small screens -->
@@ -31,9 +33,20 @@
             { 'transform -translate-y-full': header.hideOnScroll && headerIsHidden }
           ]"
         >
-          <div class="relative md:container flex items-stretch justify-between items-stretch z-20">
+          <div class="relative container flex items-stretch justify-between items-stretch z-20">
             <!-- Logo -->
-            <div class="py-3 pl-6 lg:w-1/4"><StoreLogo /></div>
+            <div class="py-3 lg:w-1/4">
+              <NuxtLink :to="resolveUrl({ type: 'home' })">
+                <img
+                  v-if="logoSrc"
+                  :src="logoSrc"
+                  :height="logoHeight"
+                  :style="{ height: logoHeight + 'px' }"
+                  class="inline-block w-auto"
+                />
+                <span v-else class="text-3xl sm:text-4xl whitespace-no-wrap">{{ storeName }}</span>
+              </NuxtLink>
+            </div>
 
             <!-- Main nav menu -->
             <nav v-if="menu" class="w-full lg:w-auto hidden lg:flex">
@@ -42,7 +55,7 @@
                   <NuxtLink
                     :to="resolveUrl(item)"
                     :title="item.description"
-                    class="sw-nav-link relative flex items-center h-full px-5 rounded-none border-transparent border-b-4"
+                    class="sw-nav-link relative flex items-center h-full px-5 pt-1 rounded-none border-transparent border-b-4"
                     @click.native="megaNavIsEnabled = false"
                     @mouseleave.native="resetMegaNav"
                   >
@@ -63,7 +76,7 @@
             <!-- END Main nav menu -->
 
             <!-- Action menu -->
-            <div class="flex flex-row items-center justify-end -mr-2 pr-6 lg:w-1/4">
+            <div class="flex flex-row items-center justify-end -mr-2 lg:w-1/4">
               <!-- Search icon -->
               <button class="h-10 p-2" @click.prevent="$emit('click-search')">
                 <BaseIcon icon="uil:search" />
@@ -112,6 +125,7 @@
 <script>
 // Helpers
 import { mapState } from 'vuex'
+import get from 'lodash/get'
 
 export default {
   name: 'TheHeader',
@@ -119,20 +133,24 @@ export default {
   fetch() {
     const { $swell } = this
 
-    // Get menu settings
+    // Get menu ID
     const menuId = $swell.settings.get('header.menu', 'header')
-
-    // Set menu
-    this.menu = $swell.settings.menus(menuId)
 
     // Set component data
     this.header = $swell.settings.get('header', {})
+    this.menu = $swell.settings.menus(menuId)
+    this.logoSrc = $swell.settings.get('header.logo.file.url')
+    this.logoHeight = $swell.settings.get('header.logoHeight')
+    this.storeName = $swell.settings.get('store.name')
   },
 
   data() {
     return {
       header: {},
       menu: {},
+      logoSrc: null,
+      logoHeight: null,
+      storeName: null,
       mounted: false,
       megaNavIsEnabled: true,
       mobileNavIsVisible: false,
