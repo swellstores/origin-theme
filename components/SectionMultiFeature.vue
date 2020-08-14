@@ -1,8 +1,8 @@
 <template>
   <!-- Error/empty state -->
-  <div v-if="!features.length" class="py-24 text-center">
+  <div v-if="!features.length" class="m-6 border border-dashed py-24 text-center">
     <h3>Multiple features</h3>
-    <p>No items added</p>
+    <p>No features added</p>
   </div>
 
   <section v-else class="text-center px-6 py-16 lg:px-8 xl:px-20">
