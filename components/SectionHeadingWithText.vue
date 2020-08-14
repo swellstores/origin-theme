@@ -26,9 +26,8 @@
           'mt-1 md:w-2/3 md:pl-12 lg:pl-16 xl:pl-20': headingPosition === 'left'
         }"
         class="lg:text-lg"
-      >
-        {{ text }}
-      </div>
+        v-html="text"
+      ></div>
     </div>
   </section>
 </template>
