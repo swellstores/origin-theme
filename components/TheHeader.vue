@@ -1,7 +1,8 @@
 <template>
   <div data-sw-path="header">
     <!-- Duplicate elements to match header height and push main content down -->
-    <div class="opacity-0">
+    <div class="opacity-0"
+      style="min-height: 83px">
       <ThePromoBar
         v-if="header.showPromo"
         text="|"
