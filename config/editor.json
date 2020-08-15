@@ -404,34 +404,6 @@
           "type": "short_text",
           "format": "url",
           "placeholder": "https://vimeo.com/mystore"
-        },
-        {
-          "label": "Sharing",
-          "type": "heading"
-        },
-        {
-          "id": "social.sharing",
-          "label": "Enable product sharing",
-          "type": "checkbox",
-          "default": true
-        },
-        {
-          "id": "social.share_facebook",
-          "label": "Share on Facebook",
-          "type": "checkbox",
-          "default": true
-        },
-        {
-          "id": "social.share_twitter",
-          "label": "Share on Twitter",
-          "type": "checkbox",
-          "default": true
-        },
-        {
-          "id": "social.share_pinterest",
-          "label": "Share on Pinterest",
-          "type": "checkbox",
-          "default": true
         }
       ]
     }
