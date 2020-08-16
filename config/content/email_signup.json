@@ -88,7 +88,7 @@
           "label": "Horizontal alignment",
           "description": "Horizontal form position within block",
           "type": "select",
-          "default": "center",
+          "default": "left",
           "options": [
             {
               "value": "left",
