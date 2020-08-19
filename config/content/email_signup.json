@@ -41,11 +41,11 @@
           "options": [
             {
               "value": "primary-lightest",
-              "label": "White"
+              "label": "Background (primary)"
             },
             {
               "value": "primary-lighter",
-              "label": "Light"
+              "label": "Background (secondary)"
             }
           ]
         },
