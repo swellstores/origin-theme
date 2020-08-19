@@ -70,9 +70,24 @@
     }
   },
   "typography": {
-    "heading_family": "Google_Source+Sans+Pro_900_sans",
-    "body_family": "Google_Source+Sans+Pro_400_sans",
-    "label_family": "Google_Source+Sans+Pro_600_sans",
+    "heading_family": {
+      "provider": "Google",
+      "name": "Sans Pro",
+      "weight": 900,
+      "fallback": "-apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif"
+    },
+    "body_family": {
+      "provider": "Google",
+      "name": "Sans Pro",
+      "weight": 400,
+      "fallback": "-apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif"
+    },
+    "label_family": {
+      "provider": "Google",
+      "name": "Sans Pro",
+      "weight": 600,
+      "fallback": "-apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif"
+    },
     "scale_base_size": "16px",
     "scale_ratio": 1.125
   },

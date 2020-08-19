@@ -408,6 +408,7 @@
       ]
     }
   ],
+  "page_route": "/:slug/",
   "pages": [
     {
       "label": "Product detail pages",
@@ -420,7 +421,6 @@
       "content": "/categories/{slug}"
     }
   ],
-  "pageRoute": "/:slug/",
   "menus": [
     {
       "id": "header",

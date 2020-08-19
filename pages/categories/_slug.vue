@@ -89,7 +89,7 @@ export default {
     // Fetch category and products assigned to category
     const [category, products] = await Promise.all([
       $swell.categories.get(slug),
-      $swell.products.list({ page, limit, category: slug })
+      $swell.products.list({ page, limit, categories: slug })
     ])
 
     // Show 404 if category isn't found
