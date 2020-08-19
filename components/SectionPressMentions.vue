@@ -17,10 +17,10 @@
           class="transform transition-all duration-300 ease-in-out group-hover:opacity-0 group-hover:-translate-y-4"
         >
           <img
-            v-if="mention.image"
+            v-if="mention.logo && mention.logo.file"
             class="max-w-34 h-8 w-auto"
             :style="`transform: scale(${mention.logoScale / 100})`"
-            :src="mention.image.url"
+            :src="mention.logo.file.url"
             :alt="mention.name"
           />
         </div>
@@ -28,7 +28,7 @@
         <div
           :class="{
             'opacity-0 translate-y-4 transform transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:translate-y-0 ':
-              mention.image
+              mention.logo
           }"
           class="absolute w-full md:px-4"
         >
