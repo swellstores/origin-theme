@@ -7,7 +7,7 @@
   />
 
   <section v-else class="relative mx-6 lg:mx-8 my-8">
-    <div class="flex flex-row flex-wrap text-sm text-center">
+    <div class="container flex flex-row flex-wrap text-sm text-center">
       <div
         v-for="(mention, index) in mentions"
         :key="`${id}mention${index}`"

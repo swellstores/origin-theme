@@ -2,11 +2,11 @@
   <!-- Error/empty state -->
   <SectionUndefined v-if="!panels.length" heading="Multiple panels" description="No panels added" />
 
-  <section v-else class="relative flex flex-wrap">
+  <section v-else class="relative flex flex-wrap lg:container">
     <div
       v-for="(panel, index) in panels"
       :key="id + 'multiPanel' + index"
-      class="relative w-full md:w-1/2"
+      class="relative w-full min-h-72 md:w-1/2 lg:min-h-96"
       :class="[
         `bg-${panel.bgColor}`,
         {
