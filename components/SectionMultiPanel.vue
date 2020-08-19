@@ -1,9 +1,6 @@
 <template>
   <!-- Error/empty state -->
-  <div v-if="!panels.length" class="m-6 border border-dashed py-24 text-center">
-    <h3>Multiple panels</h3>
-    <p>No panels added</p>
-  </div>
+  <SectionUndefined v-if="!panels.length" heading="Multiple panels" description="No panels added" />
 
   <section v-else class="relative flex flex-wrap">
     <div

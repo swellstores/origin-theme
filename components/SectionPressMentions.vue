@@ -1,9 +1,10 @@
 <template>
   <!-- Error/empty state -->
-  <div v-if="!mentions.length" class="m-6 border border-dashed py-24 text-center">
-    <h3>Press mentions</h3>
-    <p>No mentions added</p>
-  </div>
+  <SectionUndefined
+    v-if="!mentions.length"
+    heading="Multiple mentions"
+    description="No mentions added"
+  />
 
   <section v-else class="relative mx-6 lg:mx-8 my-8">
     <div class="flex flex-row flex-wrap text-sm text-center">

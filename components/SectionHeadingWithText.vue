@@ -1,9 +1,10 @@
 <template>
   <!-- Error/empty state -->
-  <div v-if="!heading && !text" class="m-6 border border-dashed py-24 text-center">
-    <h3>Heading with text</h3>
-    <p>No heading or text added</p>
-  </div>
+  <SectionUndefined
+    v-if="!heading && !text"
+    heading="Heading with text"
+    description="No heading or text added"
+  />
 
   <section v-else class="container py-16 lg:py-24 xl:py-32">
     <div :class="{ 'md:flex': headingPosition === 'left' }">

@@ -1,9 +1,10 @@
 <template>
   <!-- Error/empty state -->
-  <div v-if="!features.length" class="m-6 border border-dashed py-24 text-center">
-    <h3>Multiple features</h3>
-    <p>No features added</p>
-  </div>
+  <SectionUndefined
+    v-if="!features.length"
+    heading="Multiple features"
+    description="No features added"
+  />
 
   <section v-else class="text-center px-6 py-16 lg:px-8 xl:px-20">
     <h3 class="mx-auto mt-6">{{ heading }}</h3>
