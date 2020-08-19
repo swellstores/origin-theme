@@ -1,5 +1,6 @@
 <template>
   <section class="mt-6 -mx-1 flex flex-wrap sm:-mx-2 xl:-mx-3">
+    <!-- Error/empty state -->
     <div v-if="!fetchPending && products.length === 0" class="px-1 sm:px-2 xl:px-3">
       No products found.
     </div>

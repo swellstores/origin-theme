@@ -1,5 +1,12 @@
 <template functional>
-  <div v-if="props.slug" class="relative block h-full rounded">
+  <!-- Skeleton loader -->
+  <div v-if="!props.slug" class="pb-5">
+    <div class="loader-el pb-full mb-4"></div>
+    <div class="loader-el w-2/3 h-4 mb-2"></div>
+    <div class="loader-el w-24 h-3"></div>
+  </div>
+
+  <div v-else class="relative block h-full rounded">
     <!-- Preview media -->
     <div class="relative">
       <NuxtLink
@@ -7,13 +14,13 @@
         class="block rounded overflow-hidden"
       >
         <!-- Initial image -->
-        <VisualMedia :source="props.images[0]" />
+        <VisualMedia :source="props.images[0]" :aspect-ratio="props.aspectRatio" />
         <!-- Hover image -->
         <div
           v-if="props.images[1]"
           class="absolute w-full h-full inset-0 opacity-0 transition-opacity duration-75 hover:opacity-100"
         >
-          <VisualMedia :source="props.images[1]" />
+          <VisualMedia :source="props.images[1]" :aspect-ratio="props.aspectRatio" />
         </div>
       </NuxtLink>
       <div
@@ -43,13 +50,6 @@
         <span class="text-sm">{{ parent.formatMoney(props.price, currency) }}</span>
       </div>
     </div>
-  </div>
-
-  <!-- Skeleton loader -->
-  <div v-else class="pb-5">
-    <div class="loader-el pb-full mb-4"></div>
-    <div class="loader-el w-2/3 h-4 mb-2"></div>
-    <div class="loader-el w-24 h-3"></div>
   </div>
 </template>
 
