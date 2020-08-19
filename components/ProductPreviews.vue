@@ -8,7 +8,7 @@
         { 'w-1/2 md:w-1/3': columnCount === 3 },
         { 'w-1/2 md:w-1/4': columnCount === 4 }
       ]"
-      class="mb-2 px-1 sm:px-2 xl:px-3 xl:mb-3"
+      class="mb-3 px-1 sm:px-2 xl:px-3 xl:mb-4"
     >
       <!-- Skeleton loader -->
       <div v-if="!product.slug" class="pb-5">
@@ -49,7 +49,10 @@
           <BaseIcon icon="uil:camera-slash" size="lg" class="absolute center-xy text-primary-med" />
         </div>
         <!-- Product summary -->
-        <div class="py-3 font-label font-semibold">
+        <div
+          class="py-3 font-label font-semibold"
+          :class="{ 'text-center': textAlign === 'center' }"
+        >
           <NuxtLink :to="resolveUrl({ type: 'product', value: product.slug })" class="inline-block">
             <h4 v-balance-text>{{ product.name }}</h4>
           </NuxtLink>
@@ -90,11 +93,13 @@ export default {
 
   async fetch() {
     this.aspectRatio = this.$swell.settings.get('productPreviews.aspectRatio', '1:1')
+    this.textAlign = this.$swell.settings.get('productPreviews.textAlign', 'left')
   },
 
   data() {
     return {
-      aspectRatio: '1:1'
+      aspectRatio: '1:1',
+      textAlign: 'left'
     }
   },
 
