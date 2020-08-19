@@ -16,7 +16,7 @@
         @keydown.enter="$fetch"
       />
       <p class="mt-2 mb-16 text-sm">Press enter to search</p>
-      <ProductListing :products="products" :column-count="4" />
+      <ProductPreviews :products="products" :column-count="4" />
     </div>
   </div>
 </template>

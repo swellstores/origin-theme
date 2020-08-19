@@ -172,6 +172,22 @@
               "label": "Extra wide (3:2)"
             }
           ]
+        },
+        {
+          "id": "product_previews.text_align",
+          "label": "Text alignment",
+          "type": "select",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ]
         }
       ]
     },

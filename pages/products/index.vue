@@ -1,7 +1,7 @@
 <template>
   <main class="">
     <div class="container pt-7 pb-4">
-      <ProductListing :products="products" />
+      <ProductPreviews :products="products" />
     </div>
   </main>
 </template>

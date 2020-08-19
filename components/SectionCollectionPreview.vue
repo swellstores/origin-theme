@@ -6,7 +6,7 @@
     :description="$fetchState.error.message"
   />
 
-  <section v-else class="py-16">
+  <section v-else-if="products.length" class="py-16">
     <div class="container">
       <div v-if="!loaded && $fetchState.pending" class="loader-el w-64 h-8 mb-2 md:h-10"></div>
       <NuxtLink v-else :to="resolveUrl({ type: 'category', value: slug })">
@@ -14,7 +14,7 @@
       </NuxtLink>
 
       <!-- Product previews -->
-      <ProductListing :products="products" :column-count="3" />
+      <ProductPreviews :products="products" :column-count="3" />
     </div>
   </section>
 </template>

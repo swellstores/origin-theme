@@ -60,7 +60,7 @@
       </aside>
 
       <!-- Product previews -->
-      <ProductListing :products="products" />
+      <ProductPreviews :products="products" />
 
       <!-- Pagination controls -->
       <div v-if="pages" class="py-2 sm:py-4 md:py-6">
