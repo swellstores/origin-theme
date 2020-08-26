@@ -17,7 +17,7 @@
             <h4>{{ item.product.name }}</h4>
           </NuxtLink>
           <div v-for="option in item.options" :key="option.name" class="mt-1 text-sm">
-            <span v-if="option.value" class="font-semibold">{{ option.name }}:&nbsp;</span>
+            <span v-if="option.value" class="font-bold">{{ option.name }}:&nbsp;</span>
             <span>{{ option.value }}</span>
           </div>
         </div>

@@ -49,10 +49,7 @@
           <BaseIcon icon="uil:camera-slash" size="lg" class="absolute center-xy text-primary-med" />
         </div>
         <!-- Product summary -->
-        <div
-          class="py-3 font-label font-semibold"
-          :class="{ 'text-center': textAlign === 'center' }"
-        >
+        <div class="py-3" :class="{ 'text-center': textAlign === 'center' }">
           <NuxtLink :to="resolveUrl({ type: 'product', value: product.slug })" class="inline-block">
             <h4 v-balance-text>{{ product.name }}</h4>
           </NuxtLink>

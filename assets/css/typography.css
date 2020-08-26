@@ -4,12 +4,12 @@
 
 body,
 html {
-  @apply text-primary-darker font-body text-base font-medium leading-normal antialiased;
+  @apply text-primary-darker font-body text-base leading-normal antialiased;
 }
 
 button,
 a {
-  @apply rounded text-primary-darkest font-label font-semibold;
+  @apply rounded text-primary-darkest font-bold;
 
   &:hover {
     @apply text-accent;
@@ -58,7 +58,7 @@ h4 {
 
 b,
 strong {
-  @apply font-semibold;
+  @apply font-bold;
 }
 
 ul li {
@@ -73,11 +73,11 @@ textarea {
 }
 
 .label-xs-bold {
-  @apply text-xs font-label font-semibold uppercase tracking-wide leading-tight;
+  @apply text-xs font-bold uppercase tracking-wide leading-tight;
 }
 
 .label-xs-bold-faded {
-  @apply text-xs font-label font-semibold uppercase tracking-wide leading-tight text-primary-dark;
+  @apply text-xs font-bold uppercase tracking-wide leading-tight text-primary-dark;
 }
 
 .label-sm {
@@ -85,7 +85,7 @@ textarea {
 }
 
 .label-sm-bold {
-  @apply text-sm font-semibold;
+  @apply text-sm font-bold;
 }
 
 .label-sm-faded {

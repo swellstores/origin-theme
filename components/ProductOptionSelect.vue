@@ -26,7 +26,7 @@
             'border-primary-darkest': value.name === currentValue,
             'text-primary-med': value.disabled
           }"
-          class="relative block w-full rounded text-sm border font-semibold cursor-pointer hover:border-primary-darkest focus:shadow-outline"
+          class="relative block w-full rounded text-sm border font-bold cursor-pointer hover:border-primary-darkest focus:shadow-outline"
         >
           <span
             v-if="value.color"
@@ -46,7 +46,7 @@
           :id="`option-${option.id}-button`"
           :class="{ 'rounded-b-none': dropdownIsActive }"
           :aria-labelledby="`option-${option.id}-label option-${option.id}-button`"
-          class="relative w-full flex p-2 items-center border font-semibold cursor-pointer rounded focus:outline-none focus:shadow-outline"
+          class="relative w-full flex p-2 items-center border font-bold cursor-pointer rounded focus:outline-none focus:shadow-outline"
           aria-haspopup="listbox"
           @click="toggleDropdown"
         >
@@ -86,7 +86,7 @@
               :style="`background: ${swatchColor}`"
               class="inline-block w-7 h-7 mr-1 rounded-sm"
             ></span>
-            <span class="m-2 font-semibold">{{ value.name }}</span>
+            <span class="m-2 font-bold">{{ value.name }}</span>
           </li>
         </ul>
       </div>

@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "@nuxtjs/sentry": "3.2.2",
+    "build-url": "3.0.0",
     "lazysizes": "5.2.2",
     "lodash": "4.17.20",
     "mitt": "2.1.0",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@nuxtjs/eslint-config": "3.0.0",
     "@nuxtjs/eslint-module": "2.0.0",
+    "@nuxtjs/google-fonts": "1.0.0",
     "@nuxtjs/tailwindcss": "3.0.0",
     "babel-eslint": "^10.0.2",
     "eslint": "5.16.0",

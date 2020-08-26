@@ -31,9 +31,8 @@ module.exports = {
       current: 'currentColor'
     },
     fontFamily: {
-      body: 'var(--typography-body-family)',
-      heading: 'var(--typography-heading-family)',
-      label: 'var(--typography-label-family)'
+      body: 'var(--typography-body-font-normal)',
+      heading: 'var(--typography-heading-font)'
     },
     fontSize: {
       '2xs': 'var(--type-scale--3)',

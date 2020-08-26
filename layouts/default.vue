@@ -27,19 +27,13 @@
 <script>
 // Helpers
 import { mapState } from 'vuex'
-import { getFontLinks } from '~/modules/swell-editor/utils'
 
 export default {
-  fetch() {
-    this.typographySettings = this.$swell.settings.get('typography', {})
-  },
-
   data() {
     return {
       cartIsActive: false,
       searchIsActive: false,
-      cookieNotificationIsActive: false, // TODO set true
-      typographySettings: {}
+      cookieNotificationIsActive: false // TODO set true
     }
   },
 
@@ -66,12 +60,6 @@ export default {
     if (this.getCookie('cookiesAccepted')) {
       this.$store.commit('setState', { key: 'cookiesWereAccepted', value: true })
     }
-
-    if (this.$swellEditor) {
-      this.$swellEditor.events.on('load-webfonts', () => {
-        this.$fetch()
-      })
-    }
   },
 
   methods: {
@@ -87,10 +75,7 @@ export default {
   },
 
   head() {
-    const { headingFamily, bodyFamily, labelFamily } = this.typographySettings
-
     return {
-      link: [...getFontLinks([headingFamily, bodyFamily, labelFamily])],
       script: [
         // Iconify API script for loading SVG icons on demand
         {

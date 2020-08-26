@@ -1,7 +1,7 @@
 <template functional>
   <div
     :class="[
-      'bg-primary-darkest text-primary-lighter text-sm leading-snug font-semibold text-center',
+      'bg-primary-darkest text-primary-lighter text-sm leading-snug font-bold text-center',
       { hidden: props.hidden }
     ]"
   >

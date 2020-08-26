@@ -88,18 +88,18 @@
           "type": "heading"
         },
         {
-          "id": "typography.heading_family",
-          "label": "Heading font family",
+          "id": "typography.heading_font",
+          "label": "Heading font",
           "type": "font_family"
         },
         {
-          "id": "typography.body_family",
-          "label": "Body font family",
+          "id": "typography.body_font_normal",
+          "label": "Body font (normal)",
           "type": "font_family"
         },
         {
-          "id": "typography.label_family",
-          "label": "Link/Label font family",
+          "id": "typography.body_font_bold",
+          "label": "Body font (bold)",
           "type": "font_family"
         },
         {

@@ -11,13 +11,13 @@
       <div :class="{ 'w-4/5': type === 'compact', 'w-full mb-4': type === 'full' }">
         <p class="label-sm">
           We use cookies to store your preferences, for analytics, and to show you ads later.
-          <a v-if="type === 'compact'" href="" class="font-semibold">Learn more</a>
+          <a v-if="type === 'compact'" href="" class="font-bold">Learn more</a>
         </p>
       </div>
 
       <div :class="{ 'w-full flex items-center': type === 'full' }">
-        <a v-if="type === 'full'" href="" class="font-semibold mr-4">Learn more</a>
-        <a v-if="type === 'full'" href="" class="font-semibold">Settings</a>
+        <a v-if="type === 'full'" href="" class="font-bold mr-4">Learn more</a>
+        <a v-if="type === 'full'" href="" class="font-bold">Settings</a>
         <span
           class="relative bg-primary-light"
           :class="{

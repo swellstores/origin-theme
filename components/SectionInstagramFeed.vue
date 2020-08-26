@@ -51,7 +51,7 @@ export default {
                 <svg class="w-6 h-6 mb-4">
                   <use xlinkHref="#icon-instagram" />
                 </svg>
-                <p class="text-lg font-semibold md:text-xl">{heading}</p>
+                <p class="text-lg font-bold md:text-xl">{heading}</p>
               </div>
               <p class="text-sm" v-if="username">@{username}</p>
             </a>

@@ -1,3 +1,6 @@
+import settings from './config/settings'
+import { getGoogleFontConfig } from './modules/swell-editor/utils'
+
 export default {
   components: true,
 
@@ -23,9 +26,12 @@ export default {
   buildModules: [
     // '@nuxtjs/eslint-module',
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/google-fonts',
     '~/modules/swell-editor',
     '~/modules/swell'
   ],
+
+  googleFonts: getGoogleFontConfig(settings),
 
   /*
    ** Sentry module configuration

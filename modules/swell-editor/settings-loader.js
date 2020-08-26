@@ -1,35 +1,4 @@
-import camelCase from 'lodash/camelCase'
-import snakeCase from 'lodash/snakeCase'
-import { editor } from './swell-editor-utils'
-
-function normalizeKeys(obj, params) {
-  const options = {
-    case: 'camel',
-    ignoredKeys: ['$cache'],
-    ...params
-  }
-
-  if (obj && obj.constructor === Object) {
-    Object.keys(obj).forEach(key => {
-      if (options.ignoredKeys.includes(key)) return
-
-      const value = obj[key]
-      delete obj[key]
-
-      if (options.case === 'camel') {
-        key = camelCase(key)
-      } else if (options.case === 'snake') {
-        key = snakeCase(key)
-      }
-
-      obj[key] = normalizeKeys(value, options)
-    })
-  } else if (obj && obj.constructor === Array) {
-    obj = obj.map(v => normalizeKeys(v, options))
-  }
-
-  return obj
-}
+import { editor, normalizeKeys } from './swell-editor-utils'
 
 function parseSerializedOption(value) {
   const obj = JSON.parse(value)

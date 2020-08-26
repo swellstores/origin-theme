@@ -70,21 +70,21 @@
     }
   },
   "typography": {
-    "heading_family": {
+    "heading_font": {
       "provider": "Google",
-      "name": "Sans Pro",
+      "name": "Source Sans Pro",
       "weight": 900,
       "fallback": "-apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif"
     },
-    "body_family": {
+    "body_font_normal": {
       "provider": "Google",
-      "name": "Sans Pro",
+      "name": "Source Sans Pro",
       "weight": 400,
       "fallback": "-apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif"
     },
-    "label_family": {
+    "body_font_bold": {
       "provider": "Google",
-      "name": "Sans Pro",
+      "name": "Source Sans Pro",
       "weight": 600,
       "fallback": "-apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif"
     },

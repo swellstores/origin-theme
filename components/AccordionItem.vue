@@ -2,7 +2,7 @@
   <div class="border-b">
     <div :class="{ container: useContainer }">
       <div class="flex flex-row items-center z-10 cursor-pointer" @click="toggleExpanded()">
-        <h3 class="py-4 text-md font-semibold">{{ heading }}</h3>
+        <h3 class="py-4 text-md font-bold">{{ heading }}</h3>
         <div
           class="ml-auto transition-all transition-fast ease-in-out"
           :class="{ 'rotate-1/2': isExpanded }"

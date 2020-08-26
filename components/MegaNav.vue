@@ -8,7 +8,7 @@
           :key="'megaNavCol' + index"
           class="flex-initial px-4 mb-6 w-1/4 min-w-48"
         >
-          <li v-for="(item, i) in column.items" :key="'megaNavItem' + i" class="mb-0 font-semibold">
+          <li v-for="(item, i) in column.items" :key="'megaNavItem' + i" class="mb-0">
             <!-- Product preview -->
             <NuxtLink
               v-if="item.type === 'product' && typeof item.value === 'object'"
@@ -23,24 +23,24 @@
                 class="rounded"
               />
               <div class="pt-4">
-                <p class="font-bold">{{ item.name }}</p>
+                <h4>{{ item.name }}</h4>
                 <p v-if="item.value.price" class="text-primary-darker">
                   ${{ item.value.price.toFixed(2) }}
                 </p>
               </div>
             </NuxtLink>
             <!-- Heading -->
-            <h5
+            <p
               v-else-if="item.type === 'heading'"
               :class="{ 'mt-4': i > 0 }"
               class="label-sm-faded mb-2"
             >
               {{ item.name }}
-            </h5>
+            </p>
             <!-- Callout -->
-            <h5 v-else-if="item.type === 'callout'" :class="{ 'mt-4': i > 0 }" class="btn">
+            <p v-else-if="item.type === 'callout'" :class="{ 'mt-4': i > 0 }" class="btn">
               {{ item.name }}
-            </h5>
+            </p>
             <!-- Standard link -->
             <NuxtLink
               v-else
