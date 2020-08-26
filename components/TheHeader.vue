@@ -2,13 +2,9 @@
   <div data-sw-path="header">
     <!-- Duplicate elements to match header height and push main content down -->
     <div class="opacity-0" :style="{ height: header.logoHeight + 'px' }">
-      <ThePromoBar
-        v-if="header.showPromo"
-        text="|"
-        :hidden="header.hideOnScroll && headerIsHidden"
-      />
+      <ThePromoBar v-if="header.showPromo" text="|" :hidden="header.hideOnScroll && hideHeader" />
       <div class="my-3">
-        <span v-if="logoSrc" :style="{ height: logoHeight + 'px' }" class="block"></span>
+        <span v-if="logoSrc" :style="{ height: header.logoHeight + 'px' }" class="block"></span>
         <span v-else class="text-3xl sm:text-4xl">|</span>
       </div>
     </div>
@@ -22,7 +18,7 @@
         v-if="header.showPromo"
         :url="header.promoUrl"
         :text="header.promoText || '[ Promotional text ]'"
-        :hidden="header.hideOnScroll && headerIsHidden"
+        :hidden="header.hideOnScroll && hideHeader"
       />
 
       <div class="w-full fixed transform translate-y-0 transition-all ease-in-out duration-200">
@@ -30,7 +26,7 @@
           class="transition-all duration-300 ease-in-out z-40"
           :class="[
             ' bg-primary-lightest lg:shadow-md',
-            { 'transform -translate-y-full': header.hideOnScroll && headerIsHidden }
+            { 'transform -translate-y-full': header.hideOnScroll && hideHeader }
           ]"
         >
           <div class="relative container flex items-stretch justify-between items-stretch z-20">
@@ -40,8 +36,8 @@
                 <img
                   v-if="logoSrc"
                   :src="logoSrc"
-                  :height="logoHeight"
-                  :style="{ height: logoHeight + 'px' }"
+                  :height="header.logoHeight"
+                  :style="{ height: header.logoHeight + 'px' }"
                   class="inline-block w-auto"
                 />
                 <span v-else class="text-3xl sm:text-4xl whitespace-no-wrap">{{ storeName }}</span>
@@ -139,22 +135,20 @@ export default {
     // Set component data
     this.header = $swell.settings.get('header', {})
     this.menu = $swell.settings.menus(menuId)
+    this.storeName = $swell.settings.get('store.name', 'ORIGIN')
     this.logoSrc = $swell.settings.get('header.logo.file.url')
-    this.logoHeight = $swell.settings.get('header.logoHeight')
-    this.storeName = $swell.settings.get('store.name')
   },
 
   data() {
     return {
       header: {},
       menu: {},
-      logoSrc: null,
-      logoHeight: null,
       storeName: null,
+      logoSrc: null,
       mounted: false,
       megaNavIsEnabled: true,
       mobileNavIsVisible: false,
-      headerIsHidden: false,
+      hideHeader: false,
       lastScrollPos: 0,
       isScrolled: false,
       scrollRAF: null
@@ -168,7 +162,7 @@ export default {
   watch: {
     $route() {
       // Close mega/mobile nav menu when the page changes
-      this.headerIsHidden = false
+      this.hideHeader = false
     }
   },
 
@@ -209,7 +203,7 @@ export default {
       // current scroll position and last scroll position is less than some offset
       if (Math.abs(currentScrollPosition - this.lastScrollPos) < 50) return
 
-      this.headerIsHidden = currentScrollPosition > this.lastScrollPos
+      this.hideHeader = currentScrollPosition > this.lastScrollPos
       this.lastScrollPos = currentScrollPosition
     },
 
@@ -228,7 +222,7 @@ export default {
         window.addEventListener('scroll', this.handleScroll)
       } else {
         window.removeEventListener('scroll', this.handleScroll)
-        this.headerIsHidden = false
+        this.hideHeader = false
       }
     },
 
