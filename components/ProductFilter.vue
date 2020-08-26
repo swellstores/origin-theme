@@ -35,20 +35,19 @@
             </a>
 
             <ul class="w-full flex flex-wrap pt-3">
-              <!-- Active Categories -->
               <li
-                v-for="(category, i) in activeFilters.categories"
-                :key="`active-category-${i}`"
+                v-for="(filter, i) in activeFilters"
+                :key="`active-category-${filter.id}-${filter.value}`"
                 class="active-filter rounded label-sm-bold"
               >
-                <span class="mr-3">{{ category }}</span
-                ><a href="#" @click.prevent="removeFilter('categories', category)"
+                <span class="mr-3">{{ filterLabel(filter.id, filter.value) }}</span
+                ><a href="#" @click.prevent="removeFilter(filter.id, filter.value)"
                   ><svg class="w-2 h-2"><use xlink:href="#cross-sm" /></svg
                 ></a>
               </li>
-              <!-- Active Colors -->
+              <!-- TODO: Color attributes
               <li
-                v-for="(color, i) in activeFilters.colors"
+                v-for="(color, i) in activeColorFilters"
                 :key="`active-color-${i}`"
                 class="active-filter rounded-full label-sm-bold"
               >
@@ -61,54 +60,32 @@
                   ><svg class="w-2 h-2"><use xlink:href="#cross-sm" /></svg
                 ></a>
               </li>
-              <!-- Active Sizes -->
-              <li
-                v-for="(size, i) in activeFilters.sizes"
-                :key="`active-size-${i}`"
-                class="active-filter rounded label-sm-bold"
-              >
-                <span class="mr-3">{{ size }}</span
-                ><a href="#" @click.prevent="removeFilter('sizes', size)"
-                  ><svg class="w-2 h-2"><use xlink:href="#cross-sm" /></svg
-                ></a>
-              </li>
-              <!-- Active Price Range -->
-              <li
-                v-if="
-                  priceRange.values[0] > priceRange.min || priceRange.values[1] < priceRange.max
-                "
-                class="active-filter rounded label-sm-bold"
-              >
-                <span class="mr-3">${{ priceRange.values[0] }} - ${{ priceRange.values[1] }}</span
-                ><svg class="w-2 h-2"><use xlink:href="#cross-sm" /></svg>
-              </li>
+              -->
             </ul>
           </div>
         </div>
 
         <div class="pt-6 pb-10 px-6">
-          <!-- Price Range -->
-          <span class="label-xs-bold-faded uppercase">Price</span>
-          <div class="w-full pt-4 pb-10">
-            <RangeSlider
-              v-model="priceRange.values"
-              :min="priceRange.min"
-              :max="priceRange.max"
-              :interval="priceRange.interval"
-            />
+          <div v-for="filter of filters">
+            <span class="label-xs-bold-faded uppercase">{{ filter.label }}</span>
+            <div v-if="filter.type === 'range'" class="w-full pt-4 pb-10">
+              <RangeSlider
+                :min="filter.options[0].value"
+                :max="filter.options[1].value"
+                :interval="filter.interval"
+              />
+            </div>
+            <div v-else class="pt-4 pb-8">
+              <InputSelect :options="filter.options" type="checkbox" @input="selectFilter" />
+            </div>
           </div>
 
-          <!-- Categories -->
-          <span class="label-xs-bold-faded uppercase">Category</span>
-          <div class="pt-4 pb-8">
-            <InputSelect v-model="activeFilters.categories" :options="categories" type="checkbox" />
-          </div>
-
-          <!-- Colors -->
+          <!-- TODO: Colors
           <span class="label-xs-bold-faded uppercase">Color</span>
           <ColorFilter v-model="activeFilters.colors" class="flex pt-4 pb-8" :colors="colors" />
+          -->
 
-          <!-- Size -->
+          <!-- TODO: Sizes
           <span class="label-xs-bold-faded uppercase">Size</span>
           <InputSelect
             v-model="activeFilters.sizes"
@@ -117,13 +94,16 @@
             type="checkbox"
             styling="box"
           />
+          -->
 
+          <!--
           <button
             class="w-full px-6 py-3 uppercase tracking-wide bg-primary-darkest text-primary-lighter label-sm-bold rounded"
             type="button"
           >
             Apply filters
           </button>
+          -->
         </div>
       </div>
     </div>
@@ -132,80 +112,31 @@
 
 <script>
 // Helpers
+import find from 'lodash/find'
 import { mapState } from 'vuex'
 
 export default {
   name: 'ProductFilter',
 
+  props: {
+    filters: {
+      type: Array,
+      default: () => []
+    }
+  },
+
   // TODO Temp data, remove later.
   data() {
     return {
-      // sortMethod: 'Best selling', // TODO set first from content settings
-      sortOptions: ['Best selling', 'Lowest to Highest ($)', 'Highest to Lowest ($)'], // TODO move to content settings
-      // popularity asc, price desc, name asc, price asc
       // showFilter: false, // TODO move to content settings
-      // filters: {} // TODO move to content settings
-      activeFilters: {
-        categories: [],
-        colors: [],
-        sizes: []
-      },
-      priceRange: {
-        min: 10,
-        max: 200,
-        values: [10, 200],
-        interval: 10
-      },
-      categories: [
-        'Best sellers',
-        'Suits',
-        'Pants',
-        'Shirts',
-        'Shorts',
-        'Sweats',
-        'Outerwear',
-        'Swimwear',
-        'Underwear'
-      ],
-      colors: [
-        {
-          name: 'Maroon',
-          hex: '#780116'
-        },
-        {
-          name: 'Purple',
-          hex: '#3e1559'
-        },
-        {
-          name: 'Aqua',
-          hex: '#21b1a6'
-        },
-        {
-          name: 'Amber',
-          hex: '#f7b538'
-        },
-        {
-          name: 'Orange',
-          hex: '#d8572a'
-        }
-      ],
-      sizes: ['S', 'M', 'L', 'XL']
+      activeFilters: []
     }
   },
 
   computed: {
     ...mapState(['productFilterIsActive']),
     filterCount() {
-      let count =
-        this.activeFilters.categories.length +
-        this.activeFilters.colors.length +
-        this.activeFilters.sizes.length
-      count +=
-        this.priceRange.values[0] > this.priceRange.min ||
-        this.priceRange.values[1] < this.priceRange.max
-          ? 1
-          : 0
-      return count
+      return this.activeFilters.length
     }
   },
 
@@ -223,24 +154,39 @@ export default {
 
   methods: {
     clearFilters() {
-      this.activeFilters.categories = []
-      this.activeFilters.sizes = []
-      this.activeFilters.colors = []
-      this.priceRange.values = [this.priceRange.min, this.priceRange.max]
+      this.activeFilters = []
+      this.$emit('change', this.activeFilters)
     },
-    removeFilter(type, value) {
-      if (Array.isArray(this.activeFilters[type])) {
-        this.activeFilters[type] = this.activeFilters[type].filter(filter => filter !== value)
-      }
-
-      if (type === 'colors') {
-        for (let i = 0; i < this.activeFilters.colors.length; i++) {
-          if (this.activeFilters.colors[i].name === value) {
-            this.activeFilters.colors.splice(i, 1)
-            break
+    selectFilter(option) {
+      const active = find(this.activeFilters, { value: option.value })
+      if (active) {
+        this.removeFilter(active.id, option.value)
+      } else {
+        for (let filter of this.filters) {
+          if (filter.options) {
+            for (let filterOption of filter.options) {
+              if (filterOption.value === option.value) {
+                this.activeFilters.push({
+                  id: filter.id,
+                  label: filter.label,
+                  value: option.value
+                })
+                this.$emit('change', this.activeFilters)
+                return
+              }
+            }
           }
         }
       }
+    },
+    removeFilter(id, value) {
+      this.activeFilters = this.activeFilters.filter(
+        filter => filter.id !== id || filter.value !== value
+      )
+      this.$emit('change', this.activeFilters)
+    },
+    filterLabel(id, value) {
+      return find(find(this.filters, { id }).options, { value }).label
     },
     expandActiveFilters() {
       /* const container = this.$refs.activeFilters

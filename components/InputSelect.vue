@@ -2,31 +2,31 @@
   <div>
     <div
       v-for="(option, i) in options"
-      :key="`${option}-${i}`"
+      :key="`${option.value || option}-${i}`"
       :class="{ checkbox: styling === 'check', 'box-selector': styling === 'box' }"
     >
       <input
-        :id="`${option}-${i}`"
-        v-model="value"
+        :id="`${option.value || option}-${i}`"
+        v-model="selected"
         :value="option"
         :type="type"
-        @change="$emit('input', value)"
+        @change="$emit('input', option)"
       />
 
       <template v-if="styling === 'box'">
         <label
           :for="`${option}-${i}`"
           class="label-sm-bold transition-all duration-200 ease-in-out"
-          >{{ option }}</label
+          >{{ option.label || option }}</label
         >
       </template>
 
       <template v-else>
-        <label :for="`${option}-${i}`">
+        <label :for="`${option.value || option}-${i}`">
           <div class="indicator">
             <svg class="w-5 h-5 text-primary-lightest"><use xlink:href="#check" /></svg>
           </div>
-          <p>{{ option }}</p>
+          <p>{{ option.label || option }}</p>
         </label>
       </template>
     </div>
@@ -56,8 +56,17 @@ export default {
     }
   },
 
+  created() {
+    const { value } = this
+    if (value !== undefined) {
+      this.selected = value
+    }
+  },
+
   data() {
-    return {}
+    return {
+      selected: []
+    }
   }
 }
 </script>

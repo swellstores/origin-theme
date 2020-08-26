@@ -3,8 +3,9 @@
     <!-- Product Filter -->
     <ProductFilter
       v-show="filterModalIsActive"
+      :filters="productFilters"
       @click-close="toggleFilter()"
-      @change="changeFilters()"
+      @change="changeFilters"
     />
 
     <!-- Hero image with heading -->
@@ -58,12 +59,7 @@
         <div class="ml-auto">
           <div class="flex items-center">
             <span class="pr-2">Sort&nbsp;</span>
-            <InputDropdown
-              class="w-48"
-              :options="sortOptions"
-              :value="sort"
-              @change="changeSort"
-            />
+            <InputDropdown class="w-48" :options="sortOptions" :value="sort" @change="changeSort" />
           </div>
         </div>
       </aside>
@@ -116,6 +112,8 @@ export default {
       category: {},
       products: [],
       productsCount: 0,
+      productFilters: [],
+      activeFilters: [],
       pages: {},
       page: 1,
       limit: 24,
@@ -164,22 +162,24 @@ export default {
     async fetchProducts() {
       const { $swell, $route } = this
       const slug = $route.params.slug
-      const products = await $swell.products.list({
+      const products = await $swell.products.listFiltered(this.activeFilters, {
         page: this.page,
         limit: this.limit,
         sort: this.sort,
         categories: slug
       })
+      this.pages = products.pages
       this.products = products.results
       this.productsCount = products.count
-      this.pages = products.pages
+      this.productFilters = $swell.products.filters(products)
       return products
     },
     toggleFilter() {
       this.filterModalIsActive = !this.filterModalIsActive
     },
     changeFilters(filters) {
-      // TODO
+      this.activeFilters = filters
+      this.fetchProducts()
     },
     changeSort(option) {
       this.sort = option.value
