@@ -1,7 +1,12 @@
 <template>
   <main class="">
     <!-- Product Filter -->
-    <ProductFilter v-show="filterModalIsActive" @click-close="toggleFilter()" />
+    <ProductFilter
+      v-show="filterModalIsActive"
+      :filters=
+      @click-close="toggleFilter()"
+      @change="changeFilters()"
+    />
 
     <!-- Hero image with heading -->
     <section v-if="settings.showHeroImage" class="relative">
@@ -54,7 +59,12 @@
         <div class="ml-auto">
           <div class="flex items-center">
             <span class="pr-2">Sort&nbsp;</span>
-            <InputDropdown class="w-48" />
+            <InputDropdown
+              class="w-48"
+              :options="sortOptions"
+              :value="sort"
+              @change="changeSort"
+            />
           </div>
         </div>
       </aside>
@@ -64,7 +74,7 @@
 
       <!-- Pagination controls -->
       <div v-if="pages" class="py-2 sm:py-4 md:py-6">
-        <PaginationButtons :current-page="currentPage" :pages="pages" />
+        <PaginationButtons :current-page="page" :pages="pages" />
       </div>
     </div>
   </main>
@@ -73,6 +83,7 @@
 <script>
 // Helpers
 import get from 'lodash/get'
+import find from 'lodash/find'
 
 export default {
   name: 'CategoryDetailPage',
@@ -80,16 +91,16 @@ export default {
   async fetch() {
     const { $swell, $route } = this
     const slug = $route.params.slug
-    const page = parseInt($route.query.page) || 1
-    const limit = 24
+
+    this.page = parseInt($route.query.page) || 1
 
     // Set preload data
-    this.products = [...Array(limit).keys()].map(() => ({}))
+    this.products = [...Array(this.limit).keys()].map(() => ({}))
 
     // Fetch category and products assigned to category
     const [category, products] = await Promise.all([
       $swell.categories.get(slug),
-      $swell.products.list({ page, limit, categories: slug })
+      this.fetchProducts()
     ])
 
     // Show 404 if category isn't found
@@ -99,10 +110,6 @@ export default {
 
     // Set component data
     this.category = category
-    this.products = products.results
-    this.productsCount = products.count
-    this.pages = products.pages
-    this.currentPage = page
   },
 
   data() {
@@ -111,7 +118,27 @@ export default {
       products: [],
       productsCount: 0,
       pages: {},
-      currentPage: 0,
+      page: 1,
+      limit: 24,
+      sort: '',
+      sortOptions: [
+        {
+          value: '',
+          label: 'Latest'
+        },
+        {
+          value: 'popularity',
+          label: 'Best selling'
+        },
+        {
+          value: 'price_asc',
+          label: 'Price, low to high'
+        },
+        {
+          value: 'price_desc',
+          label: 'Price, high to low'
+        }
+      ],
       filterModalIsActive: false
     }
   },
@@ -135,8 +162,29 @@ export default {
   },
 
   methods: {
+    async fetchProducts() {
+      const { $swell, $route } = this
+      const slug = $route.params.slug
+      const products = await $swell.products.list({
+        page: this.page,
+        limit: this.limit,
+        sort: this.sort,
+        categories: slug
+      })
+      this.products = products.results
+      this.productsCount = products.count
+      this.pages = products.pages
+      return products
+    },
     toggleFilter() {
       this.filterModalIsActive = !this.filterModalIsActive
+    },
+    changeFilters(filters) {
+      // TODO
+    },
+    changeSort(option) {
+      this.sort = option.value
+      this.fetchProducts()
     }
   },
 

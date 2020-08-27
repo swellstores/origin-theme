@@ -23,11 +23,11 @@
         <ul ref="options">
           <li
             v-for="option in options"
-            :key="option"
+            :key="option.label || option"
             class="px-4 py-3 mb-0 hover:bg-primary-lighter transition-all duration-500 opacity-100"
             @click="selectOption(option)"
           >
-            {{ option }}
+            {{ option.label || option }}
           </li>
         </ul>
       </div>
@@ -36,25 +36,45 @@
 </template>
 
 <script>
+// Helpers
+import find from 'lodash/find'
+
 export default {
   name: 'InputDropdown',
 
   props: {
     options: {
       type: Array,
-      default: () => ['Option One', 'Option Two', 'Option Three']
+      default: () => []
     },
     value: {
-      type: Array,
-      default: () => []
+      type: String
     }
   },
 
   data() {
     return {
       expanded: false,
-      selected: 'Best selling',
+      selected: '',
       hideBottomBorder: false
+    }
+  },
+
+  created() {
+    const { value, options } = this
+
+    if (value !== undefined) {
+      if (options && options.length > 0) {
+        const selected =
+          find(options, value) || find(options, { value }) || find(options, { label: value })
+        if (selected !== undefined) {
+          this.selected = selected.label || selected
+          return
+        }
+      }
+
+      // Fallback
+      this.selected = value
     }
   },
 
@@ -72,8 +92,9 @@ export default {
         })
       }
     },
-    selectOption(val) {
-      this.selected = val
+    selectOption(option) {
+      this.selected = option.label || option
+      this.$emit('change', option)
     }
   }
 }
