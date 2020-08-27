@@ -85,8 +85,7 @@
         },
         {
           "id": "align_x",
-          "label": "Horizontal alignment",
-          "description": "Horizontal form position within block",
+          "label": "Form position",
           "type": "select",
           "default": "left",
           "options": [
@@ -97,6 +96,22 @@
             {
               "value": "right",
               "label": "Right"
+            }
+          ]
+        },
+        {
+          "id": "text_align",
+          "label": "Text alignment",
+          "type": "select",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
             }
           ]
         }

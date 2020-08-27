@@ -2,7 +2,7 @@
   <section
     :class="[
       `bg-${bgColor}`,
-      { 'flex-row-reverse': alignX === 'right', 'text-center': alignX === 'center' },
+      { 'flex-row-reverse': alignX === 'right', 'text-center': textAlign === 'center' },
       {
         'mx-0': outerSpacingX === 'none',
         'mx-2 lg:mx-4': outerSpacingX === 'sm',
@@ -69,6 +69,10 @@ export default {
       default: 'lg'
     },
     alignX: {
+      type: String,
+      default: 'left'
+    },
+    textAlign: {
       type: String,
       default: 'left'
     }
