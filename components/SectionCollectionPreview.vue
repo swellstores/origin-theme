@@ -6,7 +6,7 @@
     :description="$fetchState.error.message"
   />
 
-  <section v-else-if="products.length" class="py-16">
+  <section v-else class="py-16">
     <div class="container">
       <div v-if="!loaded && $fetchState.pending" class="loader-el w-64 h-8 mb-2 md:h-10"></div>
       <NuxtLink v-else :to="resolveUrl({ type: 'category', value: slug })">
@@ -20,6 +20,9 @@
 </template>
 
 <script>
+// Helpers
+import get from 'lodash/get'
+
 export default {
   name: 'SectionCollectionPreview',
 
@@ -60,7 +63,7 @@ export default {
     // Set component data
     this.name = category.name
     this.slug = category.slug
-    this.products = category.products ? category.products.results : []
+    this.products = get(category, 'products.results', [])
 
     this.loaded = true
   },

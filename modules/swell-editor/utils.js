@@ -345,7 +345,7 @@ function selectContent(path) {
 function updateGoogleFontsLink(settings) {
   const url = getGoogleFontsUrl(getGoogleFontConfig(settings))
 
-  if (process.browser) {
+  if (url && process.browser) {
     const links = document.getElementsByTagName('link')
 
     for (const link of links) {
@@ -386,6 +386,9 @@ function getCssVariables(settings) {
 
     // Turn each property into a CSS variable name with value
     for (const [key, value] of Object.entries(properties)) {
+      if (!value) return
+
+      // Transform property group + key to CSS variable name
       const varName = `--${groupName}-${_.kebabCase(key)}`
 
       if (isRatioSetting(varName)) {
