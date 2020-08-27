@@ -47,7 +47,7 @@
         </div>
       </template>
       <template v-else>
-        <div class="m-6 p-12 border border-dashed">
+        <div class="m-6 py-32 border border-dashed">
           <h3>Panel {{ index + 1 }}</h3>
           <p>No type chosen</p>
         </div>

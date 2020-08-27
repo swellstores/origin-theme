@@ -1,5 +1,5 @@
 <template>
-  <div class="m-6 border border-dashed py-24 text-center">
+  <div class="m-6 border border-dashed py-32 text-center">
     <h3>{{ heading }}</h3>
     <p>{{ description }}</p>
   </div>
