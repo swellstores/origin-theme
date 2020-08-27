@@ -277,17 +277,16 @@
         },
         {
           "id": "footer.secondary_menu",
-          "condition": "footer.show_secondary",
+          "condition": "footer.show_secondary_menu",
           "label": "Secondary footer menu",
           "type": "menu",
-          "default": "footer-secondary",
-          "condition": "footer.show_secondary_menu"
+          "default": "footer-secondary"
         },
         {
           "id": "footer.show_social",
           "label": "Show social icons",
+          "description": "Show social media icons (if link URL has been defined)",
           "type": "toggle",
-          "help": "Add social media accounts in footer",
           "default": true
         },
         {
