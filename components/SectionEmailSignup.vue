@@ -23,7 +23,7 @@
         {{ heading }}
       </h2>
       <p v-balance-text class="mb-6">{{ description }}</p>
-      <EmailSignupForm class="max-w-96 mx-auto" />
+      <EmailSignupForm :class="{ 'mx-auto': textAlign === 'center' }" class="max-w-96" />
     </div>
     <div class="relative w-full md:w-1/2">
       <VisualMedia :source="image" :is-background="true" />
