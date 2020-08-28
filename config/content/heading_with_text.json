@@ -51,9 +51,7 @@
           "label": "Text columns",
           "type": "select",
           "default": "Dual column",
-          "conditions": {
-            "heading_position": "left"
-          },
+          "conditions": { "heading_position": { "$ne": "left" } },
           "options": [
             {
               "value": "dual",

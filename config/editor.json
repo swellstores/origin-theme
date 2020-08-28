@@ -297,7 +297,7 @@
         },
         {
           "id": "footer.contact_info_heading",
-          "condition": "footer.show_contact_info",
+          "condition": { "footer.show_contact_info": true },
           "label": "Contact info heading",
           "type": "short_text",
           "default": "Contact us"
@@ -358,7 +358,7 @@
           "label": "Twitter profile URL",
           "type": "short_text",
           "format": "url",
-          "hint": "https://twitter.com/mystore"
+          "placeholder": "https://twitter.com/mystore"
         },
         {
           "id": "social_links.facebook.show",
