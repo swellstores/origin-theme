@@ -2,12 +2,12 @@
   <!-- Skeleton loader -->
   <div
     v-if="fetchIsPending"
-    class="py-20 bg-primary-light flex flex-col justify-center items-center"
+    class="py-20 bg-primary-lighter flex flex-col justify-center items-center"
   >
     <div class="loader-el w-1/2 h-7 mb-2"></div>
     <div class="loader-el w-1/3 h-7 mb-6"></div>
     <div class="loader-el w-3/5 h-2 mb-4"></div>
-    <div class="loader-el w-4/5 h-2 mb-8"></div>
+    <div class="loader-el w-2/5 h-2 mb-8"></div>
     <div class="loader-el w-40 h-10"></div>
   </div>
 
@@ -18,12 +18,13 @@
       'mx-6 lg:mx-8 xl:mx-20': outerSpacingX === 'md',
       'my-6 lg:my-8 xl:my-20': outerSpacingY === 'md'
     }"
-    class="relative bg-primary-light overflow-hidden"
+    class="relative bg-primary-lighter overflow-hidden"
   >
     <!-- Background image -->
     <VisualMedia v-if="image" :source="image" :is-background="true" />
     <!-- Background darkening overlay -->
     <div
+      v-if="textColor === 'light'"
       class="absolute inset w-full h-full bg-primary-darkest"
       :style="{ opacity: darkenBg / 100 }"
     ></div>
