@@ -21,21 +21,18 @@
                   "id": "heading",
                   "label": "Heading text",
                   "type": "text",
-                  "placeholder": "Some heading text",
                   "required": true
                 },
                 {
                   "id": "description",
                   "label": "Description text",
                   "type": "text",
-                  "placeholder": "Some other description text",
                   "required": true
                 },
                 {
                   "id": "label",
                   "label": "Label text",
                   "type": "text",
-                  "placeholder": "Label",
                   "required": true
                 },
                 {
@@ -48,7 +45,6 @@
                       "id": "label",
                       "label": "Label text",
                       "type": "text",
-                      "placeholder": "Label",
                       "required": true
                     },
                     {

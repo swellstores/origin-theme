@@ -10,14 +10,12 @@
           "id": "heading",
           "label": "Heading text",
           "type": "text",
-          "placeholder": "Some heading text",
           "required": true
         },
         {
           "id": "description",
           "label": "Description text",
-          "type": "text",
-          "placeholder": "Optional description text"
+          "type": "text"
         },
         {
           "id": "image",

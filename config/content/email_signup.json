@@ -10,7 +10,6 @@
           "id": "heading",
           "label": "Heading text",
           "type": "text",
-          "placeholder": "Some heading text",
           "default": "Email signup",
           "required": true
         },
@@ -18,7 +17,6 @@
           "id": "description",
           "label": "Description text",
           "type": "text",
-          "placeholder": "Some other description text",
           "default": "Enter your email address and we'll send you updates.",
           "required": true
         },
@@ -52,7 +50,7 @@
         {
           "id": "outer_spacing_x",
           "label": "Horizontal outer spacing",
-          "description": "Padding around sides of block",
+          "description": "Space around sides of block",
           "type": "select",
           "default": "none",
           "options": [
@@ -69,7 +67,7 @@
         {
           "id": "outer_spacing_y",
           "label": "Vertical outer spacing",
-          "description": "Padding on top and bottom of block",
+          "description": "Space above and below block",
           "type": "select",
           "default": "none",
           "options": [

@@ -10,7 +10,6 @@
           "id": "heading",
           "label": "Heading text",
           "type": "text",
-          "placeholder": "Some heading text",
           "required": true
         },
         {
@@ -28,7 +27,6 @@
               "id": "label",
               "label": "Label",
               "type": "text",
-              "placeholder": "Label text",
               "required": true
             }
           ]

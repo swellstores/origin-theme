@@ -10,14 +10,12 @@
           "id": "heading",
           "label": "Heading text",
           "type": "text",
-          "placeholder": "Some heading text",
           "required": true
         },
         {
           "id": "description",
           "label": "Description text",
           "type": "long_text",
-          "placeholder": "Some other description text",
           "required": true
         },
         {
@@ -51,7 +49,6 @@
               "id": "label",
               "label": "Label text",
               "type": "text",
-              "placeholder": "Label",
               "required": true
             },
             {
@@ -98,7 +95,7 @@
         {
           "id": "inner_spacing",
           "label": "Inner spacing",
-          "description": "Padding on inside of block",
+          "description": "Space on inside of block",
           "type": "select",
           "default": "sm",
           "options": [
@@ -115,7 +112,7 @@
         {
           "id": "outer_spacing_x",
           "label": "Horizontal outer spacing",
-          "description": "Padding around sides of block",
+          "description": "Space around sides of block",
           "type": "select",
           "default": "none",
           "options": [
@@ -132,7 +129,7 @@
         {
           "id": "outer_spacing_y",
           "label": "Vertical outer spacing",
-          "description": "Padding on top and bottom of block",
+          "description": "Space above and below block",
           "type": "select",
           "default": "none",
           "options": [
