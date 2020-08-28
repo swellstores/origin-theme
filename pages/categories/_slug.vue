@@ -3,7 +3,6 @@
     <!-- Product Filter -->
     <ProductFilter
       v-show="filterModalIsActive"
-      :filters=
       @click-close="toggleFilter()"
       @change="changeFilters()"
     />
