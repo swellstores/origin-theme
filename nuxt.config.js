@@ -1,3 +1,4 @@
+import get from 'lodash/get'
 import settings from './config/settings'
 import { getGoogleFontConfig } from './modules/swell-editor/utils'
 
@@ -7,7 +8,7 @@ export default {
   /*
    ** Set the progress-bar color
    */
-  loading: { color: 'var(--colors-accent)', continuous: true },
+  loading: { color: get(settings, 'colors.accent'), continuous: true },
 
   /*
    ** Global CSS (tailwind.css is loaded by @nuxtjs/tailwindcss module)
@@ -22,7 +23,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/sentry', 'vue-balance-text/nuxt/module'],
+  modules: ['@nuxtjs/sentry', '@nuxtjs/pwa', 'vue-balance-text/nuxt/module'],
   buildModules: [
     // '@nuxtjs/eslint-module',
     '@nuxtjs/tailwindcss',
