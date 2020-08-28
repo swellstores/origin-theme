@@ -24,9 +24,7 @@
           "label": "Dark"
         }
       ],
-      "conditions": {
-        "show_hero_image": true
-      }
+      "conditions": { "show_hero_image": true }
     },
     {
       "id": "darken_hero_image",
@@ -37,9 +35,7 @@
       "default": 20,
       "min": 0,
       "max": 50,
-      "conditions": {
-        "text_color": "light"
-      }
+      "conditions": { "text_color": "light" }
     },
     {
       "id": "product_cols",

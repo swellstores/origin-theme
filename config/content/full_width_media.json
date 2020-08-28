@@ -93,9 +93,7 @@
           "default": 20,
           "min": 0,
           "max": 50,
-          "conditions": {
-            "text_color": "light"
-          }
+          "conditions": { "text_color": "light" }
         },
         {
           "id": "inner_spacing",

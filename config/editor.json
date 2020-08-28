@@ -231,15 +231,15 @@
         },
         {
           "id": "header.promo_text",
-          "condition": "header.show_promo",
           "label": "Promo bar text",
-          "type": "short_text"
+          "type": "short_text",
+          "conditions": { "header.show_promo": true }
         },
         {
           "id": "header.promo_url",
-          "condition": "header.show_promo",
           "label": "Promo bar URL",
-          "type": "url"
+          "type": "url",
+          "conditions": { "header.show_promo": true }
         },
         {
           "type": "heading",
@@ -277,10 +277,10 @@
         },
         {
           "id": "footer.secondary_menu",
-          "condition": "footer.show_secondary_menu",
           "label": "Secondary footer menu",
           "type": "menu",
-          "default": "footer-secondary"
+          "default": "footer-secondary",
+          "conditions": { "footer.show_secondary_menu": true }
         },
         {
           "id": "footer.show_social",
@@ -297,16 +297,16 @@
         },
         {
           "id": "footer.contact_info_heading",
-          "condition": { "footer.show_contact_info": true },
           "label": "Contact info heading",
           "type": "short_text",
-          "default": "Contact us"
+          "default": "Contact us",
+          "conditions": { "footer.show_contact_info": true }
         },
         {
           "id": "footer.contact_info_text",
-          "condition": "footer.show_contact_info",
           "label": "Contact info text",
-          "type": "long_text"
+          "type": "long_text",
+          "conditions": { "footer.show_contact_info": true }
         },
         {
           "id": "footer.show_email_signup",
@@ -316,16 +316,16 @@
         },
         {
           "id": "footer.email_signup_heading",
-          "condition": "footer.show_email_signup",
           "label": "Email signup heading",
           "type": "short_text",
-          "default": "Email newsletter"
+          "default": "Email newsletter",
+          "conditions": { "footer.show_email_signup": true }
         },
         {
           "id": "footer.email_signup_text",
-          "condition": "footer.show_email_signup",
           "label": "Show email signup text",
-          "type": "long_text"
+          "type": "long_text",
+          "conditions": { "footer.show_email_signup": true }
         }
       ]
     },
