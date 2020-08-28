@@ -87,3 +87,6 @@ sw.*
 .DS_Store
 
 .now
+
+# Auto-generated files
+assets/css/variables.css
