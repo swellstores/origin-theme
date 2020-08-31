@@ -98,6 +98,8 @@ export default {
       this.fetchProducts()
     ])
 
+    this.productFilters = $swell.products.filters(products)
+
     // Show 404 if category isn't found
     if (!category) {
       this.$nuxt.error({ statusCode: 404, message: 'Category not found' })
@@ -162,16 +164,16 @@ export default {
     async fetchProducts() {
       const { $swell, $route } = this
       const slug = $route.params.slug
-      const products = await $swell.products.listFiltered(this.activeFilters, {
+      const products = await $swell.products.list({
         page: this.page,
         limit: this.limit,
         sort: this.sort,
-        categories: slug
+        categories: slug,
+        $filters: this.activeFilters
       })
       this.pages = products.pages
       this.products = products.results
       this.productsCount = products.count
-      this.productFilters = $swell.products.filters(products)
       return products
     },
     toggleFilter() {
