@@ -61,7 +61,8 @@
           v-balance-text
           :class="{ 'text-primary-lighter': textColor === 'light' }"
           class="whitespace-pre-line"
-          >{{ description }}
+          v-html="description"
+        >
         </p>
         <div :class="{ '-ml-3': alignX !== 'center' }">
           <NuxtLink
