@@ -21,9 +21,7 @@
               </button>
             </div>
 
-            <p v-if="infoText" class="mt-4 text-sm">
-              {{ infoText }}
-            </p>
+            <div v-if="infoText" class="mt-4 text-sm" v-html="infoText"></div>
           </div>
 
           <!-- Items -->

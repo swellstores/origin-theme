@@ -305,7 +305,7 @@
         {
           "id": "footer.contact_info_text",
           "label": "Contact info text",
-          "type": "long_text",
+          "type": "basic_html",
           "conditions": { "footer.show_contact_info": true }
         },
         {
@@ -324,7 +324,7 @@
         {
           "id": "footer.email_signup_text",
           "label": "Show email signup text",
-          "type": "long_text",
+          "type": "basic_html",
           "conditions": { "footer.show_email_signup": true }
         }
       ]
@@ -336,7 +336,7 @@
         {
           "id": "cart.info_text",
           "label": "Cart info text",
-          "type": "long_text"
+          "type": "basic_html"
         }
       ]
     },

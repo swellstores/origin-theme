@@ -15,6 +15,7 @@
             <span class="block">{{ store.supportPhone }}</span>
             <span class="block">{{ store.supportEmail }}</span>
           </p>
+          <div v-html="footer.contactInfoText"></div>
         </div>
 
         <!-- Social links-->
@@ -69,7 +70,7 @@
           <p v-if="footer.emailSignupHeading" class="font-label text-primary-med mb-4">
             {{ footer.emailSignupHeading }}
           </p>
-          <p v-if="footer.emailSignupText" class="mb-6">{{ footer.emailSignupText }}</p>
+          <div v-if="footer.emailSignupText" class="mb-6" v-html="footer.emailSignupText"></div>
           <EmailSignupForm />
         </div>
       </template>
