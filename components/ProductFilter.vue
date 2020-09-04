@@ -13,43 +13,41 @@
         ref="panel"
         class="panel absolute w-full h-full left-0 bg-primary-lightest overflow-scroll md:max-w-112"
       >
-        <div class="flex items-center p-6">
-          <span class="text-lg font-bold">Filter</span>
-          <a class="ml-auto" href="#" @click="$emit('click-close')">
-            <svg class="w-5 h-5"><use xlink:href="#cross-lg" /></svg>
-          </a>
+        <div class="flex items-center p-6 border-b border-primary-light">
+          <span class="text-lg font-bold">Refine results</span>
+          <button class="ml-auto" @click="$emit('click-close')">
+            <BaseIcon icon="uil:times" size="lg" />
+          </button>
         </div>
         <!-- Active Filters -->
         <div
-          ref="activeFilters"
-          class="bg-primary-lighter border-primary-light max-h-0 overflow-hidden"
-          :class="{ 'border-t': !filterCount, 'border-t border-b': filterCount }"
+          class="py-4 px-6 bg-primary-lighter border-b border-primary-light text-sm overflow-hidden"
         >
-          <div ref="activeFiltersContent" class="flex flex-wrap items-center  py-4 px-6">
-            <span class="text-primary-dark">{{ filterCount }} filters active</span>
-            <a class="flex ml-auto" href="#" @click="clearFilters()">
-              <span class="label-sm-bold pr-2">Clear all</span>
-              <span class="relative inline-block w-6 h-6 rounded-full bg-primary-light">
-                <svg class="absolute w-2 h-2 center-xy"><use xlink:href="#cross-sm" /></svg>
-              </span>
-            </a>
+          <div class="flex items-center justify-between">
+            <span class="text-primary-dark">{{ activeFilters.length }} filters active</span>
+            <button class="font-bold" @click="resetFilters">Clear all</button>
+          </div>
 
-            <ul class="w-full flex flex-wrap pt-3">
-              <li
-                v-for="(filter, i) in activeFilters"
-                :key="`active-category-${filter.id}-${filter.value}`"
-                class="active-filter rounded label-sm-bold"
-              >
-                <span class="mr-3">{{ filterLabel(filter.id, filter.value) }}</span
-                ><a href="#" @click.prevent="removeFilter(filter.id, filter.value)"
-                  ><svg class="w-2 h-2"><use xlink:href="#cross-sm" /></svg
-                ></a>
-              </li>
-              <!-- TODO: Color attributes
+          <ul class="w-full flex flex-wrap pt-3">
+            <li v-for="filter in activeFilters" :key="'activefilter' + filter.id">
+              <template v-if="filter.type === 'select'">
+                <div
+                  v-for="option in filter.options"
+                  :key="'activeFilterOption' + option.label"
+                  class="inline-flex items-center bg-primary-light px-1 py-1 mb-2 mr-2 rounded"
+                >
+                  <span class="mx-1">{{ option.label }}</span>
+                  <button @click="updateFilter({ filter, optionValue: option.value })">
+                    <BaseIcon icon="uil:times" size="sm" />
+                  </button>
+                </div>
+              </template>
+            </li>
+            <!-- TODO: Color attributes
               <li
                 v-for="(color, i) in activeColorFilters"
                 :key="`active-color-${i}`"
-                class="active-filter rounded-full label-sm-bold"
+                class="active-filter rounded-full text-sm font-bold"
               >
                 <span
                   class="block rounded-full w-4 h-4 -ml-1 mr-2"
@@ -61,13 +59,14 @@
                 ></a>
               </li>
               -->
-            </ul>
-          </div>
+          </ul>
         </div>
 
         <div class="pt-6 pb-10 px-6">
-          <div v-for="filter of filters">
+          <div v-for="filter in filters">
+            <!-- Label -->
             <span class="label-xs-bold-faded uppercase">{{ filter.label }}</span>
+            <!-- Range slider input -->
             <div v-if="filter.type === 'range'" class="w-full pt-4 pb-10">
               <RangeSlider
                 :min="filter.options[0].value"
@@ -75,20 +74,26 @@
                 :interval="filter.interval"
               />
             </div>
+            <!-- Checkbox input -->
             <div v-else class="pt-4 pb-8">
-              <InputSelect :options="filter.options" type="checkbox" @input="selectFilter" />
+              <InputSelect
+                :filter="filter"
+                :filter-state="localFilterState"
+                type="checkbox"
+                @change="updateFilter($event)"
+              />
             </div>
           </div>
 
           <!-- TODO: Colors
           <span class="label-xs-bold-faded uppercase">Color</span>
-          <ColorFilter v-model="activeFilters.colors" class="flex pt-4 pb-8" :colors="colors" />
+          <ColorFilter v-model="filterState.colors" class="flex pt-4 pb-8" :colors="colors" />
           -->
 
           <!-- TODO: Sizes
           <span class="label-xs-bold-faded uppercase">Size</span>
           <InputSelect
-            v-model="activeFilters.sizes"
+            v-model="filterState.sizes"
             class="flex pt-4 pb-8"
             :options="sizes"
             type="checkbox"
@@ -96,14 +101,13 @@
           />
           -->
 
-          <!--
           <button
-            class="w-full px-6 py-3 uppercase tracking-wide bg-primary-darkest text-primary-lighter label-sm-bold rounded"
+            class="w-full px-6 py-3 uppercase tracking-wide bg-primary-darkest text-primary-lighter text-sm font-bold rounded"
             type="button"
+            @click="applyFilters"
           >
             Apply filters
           </button>
-          -->
         </div>
       </div>
     </div>
@@ -112,8 +116,94 @@
 
 <script>
 // Helpers
-import find from 'lodash/find'
-import { mapState } from 'vuex'
+
+// Helper to work out what the updated filter state should be
+// Takes the current filter state (object), the filter to update, and the value to update
+// Returns an updated filter state (object)
+function getNewFilterState(currentState, filter, optionValue) {
+  // TODO validate params
+  // TODO support passing filterState as object ({ id: value }) or array ([{ id, value }])
+  const { id, type, options } = filter
+
+  const state = { ...currentState }
+
+  // If an option value isn't passed, remove the filter from the state
+  if (!optionValue) {
+    delete state[id]
+    return state
+  }
+
+  // Work out the correct filter state given the provided option value
+  switch (type) {
+    case 'select':
+      // Add or remove the option value, retaining the same order as filter options
+      const currentValues = Array.isArray(state[id]) ? state[id] : []
+
+      // Build a new array of option values that we want to be retained or added
+      state[id] = options.reduce((values, { value }) => {
+        if (currentValues.includes(value) && value !== optionValue) {
+          // Include if value isn't the one provided and is already in the current list
+          values.push(value)
+        } else if (!currentValues.includes(value) && value === optionValue) {
+          // Include if value matches the one provided and isn't in the current list
+          values.push(value)
+        }
+        // Otherwise ignore it so it's no longer included in the list
+
+        return values
+      }, [])
+
+      return state
+
+    case 'range':
+      // Check the provided option value is an array with two values
+      if (!Array.isArray(optionValue) || optionValue.length !== 2) {
+        throw new Error('The value for a range filter must be a tuple as [min, max]')
+      }
+
+      // Set state value as range tuple
+      state[id] = optionValue
+      return state
+
+    default:
+    // Something for booleans? TODO
+  }
+}
+
+// Helper to compose array of active filters/options
+// Takes array of filters and filter state object
+function getActiveFilters(filters, filterState) {
+  // TODO validate params
+  // TODO support passing filterState as object ({ id: value }) or array ([{ id, value }])
+  return filters.reduce((activeFilters, filter) => {
+    const stateValue = filterState[filter.id]
+
+    // Bail if the filter isn't active
+    if (!stateValue) return activeFilters
+
+    let options = filter.options
+
+    switch (filter.type) {
+      case 'select':
+        options = options.reduce((activeOptions, option) => {
+          if (stateValue.includes(option.value)) {
+            activeOptions.push(option)
+          }
+          return activeOptions
+        }, [])
+
+        break
+      default:
+    }
+
+    activeFilters.push({
+      ...filter,
+      options
+    })
+
+    return activeFilters
+  }, [])
+}
 
 export default {
   name: 'ProductFilter',
@@ -122,110 +212,49 @@ export default {
     filters: {
       type: Array,
       default: () => []
+    },
+    filterState: {
+      type: Object,
+      default: () => ({})
     }
   },
 
-  // TODO Temp data, remove later.
   data() {
     return {
-      // showFilter: false, // TODO move to content settings
-      activeFilters: []
+      localFilterState: {}
     }
   },
 
   computed: {
-    ...mapState(['productFilterIsActive']),
-    filterCount() {
-      return this.activeFilters.length
+    activeFilters() {
+      return getActiveFilters(this.filters, this.localFilterState)
     }
   },
 
-  watch: {
-    // change height of module when filters are added/removed
-    filterCount: function(count) {
-      if (count) this.expandActiveFilters()
-      else this.closeActiveFilters()
-    },
-    // open filter
-    productFilterIsActive(active) {
-      if (active) this.openFilter()
+  created() {
+    if (Object.keys(this.filterState).length) {
+      this.localFilterState = this.filterState
     }
   },
 
   methods: {
-    clearFilters() {
-      this.activeFilters = []
-      this.$emit('change', this.activeFilters)
+    updateFilter({ filter, optionValue }) {
+      this.localFilterState = getNewFilterState(this.localFilterState, filter, optionValue)
     },
-    selectFilter(option) {
-      const active = find(this.activeFilters, { value: option.value })
-      if (active) {
-        this.removeFilter(active.id, option.value)
-      } else {
-        for (let filter of this.filters) {
-          if (filter.options) {
-            for (let filterOption of filter.options) {
-              if (filterOption.value === option.value) {
-                this.activeFilters.push({
-                  id: filter.id,
-                  label: filter.label,
-                  value: option.value
-                })
-                this.$emit('change', this.activeFilters)
-                return
-              }
-            }
-          }
-        }
-      }
-    },
-    removeFilter(id, value) {
-      this.activeFilters = this.activeFilters.filter(
-        filter => filter.id !== id || filter.value !== value
-      )
-      this.$emit('change', this.activeFilters)
-    },
-    filterLabel(id, value) {
-      return find(find(this.filters, { id }).options, { value }).label
-    },
-    expandActiveFilters() {
-      /* const container = this.$refs.activeFilters
-      const contents = this.$refs.activeFiltersContent
-      const tl = this.$anime.timeline()
 
-      setTimeout(() => {
-        const contentsHeight = contents.offsetHeight
-
-        tl.add({
-          targets: container,
-          maxHeight: contentsHeight,
-          duration: 300,
-          easing: 'cubicBezier(0.6, 0.2, 0, 1)'
-        })
-      }, 20) */
+    applyFilters() {
+      this.$emit('change', this.localFilterState)
     },
-    closeActiveFilters() {
-      /* const container = this.$refs.activeFilters
-      const tl = this.$anime.timeline()
 
-      setTimeout(() => {
-        tl.add({
-          targets: container,
-          maxHeight: 0,
-          duration: 600,
-          easing: 'cubicBezier(0.6, 0.2, 0, 1)'
-        })
-      }, 20) */
+    resetFilters() {
+      this.localFilterState = {}
+      this.$emit('change')
     }
   }
 }
 </script>
 
 <style lang="postcss" scoped>
-.active-filter {
-  @apply flex items-center bg-primary-light px-3 py-1 mb-2 mr-2;
-}
-
 .filter-enter-active .overlay,
 .filter-leave-active .overlay {
   @apply transition-all duration-500 ease-in-out;

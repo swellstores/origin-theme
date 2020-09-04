@@ -88,7 +88,7 @@ export default {
     }
   },
 
-  async fetch() {
+  fetch() {
     this.aspectRatio = this.$swell.settings.get('productPreviews.aspectRatio', '1:1')
     this.textAlign = this.$swell.settings.get('productPreviews.textAlign', 'left')
   },
