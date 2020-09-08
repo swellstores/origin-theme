@@ -11,7 +11,7 @@
       <div
         v-for="(mention, index) in mentions"
         :key="`${id}mention${index}`"
-        class="group relative w-1/2 md:w-1/4 py-12 md:py-24 px-4 flex justify-center items-center cursor-default"
+        class="group relative w-1/2 md:w-1/4 py-6 md:py-24 px-4 flex justify-center items-center cursor-default"
       >
         <!-- Logo -->
         <div
@@ -31,9 +31,9 @@
             'opacity-0 translate-y-4 transform transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:translate-y-0 ':
               mention.logo
           }"
-          class="absolute w-full md:px-4"
+          class="relative w-full md:px-4"
         >
-          <p v-balance-text class="">&ldquo;{{ mention.quote }}&rdquo;</p>
+          <p v-balance-text class="">&ldquo;{{ mention.quote }}&rdquo;</p> 
           <span v-if="mention.name" class="block mt-2 font-bold">— {{ mention.name }}</span>
         </div>
       </div>
