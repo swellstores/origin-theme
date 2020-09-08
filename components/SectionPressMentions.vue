@@ -19,7 +19,7 @@
         >
           <img
             v-if="mention.logo && mention.logo.file"
-            class="max-w-34 h-8 w-auto"
+            class="max-w-full md:max-w-34 h-auto w-auto"
             :style="`transform: scale(${mention.logoScale / 100})`"
             :src="mention.logo.file.url"
             :alt="mention.name"
@@ -28,10 +28,10 @@
         <!-- Quote -->
         <div
           :class="{
-            'opacity-0 translate-y-4 transform transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:translate-y-0 ':
+            'absolute opacity-0 translate-y-4 transform transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:translate-y-0':
               mention.logo
           }"
-          class="relative w-full md:px-4"
+          class="w-full md:px-4"
         >
           <p v-balance-text class="">&ldquo;{{ mention.quote }}&rdquo;</p> 
           <span v-if="mention.name" class="block mt-2 font-bold">— {{ mention.name }}</span>
