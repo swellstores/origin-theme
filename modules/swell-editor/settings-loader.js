@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export default async (context, inject) => {
   const useEditorSettings = '<%= options.useEditorSettings %>' !== 'false'
 
