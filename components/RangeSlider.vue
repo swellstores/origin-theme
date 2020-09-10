@@ -2,19 +2,19 @@
   <div>
     <ClientOnly>
       <vue-slider
-        v-model="val"
-        :value="val"
-        :min="min"
-        :max="max"
-        :interval="interval"
+        v-model="value"
+        :value="value"
+        :min="slider.minValue"
+        :max="slider.maxValue"
+        :interval="filter.interval"
         :clickable="false"
         tooltip="always"
         tooltip-placement="bottom"
         :tooltip-formatter="'${value}'"
-        :process-style="{ backgroundColor: sliderProcessColor }"
-        :rail-style="{ backgroundColor: sliderRailColor }"
+        :process-style="slider.processStyle"
+        :rail-style="slider.railStyle"
         :dot-size="20"
-        @change="$emit('input', val)"
+        @change="updateValue(value)"
       >
         <template v-slot:dot="{ focus }">
           <div :class="['custom-dot', { focus }]"></div>
@@ -29,10 +29,6 @@
 </template>
 
 <script>
-// Helpers
-import get from 'lodash/get'
-import settings from '~/config/settings'
-
 // Components
 import 'vue-slider-component/dist-css/vue-slider-component.css'
 import 'vue-slider-component/theme/default.css'
@@ -41,42 +37,63 @@ export default {
   name: 'RangeSlider',
 
   props: {
-    value: {
-      type: Array,
-      default: null
+    filter: {
+      type: Object,
+      default: () => ({})
     },
-    min: {
-      type: Number,
-      default: 0
-    },
-    max: {
-      type: Number,
-      default: 0
-    },
-    interval: {
-      type: Number,
-      default: 1
+    filterState: {
+      type: Object,
+      default: () => ({})
     }
   },
 
   data() {
     return {
-      val: this.value
+      value: null
     }
   },
 
   computed: {
-    sliderProcessColor() {
-      return get(settings, 'colors.primary.darkest')
-    },
-    sliderRailColor() {
-      return get(settings, 'colors.primary.lighter')
+    slider() {
+      const [min, max] = this.filter.options
+
+      return {
+        minValue: min.value,
+        maxValue: max.value,
+        railStyle: { background: this.$swell.settings.get('colors.primary.light') },
+        processStyle: { background: this.$swell.settings.get('colors.primary.darkest') }
+      }
     }
   },
 
   watch: {
-    value(val) {
-      if (val[0] === this.min && val[1] === this.max) this.val = [this.min, this.max]
+    filterState: 'setValue'
+  },
+
+  created() {
+    this.setValue()
+  },
+
+  methods: {
+    setValue() {
+      const [min, max] = this.filter.options
+      const stateValue = this.filterState[this.filter.id]
+
+      // Use the state value if it exists, otherwise the filter's min/max
+      this.value = stateValue || [min.value, max.value]
+    },
+
+    updateValue(value) {
+      const [min, max] = this.filter.options
+      let optionValue
+
+      // If the value isn't the same as the filter's min/max, pass it on
+      if (value[0] !== min.value || value[1] !== max.value) {
+        optionValue = value
+      }
+      // Otherwise, don't pass anything so the filter gets removed
+
+      this.$emit('change', { filter: this.filter, optionValue })
     }
   }
 }

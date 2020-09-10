@@ -10,7 +10,7 @@
         :checked="selectedValues.includes(option.value)"
         :value="option.value"
         :type="type"
-        @change="updateSelectedValues(option.value)"
+        @change="updateValue(option.value)"
       />
 
       <template v-if="styling === 'box'">
@@ -63,7 +63,7 @@ export default {
   },
 
   methods: {
-    updateSelectedValues(optionValue) {
+    updateValue(optionValue) {
       this.$emit('change', { filter: this.filter, optionValue })
     }
   }

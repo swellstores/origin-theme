@@ -51,7 +51,9 @@
           >
             <span class="block mt-px text-2xs leading-none">{{ activeFilterCount }}</span>
           </div>
-          <BaseIcon v-else icon="uil:filter" />
+          <div v-else>
+            <BaseIcon icon="uil:filter" />
+          </div>
           <span class="ml-1">Filter</span>
         </button>
         <span class="hidden ml-1 sm:inline">{{ productCountLabel }}</span>
@@ -83,20 +85,23 @@
 <script>
 // Helpers
 import get from 'lodash/get'
+import isObject from 'lodash/isObject'
 import qs from 'qs'
 
 // Convert filter state object to array for passing to products.list as $filters
-function getFilterList(filterState) {
-  return Object.keys(filterState).reduce((filters, id) => {
+function getFilterList(filterState, filters) {
+  return Object.keys(filterState).reduce(($filters, id) => {
     const value = filterState[id]
+    const filter = filters.find(f => f.id === id)
+    const arrayedTypes = ['select']
 
-    if (Array.isArray(value)) {
-      value.map(v => filters.push({ id, value: v }))
+    if (arrayedTypes.includes(filter.type)) {
+      value.map(v => $filters.push({ id, value: v }))
     } else {
-      filters.push({ id, value })
+      $filters.push({ id, value })
     }
 
-    return filters
+    return $filters
   }, [])
 }
 
@@ -104,12 +109,15 @@ function getFilterList(filterState) {
 function getFilterStateFromQuery(query, filters) {
   const queryKeys = Object.keys(query)
   const filterState = {}
+  const arrayedTypes = ['select']
 
   // Go through filters and check if there's a matching query param
   if (Array.isArray(filters)) {
-    filters.map(({ id }) => {
+    filters.map(({ id, type }) => {
       if (queryKeys.includes(id)) {
-        filterState[id] = query[id]
+        const queryValue = query[id]
+        const useArray = arrayedTypes.includes(type) && !Array.isArray(queryValue)
+        filterState[id] = useArray ? [queryValue] : queryValue
       }
     })
   }
@@ -131,13 +139,13 @@ export default {
     // Set data for the skeleton loader (as many products as we're going to fetch)
     this.products = [...Array(this.limit).keys()].map(() => ({}))
 
-    const fetchProducts = filterState =>
+    const fetchProducts = (filterState, filters) =>
       $swell.products.list({
         page: this.page,
         limit: this.limit,
         sort: this.sortMode,
         categories: slug,
-        $filters: filterState ? getFilterList(filterState) : []
+        $filters: filterState ? getFilterList(filterState, filters) : []
       })
 
     const setProducts = products => {
@@ -164,14 +172,14 @@ export default {
 
       // If there's a filter query, get filtered products
       if (this.activeFilterCount) {
-        products = await fetchProducts(this.filterState)
+        products = await fetchProducts(this.filterState, this.filters)
       }
 
       setProducts(products)
     } else {
       // Fetch products with filters applied
       this.filterState = getFilterStateFromQuery($route.query, this.filters)
-      const products = await fetchProducts(this.filterState)
+      const products = await fetchProducts(this.filterState, this.filters)
 
       setProducts(products)
     }
@@ -242,8 +250,8 @@ export default {
     toggleFilterModal() {
       this.filterModalIsVisible = !this.filterModalIsVisible
     },
-    updateFilters(filters) {
-      this.updateQueryString(filters)
+    updateFilters(filterState) {
+      this.updateQueryString(filterState)
       this.toggleFilterModal()
     },
     updateSortMode(option) {
@@ -253,9 +261,9 @@ export default {
       const { name, params, query: currentQuery } = this.$route
       const query = { ...currentQuery, ...newQuery }
 
-      // Remove all filter query properties if newQuery is nullish
+      // Remove all filter query properties if newQuery is empty
       // TODO do this in a less magical way so the filter reset logic is more obvious
-      if (!newQuery) {
+      if (!newQuery || !Object.keys(newQuery).length) {
         const currentQueryFilterState = getFilterStateFromQuery(currentQuery, this.filters)
         Object.keys(currentQueryFilterState).map(key => delete query[key])
       }

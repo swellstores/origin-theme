@@ -19,12 +19,14 @@
             <BaseIcon icon="uil:times" size="lg" />
           </button>
         </div>
+
         <!-- Active Filters -->
         <div
+          v-show="activeFilters.length"
           class="py-4 px-6 bg-primary-lighter border-b border-primary-light text-sm overflow-hidden"
         >
           <div class="flex items-center justify-between">
-            <span class="text-primary-dark">{{ activeFilters.length }} filters active</span>
+            <span class="text-primary-dark">{{ activeFilterCountLabel }}</span>
             <button class="font-bold" @click="resetFilters">Clear all</button>
           </div>
 
@@ -38,6 +40,14 @@
                 >
                   <span class="mx-1">{{ option.label }}</span>
                   <button @click="updateFilter({ filter, optionValue: option.value })">
+                    <BaseIcon icon="uil:times" size="sm" />
+                  </button>
+                </div>
+              </template>
+              <template v-else-if="filter.type === 'range'">
+                <div class="inline-flex items-center bg-primary-light px-1 py-1 mb-2 mr-2 rounded">
+                  <span class="mx-1">{{ activeRangeLabel(filter) }}</span>
+                  <button @click="updateFilter({ filter })">
                     <BaseIcon icon="uil:times" size="sm" />
                   </button>
                 </div>
@@ -69,9 +79,9 @@
             <!-- Range slider input -->
             <div v-if="filter.type === 'range'" class="w-full pt-4 pb-10">
               <RangeSlider
-                :min="filter.options[0].value"
-                :max="filter.options[1].value"
-                :interval="filter.interval"
+                :filter="filter"
+                :filter-state="localFilterState"
+                @change="updateFilter"
               />
             </div>
             <!-- Checkbox input -->
@@ -80,7 +90,7 @@
                 :filter="filter"
                 :filter-state="localFilterState"
                 type="checkbox"
-                @change="updateFilter($event)"
+                @change="updateFilter"
               />
             </div>
           </div>
@@ -120,12 +130,12 @@
 // Helper to work out what the updated filter state should be
 // Takes the current filter state (object), the filter to update, and the value to update
 // Returns an updated filter state (object)
-function getNewFilterState(currentState, filter, optionValue) {
+function getNewFilterState(oldState, filter, optionValue) {
   // TODO validate params
   // TODO support passing filterState as object ({ id: value }) or array ([{ id, value }])
   const { id, type, options } = filter
 
-  const state = { ...currentState }
+  const state = { ...oldState }
 
   // If an option value isn't passed, remove the filter from the state
   if (!optionValue) {
@@ -140,7 +150,7 @@ function getNewFilterState(currentState, filter, optionValue) {
       const currentValues = Array.isArray(state[id]) ? state[id] : []
 
       // Build a new array of option values that we want to be retained or added
-      state[id] = options.reduce((values, { value }) => {
+      const newValues = options.reduce((values, { value }) => {
         if (currentValues.includes(value) && value !== optionValue) {
           // Include if value isn't the one provided and is already in the current list
           values.push(value)
@@ -152,6 +162,13 @@ function getNewFilterState(currentState, filter, optionValue) {
 
         return values
       }, [])
+
+      // Set new state value only if the resulting array has items
+      if (newValues.length) {
+        state[id] = newValues
+      } else {
+        delete state[id]
+      }
 
       return state
 
@@ -191,7 +208,12 @@ function getActiveFilters(filters, filterState) {
           }
           return activeOptions
         }, [])
-
+        break
+      case 'range':
+        options = [
+          { value: stateValue[0], label: stateValue[0] },
+          { value: stateValue[1], label: stateValue[1] }
+        ]
         break
       default:
     }
@@ -228,6 +250,10 @@ export default {
   computed: {
     activeFilters() {
       return getActiveFilters(this.filters, this.localFilterState)
+    },
+    activeFilterCountLabel() {
+      const count = this.activeFilters.length
+      return `${count} filter${count > 1 ? '' : 's'} active`
     }
   },
 
@@ -249,6 +275,12 @@ export default {
     resetFilters() {
       this.localFilterState = {}
       this.$emit('change')
+    },
+
+    activeRangeLabel(filter) {
+      const [lower, upper] = filter.options
+      const prefix = filter.id === 'price' ? '$' : ''
+      return prefix + lower.label + '–' + upper.label
     }
   }
 }
