@@ -1,9 +1,4 @@
-import { editor, normalizeKeys } from './swell-editor-utils'
-
-function parseSerializedOption(value) {
-  const obj = JSON.parse(value)
-  return normalizeKeys(obj)
-}
+import _ from 'lodash'
 
 export default async (context, inject) => {
   const useEditorSettings = '<%= options.useEditorSettings %>' !== 'false'
@@ -17,7 +12,41 @@ export default async (context, inject) => {
     await context.app.$swell.settings.load()
     // Notify editor when settings are loaded
     if (useEditorSettings) {
-      editor.processMessage({ data: { type: 'settings.loaded' } }, context)
+      try {
+        const { editor } = require('./utils')
+        editor.processMessage({ data: { type: 'settings.loaded' } }, context)
+      } catch (err) {
+        // noop
+      }
     }
   }
+}
+
+function parseSerializedOption(value) {
+  const obj = JSON.parse(value)
+  return normalizeKeys(obj)
+}
+
+function normalizeKeys(obj, params) {
+  const options = {
+    case: 'camel',
+    ignoredKeys: ['$cache'],
+    ...params
+  }
+  if (obj && obj.constructor === Object) {
+    Object.keys(obj).forEach(key => {
+      if (options.ignoredKeys.includes(key)) return
+      const value = obj[key]
+      delete obj[key]
+      if (options.case === 'camel') {
+        key = _.camelCase(key)
+      } else if (options.case === 'snake') {
+        key = _.snakeCase(key)
+      }
+      obj[key] = normalizeKeys(value, options)
+    })
+  } else if (obj && obj.constructor === Array) {
+    obj = obj.map(v => normalizeKeys(v, options))
+  }
+  return obj
 }

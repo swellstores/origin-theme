@@ -148,6 +148,7 @@ export default {
         <img
           v-lazysizes
           {...{ attrs: image }}
+          style="object-fit: cover;"
           class={`${
             isBackground
               ? 'absolute top-0 left-0 w-full h-full object-cover'
