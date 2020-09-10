@@ -14,7 +14,7 @@
       </NuxtLink>
 
       <!-- Product previews -->
-      <ProductPreviews :products="products" :column-count="3" />
+      <ProductPreviews :products="products" />
     </div>
   </section>
 </template>

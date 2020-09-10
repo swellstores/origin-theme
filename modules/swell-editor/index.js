@@ -29,7 +29,7 @@ export default async function(moduleOptions) {
 
   // Write stylesheet to assets folder
   fs.writeFileSync(stylesheetPath, stylesheet)
-  logger.success('Generated CSS variables')
+  logger.success('Generated CSS variables from ~/config/settings.json')
 
   // Add stylesheet path to Nuxt global CSS array
   this.options.css.push(stylesheetPath)

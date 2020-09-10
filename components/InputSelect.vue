@@ -1,16 +1,16 @@
 <template>
   <div>
     <div
-      v-for="(option, i) in options"
+      v-for="(option, i) in filter.options"
       :key="`${option.value || option}-${i}`"
       :class="{ checkbox: styling === 'check', 'box-selector': styling === 'box' }"
     >
       <input
         :id="`${option.value || option}-${i}`"
-        v-model="selected"
-        :value="option"
+        :checked="selectedValues.includes(option.value)"
+        :value="option.value"
         :type="type"
-        @change="$emit('input', option)"
+        @change="updateValue(option.value)"
       />
 
       <template v-if="styling === 'box'">
@@ -23,8 +23,8 @@
 
       <template v-else>
         <label :for="`${option.value || option}-${i}`">
-          <div class="indicator">
-            <svg class="w-5 h-5 text-primary-lightest"><use xlink:href="#check" /></svg>
+          <div class="indicator text-primary-lightest">
+            <BaseIcon icon="uil:check" size="sm" />
           </div>
           <p>{{ option.label || option }}</p>
         </label>
@@ -38,13 +38,13 @@ export default {
   name: 'InputSelect',
 
   props: {
-    options: {
-      type: Array,
-      default: () => []
+    filter: {
+      type: Object,
+      default: () => ({})
     },
-    value: {
-      type: Array,
-      default: () => []
+    filterState: {
+      type: Object,
+      default: () => ({})
     },
     type: {
       type: String,
@@ -56,16 +56,15 @@ export default {
     }
   },
 
-  created() {
-    const { value } = this
-    if (value !== undefined) {
-      this.selected = value
+  computed: {
+    selectedValues() {
+      return this.filterState[this.filter.id] || []
     }
   },
 
-  data() {
-    return {
-      selected: []
+  methods: {
+    updateValue(optionValue) {
+      this.$emit('change', { filter: this.filter, optionValue })
     }
   }
 }
@@ -90,7 +89,7 @@ export default {
 
     & .indicator {
       @apply flex justify-center items-center cursor-pointer w-6 h-6 border border-primary-med rounded;
-      transition: all 0.4s ease;
+      transition: all 0.2s ease;
     }
 
     & p {
