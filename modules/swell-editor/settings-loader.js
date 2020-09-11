@@ -13,7 +13,7 @@ export default async (context, inject) => {
     // Notify editor when settings are loaded
     if (useEditorSettings) {
       try {
-        const { editor } = require('./utils')
+        const { editor } = require('./swell-editor-utils')
         editor.processMessage({ data: { type: 'settings.loaded' } }, context)
       } catch (err) {
         // noop
