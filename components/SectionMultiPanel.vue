@@ -77,7 +77,7 @@ export default {
     },
     textAlign: {
       type: String,
-      default: 'left'
+      default: null
     }
   }
 }
