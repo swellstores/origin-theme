@@ -1,5 +1,12 @@
 <template>
-  <section class="relative mx-6 my-14 lg:mx-8 lg:my-16">
+  <!-- Error/empty state -->
+  <SectionUndefined
+    v-if="!reviews.length"
+    heading="Customer reviews"
+    description="No reviews added"
+  />
+
+  <section v-else class="relative mx-6 my-14 lg:mx-8 lg:my-16">
     <!-- Arrows -->
     <div
       v-if="reviews.length > 1"

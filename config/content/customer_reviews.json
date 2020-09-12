@@ -8,9 +8,8 @@
       "fields": [
         {
           "id": "heading",
-          "label": "Heading text",
-          "type": "text",
-          "default": "What our customers say"
+          "label": "Heading",
+          "type": "text"
         },
         {
           "id": "reviews",
