@@ -1233,13 +1233,13 @@
     consola "^2.11.3"
     eslint-loader "^4.0.2"
 
-"@nuxtjs/google-fonts@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/google-fonts/-/google-fonts-1.0.0.tgz#fca4c72627be846b617b91653a2ad73f326eefbb"
-  integrity sha512-QRaD6wsprWJISFdIj3/3ER9L3EePXZ5Y1CnCuAsJQ0m9tvRKudSrP4ok+h6EYKCqKmEWYMerb57vfEwFJZRDPA==
+"@nuxtjs/google-fonts@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/google-fonts/-/google-fonts-1.0.2.tgz#37cd53cc0e8cff61310a3c34c9b9f432953c99c9"
+  integrity sha512-ecyyFAwLyb3U9m9FS/bmP8BYBXqJpPg3xv322dn1xaxDyFoW25LJutRtHeORlgloYrjyHJLc0kSpi75yYpXOBg==
   dependencies:
-    consola "^2.14.0"
-    google-fonts-helper "^1.0.1"
+    consola "^2.15.0"
+    google-fonts-helper "^1.0.4"
 
 "@nuxtjs/pwa@3.0.2":
   version "3.0.2"
@@ -1390,10 +1390,10 @@
   dependencies:
     "@sentry/cli" "^1.52.3"
 
-"@sindresorhus/is@^3.0.0":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-3.1.1.tgz#6e39e4222add8b362da35720c9dd5d53345d5851"
-  integrity sha512-tLnujxFtfH7F+i5ghUfgGlJsvyCKvUnSMFMlWybFdX9/DdX8svb4Zwx1gV0gkkVCHXtmPSetoAR3QlKfOld6Tw==
+"@sindresorhus/is@^3.1.1":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-3.1.2.tgz#548650de521b344e3781fbdb0ece4aa6f729afb8"
+  integrity sha512-JiX9vxoKMmu8Y3Zr2RVathBL1Cdu4Nt4MuNWemt1Nc06A0RAin9c5FArkhGsyMBWfCu4zj+9b+GxtjAnE4qqLQ==
 
 "@szmarczak/http-timer@^4.0.5":
   version "4.0.5"
@@ -2940,6 +2940,11 @@ consola@^2.11.3:
   version "2.12.2"
   resolved "https://registry.yarnpkg.com/consola/-/consola-2.12.2.tgz#9610f158e7b0a9ecc8f8bb0c4fc8e7c52bf41d05"
   integrity sha512-c9mzemrAk57s3UIjepn8KKkuEH5fauMdot5kFSJUnqHcnApVS9Db8Rbv5AZ1Iz6lXzaGe9z1crQXhJtGX4h/Og==
+
+consola@^2.15.0:
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/consola/-/consola-2.15.0.tgz#40fc4eefa4d2f8ef2e2806147f056ea207fcc0e9"
+  integrity sha512-vlcSGgdYS26mPf7qNi+dCisbhiyDnrN1zaRbw3CSuc2wGOMEGGPsp46PdRG5gqXwgtJfjxDkxRNAgRPr1B77vQ==
 
 console-browserify@^1.1.0:
   version "1.2.0"
@@ -4731,28 +4736,28 @@ globby@^11.0.1:
     merge2 "^1.3.0"
     slash "^3.0.0"
 
-google-fonts-helper@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/google-fonts-helper/-/google-fonts-helper-1.0.1.tgz#17a6728586ae2ee2dae8ba2243eae021cae5d3b0"
-  integrity sha512-fwgV4Z694NjP3W3NLkXsJMqmyzL1OsEXFlDjm/keb0E5hLTTMnGNnLb470r8QizIX3aeTzYpztagAGN8vx6RgA==
+google-fonts-helper@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/google-fonts-helper/-/google-fonts-helper-1.0.4.tgz#c64dbb49428cab14517804b15f7bb06491d6ec69"
+  integrity sha512-SSjbWUqygILiMjjubdhEME93BccRvzjtSOzfs6eBHhdYYn7jXVj1uRkL7ouuleDd/opbV2L2jhTDIN96oi2mWQ==
   dependencies:
     deepmerge "^4.2.2"
     fs-extra "^9.0.1"
-    got "^11.5.1"
+    got "^11.6.1"
 
-got@^11.5.1:
-  version "11.5.2"
-  resolved "https://registry.yarnpkg.com/got/-/got-11.5.2.tgz#772e3f3a06d9c7589c7c94dc3c83cdb31ddbf742"
-  integrity sha512-yUhpEDLeuGiGJjRSzEq3kvt4zJtAcjKmhIiwNp/eUs75tRlXfWcHo5tcBaMQtnjHWC7nQYT5HkY/l0QOQTkVww==
+got@^11.6.1:
+  version "11.6.2"
+  resolved "https://registry.yarnpkg.com/got/-/got-11.6.2.tgz#79d7bb8c11df212b97f25565407a1f4ae73210ec"
+  integrity sha512-/21qgUePCeus29Jk7MEti8cgQUNXFSWfIevNIk4H7u1wmXNDrGPKPY6YsPY+o9CIT/a2DjCjRz0x1nM9FtS2/A==
   dependencies:
-    "@sindresorhus/is" "^3.0.0"
+    "@sindresorhus/is" "^3.1.1"
     "@szmarczak/http-timer" "^4.0.5"
     "@types/cacheable-request" "^6.0.1"
     "@types/responselike" "^1.0.0"
     cacheable-lookup "^5.0.3"
     cacheable-request "^7.0.1"
     decompress-response "^6.0.0"
-    http2-wrapper "^1.0.0-beta.5.0"
+    http2-wrapper "^1.0.0-beta.5.2"
     lowercase-keys "^2.0.0"
     p-cancelable "^2.0.0"
     responselike "^2.0.0"
@@ -5045,7 +5050,7 @@ http-errors@~1.7.2:
     statuses ">= 1.5.0 < 2"
     toidentifier "1.0.0"
 
-http2-wrapper@^1.0.0-beta.5.0:
+http2-wrapper@^1.0.0-beta.5.2:
   version "1.0.0-beta.5.2"
   resolved "https://registry.yarnpkg.com/http2-wrapper/-/http2-wrapper-1.0.0-beta.5.2.tgz#8b923deb90144aea65cf834b016a340fc98556f3"
   integrity sha512-xYz9goEyBnC8XwXDTuC/MZ6t+MrKVQZOk4s7+PaDkwIsQd8IwqvM+0M6bA/2lvG8GHXcPdf+MejTUeO2LCPCeQ==
@@ -9026,10 +9031,10 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-swell-js@3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/swell-js/-/swell-js-3.2.0.tgz#9e4ad14f22bdf733a80c76af067e5da967459f12"
-  integrity sha512-KZkvj2WPRFH1jR5qggPM3Rx4cjXfaLiItWJfuAsic6l3E9JCpmVb8A2f/uu7w3nC0g9i/PrdeYZ4T4FraaYnFQ==
+swell-js@3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/swell-js/-/swell-js-3.2.1.tgz#05fdde4e58b172fe287821b3445b6d56286ba8c1"
+  integrity sha512-wSTqTJVpevmBLO1mSr0uimgFiBNL6tWPo+PEyQGGspCrJPsorZpGI0F2oa33vvYmCXVszLaMrZg10bbREDwGKw==
   dependencies:
     "@babel/runtime" "7.4.5"
     deepmerge "4.2.2"
