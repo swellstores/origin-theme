@@ -1,5 +1,12 @@
 <template>
-  <section :class="[`bg-${bgColor}`]" class="text-center py-16 lg:py-24 xl:py-28">
+  <!-- Error/empty state -->
+  <SectionUndefined
+    v-if="!heading && !text"
+    heading="Large media"
+    description="No heading or description added"
+  />
+
+  <section v-else :class="[`bg-${bgColor}`]" class="text-center py-16 lg:py-24 xl:py-28">
     <div class="container">
       <h2 v-balance-text class="mx-auto px-4 max-w-160">{{ heading }}</h2>
       <p v-balance-text>
@@ -24,11 +31,11 @@ export default {
   props: {
     heading: {
       type: String,
-      default: ''
+      default: null
     },
     description: {
       type: String,
-      default: ''
+      default: null
     },
     image: {
       type: [Object, String],

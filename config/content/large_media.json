@@ -8,14 +8,14 @@
       "fields": [
         {
           "id": "heading",
-          "label": "Heading text",
+          "label": "Heading",
           "type": "text",
           "required": true
         },
         {
           "id": "description",
-          "label": "Description text",
-          "type": "text"
+          "label": "Description",
+          "type": "short_text"
         },
         {
           "id": "image",
