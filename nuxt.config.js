@@ -49,7 +49,9 @@ export default {
        */
       {
         // icon: {},
-        // meta: {},
+        meta: {
+          title: get(settings, 'store.name')
+        }
         // manifest: {},
         // workbox: {}
       }

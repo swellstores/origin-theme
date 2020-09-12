@@ -87,6 +87,7 @@
 import get from 'lodash/get'
 import isObject from 'lodash/isObject'
 import qs from 'qs'
+import pageMeta from '~/mixins/pageMeta'
 
 // Convert filter state object to array for passing to products.list as $filters
 function getFilterList(filterState, filters) {
@@ -127,6 +128,7 @@ function getFilterStateFromQuery(query, filters) {
 
 export default {
   name: 'CategoryDetailPage',
+  mixins: [pageMeta],
 
   async fetch() {
     const { $swell, $route } = this

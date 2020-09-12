@@ -10,8 +10,12 @@
 </template>
 
 <script>
+// Helpers
+import pageMeta from '~/mixins/pageMeta'
+
 export default {
   name: 'CategoryIndexPage',
+  mixins: [pageMeta],
 
   async fetch() {
     const { $swell, $route } = this
