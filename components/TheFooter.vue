@@ -71,7 +71,7 @@
             {{ footer.emailSignupHeading }}
           </p>
           <div v-if="footer.emailSignupText" class="mb-6" v-html="footer.emailSignupText"></div>
-          <EmailSignupForm />
+          <EmailSignupForm theme="dark" />
         </div>
       </template>
     </div>

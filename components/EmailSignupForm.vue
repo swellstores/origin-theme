@@ -4,34 +4,42 @@
       <input
         v-model="email"
         type="text"
-        class="rounded w-full h-12 pl-4 pr-14 py-2 border border-primary-med bg-primary-lightest outline-none transition focus:shadow-outline"
+        :class="{
+          'border-primary-med bg-primary-lightest': theme === 'light',
+          'border-primary-darker bg-primary-darker': theme === 'dark'
+        }"
+        class="rounded w-full h-12 pl-4 pr-14 py-2 border outline-none transition focus:shadow-outline"
         placeholder="Email address"
         @input="delayTouch($v.email)"
       />
-      <button class="btn-icon absolute top-1 right-1" type="button" @click="subscribe()">
+      <button
+        :class="{
+          'text-primary-lightest bg-primary-darker hover:text-accent': theme === 'dark'
+        }"
+        class="btn-icon absolute top-1 right-1"
+        type="button"
+        @click="subscribe()"
+      >
         <div v-if="status === 'COMPLETE'"><BaseIcon icon="uil:check" class="m-auto" /></div>
         <div v-if="status === 'ERROR'">
           <BaseIcon icon="uil:exclamation-triangle" class="m-auto" />
         </div>
         <div v-if="status === 'READY'"><BaseIcon icon="uil:angle-right" class="m-auto" /></div>
-        <div v-if="status === 'PENDING'" class="spinner center-xy w-5 h-5 bg-primary-med"></div>
+        <div v-if="status === 'PENDING'" class="spinner center-xy w-5 h-5 bg-primary-dark"></div>
       </button>
     </div>
     <!-- Validation error -->
     <transition name="fade">
-      <div v-show="$v.email.$error" class="error-message">
-        That doesn't look like an email... 🤔
+      <div v-show="errorMessage" class="mt-1 px-3 py-1 bg-error-faded text-error text-sm rounded">
+        {{ errorMessage }}
       </div>
     </transition>
-    <!-- API errors -->
-    <div v-for="(error, index) in errors" :key="`subscribe-error-${index}`" class="error-message">
-      {{ error.message }}
-    </div>
   </div>
 </template>
 
 <script>
 // Helpers
+import get from 'lodash/get'
 import { validationMixin } from 'vuelidate'
 import { required, email } from 'vuelidate/lib/validators'
 
@@ -40,6 +48,13 @@ const touchMap = new WeakMap()
 
 export default {
   mixins: [validationMixin],
+
+  props: {
+    theme: {
+      type: String,
+      default: 'light'
+    }
+  },
 
   data() {
     return {
@@ -56,6 +71,16 @@ export default {
     }
   },
 
+  computed: {
+    errorMessage() {
+      if (this.status === 'READY' && this.$v.email.$error) {
+        return "That doesn't look like an email... 🤔"
+      } else if (this.errors.length) {
+        return get(this, 'errors[0].message')
+      }
+    }
+  },
+
   methods: {
     async subscribe() {
       // Check input is valid
@@ -63,9 +88,11 @@ export default {
         this.status = 'PENDING'
 
         try {
-          const { errors } = await this.$swell.account.update({
-            email: this.email,
-            emailOptin: true
+          const { errors } = await this.$swell.cart.update({
+            account: {
+              email: this.email,
+              emailOptin: true
+            }
           })
 
           if (errors) {
@@ -74,7 +101,7 @@ export default {
           } else {
             this.status = 'COMPLETE'
             this.errors = []
-            this.email = 'Done!'
+            this.email = "You're on the list!"
           }
         } catch (err) {
           if (this.isDev) {
@@ -98,9 +125,3 @@ export default {
   }
 }
 </script>
-
-<style lang="postcss">
-.error-message {
-  @apply mt-1 px-3 py-1 bg-error-faded text-error text-sm rounded;
-}
-</style>
