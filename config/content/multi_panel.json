@@ -26,14 +26,7 @@
                 {
                   "id": "description",
                   "label": "Description text",
-                  "type": "long_text",
-                  "required": true
-                },
-                {
-                  "id": "label",
-                  "label": "Label text",
-                  "type": "text",
-                  "required": true
+                  "type": "long_text"
                 },
                 {
                   "id": "links",
@@ -80,7 +73,8 @@
                 {
                   "id": "image",
                   "label": "Background image",
-                  "type": "image"
+                  "type": "image",
+                  "required": true
                 }
               ]
             }
