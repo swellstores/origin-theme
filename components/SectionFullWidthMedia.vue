@@ -1,7 +1,14 @@
 <template>
+  <!-- Error/empty state -->
+  <SectionUndefined
+    v-if="!heading && !image"
+    heading="Full width media"
+    description="No heading or media added"
+  />
+
   <!-- Skeleton loader -->
   <div
-    v-if="fetchIsPending"
+    v-else-if="fetchIsPending"
     class="py-20 bg-primary-lighter flex flex-col justify-center items-center"
   >
     <div class="loader-el w-1/2 h-7 mb-2"></div>
