@@ -23,7 +23,7 @@ button {
 }
 
 .btn {
-  @apply inline-block h-10 px-5 py-3 rounded bg-primary-light text-sm leading-tight text-center font-bold tracking-wide uppercase cursor-pointer;
+  @apply inline-block h-10 px-5 py-3 rounded bg-primary-light text-sm leading-tight text-center font-semibold tracking-wide uppercase cursor-pointer;
 
   &:hover {
     @apply bg-primary-darker text-primary-lightest;
@@ -123,7 +123,7 @@ img {
 }
 
 .label-tag {
-  @apply ml-1 px-2 py-1 uppercase text-2xs rounded font-bold leading-tight;
+  @apply ml-1 px-2 py-1 uppercase text-2xs rounded font-semibold leading-tight;
 }
 
 .label-tag--sale {

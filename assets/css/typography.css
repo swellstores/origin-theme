@@ -9,7 +9,7 @@ html {
 
 button,
 a {
-  @apply rounded text-primary-darkest font-bold;
+  @apply rounded text-primary-darkest font-semibold;
 
   &:hover {
     @apply text-accent;
@@ -58,7 +58,7 @@ h4 {
 
 b,
 strong {
-  @apply font-bold;
+  @apply font-semibold;
 }
 
 ul li {
@@ -73,11 +73,11 @@ textarea {
 }
 
 .label-xs-bold {
-  @apply text-xs font-bold uppercase tracking-wide leading-tight;
+  @apply text-xs font-semibold uppercase tracking-wide leading-tight;
 }
 
 .label-xs-bold-faded {
-  @apply text-xs font-bold uppercase tracking-wide leading-tight text-primary-dark;
+  @apply text-xs font-semibold uppercase tracking-wide leading-tight text-primary-dark;
 }
 
 .label-sm {
@@ -85,7 +85,7 @@ textarea {
 }
 
 .label-sm-bold {
-  @apply text-sm font-bold;
+  @apply text-sm font-semibold;
 }
 
 .label-sm-faded {
