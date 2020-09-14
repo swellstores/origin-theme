@@ -229,13 +229,14 @@ export function getGoogleFontConfig(settings) {
     if (provider !== 'Google') return families
     const name = rawName.replace(/\s/g, '+')
 
-    // Avoid duplicate family/weight declarations
+    // Avoid duplicate family + weight declarations
     const nameExists = Object.keys(families).includes(name)
-    const weightExists = nameExists && families[name].includes(weight)
+    const weightExists = nameExists ? families[name].includes(weight) : false
 
     if (nameExists && !weightExists) {
+      // Family has been defined but we need to add another weight
       families[name].push(weight)
-    } else {
+    } else if (!weightExists) {
       families[name] = [weight]
     }
 
@@ -278,7 +279,8 @@ function getGoogleFontsUrl(options) {
   return decodeURIComponent(
     buildUrl('https://fonts.googleapis.com', {
       path: 'css2',
-      queryParams: query
+      queryParams: query,
+      disableCSV: true
     })
   )
 }
