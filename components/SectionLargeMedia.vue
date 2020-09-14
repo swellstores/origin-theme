@@ -17,6 +17,7 @@
           v-if="image"
           :source="image"
           aspect-ratio="16:9"
+          sizes="(min-width: 1200px) 1120px, 100vw"
           class="rounded overflow-hidden mt-10 lg:mt-12"
         />
       </div>

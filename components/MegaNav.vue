@@ -19,7 +19,7 @@
               <VisualMedia
                 v-if="item.value.images"
                 :source="item.value.images[0]"
-                sizes="25vw"
+                sizes="300px"
                 class="rounded"
               />
               <div class="pt-4">

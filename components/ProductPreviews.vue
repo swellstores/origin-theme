@@ -24,14 +24,24 @@
             :to="resolveUrl({ type: 'product', value: product.slug })"
             class="block rounded overflow-hidden"
           >
-            <!-- Initial image -->
-            <VisualMedia :source="product.images[0]" :aspect-ratio="aspectRatio" />
+            <!-- Main image -->
+            <VisualMedia
+              :source="product.images[0]"
+              :aspect-ratio="aspectRatio"
+              :sizes="sizes"
+              :widths="widths"
+            />
             <!-- Hover image -->
             <div
               v-if="product.images[1]"
               class="absolute w-full h-full inset-0 opacity-0 transition-opacity duration-75 hover:opacity-100"
             >
-              <VisualMedia :source="product.images[1]" :aspect-ratio="aspectRatio" />
+              <VisualMedia
+                :source="product.images[1]"
+                :aspect-ratio="aspectRatio"
+                :sizes="sizes"
+                :widths="widths"
+              />
             </div>
           </NuxtLink>
           <div
@@ -84,26 +94,42 @@ export default {
     },
     columnCount: {
       type: Number,
-      default: 3
+      default: 4
     }
   },
 
   fetch() {
     this.aspectRatio = this.$swell.settings.get('productPreviews.aspectRatio', '1:1')
     this.textAlign = this.$swell.settings.get('productPreviews.textAlign', 'left')
+
+    // Set ratio padding
+    const [x, y] = this.aspectRatio.split(':')
+    this.ratioPadding = `${(y / x) * 100}%`
+
+    // Set widths
+    this.widths = [192, 262, 358, 548, 716, 1096]
+
+    // Set srcset sizes
+    switch (this.columnCount) {
+      case 2:
+        this.sizes = '(min-width: 1200px) 548px, 50vw'
+        break
+      case 3:
+        this.sizes = '(min-width: 1200px) 358px, (min-width: 768px) 33vw, 50vw'
+        break
+      case 4:
+        this.sizes = '(min-width: 1200px) 262px, (min-width: 768px) 25vw, 50vw'
+        break
+    }
   },
 
   data() {
     return {
       aspectRatio: '1:1',
-      textAlign: 'left'
-    }
-  },
-
-  computed: {
-    ratioPadding() {
-      const [x, y] = this.aspectRatio.split(':')
-      return `${(y / x) * 100}%`
+      textAlign: 'left',
+      ratioPadding: null,
+      sizes: null,
+      widths: null
     }
   }
 }

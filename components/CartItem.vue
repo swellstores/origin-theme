@@ -5,7 +5,12 @@
         :to="resolveUrl({ type: 'product', value: item.product.slug })"
         class="block w-24 flex-shrink-0"
       >
-        <VisualMedia :source="item.product.images[0]" class="rounded overflow-hidden" />
+        <VisualMedia
+          :source="item.product.images[0]"
+          :widths="[96, 192]"
+          sizes="96px"
+          class="rounded overflow-hidden"
+        />
       </NuxtLink>
       <div class="ml-6 w-full flex flex-col justify-between">
         <!-- Name + options -->

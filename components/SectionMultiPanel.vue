@@ -2,7 +2,7 @@
   <!-- Error/empty state -->
   <SectionUndefined v-if="!panels.length" heading="Multiple panels" description="No panels added" />
 
-  <section v-else class="relative flex flex-wrap lg:container">
+  <section v-else class="relative flex flex-wrap">
     <div
       v-for="(panel, index) in panels"
       :key="id + 'multiPanel' + index"
@@ -31,7 +31,11 @@
       </div>
       <!-- Image panel -->
       <template v-else-if="panel.type === 'image'">
-        <VisualMedia :source="panel.image" :is-background="true" />
+        <VisualMedia
+          :source="panel.image"
+          :is-background="true"
+          sizes="(min-width: 1200px) 50vw, 100vw"
+        />
         <!-- TODO Fixed aspect ratio + background behavior? -->
       </template>
       <!-- Text panel -->

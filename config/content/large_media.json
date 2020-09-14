@@ -9,8 +9,7 @@
         {
           "id": "heading",
           "label": "Heading",
-          "type": "text",
-          "required": true
+          "type": "text"
         },
         {
           "id": "description",
