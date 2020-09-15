@@ -1,12 +1,14 @@
 <template>
-  <div v-if="page && page.sections">
-    <div v-for="(section, index) in page.sections" :key="JSON.stringify(section)">
-      <SectionAsyncLoader
-        :section="section"
-        :collection-index="index"
-        :fetch-is-pending="!loaded && $fetchState.pending"
-      />
-    </div>
+  <div v-if="sections.length">
+    <transition-group name="page-section">
+      <div v-for="(section, index) in sections" :key="JSON.stringify(section)">
+        <SectionAsyncLoader
+          :section="section"
+          :collection-index="index"
+          :fetch-is-pending="!loaded && $fetchState.pending"
+        />
+      </div>
+    </transition-group>
   </div>
 
   <div
@@ -30,7 +32,6 @@
 <script>
 // Helpers
 import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
 import pageMeta from '~/mixins/pageMeta'
 
 export default {
@@ -49,6 +50,7 @@ export default {
     }
 
     // Set component data
+    this.updateSections(page)
     this.page = page
     this.loaded = true
   },
@@ -56,7 +58,30 @@ export default {
   data() {
     return {
       page: null,
+      sections: [],
       loaded: false
+    }
+  },
+
+  methods: {
+    // Update individual sections as-needed so there's less flashing and
+    // the transition group works without scrolling to the page top
+    // TODO remove in Vue 3 because it shouldn't be needed
+    updateSections(page) {
+      const sections = get(page, 'sections')
+      if (!Array.isArray(sections)) return
+
+      if (this.$swellEditor) {
+        sections.map((section, index) => {
+          // Update section if current data isn't identical
+          if (JSON.stringify(section) !== JSON.stringify(this.sections[index])) {
+            this.$set(this.sections, index, section)
+          }
+        })
+      } else {
+        // Set the quick way since the editor isn't active
+        this.sections = sections
+      }
     }
   }
 }
