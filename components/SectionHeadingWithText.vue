@@ -8,17 +8,21 @@
 
   <section v-else class="container py-16 lg:py-24 xl:py-32">
     <div :class="{ 'md:flex': headingPosition === 'left' }">
-      <h2
-        v-balance-text
+      <div
         :class="{
           'md:w-1/3': headingPosition === 'left',
           'text-center mx-auto': headingPosition === 'top-center'
         }"
-        class="mb-8 max-w-2/3 md:mb-0 md:text-5xl xl:text-7xl"
+        class="max-w-2/3 md:mb-0"
       >
-        {{ heading }}
-      </h2>
+        <span v-if="label" class="block label-xs-bold mb-4">{{ label }}</span>
+        <h2 v-balance-text class="m-0 md:text-5xl xl:text-7xl">
+          {{ heading }}
+        </h2>
+      </div>
+
       <div
+        v-if="text"
         :class="{
           'mx-auto': headingPosition === 'top-center' && textColumns === 'single',
           'md:w-2/3': headingPosition.includes('top') && textColumns === 'single',
@@ -43,6 +47,10 @@ export default {
       default: null
     },
     id: {
+      type: String,
+      default: null
+    },
+    label: {
       type: String,
       default: null
     },

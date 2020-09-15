@@ -7,6 +7,11 @@
       "type": "field_group",
       "fields": [
         {
+          "id": "label",
+          "label": "Label",
+          "type": "text"
+        },
+        {
           "id": "heading",
           "label": "Heading",
           "type": "text",
