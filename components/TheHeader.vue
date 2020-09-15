@@ -23,9 +23,9 @@
 
       <div class="w-full fixed transform translate-y-0 transition-all ease-in-out duration-200">
         <header
-          class="transition-all duration-300 ease-in-out z-40"
+          class="z-40 shadow-md transition-all duration-300 ease-in-out"
           :class="[
-            ' bg-primary-lightest lg:shadow-md',
+            'bg-primary-lightest',
             { 'transform -translate-y-full': header.hideOnScroll && hideHeader }
           ]"
         >

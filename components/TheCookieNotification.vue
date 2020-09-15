@@ -7,32 +7,43 @@
     leave-class="opacity-100"
     leave-to-class="opacity-0"
   >
-    <div v-if="showCookieNotification" class="container z-20">
-      <div :class="{ 'w-4/5': type === 'compact', 'w-full mb-4': type === 'full' }">
-        <p class="label-sm">
-          We use cookies to store your preferences, for analytics, and to show you ads later.
-          <a v-if="type === 'compact'" href="" class="font-bold">Learn more</a>
+    <div
+      v-if="showCookieNotification"
+      class="fixed z-20 bottom-6 inset-x-6 px-4 py-3 bg-primary-lightest border border-primary-light rounded shadow-md sm:left-auto sm:max-w-80"
+    >
+      <div v-if="type === 'compact'" class="flex justify-between items-center">
+        <p class="text-sm">
+          We use cookies to improve your shopping experience.
+          <NuxtLink :to="resolveUrl({ type: 'page', value: 'privacy-policy' })">
+            Learn more
+          </NuxtLink>
         </p>
-      </div>
-
-      <div :class="{ 'w-full flex items-center': type === 'full' }">
-        <a v-if="type === 'full'" href="" class="font-bold mr-4">Learn more</a>
-        <a v-if="type === 'full'" href="" class="font-bold">Settings</a>
-        <span
-          class="relative bg-primary-light"
-          :class="{
-            'block w-8 h-8 rounded-full': type === 'compact',
-            'inline-block ml-auto px-3 py-2 rounded': type === 'full'
-          }"
-          @click="acceptCookies()"
+        <button
+          type="button"
+          class="w-8 h-8 rounded-full bg-primary-light ml-3 p-1"
+          @click="acceptCookies"
         >
-          <svg v-if="type === 'compact'" class="absolute w-3 h-3 center-xy">
-            <use xlink:href="#cross-sm" />
-          </svg>
-          <p v-else class="label-sm-bold inline uppercase">Accept</p>
-        </span>
+          <BaseIcon icon="uil:times" />
+        </button>
       </div>
-    </div>
+      <!-- For markets with stricter privacy regulations, requires preference settings editor
+      <div v-else>
+        <p class="text-sm mb-3">
+          We use cookies to store your preferences, and for analytics and marketing purposes.
+        </p>
+        <div class="flex justify-between items-center">
+          <div class="text-sm">
+            <NuxtLink to="/privacy-policy" class="mr-4">
+              Learn more
+            </NuxtLink>
+            <NuxtLink to="/account/privacy">
+              Settings
+            </NuxtLink>
+          </div>
+          <button type="button" class="btn" @click="acceptCookies">Accept</button>
+        </div>
+      </div>
+    --></div>
   </transition>
 </template>
 
@@ -42,7 +53,7 @@ export default {
 
   data() {
     return {
-      type: 'full',
+      type: 'compact',
       showCookieNotification: false
     }
   },
@@ -73,15 +84,3 @@ export default {
   }
 }
 </script>
-
-<style lang="postcss" scoped>
-.container {
-  @apply w-9/10 left-1/2 fixed flex flex-wrap justify-between items-center bottom-0 p-4 mb-6 bg-primary-lightest border border-primary-lightest rounded shadow;
-  transform: translateX(-50%);
-
-  @screen md {
-    @apply max-w-80 right-0 mr-4;
-    transform: unset;
-  }
-}
-</style>
