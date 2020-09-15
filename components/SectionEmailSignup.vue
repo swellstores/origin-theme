@@ -26,7 +26,12 @@
       <EmailSignupForm :class="{ 'mx-auto': textAlign === 'center' }" class="max-w-96" />
     </div>
     <div class="relative w-full md:w-1/2">
-      <VisualMedia :source="image" :is-background="true" sizes="(min-width: 768px) 50vw, 100vw" />
+      <VisualMedia
+        v-if="image"
+        :source="image"
+        :is-background="true"
+        sizes="(min-width: 768px) 50vw, 100vw"
+      />
     </div>
   </section>
 </template>

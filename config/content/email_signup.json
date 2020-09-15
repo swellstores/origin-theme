@@ -16,7 +16,7 @@
         {
           "id": "description",
           "label": "Description text",
-          "type": "text",
+          "type": "long_text",
           "default": "Enter your email address and we'll send you updates.",
           "required": true
         },
