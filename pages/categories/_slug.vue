@@ -44,7 +44,7 @@
       <!-- Product filtering & sorting controls -->
       <aside class="flex items-center text-sm">
         <!-- Filter -->
-        <button class="flex items-center" @click="toggleFilterModal()">
+        <button v-if="filters.length > 0" class="flex items-center" @click="toggleFilterModal()">
           <div
             v-if="activeFilterCount"
             class="w-6 h-6 flex justify-center items-center text-primary-lighter bg-accent rounded-full"
