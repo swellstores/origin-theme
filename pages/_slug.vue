@@ -1,6 +1,16 @@
 <template>
+  <div v-if="page && page.sections">
+    <div v-for="(section, index) in page.sections" :key="JSON.stringify(section)">
+      <SectionAsyncLoader
+        :section="section"
+        :collection-index="index"
+        :fetch-is-pending="!loaded && $fetchState.pending"
+      />
+    </div>
+  </div>
+
   <div
-    v-if="$fetchState.pending"
+    v-else-if="$fetchState.pending"
     class="py-32 flex flex-col justify-center items-center md:container"
   >
     <div class="bg-primary-light w-1/2 h-7 mb-2"></div>
@@ -10,15 +20,11 @@
     <div class="bg-primary-light w-40 h-10"></div>
   </div>
 
-  <div v-else-if="page && page.sections">
-    <div v-for="(section, index) in page.sections" :key="JSON.stringify(section)">
-      <SectionAsyncLoader
-        :section="section"
-        :collection-index="index"
-        :fetch-is-pending="!loaded && $fetchState.pending"
-      />
-    </div>
-  </div>
+  <SectionUndefined
+    v-else
+    :heading="`${page ? page.name : 'Standard'} page`"
+    description="No sections added"
+  />
 </template>
 
 <script>
