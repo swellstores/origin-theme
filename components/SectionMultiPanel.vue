@@ -34,7 +34,7 @@
         <VisualMedia
           :source="panel.image"
           :is-background="true"
-          sizes="(min-width: 1200px) 50vw, 100vw"
+          sizes="(min-width: 768px) 50vw, 100vw"
         />
         <!-- TODO Fixed aspect ratio + background behavior? -->
       </template>

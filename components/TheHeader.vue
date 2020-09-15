@@ -163,6 +163,7 @@ export default {
     $route() {
       // Close mega/mobile nav menu when the page changes
       this.hideHeader = false
+      this.setMobileNavVisibility(false)
     }
   },
 
