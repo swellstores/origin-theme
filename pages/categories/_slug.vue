@@ -42,19 +42,23 @@
       </div>
 
       <!-- Product filtering & sorting controls -->
-      <aside class="flex items-center text-sm">
+      <aside class="flex items-center mb-6 text-sm">
         <!-- Filter -->
-        <button v-if="filters.length > 0" class="flex items-center" @click="toggleFilterModal()">
+        <button
+          v-if="filters.length > 0"
+          class="inline-flex items-center"
+          @click="toggleFilterModal()"
+        >
           <div
-            v-if="activeFilterCount"
+            v-show="activeFilterCount"
             class="w-6 h-6 flex justify-center items-center text-primary-lighter bg-accent rounded-full"
           >
-            <span class="block mt-px text-2xs leading-none">{{ activeFilterCount }}</span>
+            <span class="block text-2xs leading-none">{{ activeFilterCount }}</span>
           </div>
-          <div v-else>
+          <div v-show="!activeFilterCount">
             <BaseIcon icon="uil:filter" />
           </div>
-          <span class="ml-1">Filter</span>
+          <span class="ml-1">Filters</span>
         </button>
         <span class="hidden ml-1 sm:inline">{{ productCountLabel }}</span>
         <!-- Sort -->
@@ -72,7 +76,13 @@
       </aside>
 
       <!-- Product previews -->
-      <ProductPreviews :products="products" />
+      <ProductPreviews v-if="products.length" :products="products" />
+      <div v-else class="py-16 bg-primary-lighter text-center rounded">
+        <p>We couldn't find any products matching your criteria.</p>
+        <button type="button" name="button" class="btn mt-4" @click="toggleFilterModal">
+          Edit filters
+        </button>
+      </div>
 
       <!-- Category pagination controls -->
       <div v-if="pages" class="py-2 sm:py-4 md:py-6">
@@ -211,8 +221,11 @@ export default {
     },
     productCountLabel() {
       const count = this.productsCount
+      const isLoading = this.$fetchState.pending
 
-      if (count > 1) {
+      if (isLoading) {
+        return ''
+      } else if (count > 1) {
         return `${count} products`
       } else if (count > 0) {
         return '1 product'

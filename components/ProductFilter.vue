@@ -253,7 +253,7 @@ export default {
     },
     activeFilterCountLabel() {
       const count = this.activeFilters.length
-      return `${count} filter${count > 1 ? '' : 's'} active`
+      return `${count} filter${count === 1 ? '' : 's'} active`
     }
   },
 

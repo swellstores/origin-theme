@@ -3170,6 +3170,11 @@ core-js@^2.6.5:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
   integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
 
+core-js@^3.6.5:
+  version "3.6.5"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.6.5.tgz#7395dc273af37fb2e50e9bd3d9fe841285231d1a"
+  integrity sha512-vZVEEwZoIsI+vPEuoF9Iqf5H7/M3eeQqWlQnYa8FSKKePuYTf5MWnxb5SDAzCa60b3JBRS5g9b+Dq7b1y/RCrA==
+
 core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
@@ -9174,10 +9179,10 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-swell-js@3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/swell-js/-/swell-js-3.2.1.tgz#05fdde4e58b172fe287821b3445b6d56286ba8c1"
-  integrity sha512-wSTqTJVpevmBLO1mSr0uimgFiBNL6tWPo+PEyQGGspCrJPsorZpGI0F2oa33vvYmCXVszLaMrZg10bbREDwGKw==
+swell-js@3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/swell-js/-/swell-js-3.2.2.tgz#87259f46ee70aad12900ab4fd3844523259a5c01"
+  integrity sha512-Y6yPuf8xwlb6HyWs65wvwXkRn5HtDx5SFcxBI/E+B8G89F9e4ma4JOhr88Q0myH5LlR1vuSkIM/8FoobjDI8Tw==
   dependencies:
     "@babel/runtime" "7.4.5"
     deepmerge "4.2.2"
@@ -9823,11 +9828,12 @@ vue-server-renderer@^2.6.12:
     serialize-javascript "^3.1.0"
     source-map "0.5.6"
 
-vue-slider-component@3.0.44:
-  version "3.0.44"
-  resolved "https://registry.yarnpkg.com/vue-slider-component/-/vue-slider-component-3.0.44.tgz#d3bb2a548ac302c6c306d749487673549edd529c"
-  integrity sha512-zP0C7jCM89wz4RU52CWeVg1ozjx/hh9m2mcydkb9GKaIkSdWOK0pPsUF0xweyBHQD3ZoJLTOcUGJaXJXsdK9Zw==
+vue-slider-component@3.2.5:
+  version "3.2.5"
+  resolved "https://registry.yarnpkg.com/vue-slider-component/-/vue-slider-component-3.2.5.tgz#657e47bf6d1db418c8ab58145840bf25c9143514"
+  integrity sha512-re1OSpfYHM6Un22/vlAnCb8QtBcxXuno/7/D5z8sGTZNXBgK32zBbz1p/WNwj/qrlCegEEzqfX7Khd4TD4YNXA==
   dependencies:
+    core-js "^3.6.5"
     vue-property-decorator "^8.0.0"
 
 vue-style-loader@^4.1.0:

@@ -1,5 +1,5 @@
 <template>
-  <section class="mt-6 -mx-1 flex flex-wrap sm:-mx-2 xl:-mx-3">
+  <section class="-mx-1 flex flex-wrap sm:-mx-2 xl:-mx-3">
     <article
       v-for="product in products"
       :key="product.id"
