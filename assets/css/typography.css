@@ -89,5 +89,5 @@ textarea {
 }
 
 .label-sm-faded {
-  @apply text-sm text-primary-dark font-medium;
+  @apply text-sm text-primary-dark;
 }

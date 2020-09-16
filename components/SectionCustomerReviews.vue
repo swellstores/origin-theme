@@ -31,8 +31,7 @@
 
     <!-- Reviews -->
     <div class="flex justify-center flex-col px-8 md:px-28 lg:px-48">
-      <h2 class="text-center lg:text-4xl mb-14">{{ heading }}</h2>
-
+      <h2 v-if="heading" class="text-center lg:text-4xl mb-12">{{ heading }}</h2>
       <div v-if="currentReview" ref="quote" class="transition-all ease-in-out duration-300">
         <transition
           enter-active-class="transition-all duration-200 ease-out"
@@ -48,15 +47,16 @@
           mode="out-in"
           @before-enter="setMaxElHeight"
         >
-          <div ref="quoteContent" :key="currentReview.quote">
-            <div class="flex justify-center items-center flex-col">
+          <div ref="quoteContent" :key="currentReview.id">
+            <div class="flex justify-center items-center flex-col text-center">
               <ReviewStars :score="currentReview.score" />
-              <p v-balance-text class="mx-auto text-center pt-6 pb-4 max-w-128">
-                {{ currentReview.quote }}
+              <p v-balance-text class="mx-auto pb-3 max-w-128">
+                {{ currentReview.quote || 'No quote added' }}
               </p>
-              <span class="label-sm-faded text-center"
-                >{{ currentReview.name }}, {{ currentReview.location }}</span
-              >
+              <p class="label-sm-faded">
+                <span>{{ currentReview.name }}</span
+                ><span v-if="currentReview.location">, {{ currentReview.location }}</span>
+              </p>
             </div>
           </div>
         </transition>
