@@ -33,6 +33,7 @@
   "footer": {
     "menu": "footer",
     "secondary_menu": "footer-secondary",
+    "show_secondary_menu": true,
     "show_social": true,
     "show_contact_info": true,
     "show_email_signup": true
