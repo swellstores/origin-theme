@@ -33,8 +33,8 @@
           }"
           class="w-full md:px-4"
         >
-          <p v-balance-text class="">&ldquo;{{ mention.quote }}&rdquo;</p> 
-          <span v-if="mention.name" class="block mt-2 font-bold">— {{ mention.name }}</span>
+          <p v-balance-text class="">&ldquo;{{ mention.quote }}&rdquo;</p>
+          <span v-if="mention.name" class="block mt-2 font-semibold">— {{ mention.name }}</span>
         </div>
       </div>
     </div>

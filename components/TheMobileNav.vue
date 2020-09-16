@@ -10,7 +10,7 @@
             name="nav-menu-link"
             tag="ul"
             appear
-            class="text-center text-4xl font-bold"
+            class="text-center text-4xl font-semibold"
             :style="{ '--length': props.menuItems.length }"
           >
             <li

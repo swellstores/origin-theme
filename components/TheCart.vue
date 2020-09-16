@@ -90,7 +90,7 @@
                 <span>Discounts</span>
                 <span>–{{ formatMoney(cart.discountTotal) }}</span>
               </div>
-              <h3 class="mt-3 flex justify-between text-xl font-bold">
+              <h3 class="mt-3 flex justify-between text-xl font-semibold">
                 <span>Total</span>
                 <span>{{ formatMoney(cart.grandTotal) }}</span>
               </h3>

@@ -14,7 +14,7 @@
         class="panel absolute w-full h-full left-0 bg-primary-lightest overflow-scroll md:max-w-112"
       >
         <div class="flex items-center p-6 border-b border-primary-light">
-          <span class="text-lg font-bold">Refine results</span>
+          <h3>Refine results</h3>
           <button class="ml-auto" @click="$emit('click-close')">
             <BaseIcon icon="uil:times" size="lg" />
           </button>
@@ -27,7 +27,7 @@
         >
           <div class="flex items-center justify-between">
             <span class="text-primary-dark">{{ activeFilterCountLabel }}</span>
-            <button class="font-bold" @click="resetFilters">Clear all</button>
+            <button class="font-semibold" @click="resetFilters">Clear all</button>
           </div>
 
           <ul class="w-full flex flex-wrap pt-3">
@@ -57,7 +57,7 @@
               <li
                 v-for="(color, i) in activeColorFilters"
                 :key="`active-color-${i}`"
-                class="active-filter rounded-full text-sm font-bold"
+                class="active-filter rounded-full text-sm font-semibold"
               >
                 <span
                   class="block rounded-full w-4 h-4 -ml-1 mr-2"
@@ -72,7 +72,7 @@
           </ul>
         </div>
 
-        <div class="pt-6 pb-10 px-6">
+        <div class="p-6">
           <div v-for="filter in filters">
             <!-- Label -->
             <span class="label-xs-bold-faded uppercase">{{ filter.label }}</span>
@@ -111,11 +111,7 @@
           />
           -->
 
-          <button
-            class="w-full px-6 py-3 uppercase tracking-wide bg-primary-darkest text-primary-lighter text-sm font-bold rounded"
-            type="button"
-            @click="applyFilters"
-          >
+          <button class="btn btn--lg w-full" type="button" @click="applyFilters">
             Apply filters
           </button>
         </div>
@@ -228,7 +224,7 @@ function getActiveFilters(filters, filterState) {
 }
 
 export default {
-  name: 'ProductFilter',
+  name: 'FilterPanel',
 
   props: {
     filters: {

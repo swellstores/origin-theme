@@ -62,7 +62,7 @@
             <ReviewStars :score="reviews.averageScore" size="sm" />
             <span class="text-sm">{{ reviews.total }} reviews</span>
             -->
-            <div class="font-label font-bold text-lg flex items-center mt-2 mb-5 md:mb-8">
+            <div class="font-semibold text-lg flex items-center mt-2 mb-5 md:mb-8">
               <span>{{ formatMoney(variation.price, variation.currency) }}</span>
               <span
                 v-if="variation.origPrice"

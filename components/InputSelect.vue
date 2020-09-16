@@ -93,7 +93,7 @@ export default {
     }
 
     & p {
-      @apply ml-3 font-bold;
+      @apply ml-3 font-semibold;
     }
   }
 
