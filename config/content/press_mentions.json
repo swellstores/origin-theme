@@ -14,7 +14,7 @@
             {
               "id": "quote",
               "label": "Quote",
-              "type": "long_text"
+              "type": "textarea"
             },
             {
               "id": "name",

@@ -19,7 +19,7 @@
             {
               "id": "quote",
               "label": "Review text/Quote",
-              "type": "long_text"
+              "type": "textarea"
             },
             {
               "id": "name",
