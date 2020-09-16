@@ -16,13 +16,19 @@ export default {
       const { $swell, $route, category, categories, product, products, page } = this
       const storeName = $swell.settings.get('store.name')
       const storeUrl = $swell.settings.get('store.url')
+      const faviconUrl = $swell.settings.get('header.favicon.file.url')
       const formatTitle = itemTitle => itemTitle + ' - ' + storeName
 
       const meta = {
         url: storeUrl + $route.path,
         title: storeName,
         description: '',
-        image: {} // TODO global fallback image
+        image: {}, // TODO global fallback image,
+        link: []
+      }
+
+      if (faviconUrl) {
+        meta.link.push({ rel: 'icon', type: 'image/x-icon', href: faviconUrl })
       }
 
       if (get(this, '$fetchState.pending')) {
@@ -91,7 +97,7 @@ export default {
   },
 
   head() {
-    const { url, title, description, image } = this.pageMeta
+    const { url, title, description, image, link } = this.pageMeta
     const script = []
 
     if (this.structuredData) {
@@ -105,6 +111,7 @@ export default {
       __dangerouslyDisableSanitizers: ['script'],
       script,
       title,
+      link,
       meta: [
         {
           hid: 'description',
