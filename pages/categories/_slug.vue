@@ -1,7 +1,7 @@
 <template>
   <main class="">
     <!-- Product Filter -->
-    <ProductFilter
+    <FilterPanel
       v-show="filterModalIsVisible"
       :filters="filters"
       :filter-state="filterState"
@@ -99,23 +99,6 @@ import isObject from 'lodash/isObject'
 import qs from 'qs'
 import pageMeta from '~/mixins/pageMeta'
 
-// Convert filter state object to array for passing to products.list as $filters
-function getFilterList(filterState, filters) {
-  return Object.keys(filterState).reduce(($filters, id) => {
-    const value = filterState[id]
-    const filter = filters.find(f => f.id === id)
-    const arrayedTypes = ['select']
-
-    if (arrayedTypes.includes(filter.type)) {
-      value.map(v => $filters.push({ id, value: v }))
-    } else {
-      $filters.push({ id, value })
-    }
-
-    return $filters
-  }, [])
-}
-
 // Return a filter state object with active filter IDs and values
 function getFilterStateFromQuery(query, filters) {
   const queryKeys = Object.keys(query)
@@ -151,13 +134,13 @@ export default {
     // Set data for the skeleton loader (as many products as we're going to fetch)
     this.products = [...Array(this.limit).keys()].map(() => ({}))
 
-    const fetchProducts = (filterState, filters) =>
+    const fetchProducts = filterState =>
       $swell.products.list({
         page: this.page,
         limit: this.limit,
         sort: this.sortMode,
         categories: slug,
-        $filters: filterState ? getFilterList(filterState, filters) : []
+        $filters: filterState
       })
 
     const setProducts = products => {
