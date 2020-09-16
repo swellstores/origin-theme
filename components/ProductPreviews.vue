@@ -22,7 +22,7 @@
         <div v-if="product.images" class="relative">
           <NuxtLink
             :to="resolveUrl({ type: 'product', value: product.slug })"
-            class="block rounded overflow-hidden"
+            class="relative block rounded overflow-hidden"
           >
             <!-- Main image -->
             <VisualMedia
