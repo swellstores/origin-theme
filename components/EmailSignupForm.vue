@@ -1,6 +1,6 @@
 <template>
-  <div class="">
-    <div class="relative">
+  <div class="relative">
+    <div>
       <input
         v-model="email"
         type="text"
@@ -30,7 +30,10 @@
     </div>
     <!-- Validation error -->
     <transition name="fade">
-      <div v-show="errorMessage" class="mt-1 px-3 py-1 bg-error-faded text-error text-sm rounded">
+      <div
+        v-show="errorMessage"
+        class="absolute mt-1 px-3 py-1 w-full bg-error-faded text-error text-sm rounded"
+      >
         {{ errorMessage }}
       </div>
     </transition>

@@ -6,33 +6,34 @@
     description="No reviews added"
   />
 
-  <section v-else class="relative mx-6 my-14 lg:mx-8 lg:my-16">
-    <!-- Arrows -->
-    <div
-      v-if="reviews.length > 1"
-      class="absolute inset-x-0 bottom-0 md:inset-0 flex items-center justify-between"
-    >
-      <button
-        title="Previous review"
-        class="p-2 rounded-full bg-primary-lighter"
-        @click.prevent="prevReview"
-      >
-        <BaseIcon icon="uil:angle-left" size="lg" />
-      </button>
-
-      <button
-        title="Next review"
-        class="p-2 rounded-full bg-primary-lighter"
-        @click.prevent="nextReview"
-      >
-        <BaseIcon icon="uil:angle-right" size="lg" />
-      </button>
-    </div>
-
+  <section v-else class="relative container my-14 lg:my-16">
     <!-- Reviews -->
-    <div class="flex justify-center flex-col px-8 md:px-28 lg:px-48">
+    <div class="flex justify-center flex-col ">
       <h2 v-if="heading" class="text-center lg:text-4xl mb-12">{{ heading }}</h2>
-      <div v-if="currentReview" ref="quote" class="transition-all ease-in-out duration-300">
+      <div
+        v-if="currentReview"
+        ref="quote"
+        class="relative w-full transition-all ease-in-out duration-300"
+      >
+        <!-- Arrows -->
+        <div v-if="reviews.length > 1" class="absolute inset-0 flex items-center justify-between">
+          <button
+            title="Previous review"
+            class="p-2 rounded-full bg-primary-lighter"
+            @click.prevent="prevReview"
+          >
+            <BaseIcon icon="uil:angle-left" size="lg" />
+          </button>
+
+          <button
+            title="Next review"
+            class="p-2 rounded-full bg-primary-lighter"
+            @click.prevent="nextReview"
+          >
+            <BaseIcon icon="uil:angle-right" size="lg" />
+          </button>
+        </div>
+        <!-- Review content -->
         <transition
           enter-active-class="transition-all duration-200 ease-out"
           :enter-class="
@@ -48,9 +49,11 @@
           @before-enter="setMaxElHeight"
         >
           <div ref="quoteContent" :key="currentReview.id">
-            <div class="flex justify-center items-center flex-col text-center">
-              <ReviewStars :score="currentReview.score" />
-              <p v-balance-text class="mx-auto pb-3 max-w-128">
+            <div
+              class="flex justify-center items-center flex-col text-center px-16 md:px-28 lg:px-48"
+            >
+              <ReviewStars v-if="currentReview.score" :score="currentReview.score" class="mb-4" />
+              <p v-balance-text class="mx-auto mb-4 max-w-128">
                 {{ currentReview.quote || 'No quote added' }}
               </p>
               <p class="label-sm-faded">

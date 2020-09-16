@@ -31,7 +31,7 @@
 
       <!-- Product overview -->
       <div class="md:w-1/2 lg:px-6 xl:px-12">
-        <div class="container top-20 pt-10 md:sticky md:pt-12">
+        <div class="container top-20 pt-10 max-w-160 md:sticky md:pt-12">
           <!-- Skeleton loader -->
           <div v-if="$fetchState.pending">
             <div class="loader-el w-32 h-3 mb-4"></div>
