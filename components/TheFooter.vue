@@ -8,14 +8,18 @@
       <!-- Store info -->
       <div v-if="footer.showContactInfo || footer.showSocial" class="lg:w-1/4 lg:pr-6">
         <div v-if="footer.showContactInfo" class="mb-5">
-          <p v-if="footer.contactInfoHeading" class="font-label text-primary-med mb-5">
+          <p v-if="footer.contactInfoHeading" class="text-sm text-primary-med mb-4">
             {{ footer.contactInfoHeading }}
           </p>
           <p>
-            <span class="block">{{ store.supportPhone }}</span>
-            <span class="block">{{ store.supportEmail }}</span>
+            <a class="block text-current" :href="'tel:' + store.supportPhone">
+              {{ store.supportPhone }}
+            </a>
+            <a class="block text-current" :href="'mailto:' + store.supportEmail">
+              {{ store.supportEmail }}
+            </a>
           </p>
-          <div v-html="footer.contactInfoText"></div>
+          <div class="mt-2" v-html="footer.contactInfoText"></div>
         </div>
 
         <!-- Social links-->
@@ -41,12 +45,13 @@
           class="my-10 lg:w-1/4 lg:my-0"
         >
           <ul v-if="column.items">
+            <li v-if="showMenuLabel" class="text-sm text-primary-med mb-3">Explore</li>
             <li v-for="(item, i) in column.items" :key="item.name" class="mb-0">
               <!-- Heading -->
               <p
                 v-if="item.type === 'heading'"
                 :class="{ 'mt-6': i > 0 }"
-                class="font-label text-primary-med mb-4"
+                class="text-sm text-primary-med mb-3"
               >
                 {{ item.name }}
               </p>
@@ -55,7 +60,6 @@
                 v-else
                 :to="resolveUrl(item)"
                 class="block py-1 leading-tight text-xl text-primary-lightest"
-                @click.native="listeners.click"
                 >{{ item.name }}</NuxtLink
               >
             </li>
@@ -67,11 +71,11 @@
       <template v-if="footer.showEmailSignup">
         <div class="max-w-96 mx-auto lg:w-1/4 lg:flex-shrink-0">
           <!-- Heading + text -->
-          <p v-if="footer.emailSignupHeading" class="font-label text-primary-med mb-4">
+          <p v-if="footer.emailSignupHeading" class="text-sm text-primary-med mb-5">
             {{ footer.emailSignupHeading }}
           </p>
-          <div v-if="footer.emailSignupText" class="mb-6" v-html="footer.emailSignupText"></div>
-          <EmailSignupForm theme="dark" />
+          <div v-if="footer.emailSignupText" v-html="footer.emailSignupText"></div>
+          <EmailSignupForm theme="dark" class="mt-5" />
         </div>
       </template>
     </div>
@@ -161,6 +165,10 @@ export default {
       return ['twitter', 'facebook', 'pinterest', 'instagram', 'youtube', 'vimeo']
         .map(id => ({ id, ...get(this, `socialLinks.${id}`, {}) })) // Get the network's link value from settings
         .filter(link => link.show && link.url) // Only include if it's switched on and  has a url
+    },
+    showMenuLabel() {
+      const firstItem = get(this, 'menu.items.0.items.0', {})
+      return firstItem.type !== 'heading'
     }
   }
 }
