@@ -273,7 +273,7 @@
           "id": "footer.show_secondary_menu",
           "label": "Show secondary footer menu",
           "type": "toggle",
-          "default": false
+          "default": true
         },
         {
           "id": "footer.secondary_menu",
