@@ -53,7 +53,7 @@
           "id": "text_columns",
           "label": "Text columns",
           "type": "select",
-          "default": "Dual column",
+          "default": "single",
           "conditions": { "heading_position": { "$ne": "left" } },
           "options": [
             {
