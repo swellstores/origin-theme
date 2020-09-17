@@ -18,7 +18,7 @@ const generateResponsiveImageData = (url, options) => {
   }
 
   const srcsetArray = widths.map(size => {
-    const width = Math.round(size * dpr)
+    const width = size // disabled tbd: Math.round(size * dpr)
     const sizeUrl = `${url}?width=${width}&fm=${fm}&q=${q}`
     return `${sizeUrl} ${width}w`
   })
