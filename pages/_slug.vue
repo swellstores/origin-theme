@@ -50,7 +50,7 @@ export default {
     }
 
     // Set component data
-    this.updateSections(page)
+    this.setSections(page)
     this.page = page
     this.loaded = true
   },
@@ -67,20 +67,24 @@ export default {
     // Update individual sections as-needed so there's less flashing and
     // the transition group works without scrolling to the page top
     // TODO remove in Vue 3 because it shouldn't be needed
-    updateSections(page) {
-      const sections = get(page, 'sections')
-      if (!Array.isArray(sections)) return
+    setSections(page) {
+      const newSections = get(page, 'sections')
+      if (!Array.isArray(newSections) || !Array.isArray(this.sections)) return
 
-      if (this.$swellEditor) {
-        sections.map((section, index) => {
-          // Update section if current data isn't identical
+      // We don't want to set sections individually if the array lengths are different,
+      // because that means we're either on first load, or a section has been deleted
+      const sectionCountIsEqual = newSections.length === this.sections.length
+
+      if (this.$swellEditor && sectionCountIsEqual) {
+        newSections.map((section, index) => {
           if (JSON.stringify(section) !== JSON.stringify(this.sections[index])) {
+            // Update section if current data isn't identical
             this.$set(this.sections, index, section)
           }
         })
       } else {
         // Set the quick way since the editor isn't active
-        this.sections = sections
+        this.sections = newSections
       }
     }
   }
