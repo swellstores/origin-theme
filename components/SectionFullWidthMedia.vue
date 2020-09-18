@@ -65,7 +65,7 @@
         <!-- Tell prettier not to add extra whitespace -->
         <!-- display: inline -->
         <p
-          v-balance-text
+          v-balance-text.children
           :class="{ 'text-primary-lighter': textColor === 'light' }"
           class="whitespace-pre-line"
           v-html="description"
