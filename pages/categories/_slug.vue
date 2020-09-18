@@ -76,7 +76,11 @@
       </aside>
 
       <!-- Product previews -->
-      <ProductPreviews v-if="products.length" :products="products" />
+      <ProductPreviews
+        v-if="products.length"
+        :products="products"
+        :column-count="category.content.productCols"
+      />
       <div v-else class="py-16 bg-primary-lighter text-center rounded">
         <p>We couldn't find any products matching your criteria.</p>
         <button type="button" name="button" class="btn mt-4" @click="toggleFilterModal">
