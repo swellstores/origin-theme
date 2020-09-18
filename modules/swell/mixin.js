@@ -4,19 +4,8 @@ import get from 'lodash/get'
 // Components
 import VisualMedia from '~/modules/swell/components/VisualMedia'
 
-// Directives
-import lazysizes from '~/modules/swell/directives/lazysizes'
-
 Vue.use({
   install(Vue) {
-    // Check if browser supports lazy-loading images
-    if (process.client && 'loading' in HTMLImageElement.prototype) {
-      VisualMedia.props.browserCanLazyLoad.default = true
-    } else if (process.browser) {
-      // Import polyfill
-      import('lazysizes')
-    }
-
     Vue.mixin({
       methods: {
         formatMoney,
@@ -25,7 +14,6 @@ Vue.use({
     })
 
     Vue.component('VisualMedia', VisualMedia)
-    Vue.directive('lazysizes', lazysizes)
   }
 })
 

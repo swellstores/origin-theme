@@ -37,7 +37,7 @@ export default {
     // Media object returned by the API, or URL of the file
     source: {
       type: [Object, String],
-      default: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E`
+      default: `data:image/svg+xml,%253Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%253E%253C/svg%253E`
     },
     // Alternative text for screen readers
     alt: {
@@ -75,11 +75,6 @@ export default {
     lazyLoad: {
       type: Boolean,
       default: true
-    },
-    // Whether browser supports lazy-loading (set by plugin)
-    browserCanLazyLoad: {
-      type: Boolean,
-      default: false
     }
   },
 
@@ -97,14 +92,14 @@ export default {
     } = context.props
 
     const [x, y] = aspectRatio.split(':')
-    let dimensions = [x, y]
     const ratioPadding = `${(y / x) * 100}%`
+
     // Set image object
     const image = {
-      alt,
       src: source,
       srcset: '',
-      sizes
+      sizes,
+      alt
     }
 
     if (source && typeof source === 'object') {
@@ -115,7 +110,8 @@ export default {
       })
       image.src = imageData.src
       image.srcset = imageData.srcset
-      dimensions = [file.width, file.height]
+      image.width = file.width
+      image.height = file.height
     }
 
     // Merge passed class string with staticClass from context
@@ -125,37 +121,21 @@ export default {
     }
 
     // Set lazy-load attributes
-    if (lazyLoad && browserCanLazyLoad) {
+    if (lazyLoad) {
       image.loading = 'lazy'
-      image.width = dimensions[0]
-      image.height = dimensions[1]
-    } else if (lazyLoad) {
-      image['data-src'] = image.src
-      image['data-srcset'] = image.srcset
-      image.srcset = ''
-      image.src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ${dimensions[0]} ${dimensions[1]}'%3E%3C/svg%3E`
     }
 
+    const wrapperClass = isBackground
+      ? mergeClasses('h-full overflow-hidden')
+      : mergeClasses('relative bg-primary-lighter w-full pb-full overflow-hidden')
+
+    const imgClass = isBackground
+      ? 'absolute top-0 left-0 w-full h-full object-cover'
+      : 'absolute inset-0 w-full h-full object-cover'
+
     return (
-      <div
-        class={
-          isBackground
-            ? mergeClasses('h-full overflow-hidden')
-            : mergeClasses('relative bg-primary-lighter w-full pb-full overflow-hidden')
-        }
-        style={isBackground ? null : `padding-bottom: ${ratioPadding}`}
-      >
-        <img
-          v-lazysizes
-          {...{ attrs: image }}
-          style="object-fit: cover;"
-          class={`${
-            isBackground
-              ? 'absolute top-0 left-0 w-full h-full object-cover'
-              : 'absolute inset-0 w-full h-full object-cover'
-          } ${lazyLoad && !browserCanLazyLoad ? 'lazyload' : ''}
-          `}
-        />
+      <div class={wrapperClass} style={isBackground ? null : `padding-bottom: ${ratioPadding}`}>
+        <img {...{ attrs: image }} style="object-fit: cover;" class={imgClass} />
       </div>
     )
   }
