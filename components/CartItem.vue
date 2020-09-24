@@ -6,7 +6,7 @@
         class="block w-24 flex-shrink-0"
       >
         <VisualMedia
-          :source="item.product.images[0]"
+          :source="previewImage"
           :widths="[96, 192]"
           sizes="96px"
           class="rounded overflow-hidden"
@@ -36,15 +36,15 @@
           <button
             type="button"
             class="float-right p-1 -mr-1 -mb-1"
-            @click.prevent="editorIsOpen = !editorIsOpen"
+            @click.prevent="itemEditorIsVisible = !itemEditorIsVisible"
           >
-            {{ editorIsOpen ? 'Close' : 'Edit' }}
+            {{ itemEditorIsVisible ? 'Close' : 'Edit' }}
           </button>
         </div>
       </div>
     </div>
     <!-- Item editor -->
-    <div v-show="editorIsOpen">
+    <div v-show="itemEditorIsVisible">
       <div class="flex items-center pb-4 text-sm">
         <button type="button" class="flex items-center mr-3 pr-1" @click.prevent="removeItem()">
           <BaseIcon icon="uil:trash-alt" class="mr-1" />
@@ -81,6 +81,9 @@
 </template>
 
 <script>
+// Helpers
+import get from 'lodash/get'
+
 export default {
   name: 'CartItem',
 
@@ -94,9 +97,16 @@ export default {
       default: 0
     }
   },
+
   data() {
     return {
-      editorIsOpen: false
+      itemEditorIsVisible: false
+    }
+  },
+
+  computed: {
+    previewImage() {
+      return get(this, 'item.product.images.0')
     }
   },
 

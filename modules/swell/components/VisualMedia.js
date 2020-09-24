@@ -37,7 +37,8 @@ export default {
     // Media object returned by the API, or URL of the file
     source: {
       type: [Object, String],
-      default: `data:image/svg+xml,%253Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%253E%253C/svg%253E`
+      default:
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
     },
     // Alternative text for screen readers
     alt: {
