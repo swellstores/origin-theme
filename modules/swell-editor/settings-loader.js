@@ -1,12 +1,14 @@
 import _ from 'lodash'
+import settings from '~/config/settings.json'
+import menus from '~/config/menus.json'
 
 export default async (context, inject) => {
   const useEditorSettings = '<%= options.useEditorSettings %>' !== 'false'
 
   if (process.env.NODE_ENV === 'production' || !useEditorSettings) {
     // Load settings from filesystem
-    context.app.$swell.settings.state = parseSerializedOption(`<%= options.settings %>`)
-    context.app.$swell.settings.menuState = parseSerializedOption(`<%= options.menus %>`)
+    context.app.$swell.settings.state = normalizeKeys(settings)
+    context.app.$swell.settings.menuState = normalizeKeys(menus)
   } else {
     // Load all settings via API
     await context.app.$swell.settings.load()
@@ -20,11 +22,6 @@ export default async (context, inject) => {
       }
     }
   }
-}
-
-function parseSerializedOption(value) {
-  const obj = JSON.parse(value)
-  return normalizeKeys(obj)
 }
 
 function normalizeKeys(obj, params) {
