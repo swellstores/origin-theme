@@ -88,7 +88,8 @@ function getContentPath({ type, value }) {
   if (type === 'url') return value
 
   // Get slug from linked object slug or id, fall back to value itself
-  const slug = get(value, 'slug', get(value, 'id', value)) || ''
+  const fallback = typeof value === 'string' ? value : ''
+  const slug = get(value, 'slug', get(value, 'id', fallback)) || ''
 
   // Build path based on content type of item
   switch (type) {
