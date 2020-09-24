@@ -214,18 +214,22 @@ export default {
 
     optionInputs() {
       const options = get(this, 'product.options', [])
+
       return options.map(option => {
         let componentName
 
         switch (option.inputType) {
-          case 'select':
-            componentName = 'ProductOptionSelect'
+          case 'short_text':
+            componentName = 'ProductOptionText'
+            break
+          case 'long_text':
+            componentName = 'ProductOptionText'
             break
           case 'toggle':
             componentName = 'ProductOptionCheckbox'
             break
           default:
-            componentName = 'ProductOptionText'
+            componentName = 'ProductOptionSelect'
         }
 
         return {
