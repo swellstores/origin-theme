@@ -99,16 +99,18 @@
 <script>
 // Helpers
 import get from 'lodash/get'
+import isObject from 'lodash/isObject'
 import pageMeta from '~/mixins/pageMeta'
 
 // Return a filter state object with active filter IDs and values
 function getFilterStateFromQuery(query, filters) {
-  const queryKeys = Object.keys(query)
   const filterState = {}
   const arrayedTypes = ['select']
 
   // Go through filters and check if there's a matching query param
-  if (Array.isArray(filters)) {
+  if (isObject(query) && Array.isArray(filters)) {
+    const queryKeys = Object.keys(query)
+
     filters.map(({ id, type }) => {
       if (queryKeys.includes(id)) {
         const queryValue = query[id]
@@ -251,27 +253,27 @@ export default {
       this.filterModalIsVisible = !this.filterModalIsVisible
     },
     updateFilters(filterState) {
-      this.updateQueryString(filterState)
+      this.updateRouteQuery(filterState)
       this.toggleFilterModal()
     },
     updateSortMode(option) {
-      this.updateQueryString({ sort: option.value })
+      this.updateRouteQuery({ ...this.filterState, sort: option.value })
     },
-    updateQueryString(newQuery) {
-      const { name, params, query: currentQuery } = this.$route
+    updateRouteQuery(newQuery) {
+      const { path, query: currentQuery } = this.$route
       const query = { ...currentQuery, ...newQuery }
 
-      // Remove all filter query properties if newQuery is empty
-      // TODO do this in a less magical way so the filter reset logic is more obvious
-      if (!newQuery || !Object.keys(newQuery).length) {
-        const currentQueryFilterState = getFilterStateFromQuery(currentQuery, this.filters)
-        Object.keys(currentQueryFilterState).map(key => delete query[key])
-      }
+      // Remove filters from merged query if not present in new query
+      const currentFilterState = getFilterStateFromQuery(currentQuery, this.filters)
+      const newFilterState = getFilterStateFromQuery(newQuery, this.filters)
+      Object.keys(currentFilterState).map(key => {
+        if (!newFilterState[key]) delete query[key]
+      })
 
-      // Update the URL if the resulting query is different
-      if (JSON.stringify(currentQuery) !== JSON.stringify(query)) {
-        this.$router.replace({ name, params, query })
-      }
+      this.$router.replace({ path, query }).catch(err => {
+        // Avoid duplicate navigation error
+        // TODO remove in Vue 3
+      })
     }
   }
 }
