@@ -79,7 +79,7 @@
       <ProductPreviews
         v-if="products.length"
         :products="products"
-        :column-count="category.content.productCols"
+        :column-count="settings.productCols"
       />
       <div v-else class="py-16 bg-primary-lighter text-center rounded">
         <p>We couldn't find any products matching your criteria.</p>
@@ -99,8 +99,6 @@
 <script>
 // Helpers
 import get from 'lodash/get'
-import isObject from 'lodash/isObject'
-import qs from 'qs'
 import pageMeta from '~/mixins/pageMeta'
 
 // Return a filter state object with active filter IDs and values
@@ -200,11 +198,11 @@ export default {
   },
 
   computed: {
-    activeFilterCount() {
-      return Object.keys(this.filterState).length
-    },
     settings() {
       return get(this, 'category.content', {})
+    },
+    activeFilterCount() {
+      return Object.keys(this.filterState).length
     },
     productCountLabel() {
       const count = this.productsCount
