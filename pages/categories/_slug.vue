@@ -79,13 +79,16 @@
       <ProductPreviews
         v-if="products.length"
         :products="products"
-        :column-count="category.content.productCols"
+        :column-count="settings.productCols"
       />
-      <div v-else class="py-16 bg-primary-lighter text-center rounded">
+      <div v-else-if="activeFilterCount > 0" class="py-16 bg-primary-lighter text-center rounded">
         <p>We couldn't find any products matching your criteria.</p>
         <button type="button" name="button" class="btn mt-4" @click="toggleFilterModal">
           Edit filters
         </button>
+      </div>
+      <div v-else class="py-16 bg-primary-lighter text-center rounded">
+        <p>We couldn't find any products in this category.</p>
       </div>
 
       <!-- Category pagination controls -->
@@ -123,13 +126,18 @@ function getFilterStateFromQuery(query, filters) {
   return filterState
 }
 
+// Calculate product limit from category rows/cols
+function getProductLimit(category) {
+  return ~~get(category, 'content.productRows', 4) * ~~get(category, 'content.productCols', 6)
+}
+
 export default {
   name: 'CategoryDetailPage',
   mixins: [pageMeta],
 
   async fetch() {
     const { $swell, $route } = this
-    const slug = $route.params.slug
+    this.slug = $route.params.slug
 
     // Parse URL query params
     this.page = parseInt($route.query.page) || 1
@@ -138,54 +146,36 @@ export default {
     // Set data for the skeleton loader (as many products as we're going to fetch)
     this.products = [...Array(this.limit).keys()].map(() => ({}))
 
-    const fetchProducts = filterState =>
-      $swell.products.list({
-        page: this.page,
-        limit: this.limit,
-        sort: this.sortMode,
-        categories: slug,
-        $filters: filterState
-      })
+    // First fetch both the category and unfiltered products (so we get a complete list of filters)
+    const category = await $swell.categories.get(this.slug)
 
-    const setProducts = products => {
-      this.pages = products.pages
-      this.products = products.results
-      this.productsCount = products.count
+    // Show 404 if category isn't found
+    if (!category) {
+      this.$nuxt.error({ statusCode: 404, message: 'Category not found' })
     }
 
-    // If category data doesn't exist, this is our first page load, so we need to fetch
-    // both the category and unfiltered products (so we get a complete list of filters).
-    if (!this.category) {
-      // Fetch category and products
-      let [category, products] = await Promise.all([$swell.categories.get(slug), fetchProducts()])
+    // Set limit from category settings
+    this.limit = getProductLimit(category)
 
-      // Show 404 if category isn't found
-      if (!category) {
-        this.$nuxt.error({ statusCode: 404, message: 'Category not found' })
-      }
+    // Fetch unfiltered products
+    let products = await this.fetchProducts()
 
-      // Set category and filter data
-      this.category = category
-      this.filters = $swell.products.filters(products)
-      this.filterState = getFilterStateFromQuery($route.query, this.filters)
+    // Set category and filter data
+    this.category = category
+    this.filters = $swell.products.filters(products)
+    this.filterState = getFilterStateFromQuery($route.query, this.filters)
 
-      // If there's a filter query, get filtered products
-      if (this.activeFilterCount) {
-        products = await fetchProducts(this.filterState, this.filters)
-      }
-
-      setProducts(products)
-    } else {
-      // Fetch products with filters applied
-      this.filterState = getFilterStateFromQuery($route.query, this.filters)
-      const products = await fetchProducts(this.filterState, this.filters)
-
-      setProducts(products)
+    // If there's a filter query, get filtered products
+    if (this.activeFilterCount) {
+      products = await this.fetchProducts(this.filterState, this.filters)
     }
+
+    this.setProducts(products)
   },
 
   data() {
     return {
+      slug: undefined,
       category: undefined,
       products: undefined,
       productsCount: 0,
@@ -223,8 +213,8 @@ export default {
   },
 
   watch: {
-    // Call the fetch method when the URL query changes
-    '$route.query': '$fetch'
+    // Call the update method when the URL query changes
+    '$route.query': 'updateProductsFiltered'
   },
 
   created() {
@@ -249,6 +239,30 @@ export default {
   },
 
   methods: {
+    fetchProducts(filterState) {
+      const { $swell } = this
+      return $swell.products.list({
+        page: this.page,
+        limit: this.limit,
+        sort: this.sortMode,
+        categories: this.slug,
+        $filters: filterState
+      })
+    },
+    setProducts(products) {
+      this.pages = products.pages
+      this.products = products.results
+      this.productsCount = products.count
+    },
+    async updateProductsFiltered() {
+      const { $route } = this
+      // Parse URL query params
+      this.page = parseInt($route.query.page) || 1
+      this.sortMode = $route.query.sort || ''
+      this.filterState = getFilterStateFromQuery($route.query, this.filters)
+      const products = await this.fetchProducts(this.filterState, this.filters)
+      this.setProducts(products)
+    },
     toggleFilterModal() {
       this.filterModalIsVisible = !this.filterModalIsVisible
     },
