@@ -14,7 +14,7 @@
       </NuxtLink>
 
       <!-- Product previews -->
-      <ProductPreviews :products="products" />
+      <ProductPreviews :products="products" :column-count="productCols" />
     </div>
   </section>
 </template>
@@ -46,7 +46,7 @@ export default {
 
     // Set preload data
     if (!this.loaded) {
-      this.products = [...Array(3).keys()].map(() => ({}))
+      this.products = [...Array(4).keys()].map(() => ({}))
     }
 
     if (!this.categoryId) {
@@ -54,7 +54,7 @@ export default {
     }
 
     // Fetch category with products
-    const category = await $swell.categories.get(this.categoryId, { expand: 'products' })
+    const category = await $swell.categories.get(this.categoryId, { expand: 'products:4' })
 
     if (!category) {
       throw new Error(`Category "${this.categoryId}" inactive or not found`)
@@ -63,7 +63,8 @@ export default {
     // Set component data
     this.name = category.name
     this.slug = category.slug
-    this.products = get(category, 'products.results', [])
+    this.productCols = get(category, 'content.productCols', 4)
+    this.products = get(category, 'products.results', []).slice(0, this.productCols)
 
     this.loaded = true
   },
@@ -73,6 +74,7 @@ export default {
       name: null,
       slug: null,
       products: [],
+      productCols: 4,
       loaded: false
     }
   },

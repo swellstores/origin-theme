@@ -32,6 +32,15 @@ export default async (context, inject) => {
         }),
       false
     )
+
+    // Catch unusual vue $destroy undefined error
+    Vue.config.errorHandler = (err, vm, info) => {
+      if (String(err.message).indexOf('$destroy') >= 0) {
+        console.warn('Caught $destroy of undefined error')
+        return
+      }
+      throw err
+    }
   }
 
   // Add editor to Nuxt context as $swellEditor
