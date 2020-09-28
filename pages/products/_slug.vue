@@ -64,6 +64,7 @@
             -->
             <div class="font-semibold text-lg flex items-center mt-2 mb-5 md:mb-8">
               <span>{{ formatMoney(variation.price, variation.currency) }}</span>
+              <span v-if="billingInterval" class="lowercase">&nbsp;{{ billingInterval }}</span>
               <span
                 v-if="variation.origPrice"
                 class="inline-block ml-3 rounded bg-error-faded -mt-2px px-2 h-6 leading-loose text-error uppercase text-xs"
@@ -98,6 +99,7 @@
                   <span>Add to cart</span>
                   <span class="inline-block w-5 mx-1 mb-1 border-b border-primary-lightest"></span>
                   <span>{{ formatMoney(variation.price, variation.currency) }}</span>
+                  <span v-if="billingInterval">{{ billingInterval }}</span>
                   <span v-if="variation.origPrice" class="ml-1 line-through text-primary-med">
                     {{ formatMoney(variation.origPrice, variation.currency) }}
                   </span>
@@ -207,15 +209,18 @@ export default {
 
     // Resulting combination of selected product options
     variation() {
-      // TODO Fix price calculation error (not showing correct price of options)
       if (!this.product) return {}
       return this.$swell.products.variation(this.product, this.currentOptionValues)
+    },
+
+    billingInterval() {
+      return get(this, 'currentOptionValues.Plan')
     },
 
     optionInputs() {
       const options = get(this, 'product.options', [])
 
-      return options.map(option => {
+      return options.reduce((optionInputs, option) => {
         let componentName
 
         switch (option.inputType) {
@@ -232,11 +237,16 @@ export default {
             componentName = 'ProductOptionSelect'
         }
 
-        return {
+        // Don't include subscription plan if there's only one option value available
+        if (option.subscription && option.values.length < 2) return optionInputs
+
+        optionInputs.push({
           option,
           component: () => import(`~/components/${componentName}`)
-        }
-      })
+        })
+
+        return optionInputs
+      }, [])
     }
   },
 
