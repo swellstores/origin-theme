@@ -121,8 +121,6 @@ For more advanced usage and packages you can use in your project:
 - Common cart methods are implemented as Vuex actions in `/store/index.js`
 - Swell.js is initialized and injected into the Nuxt context as `$swell` by the `@swell/nuxt-client` TODO module
 
-TODO: check whether the Nuxt crawler is working for dynamic routes
-
 For a detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org/guide/directory-structure).
 
 ## Configuration
@@ -145,22 +143,30 @@ The `menus` array in `/config/editor.json` defines locations/slots in the theme 
 
 Whenever store settings, theme settings, or navigation menus are changed in the dashboard, `settings.json` and `menus.json` will be updated in the remote repo. You can edit this file locally for testing purposes, but keep in mind that pulling from the remote will overwrite your changes.
 
-TODO: explain how local changes are ingested on the remote
-
 ### Styles
 
 #### Defining style properties
 
-TODO
+By default, the contents of the `colors` and `fonts` objects in `settings.json` are treated as style properties, with their child keys and values converted to CSS variables at build time in `assets/css/variables.css`. If you have additional fields that you want to generate variables for, add the keys to the module options.
 
-By default, `colors` and `fonts` are treated as style properties. If you have custom properties that you want to include, add the keys in `nuxt.config.js`.
+**Example**
+
+If `colors.primary.darkest` in `settings.json` has a value of `#222222`, because `colors` is configured as a style property, that will generate the CSS variable `--colors-primary-darkest: #222222;`. If you have a field configured in `editor.json` with `id: 'trogdor.the.burninator'`, the following config would convert any properties on the `trogdor` object to variables. 
 
 ```js
+// nuxt.config.js
+
 export default {
   ...
-  swellEditor: {
-    cssVariableGroups: ['my-custom-key']
-  },
+  buildModules: [
+    [
+      '~/modules/swell-editor',
+      {
+        useEditorSettings: !!process.env.SWELL_EDITOR,
+        cssVariableGroups: ['trogdor']
+      }
+    ],
+   ]
   ...
 }
 ```
