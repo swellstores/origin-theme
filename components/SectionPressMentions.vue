@@ -19,7 +19,7 @@
         >
           <img
             v-if="mention.logo && mention.logo.file"
-            class="max-w-full md:max-w-34 h-auto w-auto"
+            class="max-w-full md:max-w-34 h-auto w-full"
             :style="`transform: scale(${mention.logoScale / 100})`"
             :src="mention.logo.file.url"
             :alt="mention.name"
