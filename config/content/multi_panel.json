@@ -90,7 +90,7 @@
           "id": "text_align",
           "label": "Text alignment",
           "type": "select",
-          "default": "center",
+          "default": "left",
           "options": [
             {
               "value": "left",
