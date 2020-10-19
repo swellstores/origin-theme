@@ -29,8 +29,10 @@
         :class="{
           'mx-auto md:w-2/3': headingPosition === 'top-center' && textColumns === 'single',
           'sw-multi-column': headingPosition.includes('top') && textColumns === 'dual',
-          'text-justify md:mt-8 lg:mt-10 xl:mt-12': headingPosition.includes('top'),
-          'mt-1 md:w-2/3 md:pl-12 lg:pl-16 xl:pl-20': headingPosition === 'left'
+          'md:mt-8 lg:mt-10 xl:mt-12': headingPosition.includes('top'),
+          'mt-1 md:w-2/3 md:pl-12 lg:pl-16 xl:pl-20': headingPosition === 'left',
+          'text-center ' : textAlign === 'center',
+          'text-justify ' : textAlign === 'left'
         }"
         class="lg:text-lg"
         v-html="text"
@@ -75,6 +77,10 @@ export default {
     textColumns: {
       type: String,
       default: 'dual'
+    },
+    textAlign: {
+      type: String,
+      default: 'center'
     }
   }
 }
