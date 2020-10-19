@@ -6,8 +6,11 @@
     description="No heading or text added"
   />
 
-  <section v-else class="container py-16 lg:py-24 xl:py-32">
-    <div :class="{ 'md:flex': headingPosition === 'left' }">
+  <section v-else :class="`bg-${bgColor}`">
+    <div
+      class="container py-16 lg:py-24 xl:py-32"
+      :class="{ 'md:flex': headingPosition === 'left' }"
+    >
       <div
         :class="{
           'md:w-1/3': headingPosition === 'left',
@@ -60,6 +63,10 @@ export default {
     text: {
       type: String,
       default: null
+    },
+    bgColor: {
+      type: String,
+      default: 'primary-lightest'
     },
     headingPosition: {
       type: String,
