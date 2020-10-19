@@ -30,6 +30,22 @@
       "type": "field_group",
       "fields": [
         {
+          "id": "bg_color",
+          "label": "Background color",
+          "type": "select",
+          "default": "primary-lightest",
+          "options": [
+            {
+              "value": "primary-lightest",
+              "label": "Background (primary)"
+            },
+            {
+              "value": "primary-lighter",
+              "label": "Background (secondary)"
+            }
+          ]
+        },
+        {
           "id": "heading_position",
           "label": "Heading position",
           "type": "select",

@@ -61,6 +61,10 @@ export default {
       type: String,
       default: null
     },
+    bgColor: {
+      type: String,
+      default: 'primary-lightest'
+    },
     headingPosition: {
       type: String,
       default: 'top-center'
