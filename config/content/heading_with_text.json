@@ -20,7 +20,7 @@
         {
           "id": "text",
           "label": "Text",
-          "type": "basic_html",
+          "type": "rich_html",
           "required": true
         }
       ]
