@@ -22,7 +22,7 @@
   >
     <!-- Background image -->
     <VisualMedia
-      v-if="(image && image.file) || (image && image.url)"
+      v-if="image && (image.file || image.url)"
       :source="image"
       :is-background="true"
     />
