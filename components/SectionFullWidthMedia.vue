@@ -28,7 +28,11 @@
     class="relative bg-primary-lighter overflow-hidden"
   >
     <!-- Background image -->
-    <VisualMedia v-if="image" :source="image" :is-background="true" />
+    <VisualMedia
+      v-if="image && (image.file || image.url)"
+      :source="image"
+      :is-background="true"
+    />
     <!-- Background darkening overlay -->
     <div
       v-if="textColor === 'light'"
