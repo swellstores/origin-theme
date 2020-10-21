@@ -81,23 +81,6 @@
               "label": "Single column"
             }
           ]
-        },
-        {
-          "id": "text_align",
-          "label": "Text alignment",
-          "type": "select",
-          "default": "center",
-          "conditions": { "heading_position": "Top center" },
-          "options": [
-            {
-              "value": "left",
-              "label": "Left"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            }
-          ]
         }
       ]
     }
