@@ -104,27 +104,7 @@
 import get from 'lodash/get'
 import isObject from 'lodash/isObject'
 import pageMeta from '~/mixins/pageMeta'
-
-// Return a filter state object with active filter IDs and values
-function getFilterStateFromQuery(query, filters) {
-  const filterState = {}
-  const arrayedTypes = ['select']
-
-  // Go through filters and check if there's a matching query param
-  if (isObject(query) && Array.isArray(filters)) {
-    const queryKeys = Object.keys(query)
-
-    filters.map(({ id, type }) => {
-      if (queryKeys.includes(id)) {
-        const queryValue = query[id]
-        const useArray = arrayedTypes.includes(type) && !Array.isArray(queryValue)
-        filterState[id] = useArray ? [queryValue] : queryValue
-      }
-    })
-  }
-
-  return filterState
-}
+import { getFilterStateFromQuery } from '~/modules/swell'
 
 // Calculate product limit from category rows/cols
 function getProductLimit(category) {

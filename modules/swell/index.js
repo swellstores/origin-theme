@@ -1,5 +1,13 @@
 import path from 'path'
 
+// Swell.js helper functions
+export { listVisibleOptions } from './utils/listVisibleOptions'
+export { mergeFilterState } from './utils/mergeFilterState'
+export { listActiveFilters } from './utils/listActiveFilters'
+
+// Nuxt-specific helper functions
+export { getFilterStateFromQuery } from './utils/getFilterStateFromQuery'
+
 export default function(moduleOptions) {
   const options = { ...this.options.router, ...this.options.swell, ...moduleOptions }
 

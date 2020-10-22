@@ -159,9 +159,8 @@
 // Helpers
 import { mapState } from 'vuex'
 import get from 'lodash/get'
-import reduce from 'lodash/reduce'
 import pageMeta from '~/mixins/pageMeta'
-import { listVisibleOptions } from '~/modules/swell/utils'
+import { listVisibleOptions } from '~/modules/swell'
 
 export default {
   name: 'ProductDetailPage',
