@@ -1,10 +1,11 @@
 <template>
   <footer
     :class="{
-      'bg-primary-darkest text-primary-lightest border-t border-primary-darker':
+      'bg-primary-darkest text-primary-lightest border-primary-darker':
         background === 'dark',
-      'bg-primary-lighter border-t border-primary-med': background === 'light'
+      'bg-primary-lighter border-primary-med': background === 'light'
     }"
+    class="border-t"
     data-sw-path="footer"
   >
     <!-- Main footer -->
