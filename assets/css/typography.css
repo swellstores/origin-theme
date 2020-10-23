@@ -7,9 +7,16 @@ html {
   @apply text-primary-darker font-body text-base leading-normal antialiased;
 }
 
-button,
-a {
+button {
   @apply rounded text-primary-darkest font-semibold;
+
+  &:hover {
+    @apply text-accent;
+  }
+}
+
+a {
+  @apply rounded font-semibold;
 
   &:hover {
     @apply text-accent;
