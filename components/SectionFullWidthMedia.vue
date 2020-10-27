@@ -82,7 +82,7 @@
               'btn mt-6 mx-3': link.style === 'button_primary',
               light: textColor === 'light'
             }"
-            >{{ link.label }}</NuxtLink
+            >{{ link.label || '&nbsp;'}}</NuxtLink
           >
         </div>
       </div>

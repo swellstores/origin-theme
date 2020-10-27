@@ -49,7 +49,6 @@
               "id": "label",
               "label": "Label text",
               "type": "text",
-              "default": "Click me",
               "required": true
             },
             {
