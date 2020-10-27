@@ -49,7 +49,6 @@
               "id": "label",
               "label": "Label text",
               "type": "text",
-              "default": "Click me",
               "required": true
             },
             {
@@ -141,6 +140,22 @@
             {
               "value": "md",
               "label": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "bg_color",
+          "label": "Background color",
+          "type": "select",
+          "default": "primary-lightest",
+          "options": [
+            {
+              "value": "primary-lightest",
+              "label": "Background (primary)"
+            },
+            {
+              "value": "primary-lighter",
+              "label": "Background (secondary)"
             }
           ]
         },
