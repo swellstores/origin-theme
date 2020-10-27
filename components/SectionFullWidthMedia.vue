@@ -25,7 +25,7 @@
         'mx-6 lg:mx-8 xl:mx-20': outerSpacingX === 'md',
         'my-6 lg:my-8 xl:my-20': outerSpacingY === 'md'
       }"
-      class="relative  overflow-hidden"
+      class="relative overflow-hidden"
     >
       <!-- Background image -->
       <VisualMedia v-if="image" :source="image" :is-background="true" />

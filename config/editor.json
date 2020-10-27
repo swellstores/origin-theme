@@ -326,6 +326,22 @@
           "label": "Show email signup text",
           "type": "basic_html",
           "conditions": { "footer.show_email_signup": true }
+        },
+        {
+          "id": "footer.background",
+          "label": "Footer background",
+          "type": "select",
+          "default": "dark",
+          "options": [
+            {
+              "value": "dark",
+              "label": "Dark"
+            },
+            {
+              "value": "light",
+              "label": "Light"
+            }
+          ]
         }
       ]
     },

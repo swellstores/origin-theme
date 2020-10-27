@@ -79,8 +79,9 @@
             <div v-for="input in optionInputs" :key="input.name" class="my-8">
               <component
                 :is="input.component"
+                v-if="visibleOptionIds.includes(input.option.id)"
                 :option="input.option"
-                :current-value="currentOptionValues[input.option.name]"
+                :current-value="optionState[input.option.name]"
                 @value-changed="setOptionValue"
               />
             </div>
@@ -160,6 +161,7 @@ import { mapState } from 'vuex'
 import get from 'lodash/get'
 import reduce from 'lodash/reduce'
 import pageMeta from '~/mixins/pageMeta'
+import { listVisibleOptions } from '~/modules/swell/utils'
 
 export default {
   name: 'ProductDetailPage',
@@ -177,8 +179,8 @@ export default {
     }
 
     // Compute initial values for options
-    const currentOptionValues =
-      this.currentOptionValues ||
+    const optionState =
+      this.optionState ||
       (product.options || []).reduce((options, { name, values }) => {
         // Set first available value for current option
         options[name] = get(values, '0.name')
@@ -190,7 +192,7 @@ export default {
 
     // Set component data
     this.product = product
-    this.currentOptionValues = currentOptionValues
+    this.optionState = optionState
     this.relatedProducts = relatedProducts
     this.productBenefits = get(product, 'content.productBenefits', [])
   },
@@ -199,7 +201,7 @@ export default {
     return {
       product: {},
       relatedProducts: [], // TODO
-      currentOptionValues: null,
+      optionState: null,
       productBenefits: []
     }
   },
@@ -210,11 +212,18 @@ export default {
     // Resulting combination of selected product options
     variation() {
       if (!this.product) return {}
-      return this.$swell.products.variation(this.product, this.currentOptionValues)
+      return this.$swell.products.variation(this.product, this.optionState)
     },
 
     billingInterval() {
-      return get(this, 'currentOptionValues.Plan')
+      return get(this, 'optionState.Plan')
+    },
+
+    visibleOptionIds() {
+      const options = get(this, 'product.options', [])
+      const optionState = this.optionState
+
+      return listVisibleOptions(options, optionState).map(({ id }) => id)
     },
 
     optionInputs() {
@@ -256,16 +265,16 @@ export default {
       this.$store.dispatch('addCartItem', {
         productId: this.variation.id,
         quantity: 1,
-        options: this.currentOptionValues
+        options: this.optionState
       })
     },
 
     // Update an option value based on user input
     setOptionValue({ option, value }) {
       // Use $set to update the data object because options are dynamic
-      // and currentOptionValues won't be reactive otherwise
-      // TODO in Vue 3 this.currentOptionValues[option] = value should work
-      this.$set(this.currentOptionValues, option, value)
+      // and optionState won't be reactive otherwise
+      // TODO in Vue 3 this.optionState[option] = value should work
+      this.$set(this.optionState, option, value)
     },
 
     // Go back to previous page
