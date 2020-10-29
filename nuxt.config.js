@@ -145,7 +145,8 @@ export default {
       // Fix for eslint error due to swell-js being linked
       // https://github.com/vuejs/vue-cli/issues/2948
       config.resolve.symlinks = false // TODO remove
-    }
+    },
+    analyze: true
   },
 
   generate: {
