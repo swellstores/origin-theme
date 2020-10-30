@@ -1,4 +1,5 @@
-import _ from 'lodash'
+import camelCase from 'lodash/camelCase'
+import snakeCase from 'lodash/snakeCase'
 import settings from '~/config/settings.json'
 import menus from '~/config/menus.json'
 
@@ -36,14 +37,15 @@ function normalizeKeys(obj, params) {
       const value = obj[key]
       delete obj[key]
       if (options.case === 'camel') {
-        key = _.camelCase(key)
+        key = camelCase(key)
       } else if (options.case === 'snake') {
-        key = _.snakeCase(key)
+        key = snakeCase(key)
       }
       obj[key] = normalizeKeys(value, options)
     })
   } else if (obj && obj.constructor === Array) {
     obj = obj.map(v => normalizeKeys(v, options))
   }
+
   return obj
 }

@@ -17,7 +17,7 @@ export default {
   /*
    ** Vue plugins to load before mounting the App
    */
-  plugins: [{ src: '~/plugins/vue-slider-component', mode: 'client' }],
+  plugins: [],
 
   /*
    ** Nuxt.js modules
