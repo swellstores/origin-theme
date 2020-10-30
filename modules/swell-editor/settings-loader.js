@@ -1,5 +1,7 @@
 import camelCase from 'lodash/camelCase'
 import snakeCase from 'lodash/snakeCase'
+import settings from '~/config/settings.json'
+import menus from '~/config/menus.json'
 
 export default async (context, inject) => {
   const useEditorSettings = '<%= options.useEditorSettings %>' !== 'false'
@@ -44,5 +46,6 @@ function normalizeKeys(obj, params) {
   } else if (obj && obj.constructor === Array) {
     obj = obj.map(v => normalizeKeys(v, options))
   }
+
   return obj
 }
