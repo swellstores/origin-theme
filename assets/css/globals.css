@@ -47,6 +47,14 @@ button {
   }
 
   &.light {
+    @apply bg-primary-light text-primary-darkest;
+
+    &:hover {
+      @apply bg-primary-med;
+    }
+  }
+
+  &.lighter {
     @apply bg-primary-lighter;
 
     &:hover {

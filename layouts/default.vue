@@ -1,7 +1,11 @@
 <template>
   <div class="relative">
     <div :class="{ 'overflow-y-hidden': searchIsActive }">
-      <TheHeader @click-cart="cartIsActive = true" @click-search="searchIsActive = true" />
+      <TheHeader
+        @click-cart="cartIsActive = true"
+        @click-search="searchIsActive = true"
+        @click-customer-login="customerLoginIsActive = true"
+      />
       <div style="min-height: 100vh">
         <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
       </div>
@@ -18,9 +22,11 @@
       />
     </transition>
     <TheCart v-show="cartIsActive" @click-close="cartIsActive = false" />
+    <TheCustomerLogin v-show="customerLoginIsActive" @click-close="customerLoginIsActive = false" />
     <transition name="fade">
       <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
     </transition>
+    {{ customerLoginIsActive }}
   </div>
 </template>
 
@@ -32,8 +38,9 @@ export default {
   data() {
     return {
       cartIsActive: false,
+      customerLoginIsActive: false,
       searchIsActive: false,
-      cookieNotificationIsActive: false // TODO set true
+      cookieNotificationIsActive: false // TODO set true,
     }
   },
 

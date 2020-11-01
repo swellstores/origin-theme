@@ -78,11 +78,9 @@
                 <BaseIcon icon="uil:search" />
               </button>
               <!-- Account icon -->
-              <!--TODO awaiting customer account area
-              <a class="hidden h-10 p-2 lg:inline-block" href="#">
+              <button class="hidden h-10 p-2 lg:inline-block" @click.prevent="$emit('click-customer-login')">
                 <BaseIcon icon="uil:user" />
-              </a>
-              -->
+              </button>
               <!-- Cart icon -->
               <button
                 class="relative h-10 p-2"
