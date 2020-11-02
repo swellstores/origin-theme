@@ -25,7 +25,7 @@
             <input
               id="customerEmail"
               ref="searchInput"
-              v-model="inputValue"
+              v-model="customerEmail"
               type="email"
               placeholder="Your email"
               class="w-full px-4 py-2 mb-4 rounded bg-primary-lightest text-primary-darkest"
@@ -37,7 +37,6 @@
             <input
               id="customerPassword"
               ref="searchInput"
-              v-model="inputValue"
               type="email"
               placeholder="Your email"
               class="w-full px-4 py-2 mb-2 rounded bg-primary-lightest text-primary-darkest"
@@ -72,13 +71,9 @@ export default {
 
   data() {
     return {
-      couponCode: null
+      customerEmail: null
     }
-  },
-
-  mounted() {},
-
-  methods: {}
+  }
 }
 </script>
 

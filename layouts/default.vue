@@ -26,7 +26,6 @@
     <transition name="fade">
       <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
     </transition>
-    {{ customerLoginIsActive }}
   </div>
 </template>
 

@@ -10,7 +10,7 @@
     </div>
 
     <!-- Full screen nav for small screens -->
-    <TheMobileNav v-if="mobileNavIsVisible" :menu-items="menu.items" />
+    <TheMobileNav v-on="$listeners" v-if="mobileNavIsVisible" :menu-items="menu.items" />
 
     <!-- Main header -->
     <div class="z-40 fixed top-0 w-full">
@@ -78,7 +78,12 @@
                 <BaseIcon icon="uil:search" />
               </button>
               <!-- Account icon -->
-              <button class="hidden h-10 p-2 lg:inline-block" @click.prevent="$emit('click-customer-login')">
+              <button
+                class="hidden h-10 p-2 lg:inline-block"
+                @click.prevent="
+                  customerLoggedIn ? $router.push('/account/') : $emit('click-customer-login')
+                "
+              >
                 <BaseIcon icon="uil:user" />
               </button>
               <!-- Cart icon -->
@@ -154,7 +159,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['cart'])
+    ...mapState(['cart', 'customerLoggedIn'])
   },
 
   watch: {

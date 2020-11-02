@@ -3,6 +3,7 @@ export const state = () => ({
   cartError: null,
   cartIsUpdating: false,
   currency: 'USD',
+  customerLoggedIn: true,
   locale: 'en-US',
   notification: null,
   cookiesWereAccepted: false
