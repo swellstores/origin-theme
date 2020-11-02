@@ -19,76 +19,77 @@
   </div>
 
   <!-- Section content -->
-  <section
-    v-else
-    :class="{
-      'mx-6 lg:mx-8 xl:mx-20': outerSpacingX === 'md',
-      'my-6 lg:my-8 xl:my-20': outerSpacingY === 'md'
-    }"
-    class="relative bg-primary-lighter overflow-hidden"
-  >
-    <!-- Background image -->
-    <VisualMedia v-if="image" :source="image" :is-background="true" />
-    <!-- Background darkening overlay -->
-    <div
-      v-if="textColor === 'light'"
-      class="absolute inset w-full h-full bg-primary-darkest"
-      :style="{ opacity: darkenBg / 100 }"
-    ></div>
-    <div
-      :class="[
-        { 'p-6 sm:p-7 lg:p-8 xl:p-20': outerSpacingX === 'none' && innerSpacing === 'md' },
-        { 'p-6 sm:p-7 lg:p-8 xl:p-20': outerSpacingX === 'none' && innerSpacing === 'sm' },
-        { 'p-8 sm:p-12 md:p-16 lg:p-20': outerSpacingX === 'md' && innerSpacing === 'md' },
-        { 'p-8 md:p-12 lg:p-16': outerSpacingX === 'md' && innerSpacing === 'sm' }
-      ]"
-      class="relative"
+  <div v-else :class="`bg-${bgColor}`" class="overflow-auto">
+    <section
+      :class="{
+        'mx-6 lg:mx-8 xl:mx-20': outerSpacingX === 'md',
+        'my-6 lg:my-8 xl:my-20': outerSpacingY === 'md'
+      }"
+      class="relative overflow-hidden"
     >
-      <!-- Text content -->
+      <!-- Background image -->
+      <VisualMedia v-if="image" :source="image" :is-background="true" />
+      <!-- Background darkening overlay -->
       <div
-        :class="{
-          'max-w-80 md:max-w-96': alignX === 'left',
-          'mx-auto text-center max-w-112': alignX === 'center',
-          'ml-auto max-w-80 md:max-w-96': alignX === 'right',
-          'mt-4 mb-24 md:mt-0': innerSpacing === 'md' && alignY === 'top',
-          'my-12': innerSpacing === 'md' && alignY === 'center',
-          'mb-4 mt-24 md:mb-0': innerSpacing === 'md' && alignY === 'bottom'
-        }"
+        v-if="textColor === 'light'"
+        class="absolute inset w-full h-full bg-primary-darkest"
+        :style="{ opacity: darkenBg / 100 }"
+      ></div>
+      <div
+        :class="[
+          { 'p-6 sm:p-7 lg:p-8 xl:p-20': outerSpacingX === 'none' && innerSpacing === 'md' },
+          { 'p-6 sm:p-7 lg:p-8 xl:p-20': outerSpacingX === 'none' && innerSpacing === 'sm' },
+          { 'p-8 sm:p-12 md:p-16 lg:p-20': outerSpacingX === 'md' && innerSpacing === 'md' },
+          { 'p-8 md:p-12 lg:p-16': outerSpacingX === 'md' && innerSpacing === 'sm' }
+        ]"
+        class="relative"
       >
-        <h2
-          v-balance-text
-          :class="{ 'text-primary-lightest': textColor === 'light' }"
-          class="mb-3 text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
+        <!-- Text content -->
+        <div
+          :class="{
+            'max-w-80 md:max-w-96': alignX === 'left',
+            'mx-auto text-center max-w-112': alignX === 'center',
+            'ml-auto max-w-80 md:max-w-96': alignX === 'right',
+            'mt-4 mb-24 md:mt-0': innerSpacing === 'md' && alignY === 'top',
+            'my-12': innerSpacing === 'md' && alignY === 'center',
+            'mb-4 mt-24 md:mb-0': innerSpacing === 'md' && alignY === 'bottom'
+          }"
         >
-          {{ heading }}
-        </h2>
-        <!-- Tell prettier not to add extra whitespace -->
-        <!-- display: inline -->
-        <p
-          v-balance-text.children
-          :class="{ 'text-primary-lighter': textColor === 'light' }"
-          class="whitespace-pre-line"
-          v-html="description"
-        >
-        </p>
-        <div :class="{ '-ml-3': alignX !== 'center' }">
-          <NuxtLink
-            v-for="(link, index) in links"
-            :key="id + 'link' + index"
-            :to="resolveUrl(link)"
-            :title="link.title"
-            :class="{
-              'cta-link mt-5 mb-1 mx-3': link.style === 'text',
-              'btn mt-6 mx-3': link.style === 'button_primary',
-              light: textColor === 'light'
-            }"
-            >{{ link.label }}</NuxtLink
+          <h2
+            v-balance-text
+            :class="{ 'text-primary-lightest': textColor === 'light' }"
+            class="mb-3 text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
           >
+            {{ heading }}
+          </h2>
+          <!-- Tell prettier not to add extra whitespace -->
+          <!-- display: inline -->
+          <p
+            v-balance-text.children
+            :class="{ 'text-primary-lighter': textColor === 'light' }"
+            class="whitespace-pre-line"
+            v-html="description"
+          >
+          </p>
+          <div :class="{ '-ml-3': alignX !== 'center' }">
+            <NuxtLink
+              v-for="(link, index) in links"
+              :key="id + 'link' + index"
+              :to="resolveUrl(link)"
+              :title="link.title"
+              :class="{
+                'cta-link mt-5 mb-1 mx-3': link.style === 'text',
+                'btn mt-6 mx-3': link.style === 'button_primary',
+                light: textColor === 'light'
+              }"
+              >{{ link.label || '&nbsp;' }}</NuxtLink
+            >
+          </div>
         </div>
+        <!-- END Text content -->
       </div>
-      <!-- END Text content -->
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -151,6 +152,10 @@ export default {
     alignY: {
       type: String,
       default: 'top'
+    },
+    bgColor: {
+      type: String,
+      default: 'primary-lightest'
     }
   }
 }

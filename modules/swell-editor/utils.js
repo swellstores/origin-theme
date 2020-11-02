@@ -1,4 +1,16 @@
-import _ from 'lodash'
+import camelCase from 'lodash/camelCase'
+import get from 'lodash/get'
+import isObject from 'lodash/isObject'
+import kebabCase from 'lodash/kebabCase'
+import range from 'lodash/range'
+import round from 'lodash/round'
+import map from 'lodash/map'
+import snakeCase from 'lodash/snakeCase'
+
+import compose from 'lodash/fp/compose'
+import flatMap from 'lodash/fp/flatMap'
+import fromPairs from 'lodash/fp/fromPairs'
+
 import mitt from 'mitt'
 import buildUrl from 'build-url'
 
@@ -200,9 +212,9 @@ export function normalizeKeys(obj, params) {
       delete obj[key]
 
       if (options.case === 'camel') {
-        key = _.camelCase(key)
+        key = camelCase(key)
       } else if (options.case === 'snake') {
-        key = _.snakeCase(key)
+        key = snakeCase(key)
       }
 
       obj[key] = normalizeKeys(value, options)
@@ -219,9 +231,9 @@ export function getGoogleFontConfig(settings) {
 
   // Extract font config objects
   const fonts = [
-    _.get(normalizedSettings, settingPaths.headingFont, {}),
-    _.get(normalizedSettings, settingPaths.bodyFontNormal, {}),
-    _.get(normalizedSettings, settingPaths.bodyFontBold, {})
+    get(normalizedSettings, settingPaths.headingFont, {}),
+    get(normalizedSettings, settingPaths.bodyFontNormal, {}),
+    get(normalizedSettings, settingPaths.bodyFontBold, {})
   ]
 
   // Generate families object
@@ -373,7 +385,7 @@ function setCssVariables(settings) {
 
 // Generate array of CSS variables with values
 function getCssVariables(settings) {
-  const toVarName = path => '--' + _.kebabCase(path)
+  const toVarName = path => '--' + kebabCase(path)
   const isRatioSetting = varName => varName === toVarName(settingPaths.ratio)
   const isFontSetting = varName =>
     [
@@ -391,15 +403,15 @@ function getCssVariables(settings) {
       if (!value) return
 
       // Transform property group + key to CSS variable name
-      const varName = `--${groupName}-${_.kebabCase(key)}`
+      const varName = `--${groupName}-${kebabCase(key)}`
 
       if (isRatioSetting(varName)) {
         // Generate modular type scale variables
-        const base = parseInt(_.get(settings, settingPaths.baseSize)) || 16
+        const base = parseInt(get(settings, settingPaths.baseSize)) || 16
         const ratio = parseFloat(value) || 1.125
-        const steps = _.range(-6, 17) // Generate a reasonable range for the scale
+        const steps = range(-6, 17) // Generate a reasonable range for the scale
         steps.map(step => {
-          const typeSizeValue = _.round(ratio ** step * (base / 16), 3) + 'rem'
+          const typeSizeValue = round(ratio ** step * (base / 16), 3) + 'rem'
           variables.push(`--type-scale-${step}: ${typeSizeValue};`)
         })
       } else if (isFontSetting(varName)) {
@@ -452,22 +464,24 @@ function getVariableGroups() {
 function flattenGroup(groupValue, groupName) {
   const isFontSetting = name =>
     [settingPaths.headingFont, settingPaths.bodyFontNormal, settingPaths.bodyFontBold].includes(
-      `${groupName}.${_.camelCase(name)}`
+      `${groupName}.${camelCase(name)}`
     )
 
-  const result = _(groupValue)
-    .flatMap((item, name) => {
-      if (!_.isObject(item) || isFontSetting(name)) {
+  const flatMapFP = flatMap.convert({ cap: false })
+
+  const result = compose(
+    fromPairs,
+    flatMapFP((item, name) => {
+      if (!isObject(item) || isFontSetting(name)) {
         return [[name, item]]
       }
 
-      return _.map(item, (value, key) => {
+      return map(item, (value, key) => {
         const suffix = key === 'default' ? '' : `-${key}`
         return [`${name}${suffix}`, value]
       })
     })
-    .fromPairs()
-    .value()
+  )(groupValue)
 
   return result
 }
