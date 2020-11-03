@@ -20,6 +20,7 @@ export default {
       const formatTitle = itemTitle => itemTitle + ' - ' + storeName
 
       const meta = {
+        storeName,
         url: storeUrl + $route.path,
         title: storeName,
         description: '',
@@ -97,7 +98,7 @@ export default {
   },
 
   head() {
-    const { url, title, description, image, link } = this.pageMeta
+    const { storeName, url, title, description, image, link } = this.pageMeta
     const script = []
 
     if (this.structuredData) {
@@ -119,6 +120,11 @@ export default {
           content: description
         },
         // Open Graph
+        {
+          hid: 'og:site_name',
+          property: 'og:site_name',
+          content: storeName
+        },
         {
           hid: 'og:title',
           property: 'og:title',
