@@ -9,7 +9,8 @@ Vue.use({
     Vue.mixin({
       methods: {
         formatMoney,
-        resolveUrl
+        resolveUrl,
+        isAbsoluteURL
       }
     })
 
@@ -64,7 +65,7 @@ function resolveUrl(item) {
     // Build full path from link item object
     let itemPath = getContentPath(item)
 
-    // Add/remove trailing slash according to router configuration
+    // Add/remove trailing slash  according to router configuration
     const useTrailingSlash = '<%= options.trailingSlash %>' === 'true'
     const endsWithSlash = itemPath.slice(-1) === '/'
 
@@ -77,13 +78,18 @@ function resolveUrl(item) {
     }
 
     return itemPath // TODO wrap nuxt-i18n to generate localized path
-  } else {
-    // Treat item as complete URL
-    return item
   }
 }
 
-function getContentPath({ type, value }) {
+function isAbsoluteURL(url) {
+  const absoluteURLPattern = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi
+  return absoluteURLPattern.test(url)
+}
+
+function getContentPath({ type, value, url }) {
+  // Return URL value for linked links
+  if (typeof type === 'undefined' && url) return url
+
   // Return URL value as-is
   if (type === 'url') return value
 

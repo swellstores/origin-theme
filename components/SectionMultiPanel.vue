@@ -50,11 +50,15 @@
             :class="{ 'inline-block': panel.links.length < 3 }"
           >
             <NuxtLink
-              v-if="link"
+              v-if="!isAbsoluteURL(link.url)"
               :to="resolveUrl(link)"
               class="cta-link mt-4 mb-1 mx-3 inline-block"
               >{{ link.label }}</NuxtLink
             >
+
+            <a v-else :href="link.url" class="cta-link mt-4 mb-1 mx-3 inline-block">{{
+              link.label
+            }}</a>
           </div>
         </div>
       </template>
