@@ -1,4 +1,6 @@
 // Return a filter state object with active filter IDs and values
+import isObject from 'lodash/isObject'
+
 export function getFilterStateFromQuery(query, filters) {
   const filterState = {}
   const arrayedTypes = ['select']

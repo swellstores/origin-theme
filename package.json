@@ -22,6 +22,7 @@
     "vue-balance-text": "1.2.3",
     "vue-glide-js": "1.3.14",
     "vue-select": "3.10.8",
+    "vue-slider-component": "3.2.10",
     "vuelidate": "0.7.5"
   },
   "devDependencies": {
