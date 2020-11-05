@@ -49,12 +49,7 @@
             class="m-1 mx-2"
             :class="{ 'inline-block': panel.links.length < 3 }"
           >
-            <NuxtLink
-              v-if="link"
-              :to="resolveUrl(link)"
-              class="cta-link mt-4 mb-1 mx-3 inline-block"
-              >{{ link.label }}</NuxtLink
-            >
+            <BaseLink :link="link" class="cta-link mt-4 mb-1 mx-3 inline-block" />
           </div>
         </div>
       </template>
