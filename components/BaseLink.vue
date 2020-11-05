@@ -1,5 +1,5 @@
 <template>
-  <component v-bind="attributes" :is="null" :title="link.title" aria-current="page">
+  <component v-bind="attributes" :is="null" :title="link.title">
     {{ link.label }}
   </component>
 </template>
