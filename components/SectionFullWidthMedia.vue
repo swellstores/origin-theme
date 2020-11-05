@@ -62,7 +62,7 @@
           >
             {{ heading }}
           </h2>
-          <!-- Tell prettier not to add extra whitespace -->
+          <!-- Tell prettier n\ot to add extra whitespace -->
           <!-- display: inline -->
           <p
             v-balance-text.children
@@ -72,35 +72,16 @@
           >
           </p>
           <div :class="{ '-ml-3': alignX !== 'center' }">
-            <template v-for="(link, index) in links">
-              <!-- Relative Links -->
-              <NuxtLink
-                v-if="!isAbsoluteURL(link.url)"
-                :key="id + 'link' + index"
-                :to="resolveUrl(link)"
-                :title="link.title"
-                :class="{
-                  'cta-link mt-5 mb-1 mx-3': link.style === 'text',
-                  'btn mt-6 mx-3': link.style === 'button_primary',
-                  light: textColor === 'light'
-                }"
-                >{{ link.label || '&nbsp;' }}</NuxtLink
-              >
-
-              <!-- Absolute Links -->
-              <a
-                v-else
-                :key="id + 'link' + index"
-                :href="link.url"
-                :title="link.title"
-                :class="{
-                  'cta-link mt-5 mb-1 mx-3': link.style === 'text',
-                  'btn mt-6 mx-3': link.style === 'button_primary',
-                  light: textColor === 'light'
-                }"
-                >{{ link.label || '&nbsp;' }}</a
-              >
-            </template>
+            <BaseLink
+              v-for="(link, index) in links"
+              :link="link"
+              :key="id + 'link' + index"
+              :class="{
+                'cta-link mt-5 mb-1 mx-3': link.style === 'text',
+                'btn mt-6 mx-3': link.style === 'button_primary',
+                light: textColor === 'light'
+              }"
+            />
           </div>
         </div>
         <!-- END Text content -->
