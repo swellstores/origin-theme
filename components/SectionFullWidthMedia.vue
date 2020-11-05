@@ -62,7 +62,7 @@
           >
             {{ heading }}
           </h2>
-          <!-- Tell prettier not to add extra whitespace -->
+          <!-- Tell prettier n\ot to add extra whitespace -->
           <!-- display: inline -->
           <p
             v-balance-text.children
