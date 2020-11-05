@@ -1,11 +1,5 @@
 <template>
-  <component
-    v-bind="linkProps(resolveUrl(link))"
-    :is="null"
-    :title="link.title"
-    :class="[link.cssClasses]"
-    aria-current="page"
-  >
+  <component v-bind="attributes" :is="null" :title="link.title" aria-current="page">
     {{ link.label }}
   </component>
 </template>
@@ -19,19 +13,21 @@ export default {
       required: true
     }
   },
-  methods: {
-    linkProps(path) {
-      if (path.match(/^(http(s)?|ftp):\/\//) || path.target === '_blank') {
+  computed: {
+    attributes() {
+      const url = this.resolveUrl(this.link)
+
+      if (url.match(/^(http(s)?|ftp):\/\//)) {
         return {
           is: 'a',
-          href: path,
+          href: url,
           target: '_blank',
           rel: 'noopener'
         }
       }
       return {
         is: 'nuxt-link',
-        to: path
+        to: url
       }
     }
   }
