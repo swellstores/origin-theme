@@ -83,7 +83,9 @@ function resolveUrl(item) {
   }
 }
 
-function getContentPath({ type, value }) {
+function getContentPath({ type, value, url }) {
+  if (typeof type === 'undefined' && url) return url
+
   // Return URL value as-is
   if (type === 'url') return value
 

@@ -72,18 +72,16 @@
           >
           </p>
           <div :class="{ '-ml-3': alignX !== 'center' }">
-            <NuxtLink
+            <BaseLink
               v-for="(link, index) in links"
+              :link="link"
               :key="id + 'link' + index"
-              :to="resolveUrl(link)"
-              :title="link.title"
               :class="{
                 'cta-link mt-5 mb-1 mx-3': link.style === 'text',
                 'btn mt-6 mx-3': link.style === 'button_primary',
                 light: textColor === 'light'
               }"
-              >{{ link.label || '&nbsp;' }}</NuxtLink
-            >
+            />
           </div>
         </div>
         <!-- END Text content -->
