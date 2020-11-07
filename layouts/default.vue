@@ -21,6 +21,8 @@
     <transition name="fade">
       <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
     </transition>
+    
+    <div v-if="userScripts" v-html="userScripts" />
   </div>
 </template>
 
@@ -38,7 +40,14 @@ export default {
   },
 
   computed: {
-    ...mapState(['notification', 'cookiesWereAccepted'])
+    ...mapState(['notification', 'cookiesWereAccepted']),
+    
+    // Get user-defined global scripts
+    userScripts() {
+      let { store } = this.$swell.settings.get()
+      let userScripts = store.analyticsScripts
+      return userScripts
+    }
   },
 
   watch: {
