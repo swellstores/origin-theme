@@ -69,7 +69,7 @@
           :id="`option-${option.id}-menu`"
           :class="{ 'rounded-t-none': dropdownIsActive }"
           :aria-labelledby="`option-${option.id}-label`"
-          class="absolute block -mt-px w-full bg-primary-lightest py-2 border rounded"
+          class="max-h-25vh overflow-scroll absolute block -mt-px w-full bg-primary-lightest py-2 border rounded"
           role="listbox"
         >
           <li
