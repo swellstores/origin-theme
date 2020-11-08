@@ -37,16 +37,17 @@
             <input
               id="customerPassword"
               ref="searchInput"
-              type="email"
-              placeholder="Your email"
+              v-model="customerPassword"
+              type="password"
+              placeholder="Your password"
               class="w-full px-4 py-2 mb-2 rounded bg-primary-lightest text-primary-darkest"
             />
-            
+
             <a class="text-xs font-semibold leading-tight text-primary-dark" href="#"
               >Did you forget your password?</a
             >
 
-            <button class="btn btn--lg w-full my-4" type="button">
+            <button class="btn btn--lg w-full my-4" type="button" @click="login()">
               Login
             </button>
 
@@ -54,8 +55,6 @@
               Create an account
             </button>
           </div>
-
-          
         </div>
       </div>
     </div>
@@ -71,7 +70,26 @@ export default {
 
   data() {
     return {
-      customerEmail: null
+      customerEmail: null,
+      customerPassword: null
+    }
+  },
+
+  methods: {
+    async login() {
+      try {
+        
+        const res = await this.$swell.account.login(this.customerEmail, this.customerPassword)
+
+        if (!res || res === null) {
+          throw Error('Error')
+        }
+
+        this.$emit('click-close')
+        this.$router.push('/account/')
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }

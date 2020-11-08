@@ -63,9 +63,13 @@ export default {
   },
 
   mounted() {
+    // Check if cookies are accepted
     if (this.getCookie('cookiesAccepted')) {
       this.$store.commit('setState', { key: 'cookiesWereAccepted', value: true })
     }
+
+    // Initialize customer (if logged in, set customer state)
+    this.$store.dispatch('initializeCustomer')
   },
 
   methods: {

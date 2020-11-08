@@ -46,6 +46,14 @@ button {
     @apply cursor-wait;
   }
 
+  &.dark {
+    @apply bg-primary-darker text-primary-lightest;
+
+    &:hover {
+      @apply bg-primary-darkest;
+    }
+  }
+
   &.light {
     @apply bg-primary-light text-primary-darkest;
 

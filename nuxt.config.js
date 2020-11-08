@@ -3,6 +3,13 @@ import settings from './config/settings'
 import { getGoogleFontConfig } from './modules/swell-editor/utils'
 
 export default {
+  vue: {
+    config: {
+      devtools: true,
+      productionTip: false
+    }
+  },
+
   /*
    ** Make all components in the /components folder available in templates without
    *  needing to import them explicitly or define them on the Vue instance object.

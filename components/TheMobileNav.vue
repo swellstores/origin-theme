@@ -32,7 +32,7 @@
           <a class="sw-nav-button" href="#">
             <BaseIcon icon="uil:search" size="sm" /><span class="ml-3">Search</span>
           </a>
-          <button class="sw-nav-button" @click="$store.state.customerLoggedIn ? $router.push('/account/') : $emit('click-customer-login')">
+          <button class="sw-nav-button" @click="checkIfLoggedIn()">
             <BaseIcon icon="uil:user" size="sm" /><span class="ml-3">Account</span>
           </button>
           <a class="sw-nav-button" href="#">{{ formatMoney() }} {{ $store.state.currency }}</a>
@@ -60,6 +60,15 @@ export default {
 
   computed: {
     ...mapState(['customerLoggedIn'])
+  },
+
+  methods: {
+    checkIfLoggedIn() {
+      if (this.customerLoggedIn) {
+        this.$emit('click-close')
+        this.$router.push('/account/')
+      }
+    }
   }
 }
 </script>
