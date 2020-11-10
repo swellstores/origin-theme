@@ -1,7 +1,7 @@
 <template>
   <div
     ref="dropdown"
-    class="relative p-2 cursor-pointer border-primary-light border rounded z-20"
+    class="relative p-2 cursor-pointer border-primary-med border rounded z-20"
     :class="{ 'border-b-0 rounded-b-none': hideBottomBorder }"
     @click="toggleOptions()"
   >
@@ -17,7 +17,7 @@
       <div
         v-show="expanded"
         ref="container"
-        class="w-full-border absolute center-yb border-primary-light bg-primary-lightest overflow-hidden transition-all ease-in-out duration-1000 -mt-px"
+        class="w-full-border absolute center-yb border-primary-med bg-primary-lightest overflow-hidden transition-all ease-in-out duration-1000 -mt-px"
         :class="{ 'border border-t-0 rounded-b': expanded }"
       >
         <ul ref="options">
@@ -69,6 +69,7 @@ export default {
           find(options, value) || find(options, { value }) || find(options, { label: value })
         if (selected !== undefined) {
           this.selected = selected.label || selected
+          this.$emit('change', this.selected)
           return
         }
       }

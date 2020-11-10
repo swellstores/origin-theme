@@ -8,8 +8,8 @@
       <div class="panel">
         <div class="container py-2">
           <div class="flex py-4">
-            <h3 v-if="type === 'new'">Add new address</h3>
-            <h3 v-else>Edit address</h3>
+            <h3 v-if="type === 'new'">Add new payment method</h3>
+            <h3 v-else>Edit payment method</h3>
             <button class="ml-auto" @click.prevent="$emit('click-close')">
               <BaseIcon icon="uil:multiply" size="sm" />
             </button>
@@ -17,59 +17,73 @@
 
           <!-- Fields -->
           <div class="pt-6">
-            <InputText class="mb-6" label="First Name" v-model="firstName" />
-            <InputText class="mb-6" label="Last Name" v-model="lastName" />
-            <InputText class="mb-6" label="Address" v-model="address2" />
-            <InputText class="mb-6" label="Apartment / Floor / Suite" v-model="address1" />
-            <InputText class="mb-6" label="City" v-model="city" />
+            <InputText class="mb-6" label="Name on card" v-model="cardName" />
+            <InputText class="mb-6" label="Card number" :value="formattedCardNumber" />
 
             <div class="flex flex-no-wrap mb-6">
-              <InputText class="mr-3" label="State" v-model="state" />
-              <InputText class="ml-3" label="Zip Code" v-model="zip" />
+              <InputText class="mr-3" label="Expiry Date" v-model="cardExpiry" />
+              <InputText class="ml-3" label="CVC" v-model="cardSecurity" />
             </div>
 
-            <div class="checkbox mb-6">
-              <input type="checkbox" id="set-default" v-model="setDefault" />
+            <div class="checkbox mb-4">
+              <input type="checkbox" id="set-default" />
 
               <label class="w-full" for="set-default">
-                <p>Make this my default address</p>
+                <p class="text-sm">Use as default card</p>
                 <div class="indicator ml-auto text-primary-lighter">
                   <BaseIcon icon="uil:check" size="sm" />
                 </div>
               </label>
             </div>
 
-            <!-- Duplicate elements to account for fixed bottom buttons -->
+            <!-- Duplicate elements to account for fixed bottom buttons
             <div class="opacity-0">
               <button class="btn w-full my-4">|</button>
               <button v-if="type === 'update'" class="btn w-full">|</button>
-            </div>
+            </div> -->
           </div>
+        </div>
 
-          <div class="w-full fixed left-0 bottom-0 bg-primary-lighter pb-4">
-            <div class="container">
-              <button
-                v-if="type === 'new'"
-                class="btn dark w-full my-4"
-                type="button"
-                @click="createAddress"
-              >
-                Create Address
-              </button>
+        <div class="py-6 border-t border-primary-med">
+          <div class="container ">
+            <span class="block text-md font-semibold mb-2">Billing address</span>
 
-              <button
-                v-if="type === 'update'"
-                class="btn dark w-full my-4"
-                type="button"
-                @click="updateAddress"
-              >
-                Save Address
-              </button>
+            <!-- TODO: Prefill existing addresses -->
+            <InputDropdown
+              class="bg-primary-lightest border border-primary-med"
+              :options="[]"
+              value="Select an existing address"
+            />
 
-              <button v-if="type === 'update'" class="btn light w-full" type="button">
-                Delete Address
-              </button>
-            </div>
+            <button class="label-sm-bold mt-6" @click="$emit('new-address')">
+              + Add a new address
+            </button>
+          </div>
+        </div>
+
+        <div class="w-full fixed left-0 bottom-0 bg-primary-lighter pb-4">
+          <div class="container">
+            <button
+              v-if="type === 'new'"
+              class="btn dark w-full my-4"
+              type="button"
+              @click="createAddress"
+            >
+              Create Address
+            </button>
+
+            <button
+              v-if="type === 'update'"
+              class="btn dark w-full my-4"
+              type="button"
+              @click="updateAddress"
+            >
+              Save Card
+            </button>
+
+            <button v-if="type === 'update'" class="btn light w-full" type="button">
+              Delete Card
+            </button>
           </div>
         </div>
       </div>
@@ -80,65 +94,36 @@
 <script>
 export default {
   props: {
-    address: {
+    card: {
       type: Object,
       default: null
     },
     type: {
-      type: String,
-      default: 'update'
+      type: String
     }
   },
 
   data() {
     return {
-      firstName: '',
-      lastName: '',
-      address1: '',
-      address2: '',
-      state: '',
-      city: '',
-      zip: '',
-      country: 'AU',
-      setDefault: false
+      cardName: '',
+      cardExpiry: '',
+      cardSecurity: '',
+      isDefault: false
     }
   },
 
   methods: {
     updateAddress() {},
-    async createAddress() {
-      try {
-        const res = await this.$swell.account.createAddress({
-          name: 'Julia Sanchez',
-          address1: 'Apartment 16B',
-          address2: '2602 Pinewood Drive',
-          city: 'Jacksonville',
-          state: 'FL',
-          zip: '32216',
-          country: 'United States',
-          phone: '904-504-4760'
-        })
-
-        console.log(res)
-      } catch (err) {
-        console.log(err)
-      }
-    }
+    createAddress() {}
   },
 
   created() {
     // Prefill form data for updating existing data
-    if (!this.address) return
+    if (!this.card) return
+    console.log(this.card)
 
-    this.firstName = this.address.firstName || ''
-    this.lastName = this.address.lastName || ''
-    this.address1 = this.address.address1 || ''
-    this.address2 = this.address.address2 || ''
-    this.state = this.address.state || ''
-    this.city = this.address.city || ''
-    this.zip = this.address.zip || ''
-    this.country = this.address.country || ''
-    this.setDefault = this.address.active || false
+    this.cardName = this.card.billing.name || ''
+    this.cardExpiry = `${this.card.expMonth} / ${this.card.expYear}`  || ''
   }
 }
 </script>
