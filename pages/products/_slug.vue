@@ -82,7 +82,9 @@
                 v-if="visibleOptionIds.includes(input.option.id)"
                 :option="input.option"
                 :current-value="optionState[input.option.name]"
+                :activeDropdownUID="activeDropdownUID"
                 @value-changed="setOptionValue"
+                @dropdown-active="setActiveDropdownUID($event)"
               />
             </div>
 
@@ -201,7 +203,8 @@ export default {
       product: {},
       relatedProducts: [], // TODO
       optionState: null,
-      productBenefits: []
+      productBenefits: [],
+      activeDropdownUID: null
     }
   },
 
@@ -259,6 +262,11 @@ export default {
   },
 
   methods: {
+    // Set which dropdown is active by UID, so that only one dropdown is active at any time.
+    setActiveDropdownUID(uid) {
+      this.activeDropdownUID = uid
+    },
+
     // Add product to cart with selected options
     addToCart() {
       this.$store.dispatch('addCartItem', {

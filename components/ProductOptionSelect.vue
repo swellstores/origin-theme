@@ -40,7 +40,7 @@
 
     <!-- Select menu input -->
     <div v-else class="mt-3">
-      <div class="relative z-10 text-sm hover:border-primary-darkest">
+      <div class="relative text-sm bg-primary-lightest hover:border-primary-darkest">
         <!-- Value/Toggle -->
         <button
           :id="`option-${option.id}-button`"
@@ -69,7 +69,7 @@
           :id="`option-${option.id}-menu`"
           :class="{ 'rounded-t-none': dropdownIsActive }"
           :aria-labelledby="`option-${option.id}-label`"
-          class="max-h-25vh overflow-scroll absolute block -mt-px w-full bg-primary-lightest py-2 border rounded"
+          class="max-h-25vh overflow-scroll absolute block -mt-px w-full bg-primary-lightest py-2 border rounded z-10"
           role="listbox"
         >
           <li
@@ -108,11 +108,18 @@ export default {
     currentValue: {
       type: String,
       default: ''
+    },
+    activeDropdownUID: {
+      type: Number,
+      default: null
     }
   },
 
   data() {
     return {
+      active: {
+        uid: null
+      },
       dropdownIsActive: false
     }
   },
@@ -146,15 +153,39 @@ export default {
     }
   },
 
+  watch: {
+    // If the active dropdown UID doesn't match current, toggle off.
+    activeDropdownUID(activeUID) {
+      if (activeUID !== this._uid) this.dropdownIsActive = false
+    }
+  },
+
   methods: {
     toggleDropdown() {
       this.dropdownIsActive = !this.dropdownIsActive
+      if (this.dropdownIsActive) this.$emit('dropdown-active', this._uid)
     },
 
     selectValue(value) {
       this.$emit('value-changed', { option: this.option.name, value: value.name })
       this.dropdownIsActive = false
+    },
+
+    clickOutside(e) {
+      if (!this.$el.contains(e.target)) {
+        this.dropdownIsActive = false
+      }
     }
+  },
+
+  mounted() {
+    // Toggle off dropdown if clicked outside
+    window.addEventListener('click', this.clickOutside)
+  },
+
+  beforeDestroy() {
+    // Remove event listeners
+    window.removeEventListener('click', this.clickOutside)
   }
 }
 </script>
