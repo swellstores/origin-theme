@@ -35,12 +35,6 @@
                 </div>
               </label>
             </div>
-
-            <!-- Duplicate elements to account for fixed bottom buttons
-            <div class="opacity-0">
-              <button class="btn w-full my-4">|</button>
-              <button v-if="type === 'update'" class="btn w-full">|</button>
-            </div> -->
           </div>
         </div>
 
@@ -61,7 +55,7 @@
           </div>
         </div>
 
-        <div class="w-full fixed left-0 bottom-0 bg-primary-lighter pb-4">
+        <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4 z-30">
           <div class="container">
             <button
               v-if="type === 'new'"
@@ -112,6 +106,18 @@ export default {
     }
   },
 
+  computed: {
+    formattedCardNumber() {
+      if (!this.card) return
+      const { brand, last4 } = this.card
+      if (brand === 'American Express') {
+        return `••••  ••••   •••${last4.substring(0, 1)}   ${last4.substring(1, last4.length)}`
+      } else {
+        return `••••  ••••   ••••   ${last4}`
+      }
+    }
+  },
+
   methods: {
     updateAddress() {},
     createAddress() {}
@@ -123,7 +129,7 @@ export default {
     console.log(this.card)
 
     this.cardName = this.card.billing.name || ''
-    this.cardExpiry = `${this.card.expMonth} / ${this.card.expYear}`  || ''
+    this.cardExpiry = `${this.card.expMonth} / ${this.card.expYear}` || ''
   }
 }
 </script>

@@ -153,15 +153,15 @@ export const actions = {
     }
   },
 
-  async initializeCustomer({ commit, dispatch, state }) {
+  async initializeCustomer({ commit, dispatch }) {
     try {
-      customer = await this.$swell.account.get()
-    
+      let loggedInCustomer = await this.$swell.account.get()
+
       // Check if customer exists
-      if (customer) { 
+      if (loggedInCustomer) {
+        commit('setState', { key: 'customer', value: loggedInCustomer })
         commit('setState', { key: 'customerLoggedIn', value: true })
       }
-
     } catch (err) {
       dispatch('handleError', err)
     }

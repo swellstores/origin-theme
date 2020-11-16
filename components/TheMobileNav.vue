@@ -32,7 +32,7 @@
           <a class="sw-nav-button" href="#">
             <BaseIcon icon="uil:search" size="sm" /><span class="ml-3">Search</span>
           </a>
-          <button class="sw-nav-button" @click="checkIfLoggedIn()">
+          <button class="sw-nav-button" @click="$emit('click-customer-login')">
             <BaseIcon icon="uil:user" size="sm" /><span class="ml-3">Account</span>
           </button>
           <a class="sw-nav-button" href="#">{{ formatMoney() }} {{ $store.state.currency }}</a>

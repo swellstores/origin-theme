@@ -11,16 +11,64 @@
       <div class="panel absolute w-full h-full right-0 max-w-112">
         <div class="w-full h-full bg-primary-lighter overflow-y-scroll">
           <!-- Header -->
-          <div class="relative container py-5 border-b">
+          <div class="relative container py-5">
             <div class="flex justify-between items-center">
-              <h3>Sign in</h3>
+              <h3 class="text-xl" v-if="customerLoggedIn">Account</h3>
+              <h3 v-else>Sign in</h3>
               <button @click.prevent="$emit('click-close')">
-                <BaseIcon icon="uil:multiply" size="lg" />
+                <BaseIcon icon="uil:multiply" />
               </button>
             </div>
           </div>
 
-          <div class="relative container py-10">
+          <div v-if="customerLoggedIn" class="text-xl">
+            <div class="container py-6">
+              <ul>
+                <li>
+                  <NuxtLink
+                    class="w-full flex items-center py-4"
+                    to="/account/orders/"
+                    @click.native="$emit('click-close')"
+                    >Orders & Returns <BaseIcon class="ml-auto" icon="uil:angle-right" size="lg"
+                  /></NuxtLink>
+                </li>
+                <li>
+                  <NuxtLink
+                    class="w-full flex items-center py-4"
+                    to="/account/addresses/"
+                    @click.native="$emit('click-close')"
+                    >Addresses <BaseIcon class="ml-auto" icon="uil:angle-right" size="lg"
+                  /></NuxtLink>
+                </li>
+                <li>
+                  <NuxtLink
+                    class="w-full flex items-center py-4"
+                    to="/account/payment/"
+                    @click.native="$emit('click-close')"
+                    >Payment methods <BaseIcon class="ml-auto" icon="uil:angle-right" size="lg"
+                  /></NuxtLink>
+                </li>
+                <li>
+                  <NuxtLink
+                    class="w-full flex items-center py-4"
+                    to="/account/support/"
+                    @click.native="$emit('click-close')"
+                    >Support <BaseIcon class="ml-auto" icon="uil:angle-right" size="lg"
+                  /></NuxtLink>
+                </li>
+              </ul>
+            </div>
+
+            <div class="border-t">
+              <div class="container">
+                <button class="w-full flex items-center py-6" @click="logout()">
+                  <BaseIcon class="mr-2" icon="uil:signout" size="lg" />Log out
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div v-else class="relative container pt-6">
             <label class="label-xs-bold-faded mb-2 inline-block" for="customerEmail">Email</label>
             <input
               id="customerEmail"
@@ -47,7 +95,7 @@
               >Did you forget your password?</a
             >
 
-            <button class="btn btn--lg w-full my-4" type="button" @click="login()">
+            <button class="btn btn--lg w-full mt-6 mb-4" type="button" @click="login()">
               Login
             </button>
 
@@ -66,7 +114,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  name: 'TheCustomerLogin',
+  name: 'TheCustomerPanel',
 
   data() {
     return {
@@ -75,18 +123,30 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState(['customerLoggedIn'])
+  },
+
   methods: {
     async login() {
       try {
-        
         const res = await this.$swell.account.login(this.customerEmail, this.customerPassword)
 
         if (!res || res === null) {
           throw Error('Error')
         }
 
+        this.$store.commit('setState', { key: 'customerLoggedIn', value: true })
+      } catch (err) {
+        console.log(err)
+      }
+    },
+
+    async logout() {
+      try {
+        await this.$swell.account.logout()
+        this.$store.commit('setState', { key: 'customerLoggedIn', value: false })
         this.$emit('click-close')
-        this.$router.push('/account/')
       } catch (err) {
         console.log(err)
       }

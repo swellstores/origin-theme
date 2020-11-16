@@ -8,8 +8,7 @@
       <div class="panel">
         <div class="container py-2">
           <div class="flex py-4">
-            <h3 v-if="type === 'new'">Add new address</h3>
-            <h3 v-else>Edit address</h3>
+            <h3>Edit profile</h3>
             <button class="ml-auto" @click.prevent="$emit('click-close')">
               <BaseIcon icon="uil:multiply" size="sm" />
             </button>
@@ -19,20 +18,14 @@
           <div class="pt-6">
             <InputText class="mb-6" label="First Name" v-model="firstName" />
             <InputText class="mb-6" label="Last Name" v-model="lastName" />
-            <InputText class="mb-6" label="Address" v-model="address1" />
-            <InputText class="mb-6" label="Apartment / Floor / Suite" v-model="address2" />
-            <InputText class="mb-6" label="City" v-model="city" />
-
-            <div class="flex flex-no-wrap mb-6">
-              <InputText class="mr-3" label="State" v-model="state" />
-              <InputText class="ml-3" label="Zip Code" v-model="zip" />
-            </div>
+            <InputText class="mb-6" label="Email Address" type="email" v-model="email" />
+            <InputText class="mb-6" label="Change password" type="password" v-model="password" />
 
             <div class="checkbox mb-6">
-              <input type="checkbox" id="set-default" v-model="setDefault" />
+              <input type="checkbox" id="set-default" v-model="subscribeToNewsletter" />
 
               <label class="w-full" for="set-default">
-                <p>Make this my default address</p>
+                <p>Subscribe to Origin newsletter</p>
                 <div class="indicator ml-auto text-primary-lighter">
                   <BaseIcon icon="uil:check" size="sm" />
                 </div>
@@ -41,26 +34,12 @@
           </div>
 
           <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4">
-            <button
-              v-if="type === 'new'"
-              class="btn dark w-full my-4"
-              type="button"
-              @click="createAddress"
-            >
-              Create Address
+            <button class="btn dark w-full my-4" type="button" @click="updateProfile()">
+              Save Changes
             </button>
 
-            <button
-              v-if="type === 'update'"
-              class="btn dark w-full my-4"
-              type="button"
-              @click="updateAddress"
-            >
-              Save Address
-            </button>
-
-            <button v-if="type === 'update'" class="btn light w-full" type="button">
-              Delete Address
+            <button class="btn bg-primary-light hover:bg-error w-full" type="button">
+              Delete Account
             </button>
           </div>
         </div>
@@ -70,67 +49,33 @@
 </template>
 
 <script>
+import  {mapState} from 'vuex'
 export default {
-  props: {
-    address: {
-      type: Object,
-      default: null
-    },
-    type: {
-      type: String,
-      default: 'update'
-    }
-  },
-
   data() {
     return {
       firstName: '',
       lastName: '',
-      address1: '',
-      address2: '',
-      state: '',
-      city: '',
-      zip: '',
-      country: 'AU',
-      setDefault: false
+      email: '',
+      password: '',
+      subscribeToNewsletter: false
     }
   },
 
-  methods: {
-    updateAddress() {},
-    async createAddress() {
-      try {
-        const res = await this.$swell.account.createAddress({
-          name: 'Julia Sanchez',
-          address1: 'Apartment 16B',
-          address2: '2602 Pinewood Drive',
-          city: 'Jacksonville',
-          state: 'FL',
-          zip: '32216',
-          country: 'US',
-          phone: '904-504-4760'
-        })
+  computed: {
+    ...mapState(['customer'])
+  },
 
-        console.log(res)
-      } catch (err) {
-        console.log(err)
-      }
-    }
+  methods: {
+    updateProfile() {}
   },
 
   created() {
     // Prefill form data for updating existing data
-    if (!this.address) return
+    if (!this.customer) return
 
-    this.firstName = this.address.firstName || ''
-    this.lastName = this.address.lastName || ''
-    this.address1 = this.address.address1 || ''
-    this.address2 = this.address.address2 || ''
-    this.state = this.address.state || ''
-    this.city = this.address.city || ''
-    this.zip = this.address.zip || ''
-    this.country = this.address.country || ''
-    this.setDefault = this.address.active || false
+    this.firstName = this.customer.firstName
+    this.lastName = this.customer.lastName
+    this.email = this.customer.email
   }
 }
 </script>

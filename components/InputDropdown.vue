@@ -69,7 +69,6 @@ export default {
           find(options, value) || find(options, { value }) || find(options, { label: value })
         if (selected !== undefined) {
           this.selected = selected.label || selected
-          this.$emit('change', this.selected)
           return
         }
       }
@@ -95,7 +94,7 @@ export default {
     },
     selectOption(option) {
       this.selected = option.label || option
-      this.$emit('change', option)
+      this.$emit('change', option.value || option)
     }
   }
 }

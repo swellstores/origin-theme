@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <div :class="{ 'overflow-y-hidden': searchIsActive }">
+    <div :class="{ 'overflow-y-hidden': searchIsActive || customerLoginIsActive || cartIsActive }">
       <TheHeader
         @click-cart="cartIsActive = true"
         @click-search="searchIsActive = true"
@@ -22,7 +22,7 @@
       />
     </transition>
     <TheCart v-show="cartIsActive" @click-close="cartIsActive = false" />
-    <TheCustomerLogin v-show="customerLoginIsActive" @click-close="customerLoginIsActive = false" />
+    <TheCustomerPanel v-show="customerLoginIsActive" @click-close="customerLoginIsActive = false" />
     <transition name="fade">
       <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
     </transition>

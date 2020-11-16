@@ -80,9 +80,7 @@
               <!-- Account icon -->
               <button
                 class="hidden h-10 p-2 lg:inline-block"
-                @click.prevent="
-                  customerLoggedIn ? $router.push('/account/') : $emit('click-customer-login')
-                "
+                @click.prevent="$emit('click-customer-login')"
               >
                 <BaseIcon icon="uil:user" />
               </button>

@@ -11,11 +11,11 @@
 
       <div class="w-full flex pb-4">
         <p v-if="card.brand === 'American Express'">
-          <span class="tracked">···· ···· ···{{ card.last4.slice(0, 1) }} </span>
+          <span class="tracking-large">···· ···· ···{{ card.last4.slice(0, 1) }} </span>
           {{ card.last4.slice(1, card.last4.length) }}
         </p>
         <p v-else>
-          <span class="tracked">···· ···· ···· </span>
+          <span class="tracking-large">···· ···· ···· </span>
           {{ card.last4 }}
         </p>
         <span class="ml-auto">{{ expDate }}</span>
@@ -82,7 +82,4 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-.tracked {
-  letter-spacing: 0.25rem;
-}
 </style>

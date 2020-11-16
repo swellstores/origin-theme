@@ -23,9 +23,21 @@
     </div>
 
     <div class="container">
+      <!-- Orders & Returns View -->
+      <template v-if="view === 'Orders & Returns'">
+        <PanelOrder
+          class="mb-6"
+          v-for="(order, index) in orders"
+          :key="`order-${index}`"
+          :order="order"
+          @click-open="viewOrder(order)"
+        />
+      </template>
+
       <!-- Address View -->
       <template v-if="view === 'Addresses'">
         <PanelAddress
+          class="mb-6"
           v-for="(address, index) in addresses"
           :key="`address-${index}`"
           :address="address"
@@ -55,6 +67,8 @@
           Add payment method
         </button>
       </template>
+
+      <Order v-if="orderIsActive" :order="orderToView" @click-close="orderIsActive = false" />
 
       <PanelEditCard
         v-if="editCardPanelIsActive"
@@ -101,17 +115,24 @@ export default {
       cards: null,
       orders: null,
       cards: null,
-      view: 'Payment methods',
+      view: 'Orders & Returns',
       editAddressPanelIsActive: false,
       editAddressType: 'update',
       addressToEdit: null,
       editCardPanelIsActive: false,
       editCardType: 'update',
-      cardToEdit: null
+      cardToEdit: null,
+      orderIsActive: false,
+      orderToView: null
     }
   },
 
   methods: {
+    viewOrder(order) {
+      this.orderIsActive = true
+      this.orderToView = order
+    },
+
     openEditPanel(type, method, existing) {
       switch (type) {
         case 'address':
