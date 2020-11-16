@@ -1,37 +1,39 @@
 <template>
-  <div
-    ref="dropdown"
-    class="relative p-2 cursor-pointer border-primary-med border rounded z-20"
-    :class="{ 'border-b-0 rounded-b-none': hideBottomBorder }"
-    @click="toggleOptions()"
-  >
-    <span class="label-sm-bold p-2">{{ selected }}</span>
-    <div class="absolute right-0 inline-block mr-1">
-      <BaseIcon icon="uil:angle-down" />
-    </div>
-    <transition
-      name="expand"
-      @before-enter="hideBottomBorder = true"
-      @after-leave="hideBottomBorder = false"
+  <div class="relative">
+    <div
+      ref="dropdown"
+      class="relative w-full flex p-2 items-center bg-primary-lightest border font-semibold cursor-pointer rounded focus:outline-none focus:shadow-outline"
+      :class="{ 'rounded-b-none': dropdownIsActive }"
+      @click="toggleDropdown()"
     >
-      <div
-        v-show="expanded"
-        ref="container"
-        class="w-full-border absolute center-yb border-primary-med bg-primary-lightest overflow-hidden transition-all ease-in-out duration-1000 -mt-px"
-        :class="{ 'border border-t-0 rounded-b': expanded }"
-      >
-        <ul ref="options">
-          <li
-            v-for="option in options"
-            :key="option.label || option"
-            class="px-4 py-3 mb-0 hover:bg-primary-lighter transition-all duration-500 opacity-100"
-            @click="selectOption(option)"
-          >
-            {{ option.label || option }}
-          </li>
-        </ul>
+      <span class="ml-2 my-1">{{ selected }}</span>
+      <div v-show="dropdownIsActive" class="absolute right-3 mt-px">
+        <BaseIcon icon="uil:angle-up" />
       </div>
-    </transition>
+      <div v-show="!dropdownIsActive" class="absolute right-3 mt-px">
+        <BaseIcon icon="uil:angle-down" />
+      </div>
+    </div>
+
+    <ul
+      v-show="dropdownIsActive"
+      :class="{ 'rounded-t-none': dropdownIsActive }"
+      class="absolute block -mt-px w-full bg-primary-lightest py-2 border rounded z-20"
+      role="listbox"
+    >
+      <li
+        v-for="(option, index) in options"
+        :key="`option-${index}`"
+        class="inline-block mb-0 px-2 flex items-center cursor-pointer hover:bg-primary-lighter"
+        :class="{ 'text-primary-med': option.value === selected }"
+        role="option"
+        @click="selectOption(option)"
+      >
+        <span class="m-2">
+          {{ option.label || option }}
+        </span>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -54,9 +56,8 @@ export default {
 
   data() {
     return {
-      expanded: false,
-      selected: '',
-      hideBottomBorder: false
+      dropdownIsActive: false,
+      selected: ''
     }
   },
 
@@ -79,65 +80,16 @@ export default {
   },
 
   methods: {
-    toggleOptions() {
-      const container = this.$refs.container
-      if (this.expanded) {
-        container.style.height = 0
-        this.expanded = false
-      } else {
-        this.expanded = true
-        this.$nextTick(() => {
-          const options = this.$refs.options
-          if (options) container.style.height = `${options.offsetHeight}px`
-        })
-      }
+    toggleDropdown() {
+      this.dropdownIsActive = !this.dropdownIsActive
     },
     selectOption(option) {
       this.selected = option.label || option
+      this.dropdownIsActive = false
       this.$emit('change', option.value || option)
     }
   }
 }
 </script>
 
-<style lang="postcss" scoped>
-.w-full-border {
-  width: calc(100% + 2px);
-}
-
-.center-yb {
-  @apply bottom-0 left-1/2;
-  transform: translate3d(-50%, 100%, 0);
-}
-
-.expand-enter-active,
-.expand-leave-active {
-  @apply transition-all duration-500 ease-in-out;
-}
-
-.expand-enter,
-.expand-leave-to {
-  @apply h-0;
-}
-
-.expand-enter-to,
-.expand-leave {
-  @apply h-auto;
-}
-
-.expand-enter-active li,
-.expand-leave-active li {
-  @apply transition-all duration-500 ease-in-out;
-  transition-delay: calc(50ms * var(--i));
-}
-
-.expand-enter li,
-.expand-leave-to li {
-  @apply opacity-0;
-}
-
-.expand-enter-to li,
-.expand-leave li {
-  @apply opacity-100;
-}
-</style>
+<style lang="postcss" scoped></style>

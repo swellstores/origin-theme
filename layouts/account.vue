@@ -33,7 +33,6 @@
           <div class="py-6">
             <div class="container">
               <InputDropdown
-                class="bg-primary-lightest border border-primary-med"
                 :options="views"
                 value="orders"
                 @change="$router.push(`/account/${$event}/`)"
