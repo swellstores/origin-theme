@@ -2,10 +2,11 @@
   <div>
     <label class="label-xs-bold-faded block mb-2" v-if="label">{{ label }}</label>
     <input
-      class="w-full px-4 py-3 bg-primary-lightest border border-primary-med rounded"
+      class="w-full px-4 py-3 bg-primary-lightest border border-primary-med rounded tracking-inherit"
       :type="type"
       :value="value"
       v-on:input="$emit('input', $event.target.value)"
+      :disabled="disabled"
     />
   </div>
 </template>
@@ -23,9 +24,17 @@ export default {
     type: {
       type: String,
       default: 'text'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="postcss">
+#address-dropdown ul {
+  @apply max-h-40;
+}
+</style>

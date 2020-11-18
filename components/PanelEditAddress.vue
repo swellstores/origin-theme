@@ -24,11 +24,44 @@
             <InputText class="mb-6" label="City" v-model="city" />
 
             <div class="flex flex-no-wrap mb-6">
-              <InputText class="mr-3" label="State" v-model="state" />
-              <InputText class="ml-3" label="Zip Code" v-model="zip" />
+              <div class="w-1/2 mr-3">
+                <label class="label-xs-bold-faded block mb-2" for="region-select">Region</label>
+
+                <div class="relative">
+                  <region-select
+                    id="region-select"
+                    class="w-full pl-4 pr-6 py-3 bg-primary-lightest border border-primary-med rounded appearance-none truncate"
+                    v-model="state"
+                    :country="country"
+                    :region="state"
+                    :disablePlaceholder="true"
+                  />
+
+                  <div>
+                    <BaseIcon icon="uil:angle-down" class="absolute mr-2 right-0 center-y" />
+                  </div>
+                </div>
+              </div>
+              <InputText class="w-1/2 ml-3" label="Zip Code" v-model="zip" />
             </div>
 
-            <div class="checkbox mb-6">
+            <div class="mb-6">
+              <label class="label-xs-bold-faded block mb-2" for="country-select">Country</label>
+
+              <div class="relative">
+                <country-select
+                  id="country-select"
+                  class="w-full px-4 py-3 bg-primary-lightest border border-primary-med rounded appearance-none"
+                  v-model="country"
+                  :country="country"
+                  :autocomplete="true"
+                />
+
+                <BaseIcon icon="uil:angle-down" class="absolute mr-2 right-0 center-y" />
+              </div>
+            </div>
+
+            <div v-if="flow === 'default'" class="checkbox mb-6">
               <input type="checkbox" id="set-default" v-model="setDefault" />
 
               <label class="w-full" for="set-default">
@@ -59,7 +92,12 @@
               Save Address
             </button>
 
-            <button v-if="type === 'update'" class="btn light w-full" type="button">
+            <button
+              v-if="type === 'update'"
+              class="btn bg-primary-light hover:bg-error w-full"
+              type="button"
+              @click="deleteAddress()"
+            >
               Delete Address
             </button>
           </div>
@@ -79,6 +117,14 @@ export default {
     type: {
       type: String,
       default: 'update'
+    },
+    flow: {
+      type: String,
+      default: 'default'
+    },
+    defaultAddressId: {
+      type: String,
+      default: null
     }
   },
 
@@ -91,27 +137,54 @@ export default {
       state: '',
       city: '',
       zip: '',
-      country: 'AU',
+      country: '',
       setDefault: false
     }
   },
 
   methods: {
-    updateAddress() {},
-    async createAddress() {
-      try {
-        const res = await this.$swell.account.createAddress({
-          name: 'Julia Sanchez',
-          address1: 'Apartment 16B',
-          address2: '2602 Pinewood Drive',
-          city: 'Jacksonville',
-          state: 'FL',
-          zip: '32216',
-          country: 'US',
-          phone: '904-504-4760'
+    async updateAddress() {
+      if (this.setDefault) {
+        // Set current address as default
+        await this.$swell.account.update({
+          shipping: {
+            accountAddressId: this.address.id
+          }
         })
 
-        console.log(res)
+        this.$emit('click-close')
+        this.$emit('refresh')
+        this.$store.dispatch('showNotification', { message: 'Address updated.' })
+      }
+    },
+    async createAddress() {
+      try {
+        await this.$swell.account.createAddress({
+          name: `${this.firstName} ${this.lastName}`,
+          address1: this.address1,
+          address2: this.address2,
+          city: this.city,
+          state: this.state,
+          zip: this.zip,
+          country: this.country
+        })
+
+        // Close panel and fetch updated data
+        this.$emit('click-close')
+        this.$emit('refresh')
+        this.$store.dispatch('showNotification', { message: 'Address created.' })
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    async deleteAddress() {
+      try {
+        await this.$swell.account.deleteAddress(this.address.id)
+
+        // Close panel and fetch updated data
+        this.$emit('click-close')
+        this.$emit('refresh')
+        this.$store.dispatch('showNotification', { message: 'Address deleted.', type: 'error' })
       } catch (err) {
         console.log(err)
       }
@@ -130,7 +203,9 @@ export default {
     this.city = this.address.city || ''
     this.zip = this.address.zip || ''
     this.country = this.address.country || ''
-    this.setDefault = this.address.active || false
+
+    // Set default check state
+    if (this.defaultAddressId === this.address.id) this.setDefault = true
   }
 }
 </script>

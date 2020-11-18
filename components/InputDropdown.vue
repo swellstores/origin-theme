@@ -2,7 +2,7 @@
   <div class="relative">
     <div
       ref="dropdown"
-      class="relative w-full flex p-2 items-center bg-primary-lightest border font-semibold cursor-pointer rounded focus:outline-none focus:shadow-outline"
+      class="relative w-full flex p-2 pr-8 items-center bg-primary-lightest border font-semibold cursor-pointer rounded focus:outline-none focus:shadow-outline"
       :class="{ 'rounded-b-none': dropdownIsActive }"
       @click="toggleDropdown()"
     >
@@ -18,14 +18,14 @@
     <ul
       v-show="dropdownIsActive"
       :class="{ 'rounded-t-none': dropdownIsActive }"
-      class="absolute block -mt-px w-full bg-primary-lightest py-2 border rounded z-20"
+      class="absolute block -mt-px w-full bg-primary-lightest py-2 border rounded z-40
+      overflow-scroll"
       role="listbox"
     >
       <li
         v-for="(option, index) in options"
         :key="`option-${index}`"
         class="inline-block mb-0 px-2 flex items-center cursor-pointer hover:bg-primary-lighter"
-        :class="{ 'text-primary-med': option.value === selected }"
         role="option"
         @click="selectOption(option)"
       >
@@ -87,7 +87,23 @@ export default {
       this.selected = option.label || option
       this.dropdownIsActive = false
       this.$emit('change', option.value || option)
+    },
+
+    clickOutside(e) {
+      if (!this.$el.contains(e.target)) {
+        this.dropdownIsActive = false
+      }
     }
+  },
+
+  mounted() {
+    // Toggle off dropdown if clicked outside
+    window.addEventListener('click', this.clickOutside)
+  },
+
+  beforeDestroy() {
+    // Remove event listeners
+    window.removeEventListener('click', this.clickOutside)
   }
 }
 </script>

@@ -17,16 +17,34 @@
 
           <!-- Fields -->
           <div class="pt-6">
-            <InputText class="mb-6" label="Name on card" v-model="cardName" />
-            <InputText class="mb-6" label="Card number" :value="formattedCardNumber" />
+            <InputText
+              class="mb-6"
+              :class="{ 'tracking-large': type === 'update' }"
+              label="Card number"
+              :disabled="type === 'update'"
+              v-model="cardNumber"
+              v-cardformat:formatCardNumber
+            />
 
             <div class="flex flex-no-wrap mb-6">
-              <InputText class="mr-3" label="Expiry Date" v-model="cardExpiry" />
-              <InputText class="ml-3" label="CVC" v-model="cardSecurity" />
+              <InputText
+                :class="type === 'update' ? 'w-full' : 'mr-3'"
+                label="Card Expiry"
+                v-model="cardExpiry"
+                :disabled="type === 'update'"
+                v-cardformat:formatCardExpiry
+              />
+              <InputText
+                v-if="type === 'new'"
+                class="ml-3"
+                label="CVC"
+                v-model="cardCVC"
+                v-cardformat:formatCardCVC
+              />
             </div>
 
             <div class="checkbox mb-4">
-              <input type="checkbox" id="set-default" />
+              <input type="checkbox" id="set-default" v-model="setDefault" />
 
               <label class="w-full" for="set-default">
                 <p class="text-sm">Use as default card</p>
@@ -42,11 +60,11 @@
           <div class="container ">
             <span class="block text-md font-semibold mb-2">Billing address</span>
 
-            <!-- TODO: Prefill existing addresses -->
             <InputDropdown
-              class="bg-primary-lightest border border-primary-med"
-              :options="[]"
+              :options="formattedAddressOptions"
               value="Select an existing address"
+              id="address-dropdown"
+              class="text-sm"
             />
 
             <button class="label-sm-bold mt-6" @click="$emit('new-address')">
@@ -61,21 +79,26 @@
               v-if="type === 'new'"
               class="btn dark w-full my-4"
               type="button"
-              @click="createAddress"
+              @click="createCard"
             >
-              Create Address
+              Create card
             </button>
 
             <button
               v-if="type === 'update'"
               class="btn dark w-full my-4"
               type="button"
-              @click="updateAddress"
+              @click="updateCard"
             >
               Save Card
             </button>
 
-            <button v-if="type === 'update'" class="btn light w-full" type="button">
+            <button
+              v-if="type === 'update'"
+              class="btn bg-primary-light hover:bg-error w-full"
+              type="button"
+              @click="deleteCard"
+            >
               Delete Card
             </button>
           </div>
@@ -87,6 +110,12 @@
 
 <script>
 export default {
+  async fetch() {
+    // Set component data
+    const { results: addresses } = await this.$swell.account.listAddresses()
+    this.addresses = addresses
+  },
+
   props: {
     card: {
       type: Object,
@@ -94,42 +123,107 @@ export default {
     },
     type: {
       type: String
+    },
+    refresh: {
+      type: Boolean,
+      value: false
+    },
+    defaultCardId: {
+      type: String,
+      default: null
     }
   },
 
   data() {
     return {
+      addresses: null,
       cardName: '',
+      cardNumber: '',
       cardExpiry: '',
-      cardSecurity: '',
-      isDefault: false
+      cardCVC: '',
+      setDefault: false
     }
   },
 
   computed: {
-    formattedCardNumber() {
-      if (!this.card) return
-      const { brand, last4 } = this.card
-      if (brand === 'American Express') {
-        return `••••  ••••   •••${last4.substring(0, 1)}   ${last4.substring(1, last4.length)}`
-      } else {
-        return `••••  ••••   ••••   ${last4}`
-      }
+    formattedAddressOptions() {
+      if (!this.addresses) return
+      return this.addresses.map(address => {
+        return `${address.name}, ${address.address2 || ''} ${address.address1}, ${address.state}, ${
+          address.city
+        } ${address.zip}, ${this.getCountryName(address.country)}`
+      })
+    },
+    expMonth() {
+      if (!this.cardExpiry.includes('/')) return
+      return this.cardExpiry.split('/')[0].trim()
+    },
+    expYear() {
+      if (!this.cardExpiry.includes('/')) return
+      return `20${this.cardExpiry.split('/')[1].trim()}`
+    }
+  },
+
+  watch: {
+    // Watch for refresh request to get newly generated address
+    refresh(bool) {
+      if (bool) this.$fetch()
     }
   },
 
   methods: {
-    updateAddress() {},
-    createAddress() {}
+    async updateCard() {
+      if (this.setDefault) {
+        // Set current address as default
+        await this.$swell.account.update({
+          billing: {
+            accountCardId: this.card.id
+          }
+        })
+
+        this.$emit('click-close')
+        this.$emit('refresh')
+        this.$store.dispatch('showNotification', { message: 'Card updated.' })
+      }
+    },
+    async createCard() {
+      const { token } = await this.$swell.card.createToken({
+        number: this.cardNumber,
+        exp_month: this.expMonth,
+        exp_year: this.expYear,
+        cvc: this.cardCVC
+      })
+
+      if (token) {
+        const res = await this.$swell.account.createCard({ token })
+        console.log(res)
+      }
+    },
+    async deleteCard() {
+      await this.$swell.account.deleteCard(this.card.id);
+    }
   },
 
   created() {
     // Prefill form data for updating existing data
     if (!this.card) return
-    console.log(this.card)
 
-    this.cardName = this.card.billing.name || ''
     this.cardExpiry = `${this.card.expMonth} / ${this.card.expYear}` || ''
+
+    // Set formatted card number of existing card
+    if (!this.card) return
+    const { brand, last4 } = this.card
+    if (brand === 'American Express') {
+      this.cardNumber = `••••  ••••   •••${last4.substring(0, 1)}   ${last4.substring(
+        1,
+        last4.length
+      )}`
+    } else {
+      this.cardNumber = `••••  ••••   ••••   ${last4}`
+    }
+
+    // Set default check state
+    if (this.defaultCardId === this.card.id) this.setDefault = true
   }
 }
 </script>

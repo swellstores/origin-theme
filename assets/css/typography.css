@@ -102,3 +102,7 @@ textarea {
 .tracking-large {
   letter-spacing: 0.25rem;
 }
+
+.tracking-inherit {
+  letter-spacing: inherit;
+}

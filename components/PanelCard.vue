@@ -2,7 +2,7 @@
   <div class="bg-primary-lightest py-4 rounded shadow-md">
     <div class="px-4">
       <div class="w-full flex pb-6">
-        <div class="ml-auto label-xs-bold bg-primary-light rounded p-2">
+        <div v-if="isDefault" class="ml-auto label-xs-bold bg-primary-light rounded p-2">
           Default
         </div>
       </div>
@@ -20,27 +20,33 @@
         </p>
         <span class="ml-auto">{{ expDate }}</span>
       </div>
-
-      <p class="text-sm">{{ card.billing.name }}</p>
     </div>
 
     <div class="border-t border-primary-med mt-4 pt-4">
       <div class="w-full flex px-4 text-sm">
         <div>
           <span class="block label-sm-bold mb-2">Billing address</span>
-          <p v-if="card.billing.name">{{ card.billing.name }}</p>
-          <p v-if="card.billing.address1">
-            <template v-if="card.billing.address2">{{ card.billing.address2 }}, </template>
-            {{ card.billing.address1 }}
-          </p>
-          <p v-if="card.billing.city">
-            {{ card.billing.city }}
-            <template v-if="card.billing.state">
+          <template v-if="card.billing">
+            <p v-if="card.billing.name">{{ card.billing.name }}</p>
+            <p v-if="card.billing.address1">
+              <template v-if="card.billing.address2">{{ card.billing.address2 }}, </template>
+              {{ card.billing.address1 }}
+            </p>
+            <p v-if="card.billing.city">
+              {{ card.billing.city }}
+              <template v-if="card.billing.zip">
+                {{ card.billing.zip }}
+              </template>
+            </p>
+            <p v-if="card.billing.state">
               {{ card.billing.state }}
-            </template>
-          </p>
-          <p v-if="card.billing.zip">{{ card.billing.zip }}</p>
-          <p v-if="card.billing.country">{{ card.billing.country }}</p>
+              <template v-if="card.billing.country">
+                {{ getCountryName(card.billing.country) }}
+              </template>
+            </p>
+          </template>
+
+          <p v-else>No address assigned.</p>
         </div>
 
         <div class="ml-auto mt-auto">
@@ -57,6 +63,10 @@ export default {
     card: {
       type: Object,
       default: null
+    },
+    isDefault: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -73,13 +83,8 @@ export default {
     expDate() {
       return `${this.card.expMonth} / ${this.card.expYear.toString().slice(-2)}`
     }
-  },
-
-  mounted() {
-    console.log(this.card)
   }
 }
 </script>
 
-<style lang="postcss" scoped>
-</style>
+<style lang="postcss" scoped></style>

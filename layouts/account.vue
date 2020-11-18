@@ -34,7 +34,7 @@
             <div class="container">
               <InputDropdown
                 :options="views"
-                value="orders"
+                :value="currentRouteValue"
                 @change="$router.push(`/account/${$event}/`)"
               />
             </div>
@@ -95,12 +95,21 @@ export default {
   },
 
   computed: {
-    ...mapState(['notification', 'customer'])
+    ...mapState(['notification', 'customer']),
+    currentRouteValue() {
+      const [path] = this.$route.path
+        .split('/')
+        .filter(e => e)
+        .splice(-1)
+      return path
+    }
   },
 
   mounted() {
     // Initialize customer (if logged in, set customer state)
     this.$store.dispatch('initializeCustomer')
+
+    console.log()
   },
 
   watch: {

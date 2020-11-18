@@ -1,23 +1,57 @@
 <template>
   <div class="container">
-    <PanelCard
-      class="mb-6"
-      v-for="(card, index) in cards"
-      :key="`card-${index}`"
-      :card="card"
-      @click-open="openEditPanel('update', card)"
-    />
+    <div v-if="$fetchState.pending" class="container">
+      <div class="loader-el w-1/3 h-7 mb-6 mx-auto"></div>
+      <div class="loader-el w-3/5 h-2 mb-4 mx-auto"></div>
+      <div class="loader-el w-2/5 h-2 mb-8 mx-auto"></div>
+    </div>
 
-    <button class="btn light w-full mt-10" type="button" @click="openEditPanel('new')">
-      Add new payment method
-    </button>
+    <div v-else>
+      <template v-if="cards && cards.length">
+        <PanelCard
+          v-if="defaultCard"
+          :card="defaultCard"
+          :isDefault="true"
+          class="mb-6"
+          @click-open="openEditPanel('update', defaultCard)"
+        />
 
-    <PanelEditCard
-      v-if="editCardPanelIsActive"
-      :type="editCardType"
-      :card="cardToEdit"
-      @click-close="editCardPanelIsActive = false"
-    />
+        <PanelCard
+          v-for="(card, index) in otherCards"
+          :key="`card-${index}`"
+          :card="card"
+          :class="{ 'mb-6': index < otherCards.length - 1 }"
+          @click-open="openEditPanel('update', card)"
+        />
+      </template>
+
+      <p v-else class="text-sm text-primary-dark">
+        There are no payment methods associated with this account.
+      </p>
+
+      <button class="btn light w-full mt-10" type="button" @click="openEditPanel('new')">
+        Add new payment method
+      </button>
+
+      <PanelEditCard
+        v-if="editCardPanelIsActive"
+        :type="editCardType"
+        :card="cardToEdit"
+        :defaultCardId="defaultCardId"
+        :refresh="refreshCardPanel"
+        @click-close="editCardPanelIsActive = false"
+        @new-address="editAddressPanelIsActive = true"
+        @refresh="$fetch"
+      />
+
+      <PanelEditAddress
+        v-if="editAddressPanelIsActive"
+        type="new"
+        flow="payment"
+        @click-close="editAddressPanelIsActive = false"
+        @refresh="refreshCardPanel = true"
+      />
+    </div>
   </div>
 </template>
 
@@ -25,9 +59,16 @@
 export default {
   async fetch() {
     // Set page data
-    const { results: cards } = await this.$swell.account.getCards()
+    const { results: cards } = await this.$swell.account.listCards()
+    const account = await this.$swell.account.get()
+    const {
+      billing: { accountCardId: defaultCardId }
+    } = await this.$swell.account.get()
 
+    this.defaultCardId = defaultCardId
     this.cards = cards
+    console.log(account)
+    console.log(cards)
   },
 
   data() {
@@ -35,7 +76,20 @@ export default {
       cards: null,
       editCardPanelIsActive: false,
       editCardType: 'update',
-      cardToEdit: null
+      cardToEdit: null,
+      editAddressPanelIsActive: false,
+      refreshCardPanel: false
+    }
+  },
+
+  computed: {
+    defaultCard() {
+      if (!this.defaultCardId || !this.cards) return
+      return this.cards.find(card => card.id === this.defaultCardId)
+    },
+    otherCards() {
+      if (!this.defaultCardId || !this.cards) return
+      return this.cards.filter(card => card.id !== this.defaultCardId)
     }
   },
 

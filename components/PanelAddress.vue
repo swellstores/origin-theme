@@ -8,20 +8,24 @@
       </p>
       <p v-if="address.city">
         {{ address.city }}
-        <template v-if="address.state">
-          {{ address.state }}
+        <template v-if="address.zip">
+          {{ address.zip }}
         </template>
       </p>
-      <p v-if="address.zip">{{ address.zip }}</p>
-      <p v-if="address.country">{{ address.country }}</p>
+      <p v-if="address.state">
+        {{ address.state }}
+        <template v-if="address.country">
+          {{ getCountryName(address.country) }}
+        </template>
+      </p>
     </div>
 
     <div class="flex flex-col items-end ml-auto">
-      <div v-if="address.active" class="label-xs-bold bg-primary-light rounded p-2">
+      <div v-if="isDefault" class="label-xs-bold bg-primary-light rounded p-2">
         Default
       </div>
       <div class="mt-auto">
-        <button v-if="!address.active" class="px-2 mr-2">Remove</button>
+        <button v-if="!isDefault" class="px-2 mr-2">Remove</button>
         <button class="px-2" @click="$emit('click-open')">Edit</button>
       </div>
     </div>
@@ -34,6 +38,10 @@ export default {
     address: {
       type: Object,
       default: null
+    },
+    isDefault: {
+      type: Boolean,
+      default: false
     }
   }
 }

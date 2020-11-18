@@ -21,7 +21,7 @@
             </div>
           </div>
 
-          <div v-if="customerLoggedIn" class="text-xl">
+          <div v-if="customerLoggedIn" class="text-lg">
             <div class="container py-6">
               <ul>
                 <li>
@@ -146,6 +146,7 @@ export default {
       try {
         await this.$swell.account.logout()
         this.$store.commit('setState', { key: 'customerLoggedIn', value: false })
+        
         this.$emit('click-close')
       } catch (err) {
         console.log(err)

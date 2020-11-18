@@ -21,7 +21,7 @@
             <InputText class="mb-6" label="Email Address" type="email" v-model="email" />
             <InputText class="mb-6" label="Change password" type="password" v-model="password" />
 
-            <div class="checkbox mb-6">
+            <!-- <div class="checkbox mb-6">
               <input type="checkbox" id="set-default" v-model="subscribeToNewsletter" />
 
               <label class="w-full" for="set-default">
@@ -30,7 +30,7 @@
                   <BaseIcon icon="uil:check" size="sm" />
                 </div>
               </label>
-            </div>
+            </div> -->
           </div>
 
           <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4">

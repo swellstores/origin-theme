@@ -1,11 +1,32 @@
 <template>
   <div class="container">
-    <PanelOrder
-      class="mb-6"
-      v-for="(order, index) in orders"
-      :key="`order-${index}`"
-      :order="order"
-    />
+    <div v-if="$fetchState.pending">
+      <div class="loader-el w-1/3 h-7 mb-6 m-auto"></div>
+      <div class="loader-el w-3/5 h-2 mb-4 m-auto"></div>
+      <div class="loader-el w-2/5 h-2 mb-8 m-auto"></div>
+    </div>
+
+    <div v-else>
+      <template v-if="orders && orders.length">
+        <PanelOrder
+          class="mb-6 last:mb-0"
+          v-for="(order, index) in orders"
+          :key="`order-${index}`"
+          :order="order"
+        />
+      </template>
+
+      <template v-else>
+        <p class="text-sm text-primary-dark">
+          You haven’t ordered anything yet.
+        </p>
+
+        <NuxtLink to="categories" class="flex justify-center items-center btn btn dark mt-10">
+          <BaseIcon icon="uil:shopping-bag" size="sm" class="mr-2" />
+          Start shopping
+        </NuxtLink>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -13,8 +34,7 @@
 export default {
   async fetch() {
     // Set page data
-    const { results: orders } = await this.$swell.account.getOrders()
-    
+    const { results: orders } = await this.$swell.account.listOrders()
     this.orders = orders
   },
 

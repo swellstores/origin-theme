@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-primary-lightest py-4 rounded shadow-md">
+  <div class="bg-primary-lightest py-4 rounded shadow-md">    
     <div class="container">
       <div class="grid grid-cols-2 gap-4 mb-4">
         <div
@@ -7,7 +7,7 @@
           :key="`product-media-${index}`"
           class="relative rounded overflow-hidden"
         >
-          <VisualMedia :source="media.url" />
+          <VisualMedia :source="media" sizes="120px" />
 
           <div
             v-if="order.items.length > itemMedia.length && index === itemMedia.length - 1"

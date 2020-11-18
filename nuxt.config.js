@@ -24,7 +24,11 @@ export default {
   /*
    ** Vue plugins to load before mounting the App
    */
-  plugins: [{ src: '~/plugins/vue-slider-component', mode: 'client' }],
+  plugins: [
+    { src: '~/plugins/vue-slider-component', mode: 'client' },
+    { src: '~/plugins/vue-country-region-select', mode: 'client' },
+    { src: '~/plugins/vue-credit-card-validation', mode: 'client' }
+  ],
 
   /*
    ** Nuxt.js modules
