@@ -14,7 +14,8 @@
           <div class="relative container py-5">
             <div class="flex justify-between items-center">
               <h3 class="text-xl" v-if="customerLoggedIn">Account</h3>
-              <h3 v-else>Sign in</h3>
+              <h3 v-else-if="flow === 'login'">Sign in</h3>
+              <h3 v-else>Sign up</h3>
               <button @click.prevent="$emit('click-close')">
                 <BaseIcon icon="uil:multiply" />
               </button>
@@ -68,41 +69,64 @@
             </div>
           </div>
 
-          <div v-else class="relative container pt-6">
-            <label class="label-xs-bold-faded mb-2 inline-block" for="customerEmail">Email</label>
-            <input
-              id="customerEmail"
-              ref="searchInput"
-              v-model="customerEmail"
-              type="email"
-              placeholder="Your email"
-              class="w-full px-4 py-2 mb-4 rounded bg-primary-lightest text-primary-darkest"
-            />
+          <template v-else>
+            <!-- Login -->
+            <div v-if="flow === 'login'" class="relative container pt-6">
+              <InputText
+                class="mb-6"
+                label="Email"
+                placeholder="Your email address"
+                v-model="customerEmail"
+              />
+              <InputText
+                class="mb-6"
+                label="Password"
+                type="password"
+                placeholder="Your password"
+                v-model="customerPassword"
+              />
 
-            <label class="label-xs-bold-faded mb-2 inline-block" for="customerPassword"
-              >Password</label
-            >
-            <input
-              id="customerPassword"
-              ref="searchInput"
-              v-model="customerPassword"
-              type="password"
-              placeholder="Your password"
-              class="w-full px-4 py-2 mb-2 rounded bg-primary-lightest text-primary-darkest"
-            />
+              <a class="text-xs font-semibold leading-tight text-primary-dark" href="#"
+                >Did you forget your password?</a
+              >
 
-            <a class="text-xs font-semibold leading-tight text-primary-dark" href="#"
-              >Did you forget your password?</a
-            >
+              <button class="btn dark w-full mt-6 mb-4" type="button" @click="login()">
+                Login
+              </button>
 
-            <button class="btn btn--lg w-full mt-6 mb-4" type="button" @click="login()">
-              Login
-            </button>
+              <button class="btn light w-full" type="button" @click="flow = 'signup'">
+                Create an account
+              </button>
+            </div>
 
-            <button class="btn btn--lg light w-full" type="button">
-              Create an account
-            </button>
-          </div>
+            <!-- Sign up -->
+            <div v-if="flow === 'signup'" class="relative container pt-6">
+              <InputText class="mb-6" label="First Name" v-model="customerFirstName" />
+              <InputText class="mb-6" label="Last Name" v-model="customerLastName" />
+
+              <InputText
+                class="mb-6"
+                label="Email"
+                placeholder="Your email address"
+                v-model="customerEmail"
+              />
+              <InputText
+                class="mb-6"
+                label="Password"
+                type="password"
+                placeholder="Enter a password"
+                v-model="customerPassword"
+              />
+
+              <button class="btn dark w-full mt-6 mb-4" type="button" @click="createAccount()">
+                Create account
+              </button>
+
+              <button class="btn light w-full" type="button" @click="flow = 'login'">
+                Login
+              </button>
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -118,8 +142,11 @@ export default {
 
   data() {
     return {
-      customerEmail: null,
-      customerPassword: null
+      flow: 'login',
+      customerEmail: '',
+      customerPassword: '',
+      customerFirstName: '',
+      customerLastName: ''
     }
   },
 
@@ -128,6 +155,23 @@ export default {
   },
 
   methods: {
+    async createAccount() {
+      try {
+        const account = await this.$swell.account.create({
+          email: this.customerEmail,
+          first_name: this.customerFirstName,
+          last_name: this.customerLastName,
+          password: this.customerPassword
+        })
+
+        if (account.id) {
+          this.$store.commit('setState', { key: 'customerLoggedIn', value: true })
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    },
+
     async login() {
       try {
         const res = await this.$swell.account.login(this.customerEmail, this.customerPassword)
@@ -146,7 +190,7 @@ export default {
       try {
         await this.$swell.account.logout()
         this.$store.commit('setState', { key: 'customerLoggedIn', value: false })
-        
+
         this.$emit('click-close')
       } catch (err) {
         console.log(err)

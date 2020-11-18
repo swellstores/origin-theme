@@ -7,6 +7,7 @@
       :value="value"
       v-on:input="$emit('input', $event.target.value)"
       :disabled="disabled"
+      :placeholder="placeholder"
     />
   </div>
 </template>
@@ -24,6 +25,10 @@ export default {
     type: {
       type: String,
       default: 'text'
+    },
+    placeholder: {
+      type: String,
+      default: ''
     },
     disabled: {
       type: Boolean,
