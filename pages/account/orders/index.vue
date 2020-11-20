@@ -21,7 +21,7 @@
           You haven’t ordered anything yet.
         </p>
 
-        <NuxtLink to="categories" class="flex justify-center items-center btn btn dark mt-10">
+        <NuxtLink to="/products/" class="flex justify-center items-center btn btn dark mt-10">
           <BaseIcon icon="uil:shopping-bag" size="sm" class="mr-2" />
           Start shopping
         </NuxtLink>

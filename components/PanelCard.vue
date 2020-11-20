@@ -2,12 +2,12 @@
   <div class="bg-primary-lightest py-4 rounded shadow-md">
     <div class="px-4">
       <div class="w-full flex pb-6">
+        <BrandCardIcon :brand="card.brand" />
+
         <div v-if="isDefault" class="ml-auto label-xs-bold bg-primary-light rounded p-2">
           Default
         </div>
       </div>
-
-      <!-- TODO: Add card brands -->
 
       <div class="w-full flex pb-4">
         <p v-if="card.brand === 'American Express'">

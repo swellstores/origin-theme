@@ -44,7 +44,7 @@
                 <li>
                   <NuxtLink
                     class="w-full flex items-center py-4"
-                    to="/account/payment/"
+                    to="/account/payments/"
                     @click.native="$emit('click-close')"
                     >Payment methods <BaseIcon class="ml-auto" icon="uil:angle-right" size="lg"
                   /></NuxtLink>
@@ -161,7 +161,8 @@ export default {
           email: this.customerEmail,
           first_name: this.customerFirstName,
           last_name: this.customerLastName,
-          password: this.customerPassword
+          password: this.customerPassword,
+          email_optin: true
         })
 
         if (account.id) {

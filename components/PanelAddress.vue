@@ -25,7 +25,9 @@
         Default
       </div>
       <div class="mt-auto">
-        <button v-if="!isDefault" class="px-2 mr-2">Remove</button>
+        <button v-if="!isDefault" class="px-2 mr-2" @click="$emit('delete-address', address.id)">
+          Remove
+        </button>
         <button class="px-2" @click="$emit('click-open')">Edit</button>
       </div>
     </div>

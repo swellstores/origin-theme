@@ -12,7 +12,7 @@
           v-if="defaultCard"
           :card="defaultCard"
           :isDefault="true"
-          class="mb-6"
+          :class="{ 'mb-6': otherCards.length }"
           @click-open="openEditPanel('update', defaultCard)"
         />
 
@@ -56,19 +56,19 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   async fetch() {
     // Set page data
     const { results: cards } = await this.$swell.account.listCards()
     const account = await this.$swell.account.get()
-    const {
-      billing: { accountCardId: defaultCardId }
-    } = await this.$swell.account.get()
 
-    this.defaultCardId = defaultCardId
-    this.cards = cards
     console.log(account)
-    console.log(cards)
+
+    if (this.customer.billing) this.defaultCardId = this.customer.billing.accountCardId
+    this.cards = cards
+    console.log(this.cards)
   },
 
   data() {
@@ -78,17 +78,21 @@ export default {
       editCardType: 'update',
       cardToEdit: null,
       editAddressPanelIsActive: false,
-      refreshCardPanel: false
+      refreshCardPanel: false,
+      defaultCardId: ''
     }
   },
 
   computed: {
+    ...mapState(['customer']),
     defaultCard() {
       if (!this.defaultCardId || !this.cards) return
       return this.cards.find(card => card.id === this.defaultCardId)
     },
     otherCards() {
-      if (!this.defaultCardId || !this.cards) return
+      if (!this.defaultCardId || !this.cards) {
+        return this.cards
+      }
       return this.cards.filter(card => card.id !== this.defaultCardId)
     }
   },

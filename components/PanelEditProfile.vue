@@ -21,26 +21,26 @@
             <InputText class="mb-6" label="Email Address" type="email" v-model="email" />
             <InputText class="mb-6" label="Change password" type="password" v-model="password" />
 
-            <!-- <div class="checkbox mb-6">
-              <input type="checkbox" id="set-default" v-model="subscribeToNewsletter" />
+            <div class="checkbox mb-6">
+              <input type="checkbox" id="set-default" v-model="optInEmail" />
 
               <label class="w-full" for="set-default">
-                <p>Subscribe to Origin newsletter</p>
+                <p>Subscribe to newsletter</p>
                 <div class="indicator ml-auto text-primary-lighter">
                   <BaseIcon icon="uil:check" size="sm" />
                 </div>
               </label>
-            </div> -->
+            </div>
           </div>
 
           <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4">
-            <button class="btn dark w-full my-4" type="button" @click="updateProfile()">
-              Save Changes
-            </button>
-
-            <button class="btn bg-primary-light hover:bg-error w-full" type="button">
-              Delete Account
-            </button>
+            <ButtonLoading
+              class="dark"
+              @click.native="updateProfile()"
+              label="Save changes"
+              loadingLabel="Saving"
+              :isLoading="isUpdating"
+            />
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import  {mapState} from 'vuex'
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -57,7 +57,8 @@ export default {
       lastName: '',
       email: '',
       password: '',
-      subscribeToNewsletter: false
+      optInEmail: false,
+      isUpdating: false
     }
   },
 
@@ -66,7 +67,29 @@ export default {
   },
 
   methods: {
-    updateProfile() {}
+    async updateProfile() {
+      try {
+        this.isUpdating = true
+
+        const res = await this.$swell.account.update({
+          email: this.email,
+          first_name: this.firstName,
+          last_name: this.lastName,
+          email_optin: this.optInEmail,
+          password: this.password
+        })
+
+        if (res) {
+          // Re-initialize the customer to reflect updated data
+          this.isUpdating = false
+          this.$store.dispatch('initializeCustomer')
+          this.$store.dispatch('showNotification', { message: 'Profile updated.' })
+          this.$emit('click-close')
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
   },
 
   created() {
@@ -76,6 +99,7 @@ export default {
     this.firstName = this.customer.firstName
     this.lastName = this.customer.lastName
     this.email = this.customer.email
+    this.optInEmail = this.customer.optInEmail
   }
 }
 </script>

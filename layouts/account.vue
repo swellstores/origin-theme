@@ -81,10 +81,6 @@ export default {
         {
           label: 'Payment methods',
           value: 'payments'
-        },
-        {
-          label: 'Support',
-          value: 'support'
         }
       ],
       editProfilePanelIsActive: false,

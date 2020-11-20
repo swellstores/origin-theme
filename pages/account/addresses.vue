@@ -24,6 +24,10 @@
             :address="address"
             :class="{ 'mb-6': index < otherAddresses.length - 1 }"
             @click-open="openEditPanel('update', address)"
+            @delete-address="
+              confirmationPanelIsActive = true
+              addressToDelete = $event
+            "
           />
         </template>
       </template>
@@ -44,20 +48,34 @@
         @click-close="editAddressPanelIsActive = false"
         @refresh="$fetch"
       />
+
+      <PanelConfirmation
+        v-if="confirmationPanelIsActive"
+        promptMessage="Are you sure you want to remove this address?"
+        acceptLabel="Yes, remove it"
+        refuseLabel="No, keep it"
+        :isLoading="isDeleting"
+        loadingLabel="Removing"
+        @accept="deleteAddress(addressToDelete)"
+        @click-close="confirmationPanelIsActive = false"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   async fetch() {
     // Set page data
     const { results: addresses } = await this.$swell.account.listAddresses()
-    const {
-      shipping: { accountAddressId: defaultAddressId }
-    } = await this.$swell.account.get()
+    const account = await this.$swell.account.get()
+    console.log(account)
 
-    this.defaultAddressId = defaultAddressId
+    if (this.customer.shipping) {
+      this.defaultAddressId = this.customer.shipping.accountAddressId
+    }
     this.addresses = addresses
   },
 
@@ -66,17 +84,25 @@ export default {
       addresses: null,
       editAddressPanelIsActive: false,
       editAddressType: 'update',
-      addressToEdit: null
+      addressToEdit: '',
+      addressToDelete: '',
+      defaultAddressId: '',
+      confirmationPanelIsActive: false,
+      isDeleting: false
     }
   },
 
   computed: {
+    ...mapState(['customer']),
+
     defaultAddress() {
       if (!this.defaultAddressId || !this.addresses) return
       return this.addresses.find(address => address.id === this.defaultAddressId)
     },
     otherAddresses() {
-      if (!this.defaultAddressId || !this.addresses) return
+      if (!this.defaultAddressId || !this.addresses) {
+        return this.addresses
+      }
       return this.addresses.filter(address => address.id !== this.defaultAddressId)
     }
   },
@@ -96,6 +122,21 @@ export default {
           break
         default:
           return
+      }
+    },
+
+    async deleteAddress(id) {
+      try {
+        this.isDeleting = true
+        await this.$swell.account.deleteAddress(id)
+
+        // Close panel and fetch updated data
+        this.isDeleting = false
+        this.confirmationPanelIsActive = false
+        this.$fetch()
+        this.$store.dispatch('showNotification', { message: 'Address deleted.', type: 'error' })
+      } catch (err) {
+        console.log(err)
       }
     }
   },

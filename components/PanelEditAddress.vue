@@ -65,7 +65,7 @@
               <input type="checkbox" id="set-default" v-model="setDefault" />
 
               <label class="w-full" for="set-default">
-                <p>Make this my default address</p>
+                <p>Make this my default shipping address</p>
                 <div class="indicator ml-auto text-primary-lighter">
                   <BaseIcon icon="uil:check" size="sm" />
                 </div>
@@ -73,33 +73,37 @@
             </div>
           </div>
 
+          <!-- Action Buttons -->
           <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4">
-            <button
+            <ButtonLoading
               v-if="type === 'new'"
-              class="btn dark w-full my-4"
-              type="button"
-              @click="createAddress"
-            >
-              Create Address
-            </button>
+              class="dark"
+              @click.native="createAddress()"
+              label="Create address"
+              loadingLabel="Creating"
+              :isLoading="isCreating"
+              :disabled="isUpdating || isDeleting"
+            />
 
-            <button
+            <ButtonLoading
               v-if="type === 'update'"
-              class="btn dark w-full my-4"
-              type="button"
-              @click="updateAddress"
-            >
-              Save Address
-            </button>
+              class="dark my-4"
+              @click.native="updateAddress()"
+              label="Save address"
+              loadingLabel="Saving"
+              :isLoading="isUpdating"
+              :disabled="isCreating || isDeleting"
+            />
 
-            <button
+            <ButtonLoading
               v-if="type === 'update'"
-              class="btn bg-primary-light hover:bg-error w-full"
-              type="button"
-              @click="deleteAddress()"
-            >
-              Delete Address
-            </button>
+              class="light-error"
+              @click.native="deleteAddress()"
+              label="Delete address"
+              loadingLabel="Deleting"
+              :isLoading="isDeleting"
+              :disabled="isCreating || isUpdating"
+            />
           </div>
         </div>
       </div>
@@ -138,12 +142,16 @@ export default {
       city: '',
       zip: '',
       country: '',
-      setDefault: false
+      setDefault: false,
+      isCreating: false,
+      isUpdating: false,
+      isDeleting: false
     }
   },
 
   methods: {
     async updateAddress() {
+      this.isUpdating = true
       if (this.setDefault) {
         // Set current address as default
         await this.$swell.account.update({
@@ -152,6 +160,8 @@ export default {
           }
         })
 
+        // Close panel and fetch updated data
+        this.isUpdating = true
         this.$emit('click-close')
         this.$emit('refresh')
         this.$store.dispatch('showNotification', { message: 'Address updated.' })
@@ -159,8 +169,10 @@ export default {
     },
     async createAddress() {
       try {
-        await this.$swell.account.createAddress({
-          name: `${this.firstName} ${this.lastName}`,
+        this.isCreating = true
+
+        const address = await this.$swell.account.createAddress({
+          name: `${this.firstName.trim()} ${this.lastName.trim()}`,
           address1: this.address1,
           address2: this.address2,
           city: this.city,
@@ -169,19 +181,51 @@ export default {
           country: this.country
         })
 
+        if (this.setDefault && address.id) {
+          // Set address as default
+          await this.$swell.account.update({
+            shipping: {
+              accountAddressId: address.id
+            }
+          })
+        }
+
         // Close panel and fetch updated data
+        this.isCreating = false
         this.$emit('click-close')
         this.$emit('refresh')
         this.$store.dispatch('showNotification', { message: 'Address created.' })
+        this.$store.dispatch('initializeCustomer')
       } catch (err) {
         console.log(err)
       }
     },
     async deleteAddress() {
       try {
+        this.isDeleting = true
         await this.$swell.account.deleteAddress(this.address.id)
 
+        // If deleted address is default, detach it from account model.
+        if (this.defaultAddressId === this.address.id) {
+          console.log('woop')
+          await this.$swell.account.update({
+            shipping: {
+              accountAddressId: null,
+              firstName: null,
+              lastName: null,
+              name: null,
+              address1: null,
+              address2: null,
+              city: null,
+              state: null,
+              zip: null,
+              country: null
+            }
+          })
+        }
+
         // Close panel and fetch updated data
+        this.isDeleting = false
         this.$emit('click-close')
         this.$emit('refresh')
         this.$store.dispatch('showNotification', { message: 'Address deleted.', type: 'error' })

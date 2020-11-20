@@ -65,6 +65,7 @@
               value="Select an existing address"
               id="address-dropdown"
               class="text-sm"
+              @change="billingAddress = $event"
             />
 
             <button class="label-sm-bold mt-6" @click="$emit('new-address')">
@@ -75,32 +76,35 @@
 
         <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4 z-30">
           <div class="container">
-            <button
+            <ButtonLoading
               v-if="type === 'new'"
-              class="btn dark w-full my-4"
-              type="button"
-              @click="createCard"
-            >
-              Create card
-            </button>
+              class="dark"
+              @click.native="createCard()"
+              label="Create card"
+              loadingLabel="Creating"
+              :isLoading="isCreating"
+              :disabled="isUpdating || isDeleting"
+            />
 
-            <button
+            <ButtonLoading
               v-if="type === 'update'"
-              class="btn dark w-full my-4"
-              type="button"
-              @click="updateCard"
-            >
-              Save Card
-            </button>
+              class="dark my-4"
+              @click.native="updateCard()"
+              label="Save card"
+              loadingLabel="Saving"
+              :isLoading="isUpdating"
+              :disabled="isCreating || isDeleting"
+            />
 
-            <button
+            <ButtonLoading
               v-if="type === 'update'"
-              class="btn bg-primary-light hover:bg-error w-full"
-              type="button"
-              @click="deleteCard"
-            >
-              Delete Card
-            </button>
+              class="light-error"
+              @click.native="deleteCard()"
+              label="Delete card"
+              loadingLabel="Deleting"
+              :isLoading="isDeleting"
+              :disabled="isCreating || isUpdating"
+            />
           </div>
         </div>
       </div>
@@ -141,7 +145,8 @@ export default {
       cardNumber: '',
       cardExpiry: '',
       cardCVC: '',
-      setDefault: false
+      setDefault: false,
+      billingAddress: null
     }
   },
 
@@ -149,9 +154,12 @@ export default {
     formattedAddressOptions() {
       if (!this.addresses) return
       return this.addresses.map(address => {
-        return `${address.name}, ${address.address2 || ''} ${address.address1}, ${address.state}, ${
-          address.city
-        } ${address.zip}, ${this.getCountryName(address.country)}`
+        return {
+          value: address,
+          label: `${address.name}, ${address.address2 || ''} ${address.address1}, ${
+            address.state
+          }, ${address.city} ${address.zip}, ${this.getCountryName(address.country)}`
+        }
       })
     },
     expMonth() {
@@ -173,34 +181,83 @@ export default {
 
   methods: {
     async updateCard() {
-      if (this.setDefault) {
-        // Set current address as default
-        await this.$swell.account.update({
-          billing: {
-            accountCardId: this.card.id
-          }
-        })
+      try {
+        if (this.setDefault) {
+          // Set current card as default
+          await this.$swell.account.update({
+            billing: {
+              accountCardId: this.card.id
+            }
+          })
+
+          this.$store.dispatch('showNotification', { message: 'Card updated.' })
+        }
+
+        if (this.billingAddress) {
+          // Set address as billing address
+          await this.$swell.account.update({
+            billing: {
+              address1: this.billingAddress.address1,
+              address2: this.billingAddress.address2,
+              state: this.billingAddress.state,
+              city: this.billingAddress.city,
+              zip: this.billingAddress.zip,
+              country: this.billingAddress.country
+            }
+          })
+
+          this.$store.dispatch('showNotification', { message: 'Card updated.' })
+        }
 
         this.$emit('click-close')
         this.$emit('refresh')
-        this.$store.dispatch('showNotification', { message: 'Card updated.' })
+      } catch (err) {
+        /* TODO: Add error handling */
+        console.log(err)
       }
     },
-    async createCard() {
-      const { token } = await this.$swell.card.createToken({
-        number: this.cardNumber,
-        exp_month: this.expMonth,
-        exp_year: this.expYear,
-        cvc: this.cardCVC
-      })
 
-      if (token) {
-        const res = await this.$swell.account.createCard({ token })
-        console.log(res)
+    async createCard() {
+      try {
+        const { token } = await this.$swell.card.createToken({
+          number: this.cardNumber,
+          exp_month: this.expMonth,
+          exp_year: this.expYear,
+          cvc: this.cardCVC
+        })
+
+        if (token) {
+          const card = await this.$swell.account.createCard({ token })
+
+          if (!card) throw Error('There was an error creating your card.')
+
+          if (this.setDefault) {
+            // Set current address as default
+            await this.$swell.account.update({
+              billing: {
+                accountCardId: card.id
+              }
+            })
+          }
+
+          // Close panel and fetch updated data
+          this.$emit('click-close')
+          this.$emit('refresh')
+          this.$store.dispatch('showNotification', { message: 'Card created.' })
+        }
+      } catch (err) {
+        /* TODO: Add error handling */
+        console.log(err)
       }
     },
+
     async deleteCard() {
-      await this.$swell.account.deleteCard(this.card.id);
+      try {
+        await this.$swell.account.deleteCard(this.card.id)
+      } catch (err) {
+        /* TODO: Add error handling */
+        console.log(err)
+      }
     }
   },
 
