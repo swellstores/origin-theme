@@ -8,20 +8,47 @@
       />
 
       <div class="min-h-100vh bg-primary-lighter">
-        <div v-if="customer" class="relative pt-6 pb-24">
+        <div v-if="customer" class="w-full md:container md:flex relative md:pt-12 pt-6 pb-24">
           <!-- Header -->
-          <div class="border-b border-primary-med pb-6">
-            <div class="container">
-              <h3>{{ customer.firstName }} {{ customer.lastName }}</h3>
-              <p>{{ customer.email }}</p>
-              <button
-                class="flex flex-row items-center mt-2 cursor-pointer"
-                @click="editProfilePanelIsActive = true"
-              >
-                <BaseIcon icon="uil:edit" size="sm" /><span class="ml-2"
-                  >Edit profile and password</span
+          <div>
+            <div class="min-w-56 container border-r border-primary-light md:px-0">
+              <div class="md:pr-10 pb-6">
+                <h3>{{ customer.firstName }} {{ customer.lastName }}</h3>
+                <p>{{ customer.email }}</p>
+                <button
+                  class="flex flex-row whitespace-no-wrap items-center mt-2 cursor-pointer"
+                  @click="editProfilePanelIsActive = true"
                 >
-              </button>
+                  <BaseIcon icon="uil:edit" size="sm" /><span class="ml-2"
+                    >Edit profile and password</span
+                  >
+                </button>
+              </div>
+
+              <!-- Views (Desktop) -->
+              <ul class="hidden md:block border-t border-primary-light text-base">
+                <li>
+                  <NuxtLink
+                    class="pl-3 py-4 block hover:bg-primary-light rounded-none"
+                    to="/account/orders/"
+                    >Orders & Returns</NuxtLink
+                  >
+                </li>
+                <li>
+                  <NuxtLink
+                    class="pl-3 py-4 block hover:bg-primary-light rounded-none"
+                    to="/account/addresses/"
+                    >Addresses</NuxtLink
+                  >
+                </li>
+                <li>
+                  <NuxtLink
+                    class="pl-3 py-4 block hover:bg-primary-light rounded-none"
+                    to="/account/payments/"
+                    >Payment methods</NuxtLink
+                  >
+                </li>
+              </ul>
             </div>
           </div>
 
@@ -30,7 +57,8 @@
             @click-close="editProfilePanelIsActive = false"
           />
 
-          <div class="py-6">
+          <!-- Views (Mobile) -->
+          <div class="block md:hidden py-6">
             <div class="container">
               <InputDropdown
                 :options="views"
@@ -39,7 +67,10 @@
               />
             </div>
           </div>
-          <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
+
+          <div class="w-full">
+            <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
+          </div>
         </div>
       </div>
 
@@ -93,11 +124,15 @@ export default {
   computed: {
     ...mapState(['notification', 'customer']),
     currentRouteValue() {
-      const [path] = this.$route.path
-        .split('/')
-        .filter(e => e)
-        .splice(-1)
-      return path
+      const path = this.$route.path
+
+      const currentRoot = this.views.filter(view => {
+        return path.includes(view.value)
+      })
+
+      if (currentRoot.length) {
+        return currentRoot[0].value
+      }
     }
   },
 

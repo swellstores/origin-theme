@@ -260,8 +260,12 @@ export default {
 }
 
 .panel {
-  @apply absolute bottom-0 left-0 w-full rounded-t bg-primary-lighter overflow-scroll;
+  @apply w-full absolute rounded-t bg-primary-lighter overflow-scroll;
   height: calc(100vh - 2rem);
+
+  @screen md {
+    @apply absolute w-128 h-auto rounded left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
+  }
 }
 
 .checkbox {
@@ -321,10 +325,20 @@ export default {
 .editPanel-enter .panel,
 .editPanel-leave-to .panel {
   @apply transform translate-y-full;
+
+  @screen md {
+    transform: translate(-50%, calc(-50% + 5rem));
+    opacity: 0;
+  }
 }
 
 .editPanel-enter-to .panel,
 .editPanel-leave .overlay {
   @apply transform translate-y-0;
+
+  @screen md {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
 }
 </style>

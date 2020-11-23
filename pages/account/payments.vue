@@ -1,35 +1,37 @@
 <template>
-  <div class="container">
+  <div class="container md:pr-0">
     <div v-if="$fetchState.pending" class="container">
       <div class="loader-el w-1/3 h-7 mb-6 mx-auto"></div>
       <div class="loader-el w-3/5 h-2 mb-4 mx-auto"></div>
       <div class="loader-el w-2/5 h-2 mb-8 mx-auto"></div>
     </div>
 
-    <div v-else>
+    <template v-else>
       <template v-if="cards && cards.length">
-        <PanelCard
-          v-if="defaultCard"
-          :card="defaultCard"
-          :isDefault="true"
-          :class="{ 'mb-6': otherCards.length }"
-          @click-open="openEditPanel('update', defaultCard)"
-        />
+        <div class="md:grid md:grid-cols-2 md:gap-8">
+          <PanelCard
+            v-if="defaultCard"
+            :card="defaultCard"
+            :isDefault="true"
+            :class="{ 'mb-6': otherCards.length }"
+            @click-open="openEditPanel('update', defaultCard)"
+          />
 
-        <PanelCard
-          v-for="(card, index) in otherCards"
-          :key="`card-${index}`"
-          :card="card"
-          :class="{ 'mb-6': index < otherCards.length - 1 }"
-          @click-open="openEditPanel('update', card)"
-        />
+          <PanelCard
+            v-for="(card, index) in otherCards"
+            :key="`card-${index}`"
+            :card="card"
+            :class="{ 'mb-6': index < otherCards.length - 1 }"
+            @click-open="openEditPanel('update', card)"
+          />
+        </div>
       </template>
 
       <p v-else class="text-sm text-primary-dark">
         There are no payment methods associated with this account.
       </p>
 
-      <button class="btn light w-full mt-10" type="button" @click="openEditPanel('new')">
+      <button class="btn light mt-10" type="button" @click="openEditPanel('new')">
         Add new payment method
       </button>
 
@@ -51,7 +53,7 @@
         @click-close="editAddressPanelIsActive = false"
         @refresh="refreshCardPanel = true"
       />
-    </div>
+    </template>
   </div>
 </template>
 

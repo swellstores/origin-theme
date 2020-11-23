@@ -1,42 +1,44 @@
 <template>
-  <div class="container">
+  <div class="container md:pr-0">
     <div v-if="$fetchState.pending">
       <div class="loader-el w-1/3 h-7 mb-6 m-auto"></div>
       <div class="loader-el w-3/5 h-2 mb-4 m-auto"></div>
       <div class="loader-el w-2/5 h-2 mb-8 m-auto"></div>
     </div>
 
-    <div v-else>
+    <template v-else>
       <template v-if="addresses && addresses.length">
-        <PanelAddress
-          v-if="defaultAddress"
-          :address="defaultAddress"
-          :isDefault="true"
-          @click-open="openEditPanel('update', defaultAddress)"
-        />
-
-        <template v-if="otherAddresses && otherAddresses.length">
-          <span class="block label-xs-bold-faded my-6">Other addresses</span>
-
+        <div class="md:grid md:grid-cols-2 md:gap-8">
           <PanelAddress
-            v-for="(address, index) in otherAddresses"
-            :key="`address-${index}`"
-            :address="address"
-            :class="{ 'mb-6': index < otherAddresses.length - 1 }"
-            @click-open="openEditPanel('update', address)"
-            @delete-address="
-              confirmationPanelIsActive = true
-              addressToDelete = $event
-            "
+            v-if="defaultAddress"
+            :address="defaultAddress"
+            :isDefault="true"
+            @click-open="openEditPanel('update', defaultAddress)"
           />
-        </template>
+
+          <template v-if="otherAddresses && otherAddresses.length">
+            <span class="block md:hidden label-xs-bold-faded my-6">Other addresses</span>
+
+            <PanelAddress
+              v-for="(address, index) in otherAddresses"
+              :key="`address-${index}`"
+              :address="address"
+              :class="{ 'mb-6': index < otherAddresses.length - 1 }"
+              @click-open="openEditPanel('update', address)"
+              @delete-address="
+                confirmationPanelIsActive = true
+                addressToDelete = $event
+              "
+            />
+          </template>
+        </div>
       </template>
 
       <p v-else class="text-sm text-primary-dark">
         There are no addresses associated with this account.
       </p>
 
-      <button class="btn light w-full mt-10" type="button" @click="openEditPanel('new')">
+      <button class="btn light mt-10" type="button" @click="openEditPanel('new')">
         Add new address
       </button>
 
@@ -59,7 +61,7 @@
         @accept="deleteAddress(addressToDelete)"
         @click-close="confirmationPanelIsActive = false"
       />
-    </div>
+    </template>
   </div>
 </template>
 
