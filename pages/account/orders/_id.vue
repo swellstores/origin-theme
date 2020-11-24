@@ -57,9 +57,9 @@
             </div>
           </div>
 
-          <button class="btn light" type="button">
+          <NuxtLink to="/account/orders/returns/" append class="btn light">
             Create a return
-          </button>
+          </NuxtLink>
 
           <!-- Order summary -->
           <div class="flex font-semibold py-6 border-b border-primary-med">
@@ -160,7 +160,9 @@
               <div class="md:border-b-0 md: border-r border-b border-primary-med p-4">
                 <div class="flex mb-4">
                   <BrandCardIcon :brand="billing.card.brand" />
-                  <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold">{{ billing.card.brand }}</span>
+                  <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold">{{
+                    billing.card.brand
+                  }}</span>
                 </div>
 
                 <div class="flex mb-4">
@@ -169,7 +171,7 @@
                   <span class="ml-auto">{{ expDate }}</span>
                 </div>
 
-                <span class="text-sm">{{billing.name}}</span>
+                <span class="text-sm">{{ billing.name }}</span>
               </div>
 
               <div class="text-sm p-4">
@@ -193,6 +195,8 @@
 import find from 'lodash/find'
 
 export default {
+  name: 'Order',
+  
   async fetch() {
     const order = await this.$swell.account.getOrder(this.$route.params.id)
 
