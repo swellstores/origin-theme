@@ -77,7 +77,7 @@
           <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4">
             <ButtonLoading
               v-if="type === 'new'"
-              class="dark"
+              class="w-full dark"
               @click.native="createAddress()"
               label="Create address"
               loadingLabel="Creating"
@@ -87,7 +87,7 @@
 
             <ButtonLoading
               v-if="type === 'update'"
-              class="dark my-4"
+              class="w-full dark my-4"
               @click.native="updateAddress()"
               label="Save address"
               loadingLabel="Saving"
@@ -97,7 +97,7 @@
 
             <ButtonLoading
               v-if="type === 'update'"
-              class="light-error"
+              class="w-full light-error"
               @click.native="deleteAddress()"
               label="Delete address"
               loadingLabel="Deleting"
@@ -152,19 +152,35 @@ export default {
   methods: {
     async updateAddress() {
       this.isUpdating = true
-      if (this.setDefault) {
-        // Set current address as default
-        await this.$swell.account.update({
-          shipping: {
-            accountAddressId: this.address.id
-          }
+
+      try {
+        const res = await this.$swell.account.updateAddress(this.address.id, {
+          name: `${this.firstName.trim()} ${this.lastName.trim()}`,
+          address1: this.address1,
+          address2: this.address2,
+          city: this.city,
+          state: this.state,
+          zip: this.zip,
+          country: this.country
         })
 
+        if (this.setDefault) {
+          // Set current address as default
+          await this.$swell.account.update({
+            shipping: {
+              accountAddressId: this.address.id
+            }
+          })
+        }
+        
         // Close panel and fetch updated data
         this.isUpdating = true
         this.$emit('click-close')
         this.$emit('refresh')
         this.$store.dispatch('showNotification', { message: 'Address updated.' })
+      } catch (err) {
+        // TODO: Error handling
+        console.log(error)
       }
     },
     async createAddress() {
@@ -207,7 +223,6 @@ export default {
 
         // If deleted address is default, detach it from account model.
         if (this.defaultAddressId === this.address.id) {
-          console.log('woop')
           await this.$swell.account.update({
             shipping: {
               accountAddressId: null,
@@ -260,7 +275,7 @@ export default {
 }
 
 .panel {
-  @apply w-full absolute rounded-t bg-primary-lighter overflow-scroll;
+  @apply w-full absolute bottom-0 rounded-t bg-primary-lighter overflow-scroll;
   height: calc(100vh - 2rem);
 
   @screen md {
