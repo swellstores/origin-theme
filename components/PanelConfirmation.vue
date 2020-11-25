@@ -75,6 +75,10 @@ export default {
 
 .panel {
   @apply w-full mx-6 py-6 rounded bg-primary-lighter;
+
+  @screen md {
+    @apply absolute w-128 h-auto rounded left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
+  }
 }
 
 .confirmPanel-enter-active .overlay,
@@ -100,11 +104,21 @@ export default {
 
 .confirmPanel-enter .panel,
 .confirmPanel-leave-to .panel {
-  @apply transform translate-y-10 opacity-0;
+  @apply transform translate-y-full;
+
+  @screen md {
+    transform: translate(-50%, calc(-50% + 5rem));
+    opacity: 0;
+  }
 }
 
 .confirmPanel-enter-to .panel,
 .confirmPanel-leave .overlay {
-  @apply transform translate-y-0 opacity-100;
+  @apply transform translate-y-0;
+
+  @screen md {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
 }
 </style>

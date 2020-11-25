@@ -31,7 +31,7 @@
         There are no payment methods associated with this account.
       </p>
 
-      <button class="btn light mt-10" type="button" @click="openEditPanel('new')">
+      <button class="btn w-full md: w-auto light mt-10" type="button" @click="openEditPanel('new')">
         Add new payment method
       </button>
 
@@ -66,11 +66,8 @@ export default {
     const { results: cards } = await this.$swell.account.listCards()
     const account = await this.$swell.account.get()
 
-    console.log(account)
-
     if (this.customer.billing) this.defaultCardId = this.customer.billing.accountCardId
     this.cards = cards
-    console.log(this.cards)
   },
 
   data() {

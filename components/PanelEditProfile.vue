@@ -35,7 +35,7 @@
 
           <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4">
             <ButtonLoading
-              class="dark"
+              class="w-full dark"
               @click.native="updateProfile()"
               label="Save changes"
               loadingLabel="Saving"

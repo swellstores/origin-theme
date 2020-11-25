@@ -38,7 +38,7 @@
         There are no addresses associated with this account.
       </p>
 
-      <button class="btn light mt-10" type="button" @click="openEditPanel('new')">
+      <button class="btn w-full md:w-auto light mt-10" type="button" @click="openEditPanel('new')">
         Add new address
       </button>
 
@@ -73,8 +73,7 @@ export default {
     // Set page data
     const { results: addresses } = await this.$swell.account.listAddresses()
     const account = await this.$swell.account.get()
-    console.log(account)
-
+    
     if (this.customer.shipping) {
       this.defaultAddressId = this.customer.shipping.accountAddressId
     }
