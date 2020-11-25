@@ -62,7 +62,9 @@
 
             <InputDropdown
               :options="formattedAddressOptions"
-              value="Select an existing address"
+              :value="
+                formattedDefaultAddress ? formattedDefaultAddress : 'Select an existing address'
+              "
               id="address-dropdown"
               class="text-sm"
               @change="billingAddress = $event"
@@ -78,7 +80,7 @@
           <div class="container">
             <ButtonLoading
               v-if="type === 'new'"
-              class="dark"
+              class="w-full dark my-4"
               @click.native="createCard()"
               label="Create card"
               loadingLabel="Creating"
@@ -88,7 +90,7 @@
 
             <ButtonLoading
               v-if="type === 'update'"
-              class="dark my-4"
+              class="w-full dark my-4"
               @click.native="updateCard()"
               label="Save card"
               loadingLabel="Saving"
@@ -98,7 +100,7 @@
 
             <ButtonLoading
               v-if="type === 'update'"
-              class="light-error"
+              class="w-full light-error"
               @click.native="deleteCard()"
               label="Delete card"
               loadingLabel="Deleting"
@@ -113,6 +115,10 @@
 </template>
 
 <script>
+import values from 'lodash/values'
+import every from 'lodash/every'
+import isEmpty from 'lodash/isEmpty'
+
 export default {
   async fetch() {
     // Set component data
@@ -165,6 +171,14 @@ export default {
         }
       })
     },
+    formattedDefaultAddress() {
+      if (!this.card.billing) return
+      return `${this.card.billing.name}, ${this.card.billing.address2 || ''} ${
+        this.card.billing.address1
+      }, ${this.card.billing.state}, ${this.card.billing.city} ${
+        this.card.billing.zip
+      }, ${this.getCountryName(this.card.billing.country)}`
+    },
     expMonth() {
       if (!this.cardExpiry.includes('/')) return
       return this.cardExpiry.split('/')[0].trim()
@@ -185,6 +199,22 @@ export default {
   methods: {
     async updateCard() {
       try {
+        this.isUpdating = true
+
+        if (this.billingAddress) {
+          const res = await this.$swell.account.updateCard(this.card.id, {
+            billing: {
+              name: this.billingAddress.name,
+              address1: this.billingAddress.address1,
+              address2: this.billingAddress.address2,
+              city: this.billingAddress.city,
+              state: this.billingAddress.state,
+              zip: this.billingAddress.zip,
+              country: this.billingAddress.country
+            }
+          })
+        }
+
         if (this.setDefault) {
           // Set current card as default
           await this.$swell.account.update({
@@ -192,26 +222,11 @@ export default {
               accountCardId: this.card.id
             }
           })
-
-          this.$store.dispatch('showNotification', { message: 'Card updated.' })
         }
 
-        if (this.billingAddress) {
-          // Set address as billing address
-          await this.$swell.account.update({
-            billing: {
-              address1: this.billingAddress.address1,
-              address2: this.billingAddress.address2,
-              state: this.billingAddress.state,
-              city: this.billingAddress.city,
-              zip: this.billingAddress.zip,
-              country: this.billingAddress.country
-            }
-          })
-
-          this.$store.dispatch('showNotification', { message: 'Card updated.' })
-        }
-
+        // Close panel and fetch updated data
+        this.isUpdating = false
+        this.$store.dispatch('showNotification', { message: 'Card updated.' })
         this.$emit('click-close')
         this.$emit('refresh')
       } catch (err) {
@@ -256,7 +271,16 @@ export default {
 
     async deleteCard() {
       try {
+        this.isDeleting = true
+
         await this.$swell.account.deleteCard(this.card.id)
+
+        this.isDeleting = false
+
+        // Close panel and fetch updated data
+        this.$emit('click-close')
+        this.$emit('refresh')
+        this.$store.dispatch('showNotification', { message: 'Card deleted.' })
       } catch (err) {
         /* TODO: Add error handling */
         console.log(err)
@@ -284,6 +308,11 @@ export default {
 
     // Set default check state
     if (this.defaultCardId === this.card.id) this.setDefault = true
+
+    // Set default address
+    if (this.card.billing && !values(this.card.billing).every(isEmpty)) {
+      this.billingAddress = this.card.billing
+    }
   }
 }
 </script>
@@ -294,7 +323,7 @@ export default {
 }
 
 .panel {
-  @apply w-full absolute rounded-t bg-primary-lighter overflow-scroll;
+  @apply w-full absolute bottom-0 rounded-t bg-primary-lighter overflow-scroll;
   height: calc(100vh - 2rem);
 
   @screen md {
