@@ -15,6 +15,7 @@
             <div class="flex justify-between items-center">
               <h3 class="text-xl" v-if="customerLoggedIn">Account</h3>
               <h3 v-else-if="flow === 'login'">Sign in</h3>
+              <h3 v-else-if="flow === 'forgot-password'">Forgot your password?</h3>
               <h3 v-else>Sign up</h3>
               <button @click.prevent="$emit('click-close')">
                 <BaseIcon icon="uil:multiply" />
@@ -49,14 +50,14 @@
                     >Payment methods <BaseIcon class="ml-auto" icon="uil:angle-right" size="lg"
                   /></NuxtLink>
                 </li>
-                <li>
+                <!--  <li>
                   <NuxtLink
                     class="w-full flex items-center py-4"
                     to="/account/support/"
                     @click.native="$emit('click-close')"
                     >Support <BaseIcon class="ml-auto" icon="uil:angle-right" size="lg"
                   /></NuxtLink>
-                </li>
+                </li> -->
               </ul>
             </div>
 
@@ -86,13 +87,20 @@
                 v-model="customerPassword"
               />
 
-              <a class="text-xs font-semibold leading-tight text-primary-dark" href="#"
-                >Did you forget your password?</a
+              <button
+                class="text-xs font-semibold leading-tight text-primary-dark"
+                @click="flow = 'forgot-password'"
               >
-
-              <button class="btn dark w-full mt-6 mb-4" type="button" @click="login()">
-                Login
+                Did you forget your password?
               </button>
+
+              <ButtonLoading
+                class="dark w-full mt-6 mb-4"
+                @click.native="login()"
+                label="Login"
+                loadingLabel="Logging in"
+                :isLoading="isProcessing"
+              />
 
               <button class="btn light w-full" type="button" @click="flow = 'signup'">
                 Create an account
@@ -126,6 +134,28 @@
                 Login
               </button>
             </div>
+
+            <!-- Forgot password -->
+            <div v-if="flow === 'forgot-password'" class="relative container pt-6">
+              <p class="text-sm mb-10">
+                Enter your email address and we’ll send you an email on how to reset your password.
+              </p>
+
+              <InputText
+                class="mb-6"
+                label="Email"
+                placeholder="Your email address"
+                v-model="customerEmail"
+              />
+
+              <ButtonLoading
+                class="dark w-full mt-6 mb-4"
+                @click.native="sendPasswordReset()"
+                label="Reset"
+                loadingLabel="Processing"
+                :isLoading="isProcessing"
+              />
+            </div>
           </template>
         </div>
       </div>
@@ -146,7 +176,8 @@ export default {
       customerEmail: '',
       customerPassword: '',
       customerFirstName: '',
-      customerLastName: ''
+      customerLastName: '',
+      isProcessing: false
     }
   },
 
@@ -169,13 +200,41 @@ export default {
           this.$store.commit('setState', { key: 'customerLoggedIn', value: true })
         }
       } catch (err) {
+        // TODO: Error handling
+        console.log(err)
+      }
+    },
+
+    async sendPasswordReset() {
+      try {
+        this.isProcessing = true
+
+        const res = await this.$swell.account.recover({
+          email: this.customerEmail,
+          reset_url: `http://localhost:3333/reset-password/?key={key}`
+        })
+
+        this.isProcessing = false
+
+        if (res.success) {
+          this.flow = 'login'
+          this.$store.dispatch('showNotification', {
+            message: 'An email has been sent to reset your password.'
+          })
+        }
+      } catch (err) {
+        // TODO: Error handling
         console.log(err)
       }
     },
 
     async login() {
       try {
+        this.isProcessing = true
+
         const res = await this.$swell.account.login(this.customerEmail, this.customerPassword)
+
+        this.isProcessing = false
 
         if (!res || res === null) {
           throw Error('Error')
@@ -183,6 +242,7 @@ export default {
 
         this.$store.commit('setState', { key: 'customerLoggedIn', value: true })
       } catch (err) {
+        // TODO: Error handling
         console.log(err)
       }
     },
@@ -192,7 +252,14 @@ export default {
         await this.$swell.account.logout()
         this.$store.commit('setState', { key: 'customerLoggedIn', value: false })
 
+        // Close panel
         this.$emit('click-close')
+        this.$store.dispatch('showNotification', { message: 'You’ve succesfully logged out.' })
+
+        // Re-route if still in accounts
+        if (this.$route.path.includes('/account/')) {
+          this.$router.push('/')
+        }
       } catch (err) {
         console.log(err)
       }
