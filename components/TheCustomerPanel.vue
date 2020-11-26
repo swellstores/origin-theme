@@ -130,9 +130,13 @@
                 v-model="customerPassword"
               />
 
-              <button class="btn dark w-full mt-6 mb-4" type="button" @click="createAccount()">
-                Create account
-              </button>
+              <ButtonLoading
+                class="dark w-full mt-6 mb-4"
+                @click.native="createAccount()"
+                label="Create account"
+                loadingLabel="Creating"
+                :isLoading="isProcessing"
+              />
 
               <button class="btn light w-full" type="button" @click="flow = 'login'">
                 Login
@@ -202,6 +206,7 @@ export default {
 
         if (account.id) {
           this.$store.commit('setState', { key: 'customerLoggedIn', value: true })
+          this.$store.dispatch('showNotification', { message: 'You’ve succesfully created an account.' })
         }
       } catch (err) {
         // TODO: Error handling
