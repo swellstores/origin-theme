@@ -102,7 +102,11 @@
                 :isLoading="isProcessing"
               />
 
-              <button class="btn light w-full" type="button" @click="flow = 'signup'">
+              <button
+                class="btn light w-full"
+                type="button"
+                @click=";(flow = 'signup'), (customerPassword = '')"
+              >
                 Create an account
               </button>
             </div>
