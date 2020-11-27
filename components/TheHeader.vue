@@ -1,9 +1,9 @@
 <template>
   <div data-sw-path="header">
     <!-- Duplicate elements to match header height and push main content down -->
-    <div class="opacity-0" :style="{ height: header.logoHeight + 'px' }">
+    <div class="opacity-0">
       <ThePromoBar v-if="header.showPromo" text="|" :hidden="header.hideOnScroll && hideHeader" />
-      <div class="my-3">
+      <div class="py-3">
         <span v-if="logoSrc" :style="{ height: header.logoHeight + 'px' }" class="block"></span>
         <span v-else class="text-3xl sm:text-4xl">|</span>
       </div>
@@ -14,21 +14,20 @@
 
     <!-- Main header -->
     <div class="z-40 fixed top-0 w-full">
-      <ThePromoBar
-        v-if="header.showPromo"
-        :url="header.promoUrl"
-        :text="header.promoText || '[ Promotional text ]'"
-        :hidden="header.hideOnScroll && hideHeader"
-      />
-
-      <div class="w-full fixed transform translate-y-0 transition-all ease-in-out duration-200">
-        <header
-          class="z-40 shadow-md transition-all duration-300 ease-in-out"
-          :class="[
-            'bg-primary-lightest',
-            { 'transform -translate-y-full': header.hideOnScroll && hideHeader }
-          ]"
-        >
+      <div
+        class="w-full fixed transform translate-y-0 transition-all ease-in-out duration-200"
+        :class="[
+          'bg-primary-lightest',
+          { 'transform -translate-y-full': header.hideOnScroll && hideHeader }
+        ]"
+      >
+        <header class="z-40 shadow-md transition-all duration-300 ease-in-out">
+          <ThePromoBar
+            v-if="header.showPromo"
+            :url="header.promoUrl"
+            :text="header.promoText || '[ Promotional text ]'"
+            :hidden="header.hideOnScroll && hideHeader"
+          />
           <div class="relative container flex items-stretch justify-between items-stretch z-20">
             <!-- Logo -->
             <div class="py-3 lg:w-1/4">
@@ -204,7 +203,13 @@ export default {
       // current scroll position and last scroll position is less than some offset
       if (Math.abs(currentScrollPosition - this.lastScrollPos) < 50) return
 
-      this.hideHeader = currentScrollPosition > this.lastScrollPos
+      if (currentScrollPosition > this.lastScrollPos) {
+        this.hideHeader = true
+        this.$store.commit('setState', { key: 'headerIsVisible', value: false })
+      } else {
+        this.hideHeader = false
+        this.$store.commit('setState', { key: 'headerIsVisible', value: true })
+      }
       this.lastScrollPos = currentScrollPosition
     },
 
