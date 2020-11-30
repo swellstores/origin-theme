@@ -8,7 +8,7 @@
 
     <template v-else>
       <template v-if="addresses && addresses.length">
-        <div class="md:grid md:grid-cols-2 md:gap-8">
+        <div class="md:grid md:grid-cols-2 auto-rows-fr md:gap-8">
           <PanelAddress
             v-if="defaultAddress"
             :address="defaultAddress"
@@ -23,7 +23,7 @@
               v-for="(address, index) in otherAddresses"
               :key="`address-${index}`"
               :address="address"
-              :class="{ 'mb-6': index < otherAddresses.length - 1 }"
+              :class="{ 'mb-6 md:mb-0': index < otherAddresses.length - 1 }"
               @click-open="openEditPanel('update', address)"
               @delete-address="
                 deletePanelIsActive = true
