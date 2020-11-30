@@ -21,8 +21,40 @@
       </div>
 
       <div class="flex flex-col">
-        <h2 class="text-xl">Order #{{ order.number || order.id }}</h2>
-        <div class="mb-2">
+        <div class="hidden md:block">
+          <h2 class="inline-block text-xl">{{ statusMessage[1] }}</h2>
+          <svg
+            class="w-3 h-3 fill-current inline-block ml-1"
+            :class="{
+              'text-ok': order.status === 'complete',
+              'text-error': order.status === 'canceled',
+              'text-primary-dark': order.status !== 'complete' || order.status !== 'canceled'
+            }"
+            fill="none"
+            viewBox="0 0 10 10"
+          >
+            <circle cx="5" cy="5" r="5" />
+          </svg>
+        </div>
+
+        <h2 class="md:hidden">Order #{{ order.number }}</h2>
+
+        <p class="text-sm mb-2">
+          <span class="pr-2">Order date</span>
+          <span class="font-semibold">{{ formattedDate }}</span>
+        </p>
+
+        <p class="text-sm mb-2">
+          <span class="pr-2">Order</span>
+          <span class="font-semibold">#{{ order.number }}</span>
+        </p>
+
+        <p class="text-sm mb-2">
+          <span class="pr-2">Total</span>
+          <span class="font-semibold">{{ formatMoney(order.grandTotal) }}</span>
+        </p>
+
+        <div class="md:hidden mb-10">
           <svg
             class="w-2 h-2 fill-current inline-block mr-1"
             :class="{
@@ -36,18 +68,8 @@
             <circle cx="5" cy="5" r="5" />
           </svg>
 
-          <span class="text-sm">{{ statusMessage }}</span>
+          <span class="text-sm">{{ statusMessage[0] }}</span>
         </div>
-
-        <p class="text-sm mb-2">
-          <span class="pr-2">Order date</span>
-          <span class="font-semibold">{{ formattedDate }}</span>
-        </p>
-
-        <p class="text-sm mb-10">
-          <span class="pr-2">Total</span>
-          <span class="font-semibold">{{ formatMoney(order.grandTotal) }}</span>
-        </p>
 
         <NuxtLink :to="`${order.id}/`" append class="btn light w-full mt-auto">
           View order
@@ -92,25 +114,25 @@ export default {
     statusMessage() {
       switch (this.order.status) {
         case 'pending':
-          return 'We have received your order!'
+          return ['We have received your order!', 'Order recieved']
           break
         case 'draft':
-          return 'Your order is currently in draft mode.'
+          return ['Your order is currently in draft mode.', 'Draft mode']
           break
         case 'payment_pending':
-          return 'Your order is pending payment.'
+          return ['Your order is pending payment.', 'Pending payment']
           break
         case 'delivery_pending':
-          return 'Your order is pending delivery.'
+          return ['Your order is pending delivery.', 'Pending delivery']
           break
         case 'hold':
-          return 'Your order is currently on hold.'
+          return ['Your order is currently on hold.', 'On hold']
           break
         case 'complete':
-          return 'Your order has been fulfilled.'
+          return ['Your order has been fulfilled.', 'Fulilled']
           break
         case 'canceled':
-          return 'Your order has been cancelled'
+          return ['Your order has been cancelled', 'Cancelled']
           break
         default:
           return
