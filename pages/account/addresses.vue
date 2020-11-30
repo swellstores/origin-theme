@@ -53,6 +53,7 @@
 
       <PanelConfirmation
         v-if="confirmationPanelIsActive"
+        heading="Delete address"
         promptMessage="Are you sure you want to remove this address?"
         acceptLabel="Yes, remove it"
         refuseLabel="No, keep it"

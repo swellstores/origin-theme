@@ -10,10 +10,11 @@
       <!-- Panel -->
       <div class="panel z-20">
         <div class="container">
+          <h3 v-if="heading">{{ heading }}</h3>
           <p class="pb-10">{{ promptMessage }}</p>
 
           <ButtonLoading
-            class="dark mb-4"
+            class="dark mb-4 w-full"
             @click.native="accept()"
             :label="acceptLabel"
             :loadingLabel="loadingLabel"
@@ -32,6 +33,10 @@
 <script>
 export default {
   props: {
+    heading: {
+      type: String,
+      default: '',
+    },
     promptMessage: {
       type: String,
       default: '',
