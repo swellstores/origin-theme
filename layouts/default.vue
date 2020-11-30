@@ -22,7 +22,7 @@
       />
     </transition>
     <TheCart v-show="cartIsActive" @click-close="cartIsActive = false" />
-    <TheCustomerPanel v-show="customerLoginIsActive" @click-close="customerLoginIsActive = false" />
+    <TheCustomerPanel v-if="customerLoginIsActive" @click-close="customerLoginIsActive = false" />
     <transition name="fade">
       <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
     </transition>

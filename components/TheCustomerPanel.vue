@@ -1,5 +1,5 @@
 <template>
-  <transition name="customerLogin" :duration="700">
+  <transition name="customerLogin" :duration="700" appear>
     <div class="z-40 fixed inset-0">
       <!-- Overlay -->
       <div
@@ -73,19 +73,40 @@
           <template v-else>
             <!-- Login -->
             <div v-if="flow === 'login'" class="relative container pt-6">
-              <InputText
-                class="mb-6"
-                label="Email"
-                placeholder="Your email address"
-                v-model="customerEmail"
-              />
-              <InputText
-                class="mb-6"
-                label="Password"
-                type="password"
-                placeholder="Your password"
-                v-model="customerPassword"
-              />
+              <div class="mb-6">
+                <InputText
+                  class="mb-2"
+                  label="Email"
+                  placeholder="Your email address"
+                  v-model="customerEmail"
+                />
+
+                <template v-if="$v.customerEmail.$dirty">
+                  <span class="label-sm text-error" v-if="!$v.customerEmail.email"
+                    >Please enter a valid email address.</span
+                  >
+
+                  <span class="label-sm text-error" v-else-if="!$v.customerEmail.required"
+                    >Please enter your email address.</span
+                  >
+                </template>
+              </div>
+
+              <div class="mb-6">
+                <InputText
+                  class="mb-2"
+                  label="Password"
+                  type="password"
+                  placeholder="Your password"
+                  v-model="customerPassword"
+                />
+
+                <template v-if="$v.customerPassword.$dirty">
+                  <span class="label-sm text-error" v-if="!$v.customerPassword.required"
+                    >Please enter your password.</span
+                  >
+                </template>
+              </div>
 
               <button
                 class="text-xs font-semibold leading-tight text-primary-dark"
@@ -113,22 +134,58 @@
 
             <!-- Sign up -->
             <div v-if="flow === 'signup'" class="relative container pt-6">
-              <InputText class="mb-6" label="First Name" v-model="customerFirstName" />
-              <InputText class="mb-6" label="Last Name" v-model="customerLastName" />
+              <div class="mb-6">
+                <InputText class="mb-2" label="First Name" v-model="customerFirstName" />
+                <template v-if="$v.customerFirstName.$dirty">
+                  <span class="label-sm text-error" v-if="!$v.customerFirstName.required"
+                    >Please enter your first name.</span
+                  >
+                </template>
+              </div>
 
-              <InputText
-                class="mb-6"
-                label="Email"
-                placeholder="Your email address"
-                v-model="customerEmail"
-              />
-              <InputText
-                class="mb-6"
-                label="Password"
-                type="password"
-                placeholder="Enter a password"
-                v-model="customerPassword"
-              />
+              <div class="mb-6">
+                <InputText class="mb-2" label="First Name" v-model="customerLastName" />
+                <template v-if="$v.customerLastName.$dirty">
+                  <span class="label-sm text-error" v-if="!$v.customerLastName.required"
+                    >Please enter your last name.</span
+                  >
+                </template>
+              </div>
+
+              <div class="mb-6">
+                <InputText
+                  class="mb-2"
+                  label="Email"
+                  placeholder="Your email address"
+                  v-model="customerEmail"
+                />
+
+                <template v-if="$v.customerEmail.$dirty">
+                  <span class="label-sm text-error" v-if="!$v.customerEmail.email"
+                    >Please enter a valid email address.</span
+                  >
+
+                  <span class="label-sm text-error" v-else-if="!$v.customerEmail.required"
+                    >Please enter your email address.</span
+                  >
+                </template>
+              </div>
+
+              <div class="mb-6">
+                <InputText
+                  class="mb-2"
+                  label="Password"
+                  type="password"
+                  placeholder="Your password"
+                  v-model="customerPassword"
+                />
+
+                <template v-if="$v.customerPassword.$dirty">
+                  <span class="label-sm text-error" v-if="!$v.customerPassword.required"
+                    >Please enter your password.</span
+                  >
+                </template>
+              </div>
 
               <ButtonLoading
                 class="dark w-full mt-6 mb-4"
@@ -149,12 +206,24 @@
                 Enter your email address and we’ll send you an email on how to reset your password.
               </p>
 
-              <InputText
-                class="mb-6"
-                label="Email"
-                placeholder="Your email address"
-                v-model="customerEmail"
-              />
+              <div class="mb-6">
+                <InputText
+                  class="mb-2"
+                  label="Email"
+                  placeholder="Your email address"
+                  v-model="customerEmail"
+                />
+
+                <template v-if="$v.customerEmail.$dirty">
+                  <span class="label-sm text-error" v-if="!$v.customerEmail.email"
+                    >Please enter a valid email address.</span
+                  >
+
+                  <span class="label-sm text-error" v-else-if="!$v.customerEmail.required"
+                    >Please enter your email address.</span
+                  >
+                </template>
+              </div>
 
               <ButtonLoading
                 class="dark w-full mt-6 mb-4"
@@ -163,6 +232,10 @@
                 loadingLabel="Processing"
                 :isLoading="isProcessing"
               />
+
+              <button class="btn light w-full" type="button" @click="flow = 'login'">
+                Back to Login
+              </button>
             </div>
           </template>
         </div>
@@ -174,9 +247,13 @@
 <script>
 // Helpers
 import { mapState } from 'vuex'
+import { validationMixin } from 'vuelidate'
+import { required, email } from 'vuelidate/lib/validators'
 
 export default {
   name: 'TheCustomerPanel',
+
+  mixins: [validationMixin],
 
   data() {
     return {
@@ -196,6 +273,11 @@ export default {
   methods: {
     async createAccount() {
       try {
+        this.$v.$touch()
+        if (this.$v.$invalid) return
+
+        this.isProcessing = true
+
         const account = await this.$swell.account.create({
           email: this.customerEmail,
           first_name: this.customerFirstName,
@@ -205,6 +287,7 @@ export default {
         })
 
         if (account.id) {
+          this.isProcessing = false
           this.$store.commit('setState', { key: 'customerLoggedIn', value: true })
           this.$store.dispatch('showNotification', {
             message: 'You’ve succesfully created an account.'
@@ -218,6 +301,9 @@ export default {
 
     async sendPasswordReset() {
       try {
+        this.$v.$touch()
+        if (this.$v.$invalid) return
+
         this.isProcessing = true
 
         const res = await this.$swell.account.recover({
@@ -241,6 +327,9 @@ export default {
 
     async login() {
       try {
+        this.$v.$touch()
+        if (this.$v.$invalid) return
+
         this.isProcessing = true
 
         const res = await this.$swell.account.login(this.customerEmail, this.customerPassword)
@@ -274,6 +363,33 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    }
+  },
+
+  validations() {
+    switch (this.flow) {
+      case 'login':
+        return {
+          customerEmail: { required, email },
+          customerPassword: { required }
+        }
+        break
+      case 'forgot-password':
+        return {
+          customerEmail: { required, email },
+          customerPassword: { required }
+        }
+        break
+      case 'signup':
+        return {
+          customerFirstName: { required },
+          customerLastName: { required },
+          customerEmail: { required, email },
+          customerPassword: { required }
+        }
+        break
+      default:
+        return
     }
   }
 }
