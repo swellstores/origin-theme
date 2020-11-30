@@ -14,7 +14,7 @@
           <div class="relative container py-5">
             <div class="flex justify-between items-center">
               <h3 class="text-xl" v-if="customerLoggedIn">Account</h3>
-              <h3 v-else-if="flow === 'login'">Sign in</h3>
+              <h3 v-else-if="flow === 'login'">Log in</h3>
               <h3 v-else-if="flow === 'forgot-password'">Forgot your password?</h3>
               <h3 v-else>Create an account</h3>
               <button @click.prevent="$emit('click-close')">
