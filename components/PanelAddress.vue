@@ -24,7 +24,12 @@
       <div v-if="isDefault" class="label-xs-bold bg-primary-light rounded p-2">
         Default
       </div>
-      <div class="mt-auto">
+
+      <button v-else class="normal-case label-sm-bold" @click="$emit('set-default', address.id)">
+        Use as default
+      </button>
+
+      <div class="mt-auto label-sm">
         <button v-if="!isDefault" class="px-2 mr-2" @click="$emit('delete-address', address.id)">
           Remove
         </button>

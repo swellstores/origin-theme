@@ -26,8 +26,12 @@
               :class="{ 'mb-6': index < otherAddresses.length - 1 }"
               @click-open="openEditPanel('update', address)"
               @delete-address="
-                confirmationPanelIsActive = true
+                deletePanelIsActive = true
                 addressToDelete = $event
+              "
+              @set-default="
+                defaultPanelIsActive = true
+                addressToSetDefault = $event
               "
             />
           </template>
@@ -52,7 +56,7 @@
       />
 
       <PanelConfirmation
-        v-if="confirmationPanelIsActive"
+        v-if="deletePanelIsActive"
         heading="Delete address"
         promptMessage="Are you sure you want to remove this address?"
         acceptLabel="Yes, remove it"
@@ -60,7 +64,19 @@
         :isLoading="isDeleting"
         loadingLabel="Removing"
         @accept="deleteAddress(addressToDelete)"
-        @click-close="confirmationPanelIsActive = false"
+        @click-close="deletePanelIsActive = false"
+      />
+
+      <PanelConfirmation
+        v-if="defaultPanelIsActive"
+        heading="Set as default"
+        promptMessage="Are you sure you want to make this your default address?"
+        acceptLabel="Yes"
+        refuseLabel="No"
+        :isLoading="isUpdating"
+        loadingLabel="Setting as default"
+        @accept="setDefaultAddress(addressToSetDefault)"
+        @click-close="defaultPanelIsActive = false"
       />
     </template>
   </div>
@@ -73,11 +89,11 @@ export default {
   async fetch() {
     // Set page data
     const { results: addresses } = await this.$swell.account.listAddresses()
-    const account = await this.$swell.account.get()
-    
+
     if (this.customer.shipping) {
       this.defaultAddressId = this.customer.shipping.accountAddressId
     }
+
     this.addresses = addresses
   },
 
@@ -88,9 +104,12 @@ export default {
       editAddressType: 'update',
       addressToEdit: '',
       addressToDelete: '',
+      addressToSetDefault: '',
       defaultAddressId: '',
-      confirmationPanelIsActive: false,
-      isDeleting: false
+      deletePanelIsActive: false,
+      defaultPanelIsActive: false,
+      isDeleting: false,
+      isUpdating: false
     }
   },
 
@@ -134,9 +153,29 @@ export default {
 
         // Close panel and fetch updated data
         this.isDeleting = false
-        this.confirmationPanelIsActive = false
+        this.deletePanelIsActive = false
         this.$fetch()
         this.$store.dispatch('showNotification', { message: 'Address deleted.', type: 'error' })
+      } catch (err) {
+        console.log(err)
+      }
+    },
+
+    async setDefaultAddress(id) {
+      try {
+        this.isUpdating = true
+        await this.$swell.account.update({
+          shipping: {
+            accountAddressId: id
+          }
+        })
+
+        // Close panel and fetch updated data
+        this.isUpdating = false
+        this.defaultPanelIsActive = false
+        this.$store.dispatch('showNotification', { message: 'New address set as default.' })
+        this.$store.dispatch('initializeCustomer')
+        this.$fetch()
       } catch (err) {
         console.log(err)
       }
