@@ -6,7 +6,7 @@
 
       <!-- Panel -->
       <div class="panel">
-        <div class="container py-2">
+        <div class="container relative py-2">
           <div class="flex py-4">
             <h3 v-if="type === 'new'">Add new payment method</h3>
             <h3 v-else>Edit payment method</h3>
@@ -172,7 +172,7 @@ export default {
       })
     },
     formattedDefaultAddress() {
-      if (!this.card.billing) return
+      if (!this.card) return
       return `${this.card.billing.name}, ${this.card.billing.address2 || ''} ${
         this.card.billing.address1
       }, ${this.card.billing.state}, ${this.card.billing.city} ${
@@ -295,7 +295,6 @@ export default {
     this.cardExpiry = `${this.card.expMonth} / ${this.card.expYear}` || ''
 
     // Set formatted card number of existing card
-    if (!this.card) return
     const { brand, last4 } = this.card
     if (brand === 'American Express') {
       this.cardNumber = `••••  ••••   •••${last4.substring(0, 1)}   ${last4.substring(
@@ -319,7 +318,7 @@ export default {
 
 <style lang="postcss" scoped>
 .overlay {
-  @apply opacity-50 absolute w-full h-full bg-primary-darker;
+  @apply opacity-50 fixed w-full h-full bg-primary-darker;
 }
 
 .panel {
@@ -327,7 +326,8 @@ export default {
   height: calc(100vh - 2rem);
 
   @screen md {
-    @apply absolute w-128 h-auto rounded left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
+    @apply relative w-128 h-auto rounded left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
+    max-height: 80vh;
   }
 }
 

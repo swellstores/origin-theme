@@ -13,7 +13,7 @@
             v-if="defaultCard"
             :card="defaultCard"
             :isDefault="true"
-            :class="{ 'mb-6': otherCards.length }"
+            :class="{ 'md:mb-0 mb-6': otherCards.length }"
             @click-open="openEditPanel('update', defaultCard)"
           />
 
@@ -21,7 +21,7 @@
             v-for="(card, index) in otherCards"
             :key="`card-${index}`"
             :card="card"
-            :class="{ 'mb-6': index < otherCards.length - 1 }"
+            :class="{ 'md:mb-0 mb-6': index < otherCards.length - 1 }"
             @click-open="openEditPanel('update', card)"
           />
         </div>
@@ -31,7 +31,7 @@
         There are no payment methods associated with this account.
       </p>
 
-      <button class="btn w-full md: w-auto light mt-10" type="button" @click="openEditPanel('new')">
+      <button class="btn w-full md:w-auto light mt-10" type="button" @click="openEditPanel('new')">
         Add new payment method
       </button>
 
@@ -64,7 +64,6 @@ export default {
   async fetch() {
     // Set page data
     const { results: cards } = await this.$swell.account.listCards()
-    const account = await this.$swell.account.get()
 
     if (this.customer.billing) this.defaultCardId = this.customer.billing.accountCardId
     this.cards = cards
