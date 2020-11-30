@@ -279,7 +279,8 @@ export default {
   height: calc(100vh - 2rem);
 
   @screen md {
-    @apply absolute w-128 h-auto rounded left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
+    @apply relative w-128 h-auto rounded left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
+    max-height: 80vh;
   }
 }
 
