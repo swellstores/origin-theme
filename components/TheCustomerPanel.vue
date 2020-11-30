@@ -16,7 +16,7 @@
               <h3 class="text-xl" v-if="customerLoggedIn">Account</h3>
               <h3 v-else-if="flow === 'login'">Sign in</h3>
               <h3 v-else-if="flow === 'forgot-password'">Forgot your password?</h3>
-              <h3 v-else>Sign up</h3>
+              <h3 v-else>Create an account</h3>
               <button @click.prevent="$emit('click-close')">
                 <BaseIcon icon="uil:multiply" />
               </button>
@@ -206,7 +206,9 @@ export default {
 
         if (account.id) {
           this.$store.commit('setState', { key: 'customerLoggedIn', value: true })
-          this.$store.dispatch('showNotification', { message: 'You’ve succesfully created an account.' })
+          this.$store.dispatch('showNotification', {
+            message: 'You’ve succesfully created an account.'
+          })
         }
       } catch (err) {
         // TODO: Error handling
