@@ -7,11 +7,13 @@
         @click-customer-login="customerLoginIsActive = true"
       />
 
-      <div class="min-h-100vh bg-primary-lighter">
+      <div class="min-h-screen bg-primary-lighter">
         <div v-if="customer" class="w-full md:container md:flex relative md:pt-12 pt-6 pb-24">
           <!-- Header -->
           <div>
-            <div class="min-w-56 container border-b md:border-b-0 md:border-r border-primary-light md:px-0">
+            <div
+              class="min-w-56 container border-b md:border-b-0 md:border-r border-primary-light md:px-0"
+            >
               <div class="md:pr-10 pb-6">
                 <h3>{{ customer.firstName }} {{ customer.lastName }}</h3>
                 <p>{{ customer.email }}</p>
@@ -163,9 +165,15 @@ export default {
   mounted() {
     // Initialize customer (if logged in, set customer state)
     this.$store.dispatch('initializeCustomer')
-  },
+  }
 
   /* TODO: Persistent auth */
   /* middleware: 'account' */
 }
 </script>
+
+<style lang="postcss">
+.min-h-screen {
+  min-height: 100vh;
+}
+</style>
