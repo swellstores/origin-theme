@@ -172,7 +172,7 @@ export default {
       })
     },
     formattedDefaultAddress() {
-      if (!this.card) return
+      if (!this.card || !this.card.billing) return
       return `${this.card.billing.name}, ${this.card.billing.address2 || ''} ${
         this.card.billing.address1
       }, ${this.card.billing.state}, ${this.card.billing.city} ${
