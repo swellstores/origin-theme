@@ -1,5 +1,7 @@
 <template>
   <div class="container md:pr-0">
+    <h1 class="text-4xl hidden md:block mb-9">Payment methods</h1>
+
     <div v-if="$fetchState.pending" class="container">
       <div class="loader-el w-1/3 h-7 mb-6 mx-auto"></div>
       <div class="loader-el w-3/5 h-2 mb-4 mx-auto"></div>
