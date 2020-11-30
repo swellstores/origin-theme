@@ -74,7 +74,7 @@
           </div>
 
           <!-- Action Buttons -->
-          <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4">
+          <div class="w-full sticky left-0 bottom-0 bg-primary-lighter py-4">
             <ButtonLoading
               v-if="type === 'new'"
               class="w-full dark"
