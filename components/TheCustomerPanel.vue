@@ -140,6 +140,10 @@
                   <span class="label-sm text-error" v-if="!$v.customerFirstName.required"
                     >Please enter your first name.</span
                   >
+
+                  <span class="label-sm text-error" v-if="!$v.customerFirstName.maxLength"
+                    >First name cannot exceed 40 characters.</span
+                  >
                 </template>
               </div>
 
@@ -148,6 +152,10 @@
                 <template v-if="$v.customerLastName.$dirty">
                   <span class="label-sm text-error" v-if="!$v.customerLastName.required"
                     >Please enter your last name.</span
+                  >
+
+                  <span class="label-sm text-error" v-if="!$v.customerLastName.maxLength"
+                    >Last name cannot exceed 40 characters.</span
                   >
                 </template>
               </div>
@@ -252,7 +260,7 @@
 // Helpers
 import { mapState } from 'vuex'
 import { validationMixin } from 'vuelidate'
-import { required, email } from 'vuelidate/lib/validators'
+import { required, email, maxLength } from 'vuelidate/lib/validators'
 
 export default {
   name: 'TheCustomerPanel',
@@ -312,9 +320,15 @@ export default {
       } catch (err) {
         // Throw error if email already exists
         if (err.email && err.email.code === 'UNIQUE') {
-          this.$store.dispatch('showNotification', { message: 'It seems you have an account registered under the same email address.', type: 'error' })
+          this.$store.dispatch('showNotification', {
+            message: 'It seems you have an account registered under the same email address.',
+            type: 'error'
+          })
         } else {
-          this.$store.dispatch('showNotification', { message: 'There was an error creating your account. Please try again later.', type: 'error' })
+          this.$store.dispatch('showNotification', {
+            message: 'There was an error creating your account. Please try again later.',
+            type: 'error'
+          })
         }
       }
     },
@@ -362,7 +376,10 @@ export default {
 
         this.$store.commit('setState', { key: 'customerLoggedIn', value: true })
       } catch (err) {
-        this.$store.dispatch('showNotification', { message: 'Your email or password was entered incorrectly.', type: 'error' })
+        this.$store.dispatch('showNotification', {
+          message: 'Your email or password was entered incorrectly.',
+          type: 'error'
+        })
       }
     },
 
@@ -401,8 +418,8 @@ export default {
         break
       case 'signup':
         return {
-          customerFirstName: { required },
-          customerLastName: { required },
+          customerFirstName: { required, maxLength: maxLength(40) },
+          customerLastName: { required, maxLength: maxLength(40) },
           customerEmail: { required, email },
           customerPassword: { required }
         }

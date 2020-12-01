@@ -17,17 +17,57 @@
 
           <!-- Fields -->
           <div class="pt-6">
-            <InputText class="mb-6" label="First Name" v-model="firstName" />
-            <InputText class="mb-6" label="Last Name" v-model="lastName" />
-            <InputText class="mb-6" label="Address" v-model="address1" />
+            <div class="mb-6">
+              <InputText class="mb-2" label="First Name" v-model="firstName" />
+              <template v-if="$v.firstName.$dirty">
+                <span class="label-sm text-error" v-if="!$v.firstName.required"
+                  >Please enter your first name.</span
+                >
+
+                <span class="label-sm text-error" v-if="!$v.firstName.maxLength"
+                  >First name cannot exceed 40 characters.</span
+                >
+              </template>
+            </div>
+
+            <div class="mb-6">
+              <InputText class="mb-2" label="First Name" v-model="lastName" />
+              <template v-if="$v.lastName.$dirty">
+                <span class="label-sm text-error" v-if="!$v.lastName.required"
+                  >Please enter your last name.</span
+                >
+
+                <span class="label-sm text-error" v-if="!$v.lastName.maxLength"
+                  >Last name cannot exceed 40 characters.</span
+                >
+              </template>
+            </div>
+
+            <div class="mb-6">
+              <InputText class="mb-2" label="Address" v-model="address1" />
+              <template v-if="$v.address1.$dirty">
+                <span class="label-sm text-error" v-if="!$v.address1.required"
+                  >Please enter your address.</span
+                >
+              </template>
+            </div>
+
             <InputText class="mb-6" label="Apartment / Floor / Suite" v-model="address2" />
-            <InputText class="mb-6" label="City" v-model="city" />
+
+            <div class="mb-6">
+              <InputText class="mb-2" label="City" v-model="city" />
+              <template v-if="$v.city.$dirty">
+                <span class="label-sm text-error" v-if="!$v.city.required"
+                  >Please enter your address.</span
+                >
+              </template>
+            </div>
 
             <div class="flex flex-no-wrap mb-6">
               <div class="w-1/2 mr-3">
                 <label class="label-xs-bold-faded block mb-2" for="region-select">Region</label>
 
-                <div class="relative">
+                <div class="relative mb-2">
                   <region-select
                     id="region-select"
                     class="w-full pl-4 pr-6 py-3 bg-primary-lightest border border-primary-med rounded appearance-none truncate"
@@ -41,14 +81,32 @@
                     <BaseIcon icon="uil:angle-down" class="absolute mr-2 right-0 center-y" />
                   </div>
                 </div>
+
+                <template v-if="$v.state.$dirty">
+                  <span class="label-sm text-error" v-if="!$v.state.required"
+                    >Region required.</span
+                  >
+                </template>
               </div>
-              <InputText class="w-1/2 ml-3" label="Zip Code" v-model="zip" />
+
+              <div class="w-1/2 ml-3">
+                <InputText class="mb-2" label="Zip Code" v-model="zip" />
+
+                <template v-if="$v.zip.$dirty">
+                  <span class="label-sm text-error" v-if="!$v.zip.integer || !$v.zip.minValue"
+                    >Enter a valid code.</span
+                  >
+                  <span class="label-sm text-error" v-if="!$v.zip.required"
+                    >Zip code required.</span
+                  >
+                </template>
+              </div>
             </div>
 
             <div class="mb-6">
               <label class="label-xs-bold-faded block mb-2" for="country-select">Country</label>
 
-              <div class="relative">
+              <div class="relative mb-2">
                 <country-select
                   id="country-select"
                   class="w-full px-4 py-3 bg-primary-lightest border border-primary-med rounded appearance-none"
@@ -59,6 +117,12 @@
 
                 <BaseIcon icon="uil:angle-down" class="absolute mr-2 right-0 center-y" />
               </div>
+
+              <template v-if="$v.state.$dirty">
+                <span class="label-sm text-error" v-if="!$v.country.required"
+                  >Country required.</span
+                >
+              </template>
             </div>
 
             <div v-if="flow === 'default'" class="checkbox mb-6">
@@ -74,10 +138,10 @@
           </div>
 
           <!-- Action Buttons -->
-          <div class="w-full sticky left-0 bottom-0 bg-primary-lighter py-4">
+          <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4">
             <ButtonLoading
               v-if="type === 'new'"
-              class="w-full dark"
+              class="w-full dark mt-4"
               @click.native="createAddress()"
               label="Create address"
               loadingLabel="Creating"
@@ -112,7 +176,12 @@
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required, maxLength, integer, minValue } from 'vuelidate/lib/validators'
+
 export default {
+  mixins: [validationMixin],
+
   props: {
     address: {
       type: Object,
@@ -151,9 +220,13 @@ export default {
 
   methods: {
     async updateAddress() {
-      this.isUpdating = true
-
       try {
+        // Validate fields
+        this.$v.$touch()
+        if (this.$v.$invalid) return
+
+        this.isUpdating = true
+
         const res = await this.$swell.account.updateAddress(this.address.id, {
           name: `${this.firstName.trim()} ${this.lastName.trim()}`,
           address1: this.address1,
@@ -172,19 +245,26 @@ export default {
             }
           })
         }
-        
+
         // Close panel and fetch updated data
         this.isUpdating = true
         this.$emit('click-close')
-        this.$emit('refresh')
+        this.$store.dispatch('initializeCustomer')
         this.$store.dispatch('showNotification', { message: 'Address updated.' })
+        this.$emit('refresh')
       } catch (err) {
-        // TODO: Error handling
-        console.log(error)
+        this.$store.dispatch('showNotification', {
+          message: 'There was an error updating this address.',
+          type: 'error'
+        })
       }
     },
     async createAddress() {
       try {
+        // Validate fields
+        this.$v.$touch()
+        if (this.$v.$invalid) return
+
         this.isCreating = true
 
         const address = await this.$swell.account.createAddress({
@@ -213,7 +293,10 @@ export default {
         this.$store.dispatch('showNotification', { message: 'Address created.' })
         this.$store.dispatch('initializeCustomer')
       } catch (err) {
-        console.log(err)
+        this.$store.dispatch('showNotification', {
+          message: 'There was an error creating the address.',
+          type: 'error'
+        })
       }
     },
     async deleteAddress() {
@@ -245,7 +328,10 @@ export default {
         this.$emit('refresh')
         this.$store.dispatch('showNotification', { message: 'Address deleted.', type: 'error' })
       } catch (err) {
-        console.log(err)
+        this.$store.dispatch('showNotification', {
+          message: 'There was an error deleting the address.',
+          type: 'error'
+        })
       }
     }
   },
@@ -265,6 +351,16 @@ export default {
 
     // Set default check state
     if (this.defaultAddressId === this.address.id) this.setDefault = true
+  },
+
+  validations: {
+    firstName: { required, maxLength: maxLength(40) },
+    lastName: { required, maxLength: maxLength(40) },
+    address1: { required },
+    city: { required },
+    state: { required },
+    zip: { required, integer, minValue: minValue(0) },
+    country: { required }
   }
 }
 </script>
