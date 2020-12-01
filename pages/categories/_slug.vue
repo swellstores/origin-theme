@@ -35,11 +35,13 @@
 
     <div class="container pt-7 pb-4">
       <!-- Category name & description -->
-      <div v-if="!category && $fetchState.pending" class="loader-el w-64 h-10 mt-2 mb-9"></div>
-      <div v-else-if="settings.headingPosition !== 'hero_image'" class="mb-7">
-        <h1>{{ category.name }}</h1>
-        <div class="text-lg" v-html="category.description"></div>
-      </div>
+      <template v-if="!settings.showHeroImage">
+        <div v-if="!category && $fetchState.pending" class="loader-el w-64 h-10 mt-2 mb-9"></div>
+        <div v-else-if="settings.headingPosition !== 'hero_image'" class="mb-7">
+          <h1>{{ category.name }}</h1>
+          <div class="text-lg" v-html="category.description"></div>
+        </div>
+      </template>
 
       <!-- Product filtering & sorting controls -->
       <aside class="flex items-center mb-6 text-sm">
