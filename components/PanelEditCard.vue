@@ -28,7 +28,7 @@
 
             <div class="flex flex-no-wrap mb-6">
               <InputText
-                :class="type === 'update' ? 'w-full' : 'mr-3'"
+                :class="type === 'update' ? 'w-full' : 'w-1/2 mr-3'"
                 label="Card Expiry"
                 v-model="cardExpiry"
                 :disabled="type === 'update'"
@@ -36,7 +36,7 @@
               />
               <InputText
                 v-if="type === 'new'"
-                class="ml-3"
+                class="w-1/2 ml-3"
                 label="CVC"
                 v-model="cardCVC"
                 v-cardformat:formatCardCVC

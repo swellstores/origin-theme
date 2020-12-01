@@ -2,7 +2,7 @@
   <div>
     <label class="label-xs-bold-faded block mb-2" v-if="label">{{ label }}</label>
     <input
-      class="w-full px-4 py-3 bg-primary-lightest border border-primary-med rounded tracking-inherit"
+      class="tracking-inherit"
       :type="type"
       :value="value"
       v-on:input="$emit('input', $event.target.value)"
@@ -44,8 +44,21 @@ export default {
 }
 </script>
 
-<style lang="postcss">
+<style lang="postcss" scoped>
 #address-dropdown ul {
   @apply max-h-40;
+}
+
+input {
+  @apply w-full px-4 py-3 bg-primary-lightest border border-primary-med rounded transition ease-in-out duration-200;
+
+  &:focus {
+    @apply outline-none;
+    border-bottom: var(--colors-primary-dark) 1px solid;
+  }
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed bg-primary-med border-t-0 border-l-0 border-r-0 border-primary-darker;
+  }
 }
 </style>
