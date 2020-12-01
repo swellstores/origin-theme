@@ -237,6 +237,10 @@
                 Back to Login
               </button>
             </div>
+
+            <span v-if="errorMessage" class="pt-2 label-sm text-error">
+              {{ errorMessage }}
+            </span>
           </template>
         </div>
       </div>
@@ -262,12 +266,20 @@ export default {
       customerPassword: '',
       customerFirstName: '',
       customerLastName: '',
-      isProcessing: false
+      isProcessing: false,
+      errorMessage: ''
     }
   },
 
   computed: {
     ...mapState(['customerLoggedIn'])
+  },
+
+  watch: {
+    flow() {
+      // Reset validaiton on flow change.
+      this.$v.$reset()
+    }
   },
 
   methods: {
@@ -286,16 +298,24 @@ export default {
           email_optin: true
         })
 
+        this.isProcessing = false
+
         if (account.id) {
           this.isProcessing = false
           this.$store.commit('setState', { key: 'customerLoggedIn', value: true })
           this.$store.dispatch('showNotification', {
             message: 'You’ve succesfully created an account.'
           })
+        } else {
+          throw Error(account)
         }
       } catch (err) {
-        // TODO: Error handling
-        console.log(err)
+        // Throw error if email already exists
+        if (err.email && err.email.code === 'UNIQUE') {
+          this.$store.dispatch('showNotification', { message: 'It seems you have an account registered under the same email address.', type: 'error' })
+        } else {
+          this.$store.dispatch('showNotification', { message: 'There was an error creating your account. Please try again later.', type: 'error' })
+        }
       }
     },
 
@@ -342,8 +362,7 @@ export default {
 
         this.$store.commit('setState', { key: 'customerLoggedIn', value: true })
       } catch (err) {
-        // TODO: Error handling
-        console.log(err)
+        this.$store.dispatch('showNotification', { message: 'Your email or password was entered incorrectly.', type: 'error' })
       }
     },
 
