@@ -148,7 +148,7 @@
               </div>
 
               <div class="mb-6">
-                <InputText class="mb-2" label="First Name" v-model="customerLastName" />
+                <InputText class="mb-2" label="Last Name" v-model="customerLastName" />
                 <template v-if="$v.customerLastName.$dirty">
                   <span class="label-sm text-error" v-if="!$v.customerLastName.required"
                     >Please enter your last name.</span
@@ -184,11 +184,16 @@
                   class="mb-2"
                   label="Password"
                   type="password"
+                  hint="Must include a minimum of 6 characters."
                   placeholder="Your password"
                   v-model="customerPassword"
                 />
 
                 <template v-if="$v.customerPassword.$dirty">
+                  <span class="label-sm text-error" v-if="!$v.customerPassword.minLength"
+                    >Your password needs to be at least six characters.</span
+                  >
+
                   <span class="label-sm text-error" v-if="!$v.customerPassword.required"
                     >Please enter your password.</span
                   >
@@ -260,7 +265,7 @@
 // Helpers
 import { mapState } from 'vuex'
 import { validationMixin } from 'vuelidate'
-import { required, email, maxLength } from 'vuelidate/lib/validators'
+import { required, email, minLength, maxLength } from 'vuelidate/lib/validators'
 
 export default {
   name: 'TheCustomerPanel',
@@ -421,7 +426,7 @@ export default {
           customerFirstName: { required, maxLength: maxLength(40) },
           customerLastName: { required, maxLength: maxLength(40) },
           customerEmail: { required, email },
-          customerPassword: { required }
+          customerPassword: { required, minLength: minLength(6) }
         }
         break
       default:
