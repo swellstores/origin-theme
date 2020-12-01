@@ -9,6 +9,8 @@
       :disabled="disabled"
       :placeholder="placeholder"
     />
+
+    <span v-if="hint" class="inline-block text-sm text-primary-dark mt-1">{{ hint }}</span>
   </div>
 </template>
 
@@ -16,6 +18,10 @@
 export default {
   props: {
     label: {
+      type: String,
+      default: ''
+    },
+    hint: {
       type: String,
       default: ''
     },
