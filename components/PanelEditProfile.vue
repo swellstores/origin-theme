@@ -16,10 +16,82 @@
 
           <!-- Fields -->
           <div class="pt-6">
-            <InputText class="mb-6" label="First Name" v-model="firstName" />
-            <InputText class="mb-6" label="Last Name" v-model="lastName" />
-            <InputText class="mb-6" label="Email Address" type="email" v-model="email" />
-            <InputText class="mb-6" label="Change password" type="password" v-model="password" />
+            <div class="mb-6">
+              <InputText class="mb-2" label="First Name" v-model="firstName" />
+              <template v-if="$v.firstName.$dirty">
+                <span class="label-sm text-error" v-if="!$v.firstName.required"
+                  >Please enter your first name.</span
+                >
+
+                <span class="label-sm text-error" v-if="!$v.firstName.maxLength"
+                  >First name cannot exceed 40 characters.</span
+                >
+              </template>
+            </div>
+
+            <div class="mb-6">
+              <InputText class="mb-2" label="First Name" v-model="lastName" />
+              <template v-if="$v.lastName.$dirty">
+                <span class="label-sm text-error" v-if="!$v.lastName.required"
+                  >Please enter your last name.</span
+                >
+
+                <span class="label-sm text-error" v-if="!$v.lastName.maxLength"
+                  >Last name cannot exceed 40 characters.</span
+                >
+              </template>
+            </div>
+
+            <div class="mb-6">
+              <InputText
+                class="mb-2"
+                label="Email"
+                placeholder="Your email address"
+                v-model="email"
+              />
+
+              <template v-if="$v.email.$dirty">
+                <span class="label-sm text-error" v-if="!$v.email.email"
+                  >Please enter a valid email address.</span
+                >
+
+                <span class="label-sm text-error" v-else-if="!$v.email.required"
+                  >Please enter your email address.</span
+                >
+              </template>
+            </div>
+
+            <div class="mb-6">
+              <InputText
+                class="mb-2"
+                label="Change password"
+                type="password"
+                hint="Must include a minimum of 6 characters."
+                placeholder="Enter your new password"
+                v-model="password"
+              />
+
+              <template v-if="$v.password.$dirty">
+                <span class="label-sm text-error" v-if="!$v.password.minLength"
+                  >Your password needs to be at least six characters.</span
+                >
+              </template>
+            </div>
+
+            <div class="mb-6">
+              <InputText
+                class="mb-2"
+                type="password"
+                placeholder="Confirm new password"
+                v-model="confirmPassword"
+              />
+
+              <template v-if="$v.confirmPassword.$dirty">
+                <span class="label-sm text-error" v-if="!$v.confirmPassword.sameAsPassword"
+                  >Passwords do not match.</span
+                >
+              </template>
+            </div>
 
             <div class="checkbox mb-6">
               <input type="checkbox" id="set-default" v-model="optInEmail" />
@@ -50,13 +122,19 @@
 
 <script>
 import { mapState } from 'vuex'
+import { validationMixin } from 'vuelidate'
+import { required, email, maxLength, minLength, sameAs } from 'vuelidate/lib/validators'
+
 export default {
+  mixins: [validationMixin],
+
   data() {
     return {
       firstName: '',
       lastName: '',
       email: '',
       password: '',
+      confirmPassword: '',
       optInEmail: false,
       isUpdating: false
     }
@@ -69,6 +147,10 @@ export default {
   methods: {
     async updateProfile() {
       try {
+        // Validate fields
+        this.$v.$touch()
+        if (this.$v.$invalid) return
+
         this.isUpdating = true
 
         const res = await this.$swell.account.update({
@@ -87,7 +169,10 @@ export default {
           this.$emit('click-close')
         }
       } catch (err) {
-        console.log(err)
+        this.$store.dispatch('showNotification', {
+          message: 'There was an error updating your profile.',
+          type: 'error'
+        })
       }
     }
   },
@@ -100,6 +185,14 @@ export default {
     this.lastName = this.customer.lastName
     this.email = this.customer.email
     this.optInEmail = this.customer.optInEmail
+  },
+
+  validations: {
+    firstName: { required, maxLength: maxLength(40) },
+    lastName: { required, maxLength: maxLength(40) },
+    email: { required, email },
+    password: { minLength: minLength(6) },
+    confirmPassword: { sameAsPassword: sameAs('password') }
   }
 }
 </script>
