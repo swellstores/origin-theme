@@ -31,7 +31,10 @@
 
       <!-- Product overview -->
       <div class="md:w-1/2 lg:px-6 xl:px-12">
-        <div class="container top-20 pt-10 max-w-160 md:sticky md:pt-12">
+        <div
+          class="container top-0 pt-10 max-w-160 md:sticky md:pt-12 transition-all duration-300 ease-in-out"
+          :class="headerIsVisible ? 'top-20' : 'top-0'"
+        >
           <!-- Skeleton loader -->
           <div v-if="$fetchState.pending">
             <div class="loader-el w-32 h-3 mb-4"></div>
@@ -209,7 +212,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['cartIsUpdating']),
+    ...mapState(['cartIsUpdating', 'headerIsVisible']),
 
     // Resulting combination of selected product options
     variation() {
