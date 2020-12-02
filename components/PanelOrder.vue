@@ -21,10 +21,10 @@
       </div>
 
       <div class="flex flex-col">
-        <div class="hidden md:block">
-          <h2 class="inline-block text-xl">{{ statusMessage[1] }}</h2>
+        <div class="hidden md:flex md:items-center mb-3">
+          <h2 class="inline-block mb-0 text-xl">{{ statusMessage[1] }}</h2>
           <svg
-            class="w-3 h-3 fill-current inline-block ml-1"
+            class="w-3 h-3 fill-current inline-block ml-2"
             :class="{
               'text-ok': order.status === 'complete',
               'text-error': order.status === 'canceled',
