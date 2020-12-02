@@ -17,30 +17,58 @@
 
           <!-- Fields -->
           <div class="pt-6">
-            <InputText
-              class="mb-6"
-              :class="{ 'tracking-large': type === 'update' }"
-              label="Card number"
-              :disabled="type === 'update'"
-              v-model="cardNumber"
-              v-cardformat:formatCardNumber
-            />
+            <div class="mb-6">
+              <InputText
+                class="mb-2"
+                :class="{ 'tracking-large': type === 'update' }"
+                label="Card number"
+                :disabled="type === 'update'"
+                v-model="cardNumber"
+                v-cardformat:formatCardNumber
+              />
+
+              <template v-if="$v.cardNumber.$dirty">
+                <span class="label-sm text-error" v-if="!$v.cardNumber.required"
+                  >Please enter your card number.</span
+                >
+
+                <span class="label-sm text-error" v-else-if="!$v.cardNumber.maxLength"
+                  >Please enter a valid card number.</span
+                >
+              </template>
+            </div>
 
             <div class="flex flex-no-wrap mb-6">
-              <InputText
-                :class="type === 'update' ? 'w-full' : 'w-1/2 mr-3'"
-                label="Card Expiry"
-                v-model="cardExpiry"
-                :disabled="type === 'update'"
-                v-cardformat:formatCardExpiry
-              />
-              <InputText
-                v-if="type === 'new'"
-                class="w-1/2 ml-3"
-                label="CVC"
-                v-model="cardCVC"
-                v-cardformat:formatCardCVC
-              />
+              <div :class="type === 'update' ? 'w-full' : 'w-1/2 mr-3'">
+                <InputText
+                  label="Card Expiry"
+                  v-model="cardExpiry"
+                  :disabled="type === 'update'"
+                  v-cardformat:formatCardExpiry
+                />
+
+                <template v-if="$v.cardExpiry.$dirty">
+                  <span class="label-sm text-error" v-if="!$v.cardExpiry.required"
+                    >Enter your card expiry date.</span
+                  >
+                </template>
+              </div>
+
+              <div v-if="type === 'new'" class="w-1/2 ml-3">
+                <InputText label="CVC" v-model="cardCVC" v-cardformat:formatCardCVC />
+
+                <template v-if="$v.cardExpiry.$dirty">
+                  <span class="label-sm text-error" v-if="!$v.cardExpiry.required"
+                    >Enter your card security code.</span
+                  >
+
+                  <span
+                    class="label-sm text-error"
+                    v-else-if="!$v.cardExpiry.integer || !$v.cardExpiry.maxLength"
+                    >Enter a valid card security code.</span
+                  >
+                </template>
+              </div>
             </div>
 
             <div class="checkbox mb-4">
@@ -119,7 +147,12 @@ import values from 'lodash/values'
 import every from 'lodash/every'
 import isEmpty from 'lodash/isEmpty'
 
+import { validationMixin } from 'vuelidate'
+import { required, maxLength, integer } from 'vuelidate/lib/validators'
+
 export default {
+  mixins: [validationMixin],
+
   async fetch() {
     // Set component data
     const { results: addresses } = await this.$swell.account.listAddresses()
@@ -226,17 +259,26 @@ export default {
 
         // Close panel and fetch updated data
         this.isUpdating = false
-        this.$store.dispatch('showNotification', { message: 'Card updated.' })
         this.$emit('click-close')
+        this.$store.dispatch('initializeCustomer')
+        this.$store.dispatch('showNotification', { message: 'Card updated.' })
         this.$emit('refresh')
       } catch (err) {
-        /* TODO: Add error handling */
-        console.log(err)
+        this.$store.dispatch('showNotification', {
+          message: 'There was an issue updating your payment method.',
+          type: 'error'
+        })
       }
     },
 
     async createCard() {
       try {
+        // Validate fields
+        this.$v.$touch()
+        if (this.$v.$invalid) return
+
+        this.isCreating = true
+
         const { token } = await this.$swell.card.createToken({
           number: this.cardNumber,
           exp_month: this.expMonth,
@@ -259,13 +301,18 @@ export default {
           }
 
           // Close panel and fetch updated data
+          this.isCreating = false
           this.$emit('click-close')
-          this.$emit('refresh')
+          this.$store.dispatch('initializeCustomer')
           this.$store.dispatch('showNotification', { message: 'Card created.' })
+          this.$emit('refresh')
         }
       } catch (err) {
-        /* TODO: Add error handling */
-        console.log(err)
+        this.isCreating = false
+        this.$store.dispatch('showNotification', {
+          message: 'There was an issue adding your payment method.',
+          type: 'error'
+        })
       }
     },
 
@@ -279,11 +326,14 @@ export default {
 
         // Close panel and fetch updated data
         this.$emit('click-close')
-        this.$emit('refresh')
+        this.$store.dispatch('initializeCustomer')
         this.$store.dispatch('showNotification', { message: 'Card deleted.' })
+        this.$emit('refresh')
       } catch (err) {
-        /* TODO: Add error handling */
-        console.log(err)
+        this.$store.dispatch('showNotification', {
+          message: 'There was an issue deleting your payment method.',
+          type: 'error'
+        })
       }
     }
   },
@@ -312,6 +362,12 @@ export default {
     if (this.card.billing && !values(this.card.billing).every(isEmpty)) {
       this.billingAddress = this.card.billing
     }
+  },
+
+  validations: {
+    cardNumber: { required, maxLength: maxLength(19) },
+    cardExpiry: { required },
+    cardCVC: { required, integer, maxLength: maxLength(4) }
   }
 }
 </script>
