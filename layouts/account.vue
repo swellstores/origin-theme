@@ -22,7 +22,7 @@
                   @click="editProfilePanelIsActive = true"
                 >
                   <BaseIcon icon="uil:edit" size="sm" /><span class="ml-2"
-                    >Edit profile and password</span
+                    >Edit profile</span
                   >
                 </button>
               </div>
