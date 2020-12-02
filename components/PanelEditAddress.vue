@@ -31,7 +31,7 @@
             </div>
 
             <div class="mb-6">
-              <InputText class="mb-2" label="First Name" v-model="lastName" />
+              <InputText class="mb-2" label="Last Name" v-model="lastName" />
               <template v-if="$v.lastName.$dirty">
                 <span class="label-sm text-error" v-if="!$v.lastName.required"
                   >Please enter your last name.</span
