@@ -244,6 +244,17 @@ export default {
               accountAddressId: this.address.id
             }
           })
+        } else {
+          // If is default, unset it.
+          if (this.defaultAddressId === this.address.id) {
+            console.log('aha')
+            // Set current address as default
+            await this.$swell.account.update({
+              shipping: {
+                accountAddressId: null
+              }
+            })
+          }
         }
 
         // Close panel and fetch updated data
