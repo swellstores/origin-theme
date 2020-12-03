@@ -209,7 +209,7 @@
               />
 
               <button class="btn light w-full" type="button" @click="flow = 'login'">
-                Sign in
+                Log in
               </button>
             </div>
 
