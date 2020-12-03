@@ -57,14 +57,14 @@
               <div v-if="type === 'new'" class="w-1/2 ml-3">
                 <InputText label="CVC" v-model="cardCVC" v-cardformat:formatCardCVC />
 
-                <template v-if="$v.cardExpiry.$dirty">
-                  <span class="label-sm text-error" v-if="!$v.cardExpiry.required"
+                <template v-if="$v.cardCVC.$dirty">
+                  <span class="label-sm text-error" v-if="!$v.cardCVC.required"
                     >Enter your card security code.</span
                   >
 
                   <span
                     class="label-sm text-error"
-                    v-else-if="!$v.cardExpiry.integer || !$v.cardExpiry.maxLength"
+                    v-else-if="!$v.cardCVC.integer || !$v.cardCVC.maxLength"
                     >Enter a valid card security code.</span
                   >
                 </template>
@@ -72,7 +72,7 @@
             </div>
 
             <div class="checkbox mb-4">
-              <input type="checkbox" id="set-default" v-model="setDefault" />
+              <input type="checkbox" id="set-default" v-model="setDefault" :disabled="!defaultCardId" />
 
               <label class="w-full" for="set-default">
                 <p class="text-sm">Use as default card</p>
@@ -322,6 +322,15 @@ export default {
 
         await this.$swell.account.deleteCard(this.card.id)
 
+        // If set as default, reset account's default card ID.
+        if (this.defaultCardId === this.card.id) {
+          await this.$swell.account.update({
+            billing: {
+              accountCardId: null
+            }
+          })
+        }
+
         this.isDeleting = false
 
         // Close panel and fetch updated data
@@ -340,27 +349,33 @@ export default {
 
   created() {
     // Prefill form data for updating existing data
-    if (!this.card) return
+    if (this.card) {
+      this.cardExpiry = `${this.card.expMonth} / ${this.card.expYear}` || ''
 
-    this.cardExpiry = `${this.card.expMonth} / ${this.card.expYear}` || ''
+      // Set formatted card number of existing card
+      const { brand, last4 } = this.card
+      if (brand === 'American Express') {
+        this.cardNumber = `••••  ••••   •••${last4.substring(0, 1)}   ${last4.substring(
+          1,
+          last4.length
+        )}`
+      } else {
+        this.cardNumber = `••••  ••••   ••••   ${last4}`
+      }
 
-    // Set formatted card number of existing card
-    const { brand, last4 } = this.card
-    if (brand === 'American Express') {
-      this.cardNumber = `••••  ••••   •••${last4.substring(0, 1)}   ${last4.substring(
-        1,
-        last4.length
-      )}`
-    } else {
-      this.cardNumber = `••••  ••••   ••••   ${last4}`
+      // Set default check state
+      if (this.defaultCardId === this.card.id) this.setDefault = true
+
+      // Set default address
+      if (this.card.billing && !values(this.card.billing).every(isEmpty)) {
+        this.billingAddress = this.card.billing
+      }
     }
 
-    // Set default check state
-    if (this.defaultCardId === this.card.id) this.setDefault = true
-
-    // Set default address
-    if (this.card.billing && !values(this.card.billing).every(isEmpty)) {
-      this.billingAddress = this.card.billing
+    // If there's no default card, force set default
+    console.log(this.defaultCardId)
+    if (!this.defaultCardId && this.type === 'new') {
+      this.setDefault = true
     }
   },
 
