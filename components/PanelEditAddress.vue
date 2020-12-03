@@ -93,9 +93,6 @@
                 <InputText class="mb-2" label="Zip Code" v-model="zip" />
 
                 <template v-if="$v.zip.$dirty">
-                  <span class="label-sm text-error" v-if="!$v.zip.integer || !$v.zip.minValue"
-                    >Enter a valid code.</span
-                  >
                   <span class="label-sm text-error" v-if="!$v.zip.required"
                     >Zip code required.</span
                   >
@@ -370,7 +367,7 @@ export default {
     address1: { required },
     city: { required },
     state: { required },
-    zip: { required, integer, minValue: minValue(0) },
+    zip: { required },
     country: { required }
   }
 }
