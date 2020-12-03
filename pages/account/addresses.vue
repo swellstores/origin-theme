@@ -10,7 +10,7 @@
 
     <template v-else>
       <template v-if="addresses && addresses.length">
-        <div class="md:grid md:grid-cols-2 auto-rows-fr md:gap-8">
+        <div class="grid md:hidden gap-8">
           <PanelAddress
             v-if="defaultAddress"
             :address="defaultAddress"
@@ -19,13 +19,15 @@
           />
 
           <template v-if="otherAddresses && otherAddresses.length">
-            <span class="block md:hidden label-xs-bold-faded my-6">Other addresses</span>
+            <span v-if="defaultAddress" class="block md:hidden label-xs-bold-faded my-6"
+              >Other addresses</span
+            >
 
             <PanelAddress
               v-for="(address, index) in otherAddresses"
               :key="`address-${index}`"
               :address="address"
-              :class="{ 'mb-6 md:mb-0': index < otherAddresses.length - 1 }"
+              :class="{ 'md:mb-0': index < otherAddresses.length - 1 }"
               @click-open="openEditPanel('update', address)"
               @delete-address="
                 deletePanelIsActive = true
@@ -37,6 +39,24 @@
               "
             />
           </template>
+        </div>
+
+        <div class="hidden md:grid md:grid-cols-2 md:auto-rows-fr md:gap-8">
+          <PanelAddress
+            v-for="(address, index) in sortedAddresses"
+            :key="`address-${index}`"
+            :address="address"
+            :class="{ 'mb-6 md:mb-0': index < otherAddresses.length - 1 }"
+            @click-open="openEditPanel('update', address)"
+            @delete-address="
+              deletePanelIsActive = true
+              addressToDelete = $event
+            "
+            @set-default="
+              defaultPanelIsActive = true
+              addressToSetDefault = $event
+            "
+          />
         </div>
       </template>
 
@@ -95,7 +115,6 @@ export default {
     if (this.customer.shipping) {
       this.defaultAddressId = this.customer.shipping.accountAddressId
     }
-
     this.addresses = addresses
   },
 
@@ -127,6 +146,10 @@ export default {
         return this.addresses
       }
       return this.addresses.filter(address => address.id !== this.defaultAddressId)
+    },
+    sortedAddresses() {
+      if (!this.addresses) return
+      return this.addresses.sort((a, b) => a.dateCreated - b.dateCreated)
     }
   },
 
