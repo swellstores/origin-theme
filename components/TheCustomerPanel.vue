@@ -16,7 +16,7 @@
               <h3 class="text-xl" v-if="customerLoggedIn">Account</h3>
               <h3 v-else-if="flow === 'login'">Log in</h3>
               <h3 v-else-if="flow === 'forgot-password'">Forgot your password?</h3>
-              <h3 v-else>Create an account</h3>
+              <h3 v-else>Create account</h3>
               <button @click.prevent="$emit('click-close')">
                 <BaseIcon icon="uil:multiply" />
               </button>
@@ -118,7 +118,7 @@
               <ButtonLoading
                 class="dark w-full mt-6 mb-4"
                 @click.native="login()"
-                label="Login"
+                label="Log in"
                 loadingLabel="Logging in"
                 :isLoading="isProcessing"
               />
@@ -128,11 +128,11 @@
                 type="button"
                 @click=";(flow = 'signup'), (customerPassword = '')"
               >
-                Create an account
+                Create account
               </button>
             </div>
 
-            <!-- Sign up -->
+            <!-- Create account -->
             <div v-if="flow === 'signup'" class="relative container pt-6">
               <div class="mb-6">
                 <InputText class="mb-2" label="First Name" v-model="customerFirstName" />
@@ -209,7 +209,7 @@
               />
 
               <button class="btn light w-full" type="button" @click="flow = 'login'">
-                Login
+                Sign in
               </button>
             </div>
 
