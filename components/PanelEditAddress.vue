@@ -294,6 +294,10 @@ export default {
           })
         }
 
+        if (this.flow === 'payment') {
+          this.$emit('new-billing-address', address)
+        }
+
         // Close panel and fetch updated data
         this.isCreating = false
         this.$emit('click-close')

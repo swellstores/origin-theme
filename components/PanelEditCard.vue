@@ -72,7 +72,12 @@
             </div>
 
             <div class="checkbox mb-4">
-              <input type="checkbox" id="set-default" v-model="setDefault" :disabled="!defaultCardId" />
+              <input
+                type="checkbox"
+                id="set-default"
+                v-model="setDefault"
+                :disabled="!defaultCardId"
+              />
 
               <label class="w-full" for="set-default">
                 <p class="text-sm">Use as default card</p>
@@ -89,12 +94,13 @@
             <span class="block text-md font-semibold mb-2">Billing address</span>
 
             <InputDropdown
+              :compact="true"
               :options="formattedAddressOptions"
               :value="
                 formattedDefaultAddress ? formattedDefaultAddress : 'Select an existing address'
               "
               id="address-dropdown"
-              class="text-sm"
+              class="text-sm max-h-48"
               @change="billingAddress = $event"
             />
 
@@ -110,8 +116,8 @@
               v-if="type === 'new'"
               class="w-full dark my-4"
               @click.native="createCard()"
-              label="Create card"
-              loadingLabel="Creating"
+              label="Add new payment method"
+              loadingLabel="Adding"
               :isLoading="isCreating"
               :disabled="isUpdating || isDeleting"
             />
@@ -174,6 +180,10 @@ export default {
     defaultCardId: {
       type: String,
       default: null
+    },
+    newBillingAddress: {
+      type: Object,
+      default: null
     }
   },
 
@@ -188,7 +198,8 @@ export default {
       billingAddress: null,
       isCreating: false,
       isUpdating: false,
-      isDeleting: false
+      isDeleting: false,
+      formattedDefaultAddress: ''
     }
   },
 
@@ -204,14 +215,6 @@ export default {
         }
       })
     },
-    formattedDefaultAddress() {
-      if (!this.card || !this.card.billing) return
-      return `${this.card.billing.name}, ${this.card.billing.address2 || ''} ${
-        this.card.billing.address1
-      }, ${this.card.billing.state}, ${this.card.billing.city} ${
-        this.card.billing.zip
-      }, ${this.getCountryName(this.card.billing.country)}`
-    },
     expMonth() {
       if (!this.cardExpiry.includes('/')) return
       return this.cardExpiry.split('/')[0].trim()
@@ -225,7 +228,20 @@ export default {
   watch: {
     // Watch for refresh request to get newly generated address
     refresh(bool) {
-      if (bool) this.$fetch()
+      if (bool) {
+        this.$fetch()
+
+        if (this.newBillingAddress) {
+          
+          this.billingAddress = this.newBillingAddress
+          this.formattedDefaultAddress = `${this.newBillingAddress.name}, ${this.newBillingAddress
+            .address2 || ''} ${this.newBillingAddress.address1}, ${this.newBillingAddress.state}, ${
+            this.newBillingAddress.city
+          } ${this.newBillingAddress.zip}, ${this.getCountryName(this.card.billing.country)}`
+
+          console.log(this.formattedDefaultAddress)
+        }
+      }
     }
   },
 
@@ -261,7 +277,7 @@ export default {
         this.isUpdating = false
         this.$emit('click-close')
         this.$store.dispatch('initializeCustomer')
-        this.$store.dispatch('showNotification', { message: 'Card updated.' })
+        this.$store.dispatch('showNotification', { message: 'Payment method updated.' })
         this.$emit('refresh')
       } catch (err) {
         this.$store.dispatch('showNotification', {
@@ -289,7 +305,7 @@ export default {
         if (token) {
           const card = await this.$swell.account.createCard({ token })
 
-          if (!card) throw Error('There was an error creating your card.')
+          if (!card) throw Error('There was an error creating your Payment method.')
 
           if (this.setDefault) {
             // Set current address as default
@@ -304,7 +320,7 @@ export default {
           this.isCreating = false
           this.$emit('click-close')
           this.$store.dispatch('initializeCustomer')
-          this.$store.dispatch('showNotification', { message: 'Card created.' })
+          this.$store.dispatch('showNotification', { message: 'Payment method created.' })
           this.$emit('refresh')
         }
       } catch (err) {
@@ -336,7 +352,7 @@ export default {
         // Close panel and fetch updated data
         this.$emit('click-close')
         this.$store.dispatch('initializeCustomer')
-        this.$store.dispatch('showNotification', { message: 'Card deleted.' })
+        this.$store.dispatch('showNotification', { message: 'Payment method deleted.' })
         this.$emit('refresh')
       } catch (err) {
         this.$store.dispatch('showNotification', {
@@ -369,11 +385,14 @@ export default {
       // Set default address
       if (this.card.billing && !values(this.card.billing).every(isEmpty)) {
         this.billingAddress = this.card.billing
+        this.formattedDefaultAddress = `${this.card.billing.name}, ${this.card.billing.address2 ||
+          ''} ${this.card.billing.address1}, ${this.card.billing.state}, ${
+          this.card.billing.city
+        } ${this.card.billing.zip}, ${this.getCountryName(this.card.billing.country)}`
       }
     }
 
     // If there's no default card, force set default
-    console.log(this.defaultCardId)
     if (!this.defaultCardId && this.type === 'new') {
       this.setDefault = true
     }

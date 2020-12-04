@@ -43,6 +43,7 @@
         :card="cardToEdit"
         :defaultCardId="defaultCardId"
         :refresh="refreshCardPanel"
+        :newBillingAddress="newBillingAddress"
         @click-close="editCardPanelIsActive = false"
         @new-address="editAddressPanelIsActive = true"
         @refresh="$fetch"
@@ -54,6 +55,7 @@
         flow="payment"
         @click-close="editAddressPanelIsActive = false"
         @refresh="refreshCardPanel = true"
+        @new-billing-address="newBillingAddress = $event"
       />
     </template>
   </div>
@@ -79,7 +81,8 @@ export default {
       cardToEdit: null,
       editAddressPanelIsActive: false,
       refreshCardPanel: false,
-      defaultCardId: ''
+      defaultCardId: '',
+      newBillingAddress: null
     }
   },
 

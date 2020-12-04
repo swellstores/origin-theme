@@ -46,6 +46,7 @@
             v-for="(address, index) in sortedAddresses"
             :key="`address-${index}`"
             :address="address"
+            :isDefault="defaultAddressId === address.id"
             :class="{ 'mb-6 md:mb-0': index < otherAddresses.length - 1 }"
             @click-open="openEditPanel('update', address)"
             @delete-address="
@@ -115,6 +116,7 @@ export default {
     if (this.customer.shipping) {
       this.defaultAddressId = this.customer.shipping.accountAddressId
     }
+
     this.addresses = addresses
   },
 
