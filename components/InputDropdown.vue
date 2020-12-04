@@ -2,11 +2,11 @@
   <div class="relative">
     <div
       ref="dropdown"
-      class="relative w-full flex p-2 pr-8 items-center bg-primary-lightest border font-semibold cursor-pointer rounded focus:outline-none focus:shadow-outline"
+      class="relative w-full flex p-2 pr-10 items-center bg-primary-lightest border font-semibold cursor-pointer rounded focus:outline-none focus:shadow-outline"
       :class="{ 'rounded-b-none': dropdownIsActive }"
       @click="toggleDropdown()"
     >
-      <span class="ml-2 my-1">{{ selected }}</span>
+      <span class="ml-2 my-1">{{ selectedLabel }}</span>
       <div v-show="dropdownIsActive" class="absolute right-3 mt-px">
         <BaseIcon icon="uil:angle-up" />
       </div>
@@ -17,8 +17,8 @@
 
     <ul
       v-show="dropdownIsActive"
-      :class="{ 'rounded-t-none': dropdownIsActive }"
-      class="absolute block -mt-px w-full bg-primary-lightest py-2 border rounded z-40
+      :class="{ 'rounded-t-none': dropdownIsActive, 'max-h-40': compact }"
+      class="absolute block -mt-px w-full bg-primary-lightest py-2 border rounded z-40 
       overflow-scroll"
       role="listbox"
     >
@@ -51,6 +51,10 @@ export default {
     },
     value: {
       type: String
+    },
+    compact: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -58,6 +62,34 @@ export default {
     return {
       dropdownIsActive: false,
       selected: ''
+    }
+  },
+
+  computed: {
+    selectedLabel() {
+      if (this.selected !== undefined) {
+        return this.selected.label || this.selected
+      }
+    }
+  },
+
+  watch: {
+    value() {
+      const { value, options } = this
+
+      if (value !== undefined) {
+        if (options && options.length > 0) {
+          const selected =
+            find(options, value) || find(options, { value }) || find(options, { label: value })
+          if (selected !== undefined) {
+            this.selected = selected.label || selected
+            return
+          }
+        }
+
+        // Fallback
+        this.selected = value
+      }
     }
   },
 
