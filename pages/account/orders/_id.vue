@@ -196,6 +196,7 @@
 
 <script>
 import find from 'lodash/find'
+import padStart from 'lodash/padStart'
 
 export default {
   name: 'Order',
@@ -222,7 +223,11 @@ export default {
     },
 
     expDate() {
-      return `${this.billing.card.expMonth} / ${this.billing.card.expYear.toString().slice(-2)}`
+      return `${padStart(
+        this.billing.card.expMonth,
+        2,
+        '0'
+      )} / ${this.billing.card.expYear.toString().slice(-2)}`
     },
 
     statusMessage() {
