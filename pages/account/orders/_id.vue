@@ -166,7 +166,10 @@
                 </div>
 
                 <div class="flex mb-4">
-                  <span class="tracking-large">···· ···· {{ billing.card.last4 }}</span>
+                  <div class="text-base">
+                    <span class="tracking-large">···· ····</span>
+                    <span>&nbsp;{{ billing.card.last4 }}</span>
+                  </div>
 
                   <span class="ml-auto">{{ expDate }}</span>
                 </div>
@@ -196,12 +199,12 @@ import find from 'lodash/find'
 
 export default {
   name: 'Order',
-  
+
   async fetch() {
     const order = await this.$swell.account.getOrder(this.$route.params.id)
 
     if (order) this.order = order
-    console.log(order)
+    console.log(order.billing)
   },
 
   data() {
