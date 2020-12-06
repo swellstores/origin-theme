@@ -51,6 +51,10 @@
                   <span class="label-sm text-error" v-if="!$v.cardExpiry.required"
                     >Enter your card expiry date.</span
                   >
+
+                  <span class="label-sm text-error" v-else-if="!$v.cardExpiry.validDate"
+                    >Enter a valid expiry date.</span
+                  >
                 </template>
               </div>
 
@@ -149,12 +153,45 @@
 </template>
 
 <script>
+// Helpers
 import values from 'lodash/values'
 import every from 'lodash/every'
 import isEmpty from 'lodash/isEmpty'
 
+// Validation helper
 import { validationMixin } from 'vuelidate'
-import { required, maxLength, integer } from 'vuelidate/lib/validators'
+import { required, maxLength, integer, helpers } from 'vuelidate/lib/validators'
+
+const validDate = date => {
+  if (!date.includes('/')) return false
+
+  let month = date.split('/')[0].trim()
+  let year = date.split('/')[1].trim()
+
+  if (!month || !year || (!year.length === 2 && !year.length === 4)) return false
+
+  if (year.length === 2) {
+    year =
+      new Date()
+        .getFullYear()
+        .toString()
+        .substring(0, 2) + year
+  }
+
+  const currMonth = new Date().getMonth() + 1
+  const currYear = new Date().getFullYear()
+
+  const expMonth = parseInt(month, 10)
+  const expYear = parseInt(year, 10)
+
+  if (month < 0 || month > 12) return false
+
+  if (expYear > currYear || (expYear === currYear && month >= currMonth)) {
+    return true
+  } else {
+    return false
+  }
+}
 
 export default {
   mixins: [validationMixin],
@@ -221,7 +258,17 @@ export default {
     },
     expYear() {
       if (!this.cardExpiry.includes('/')) return
-      return `20${this.cardExpiry.split('/')[1].trim()}`
+      const year = this.cardExpiry.split('/')[1].trim()
+      // Affix century if year is only two digits
+      if (year.length === 2) {
+        return (
+          new Date()
+            .getFullYear()
+            .toString()
+            .substring(0, 2) + year
+        )
+      }
+      return year
     }
   },
 
@@ -232,7 +279,6 @@ export default {
         this.$fetch()
 
         if (this.newBillingAddress) {
-          
           this.billingAddress = this.newBillingAddress
           this.formattedDefaultAddress = `${this.newBillingAddress.name}, ${this.newBillingAddress
             .address2 || ''} ${this.newBillingAddress.address1}, ${this.newBillingAddress.state}, ${
@@ -323,6 +369,7 @@ export default {
         }
       } catch (err) {
         this.isCreating = false
+        console.log(err)
         this.$store.dispatch('showNotification', {
           message: 'There was an issue adding your payment method.',
           type: 'error'
@@ -398,7 +445,7 @@ export default {
 
   validations: {
     cardNumber: { required, maxLength: maxLength(19) },
-    cardExpiry: { required },
+    cardExpiry: { required, validDate },
     cardCVC: { required, integer, maxLength: maxLength(4) }
   }
 }
