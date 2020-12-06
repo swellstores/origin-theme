@@ -237,9 +237,7 @@ export default {
           this.formattedDefaultAddress = `${this.newBillingAddress.name}, ${this.newBillingAddress
             .address2 || ''} ${this.newBillingAddress.address1}, ${this.newBillingAddress.state}, ${
             this.newBillingAddress.city
-          } ${this.newBillingAddress.zip}, ${this.getCountryName(this.card.billing.country)}`
-
-          console.log(this.formattedDefaultAddress)
+          } ${this.newBillingAddress.zip}, ${this.getCountryName(this.newBillingAddress.country)}`
         }
       }
     }
