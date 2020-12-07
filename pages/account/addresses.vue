@@ -152,7 +152,7 @@ export default {
     },
     sortedAddresses() {
       if (!this.addresses) return
-      return this.addresses.sort((a, b) => a.dateCreated - b.dateCreated)
+      return this.addresses.sort((a, b) => new Date(a.dateCreated) - new Date(b.dateCreated))
     }
   },
 
