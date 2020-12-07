@@ -345,7 +345,6 @@ export default {
               firstName: null,
               lastName: null,
               name: null,
-              company: null,
               address1: null,
               address2: null,
               city: null,
