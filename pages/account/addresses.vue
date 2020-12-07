@@ -93,7 +93,7 @@
 
       <PanelConfirmation
         v-if="defaultPanelIsActive"
-        heading="Set as default"
+        heading="Set default address"
         promptMessage="Are you sure you want to make this your default address?"
         acceptLabel="Yes"
         refuseLabel="No"
