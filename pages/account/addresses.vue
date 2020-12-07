@@ -73,6 +73,7 @@
         v-if="editAddressPanelIsActive"
         :type="editAddressType"
         :address="addressToEdit"
+        :addressesLength="addresses.length"
         :defaultAddressId="defaultAddressId"
         @click-close="editAddressPanelIsActive = false"
         @refresh="$fetch"

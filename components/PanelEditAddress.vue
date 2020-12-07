@@ -123,7 +123,12 @@
             </div>
 
             <div v-if="flow === 'default'" class="checkbox mb-6">
-              <input type="checkbox" id="set-default" v-model="setDefault" />
+              <input
+                type="checkbox"
+                id="set-default"
+                v-model="setDefault"
+                :disabled="disableDefaultOption"
+              />
 
               <label class="w-full" for="set-default">
                 <p>Make this my default shipping address</p>
@@ -195,6 +200,10 @@ export default {
     defaultAddressId: {
       type: String,
       default: null
+    },
+    addressesLength: {
+      type: Number,
+      default: 0
     }
   },
 
@@ -212,6 +221,18 @@ export default {
       isCreating: false,
       isUpdating: false,
       isDeleting: false
+    }
+  },
+
+  computed: {
+    disableDefaultOption() {
+      // Disable if no default address is set and no addresses exist
+      if (!this.defaultAddressId && !this.addressesLength) return true
+      // Disable if current address is the only one and default
+      if (this.address) {
+        if (this.defaultAddressId === this.address.id && this.addressesLength === 1) return true
+      }
+      return false
     }
   },
 
@@ -301,9 +322,9 @@ export default {
         // Close panel and fetch updated data
         this.isCreating = false
         this.$emit('click-close')
-        this.$emit('refresh')
-        this.$store.dispatch('showNotification', { message: 'Address created.' })
         this.$store.dispatch('initializeCustomer')
+        this.$store.dispatch('showNotification', { message: 'Address created.' })
+        this.$emit('refresh')
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: 'There was an error creating the address.',
@@ -324,6 +345,7 @@ export default {
               firstName: null,
               lastName: null,
               name: null,
+              company: null,
               address1: null,
               address2: null,
               city: null,
@@ -337,8 +359,9 @@ export default {
         // Close panel and fetch updated data
         this.isDeleting = false
         this.$emit('click-close')
-        this.$emit('refresh')
+        this.$store.dispatch('initializeCustomer')
         this.$store.dispatch('showNotification', { message: 'Address deleted.', type: 'error' })
+        this.$emit('refresh')
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: 'There was an error deleting the address.',
@@ -349,20 +372,27 @@ export default {
   },
 
   created() {
-    // Prefill form data for updating existing data
-    if (!this.address) return
+    // Prefill form data for updating existing
+    if (this.address) {
+      this.firstName = this.address.firstName || ''
+      this.lastName = this.address.lastName || ''
+      this.address1 = this.address.address1 || ''
+      this.address2 = this.address.address2 || ''
+      this.state = this.address.state || ''
+      this.city = this.address.city || ''
+      this.zip = this.address.zip || ''
+      this.country = this.address.country || ''
 
-    this.firstName = this.address.firstName || ''
-    this.lastName = this.address.lastName || ''
-    this.address1 = this.address.address1 || ''
-    this.address2 = this.address.address2 || ''
-    this.state = this.address.state || ''
-    this.city = this.address.city || ''
-    this.zip = this.address.zip || ''
-    this.country = this.address.country || ''
+      // Set default check state
+      if (this.defaultAddressId === this.address.id) {
+        this.setDefault = true
+      }
+    }
 
-    // Set default check state
-    if (this.defaultAddressId === this.address.id) this.setDefault = true
+    // If there's no default card, force set default
+    if (!this.defaultAddressId && !this.addressesLength && this.type === 'new') {
+      this.setDefault = true
+    }
   },
 
   validations: {
