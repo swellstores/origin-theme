@@ -5,7 +5,8 @@ export const state = () => ({
   currency: 'USD',
   locale: 'en-US',
   notification: null,
-  cookiesWereAccepted: false
+  cookiesWereAccepted: false,
+  headerIsVisible: true
 })
 
 export const actions = {
