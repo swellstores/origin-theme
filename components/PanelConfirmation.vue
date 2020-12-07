@@ -13,17 +13,19 @@
           <h3 v-if="heading">{{ heading }}</h3>
           <p class="pb-10">{{ promptMessage }}</p>
 
-          <ButtonLoading
-            class="dark mb-4 w-full"
-            @click.native="accept()"
-            :label="acceptLabel"
-            :loadingLabel="loadingLabel"
-            :isLoading="isLoading"
-          />
+          <div class="block md:flex">
+            <ButtonLoading
+              class="dark mb-4 w-full md:w-1/2 md:mr-2 md:mb-0"
+              @click.native="accept()"
+              :label="acceptLabel"
+              :loadingLabel="loadingLabel"
+              :isLoading="isLoading"
+            />
 
-          <button class="btn light w-full" type="button" @click="refuse()">
-            {{ refuseLabel }}
-          </button>
+            <button class="btn light w-full md:w-1/2 md:ml-2" type="button" @click="refuse()">
+              {{ refuseLabel }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -35,7 +37,7 @@ export default {
   props: {
     heading: {
       type: String,
-      default: '',
+      default: ''
     },
     promptMessage: {
       type: String,
