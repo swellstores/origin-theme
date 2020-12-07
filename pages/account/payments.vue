@@ -41,6 +41,7 @@
         v-if="editCardPanelIsActive"
         :type="editCardType"
         :card="cardToEdit"
+        :cardsLength="cards.length"
         :defaultCardId="defaultCardId"
         :refresh="refreshCardPanel"
         :newBillingAddress="newBillingAddress"

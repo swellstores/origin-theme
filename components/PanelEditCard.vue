@@ -80,7 +80,7 @@
                 type="checkbox"
                 id="set-default"
                 v-model="setDefault"
-                :disabled="!defaultCardId"
+                :disabled="disableDefaultOption"
               />
 
               <label class="w-full" for="set-default">
@@ -98,6 +98,7 @@
             <span class="block text-md font-semibold mb-2">Billing address</span>
 
             <InputDropdown
+              v-if="addresses && addresses.length"
               :compact="true"
               :options="formattedAddressOptions"
               :value="
@@ -107,6 +108,9 @@
               class="text-sm max-h-48"
               @change="billingAddress = $event"
             />
+            <span class="block text-sm text-primary-dark" v-else
+              >You have no existing addresses. Create one below.</span
+            >
 
             <button class="label-sm-bold mt-6" @click="$emit('new-address')">
               + Add a new address
@@ -207,6 +211,10 @@ export default {
       type: Object,
       default: null
     },
+    cardsLength: {
+      type: Number,
+      default: 0
+    },
     type: {
       type: String
     },
@@ -269,6 +277,15 @@ export default {
         )
       }
       return year
+    },
+    disableDefaultOption() {
+      // Disable if no default card is set and no cards exist
+      if (!this.defaultCardId && !this.cardsLength) return true
+      // Disable if current card is the only one and default
+      if (this.card) {
+        if (this.defaultCardId === this.card.id && this.cardsLength === 1) return true
+      }
+      return false
     }
   },
 
@@ -438,7 +455,7 @@ export default {
     }
 
     // If there's no default card, force set default
-    if (!this.defaultCardId && this.type === 'new') {
+    if (!this.defaultCardId && !this.cardsLength && this.type === 'new') {
       this.setDefault = true
     }
   },
