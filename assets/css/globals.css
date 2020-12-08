@@ -46,7 +46,31 @@ button {
     @apply cursor-wait;
   }
 
+  &.dark {
+    @apply bg-primary-darker text-primary-lightest;
+
+    &:hover {
+      @apply bg-primary-darkest;
+    }
+  }
+
   &.light {
+    @apply bg-primary-light text-primary-darkest;
+
+    &:hover {
+      @apply bg-primary-med;
+    }
+  }
+
+  &.light-error {
+    @apply bg-primary-light text-primary-darkest;
+
+    &:hover {
+      @apply bg-error text-primary-lightest;
+    }
+  }
+
+  &.lighter {
     @apply bg-primary-lighter;
 
     &:hover {
@@ -132,4 +156,37 @@ img {
 
 .loader-el {
   @apply bg-primary-light rounded-sm animate-pulse;
+}
+
+.checkbox {
+  @apply flex pb-1;
+
+  & input {
+    @apply p-0 m-0 border-0 appearance-none w-0 h-0 invisible;
+  }
+
+  & input:checked + label {
+    & .indicator {
+      @apply bg-primary-darkest border-primary-darkest;
+    }
+  }
+
+  & label {
+    @apply relative flex items-center appearance-none;
+
+    & .indicator {
+      @apply flex justify-center items-center cursor-pointer w-6 h-6 border border-primary-med rounded;
+      transition: all 0.2s ease;
+    }
+
+    & p {
+      @apply ml-0 font-medium;
+    }
+  }
+
+  & .check {
+    &:hover {
+      opacity: 1;
+    }
+  }
 }

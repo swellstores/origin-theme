@@ -9,7 +9,8 @@ Vue.use({
     Vue.mixin({
       methods: {
         formatMoney,
-        resolveUrl
+        resolveUrl,
+        getCountryName
       }
     })
 
@@ -106,4 +107,10 @@ function getContentPath({ type, value, url }) {
     default:
       return `/${slug}`
   }
+}
+
+function getCountryName(code) {
+  const countries = require('i18n-iso-countries')
+  countries.registerLocale(require('i18n-iso-countries/langs/en.json'))
+  return countries.getName(code, 'en', { select: 'official' })
 }
