@@ -1,6 +1,6 @@
 <template>
   <transition name="customerLogin" :duration="700" appear>
-    <div class="z-40 fixed inset-0">
+    <div class="z-40 fixed inset-0" v-enter-key="handleEnterKey">
       <!-- Overlay -->
       <div
         class="overlay absolute w-full h-full bg-primary-darker hidden md:block"
@@ -408,6 +408,22 @@ export default {
         }
       } catch (err) {
         console.log(err)
+      }
+    },
+
+    async handleEnterKey() {
+      switch (this.flow) {
+        case 'login':
+          await this.login()
+          break
+        case 'signup':
+          await this.createAccount()
+          break
+        case 'forgot-password':
+          await this.sendPasswordReset()
+          break
+        default:
+          return
       }
     }
   },

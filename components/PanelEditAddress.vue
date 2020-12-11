@@ -1,6 +1,6 @@
 <template>
   <transition name="editPanel" :duration="700" appear>
-    <div class="z-40 fixed inset-0">
+    <div class="z-40 fixed inset-0" v-enter-key="handleEnterKey">
       <!-- Overlay -->
       <div class="overlay" @click="$emit('click-close')"></div>
 
@@ -366,6 +366,19 @@ export default {
           message: 'There was an error deleting the address.',
           type: 'error'
         })
+      }
+    },
+
+    async handleEnterKey() {
+      switch (this.type) {
+        case 'update':
+          await this.updateAddress()
+          break
+        case 'new':
+          await this.createAddress()
+          break
+        default:
+          return
       }
     }
   },

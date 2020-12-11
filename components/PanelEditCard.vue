@@ -1,6 +1,6 @@
 <template>
   <transition name="editPanel" :duration="700" appear>
-    <div class="z-40 fixed inset-0">
+    <div class="z-40 fixed inset-0" v-enter-key="handleEnterKey">
       <!-- Overlay -->
       <div class="overlay" @click="$emit('click-close')"></div>
 
@@ -421,6 +421,19 @@ export default {
           message: 'There was an issue deleting your payment method.',
           type: 'error'
         })
+      }
+    },
+
+    async handleEnterKey() {
+      switch (this.type) {
+        case 'update':
+          await this.updateCard()
+          break
+        case 'new':
+          await this.createCard()
+          break
+        default:
+          return
       }
     }
   },

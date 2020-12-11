@@ -1,6 +1,6 @@
 <template>
   <transition name="editPanel" :duration="700" appear>
-    <div class="z-40 fixed inset-0">
+    <div class="z-40 fixed inset-0" v-enter-key.native="updateProfile">
       <!-- Overlay -->
       <div class="overlay" @click="$emit('click-close')"></div>
 
