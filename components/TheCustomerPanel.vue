@@ -320,15 +320,20 @@ export default {
             message: 'You’ve succesfully created an account.'
           })
         } else {
-          throw Error(account)
+          throw {
+            account,
+            error: new Error()
+          }
         }
       } catch (err) {
         // Throw error if email already exists
-        if (err.email && err.email.code === 'UNIQUE') {
-          this.$store.dispatch('showNotification', {
-            message: 'It seems you have an account registered under the same email address.',
-            type: 'error'
-          })
+        if (err.account) {
+          if (err.account.email && err.account.email.code === 'UNIQUE') {
+            this.$store.dispatch('showNotification', {
+              message: 'An account already exists under this email address. Please log in.',
+              type: 'error'
+            })
+          }
         } else {
           this.$store.dispatch('showNotification', {
             message: 'There was an error creating your account. Please try again later.',
