@@ -153,41 +153,107 @@
           </div>
 
           <!-- Payment details -->
-          <div class="mb-10">
-            <p class="text-base font-semibold pb-4">Payment method</p>
+          <template v-if="order.paid">
+            <div class="mb-10">
+              <p class="text-base font-semibold pb-4">Payment method</p>
 
-            <div class="grid gridcols-1 md:grid-cols-2 rounded border border-primary-med">
-              <div class="md:border-b-0 md: border-r border-b border-primary-med p-4">
-                <div class="flex mb-4">
-                  <BrandCardIcon :brand="billing.card.brand" />
-                  <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold">{{
-                    billing.card.brand
-                  }}</span>
-                </div>
-
-                <div class="flex mb-4">
-                  <div class="text-base">
-                    <span class="tracking-large">···· ····</span>
-                    <span>&nbsp;{{ billing.card.last4 }}</span>
+              <div class="grid gridcols-1 md:grid-cols-2 rounded border border-primary-med">
+                <!-- Method: Card -->
+                <div
+                  v-if="billing.card && billing.method === 'card'"
+                  class="md:border-b-0 md: border-r border-b border-primary-med p-4"
+                >
+                  <div class="flex mb-4">
+                    <BrandCardIcon :brand="billing.card.brand" />
+                    <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold">{{
+                      billing.card.brand
+                    }}</span>
                   </div>
 
-                  <span class="ml-auto">{{ expDate }}</span>
+                  <div class="flex mb-4">
+                    <div class="text-base">
+                      <span class="tracking-large">···· ····</span>
+                      <span>&nbsp;{{ billing.card.last4 }}</span>
+                    </div>
+
+                    <span class="ml-auto">{{ expDate }}</span>
+                  </div>
+
+                  <span class="text-sm">{{ billing.name }}</span>
                 </div>
 
-                <span class="text-sm">{{ billing.name }}</span>
-              </div>
+                <!-- Method: Account Credit -->
+                <div
+                  v-else-if="billing.method === 'account'"
+                  class="md:border-b-0 md: border-r border-b border-primary-med p-4"
+                >
+                  <div class="flex mb-4">
+                    <BaseIcon icon="uil:money-bill" />
+                    <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold">Credit</span>
+                  </div>
+                  <p>Your order was paid using your account credit.</p>
+                </div>
 
-              <div class="text-sm p-4">
-                <p class="font-semibold pb-2">Billing address</p>
-                <p>
-                  {{ billing.name }}<br />
-                  {{ billing.address2 }} {{ billing.address1 }}, {{ billing.city }} {{ billing.zip
-                  }}<br />
-                  {{ billing.state }} {{ getCountryName(billing.country) }}
-                </p>
+                <!-- Method: Gift Card -->
+                <div
+                  v-else-if="billing.method === 'giftcard' && order.giftcards"
+                  class="md:border-b-0 md: border-r border-b border-primary-med p-4"
+                >
+                  <div class="flex mb-4">
+                    <BaseIcon icon="uil:gift" />
+                    <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold">Gift Card</span>
+                  </div>
+
+                  <p class="text-base tracking-large">
+                    <span class="tracking-large"
+                      >•••• •••• •••• {{ order.giftcards[0].last4 }}</span
+                    >
+                  </p>
+
+                  <p class="text-sm pt-4">
+                    <span class="font-semibold pr-2">Total</span
+                    ><span>{{ formatMoney(order.giftcardTotal) }}</span>
+                  </p>
+                </div>
+
+                <!-- Method: Bank Deposity -->
+                <div
+                  v-else-if="billing.method === 'bank_deposit'"
+                  class="md:border-b-0 md: border-r border-b border-primary-med p-4"
+                >
+                  <div class="flex mb-4">
+                    <BaseIcon icon="uil:University" />
+                    <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold">Bank Deposit</span>
+                  </div>
+                  <p>Your order was paid using bank deposit.</p>
+                </div>
+
+                <!-- Method: Bank Deposity -->
+                <div
+                  v-else-if="billing.method === 'cash_on_delivery'"
+                  class="md:border-b-0 md: border-r border-b border-primary-med p-4"
+                >
+                  <div class="flex mb-4">
+                    <BaseIcon icon="uil:money-bill" />
+                    <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold"
+                      >Cash On Delivery</span
+                    >
+                  </div>
+                  <p>Your order can be paid with cash on delivery.</p>
+                </div>
+
+                <div class="text-sm p-4">
+                  <p class="font-semibold pb-2">Billing address</p>
+                  <p>
+                    {{ billing.name }}<br />
+                    {{ billing.address2 }} {{ billing.address1 }}, {{ billing.city }}
+                    {{ billing.zip }}<br />
+                    {{ billing.state }} {{ getCountryName(billing.country) }}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          </template>
         </template>
       </div>
     </div>
@@ -205,7 +271,6 @@ export default {
     const order = await this.$swell.account.getOrder(this.$route.params.id)
 
     if (order) this.order = order
-    console.log(order.billing)
   },
 
   data() {
