@@ -6,6 +6,10 @@ body {
 a,
 button {
   @apply transition-all duration-200 ease-out;
+
+  &.outline-none {
+    outline: none !important;
+  }
 }
 
 @responsive {

@@ -63,7 +63,7 @@
 
             <div class="border-t">
               <div class="container">
-                <button class="w-full flex items-center py-6" @click="logout()">
+                <button class="w-full flex items-center py-6 outline-none" @click="logout()">
                   <BaseIcon class="mr-2" icon="uil:signout" size="lg" />Log out
                 </button>
               </div>
@@ -385,6 +385,7 @@ export default {
         }
 
         this.$store.commit('setState', { key: 'customerLoggedIn', value: true })
+        this.$store.dispatch('showNotification', { message: 'You’ve succesfully logged in.' })
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: 'Your email or password was entered incorrectly.',
