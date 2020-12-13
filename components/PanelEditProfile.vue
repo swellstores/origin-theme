@@ -200,7 +200,7 @@ export default {
     this.firstName = this.customer.firstName
     this.lastName = this.customer.lastName
     this.email = this.customer.email
-    this.optInEmail = this.customer.optInEmail
+    this.optInEmail = this.customer.emailOptin
   },
 
   validations: {
