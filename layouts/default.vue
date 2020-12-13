@@ -1,10 +1,12 @@
 <template>
   <div class="relative">
-    <div :class="{ 'overflow-y-hidden': searchIsActive || customerLoginIsActive || cartIsActive }">
+    <div :class="{ 'overflow-y-hidden': searchIsActive || customerPanelIsActive || cartIsActive }">
       <TheHeader
         @click-cart="cartIsActive = true"
         @click-search="searchIsActive = true"
-        @click-customer-login="customerLoginIsActive = true"
+        @click-customer-login="
+          $store.commit('setState', { key: 'customerPanelIsActive', value: true })
+        "
       />
       <div style="min-height: 100vh">
         <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
@@ -22,7 +24,10 @@
       />
     </transition>
     <TheCart v-show="cartIsActive" @click-close="cartIsActive = false" />
-    <TheCustomerPanel v-if="customerLoginIsActive" @click-close="customerLoginIsActive = false" />
+    <TheCustomerPanel
+      v-show="customerPanelIsActive"
+      @click-close="$store.commit('setState', { key: 'customerPanelIsActive', value: false })"
+    />
     <transition name="fade">
       <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
     </transition>
@@ -37,14 +42,13 @@ export default {
   data() {
     return {
       cartIsActive: false,
-      customerLoginIsActive: false,
       searchIsActive: false,
       cookieNotificationIsActive: false // TODO set true,
     }
   },
 
   computed: {
-    ...mapState(['notification', 'cookiesWereAccepted'])
+    ...mapState(['notification', 'cookiesWereAccepted', 'customerPanelIsActive'])
   },
 
   watch: {

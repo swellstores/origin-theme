@@ -1,10 +1,12 @@
 <template>
   <div class="relative">
-    <div :class="{ 'overflow-y-hidden': searchIsActive || customerLoginIsActive || cartIsActive }">
+    <div :class="{ 'overflow-y-hidden': searchIsActive || customerPanelIsActive || cartIsActive }">
       <TheHeader
         @click-cart="cartIsActive = true"
         @click-search="searchIsActive = true"
-        @click-customer-login="customerLoginIsActive = true"
+        @click-customer-login="
+          $store.commit('setState', { key: 'customerPanelIsActive', value: true })
+        "
       />
 
       <div class="min-h-screen bg-primary-lighter">
@@ -21,9 +23,7 @@
                   class="flex flex-row whitespace-no-wrap items-center mt-2 cursor-pointer"
                   @click="editProfilePanelIsActive = true"
                 >
-                  <BaseIcon icon="uil:edit" size="sm" /><span class="ml-2"
-                    >Edit profile</span
-                  >
+                  <BaseIcon icon="uil:edit" size="sm" /><span class="ml-2">Edit profile</span>
                 </button>
               </div>
 
@@ -88,7 +88,10 @@
     </transition>
 
     <TheCart v-show="cartIsActive" @click-close="cartIsActive = false" />
-    <TheCustomerPanel v-show="customerLoginIsActive" @click-close="customerLoginIsActive = false" />
+    <TheCustomerPanel
+      v-show="customerPanelIsActive"
+      @click-close="$store.commit('setState', { key: 'customerPanelIsActive', value: false })"
+    />
     <transition name="fade">
       <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
     </transition>
@@ -118,13 +121,12 @@ export default {
       ],
       editProfilePanelIsActive: false,
       cartIsActive: false,
-      customerLoginIsActive: false,
       searchIsActive: false
     }
   },
 
   computed: {
-    ...mapState(['notification', 'customer']),
+    ...mapState(['notification', 'customer', 'customerLoggedIn', 'customerPanelIsActive']),
     currentRouteValue() {
       const path = this.$route.path
 
@@ -162,13 +164,28 @@ export default {
     }
   },
 
-  mounted() {
-    // Initialize customer (if logged in, set customer state)
-    this.$store.dispatch('initializeCustomer')
-  }
+  created () {
+    // Close customer panel by default
+    this.$store.commit('setState', { key: 'customerPanelIsActive', value: false })
+  },
 
-  /* TODO: Persistent auth */
-  /* middleware: 'account' */
+  async mounted() {
+    // Initialize customer (if logged in, set customer state)
+    const customer = await this.$swell.account.get()
+
+    // Persistent middleware workaround
+    if (customer) {
+      this.$store.dispatch('initializeCustomer')
+
+    } else {
+      this.$store.dispatch('showNotification', {
+        message: 'You are currently not loogged in. Please log in to continue.',
+        type: 'error'
+      })
+      this.$store.commit('setState', { key: 'customerPanelIsActive', value: true })
+      this.$router.push('/')
+    }
+  }
 }
 </script>
 
