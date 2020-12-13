@@ -17,7 +17,13 @@
           <!-- Fields -->
           <div class="pt-6">
             <div class="mb-6">
-              <InputText class="mb-2" label="First Name" v-model="firstName" />
+              <InputText
+                class="mb-2"
+                label="First Name"
+                name="fname"
+                autocomplete="given-name"
+                v-model="firstName"
+              />
               <template v-if="$v.firstName.$dirty">
                 <span class="label-sm text-error" v-if="!$v.firstName.required"
                   >Please enter your first name.</span
@@ -30,7 +36,13 @@
             </div>
 
             <div class="mb-6">
-              <InputText class="mb-2" label="First Name" v-model="lastName" />
+              <InputText
+                class="mb-2"
+                label="First Name"
+                name="surname"
+                autocomplete="email"
+                v-model="lastName"
+              />
               <template v-if="$v.lastName.$dirty">
                 <span class="label-sm text-error" v-if="!$v.lastName.required"
                   >Please enter your last name.</span
@@ -47,6 +59,8 @@
                 class="mb-2"
                 label="Email"
                 placeholder="Your email address"
+                name="email"
+                autocomplete="given-name"
                 v-model="email"
               />
 
@@ -68,6 +82,8 @@
                 type="password"
                 hint="Must include a minimum of 6 characters."
                 placeholder="Enter your new password"
+                name="new-password"
+                autcomplete="new-password"
                 v-model="password"
               />
 

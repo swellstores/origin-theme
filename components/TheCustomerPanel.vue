@@ -78,6 +78,8 @@
                   class="mb-2"
                   label="Email"
                   placeholder="Your email address"
+                  name="email"
+                  autocomplete="email"
                   v-model="customerEmail"
                 />
 
@@ -98,6 +100,8 @@
                   label="Password"
                   type="password"
                   placeholder="Your password"
+                  name="currentPassword"
+                  autocomplete="current-password"
                   v-model="customerPassword"
                 />
 
@@ -135,7 +139,13 @@
             <!-- Create account -->
             <div v-if="flow === 'signup'" class="relative container pt-6">
               <div class="mb-6">
-                <InputText class="mb-2" label="First Name" v-model="customerFirstName" />
+                <InputText
+                  class="mb-2"
+                  label="First Name"
+                  name="fname"
+                  autocomplete="given-name"
+                  v-model="customerFirstName"
+                />
                 <template v-if="$v.customerFirstName.$dirty">
                   <span class="label-sm text-error" v-if="!$v.customerFirstName.required"
                     >Please enter your first name.</span
@@ -148,7 +158,13 @@
               </div>
 
               <div class="mb-6">
-                <InputText class="mb-2" label="Last Name" v-model="customerLastName" />
+                <InputText
+                  class="mb-2"
+                  label="Last Name"
+                  name="lastName"
+                  autocomplete="family-name"
+                  v-model="customerLastName"
+                />
                 <template v-if="$v.customerLastName.$dirty">
                   <span class="label-sm text-error" v-if="!$v.customerLastName.required"
                     >Please enter your last name.</span
@@ -165,6 +181,8 @@
                   class="mb-2"
                   label="Email"
                   placeholder="Your email address"
+                  name="email"
+                  autocomplete="email"
                   v-model="customerEmail"
                 />
 
@@ -186,6 +204,8 @@
                   type="password"
                   hint="Must include a minimum of 6 characters."
                   placeholder="Your password"
+                  name="newPassword"
+                  autocomplete="new-password"
                   v-model="customerPassword"
                 />
 
@@ -224,6 +244,8 @@
                   class="mb-2"
                   label="Email"
                   placeholder="Your email address"
+                  name="email"
+                  autocomplete="email"
                   v-model="customerEmail"
                 />
 

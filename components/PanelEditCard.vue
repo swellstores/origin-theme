@@ -22,6 +22,8 @@
                 class="mb-2"
                 :class="{ 'tracking-large': type === 'update' }"
                 label="Card number"
+                name="ccNumber"
+                autocomplete="cc-number"
                 :disabled="type === 'update'"
                 v-model="cardNumber"
                 v-cardformat:formatCardNumber
@@ -44,6 +46,8 @@
                   label="Card Expiry"
                   v-model="cardExpiry"
                   :disabled="type === 'update'"
+                  name="ccExpiry"
+                  autocomplete="cc-exp"
                   v-cardformat:formatCardExpiry
                 />
 
@@ -59,7 +63,13 @@
               </div>
 
               <div v-if="type === 'new'" class="w-1/2 ml-3">
-                <InputText label="CVC" v-model="cardCVC" v-cardformat:formatCardCVC />
+                <InputText
+                  label="CVC"
+                  v-model="cardCVC"
+                  name="ccCVC"
+                  autocomplete="cc-csc"
+                  v-cardformat:formatCardCVC
+                />
 
                 <template v-if="$v.cardCVC.$dirty">
                   <span class="label-sm text-error" v-if="!$v.cardCVC.required"

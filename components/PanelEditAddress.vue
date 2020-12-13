@@ -18,7 +18,13 @@
           <!-- Fields -->
           <div class="pt-6">
             <div class="mb-6">
-              <InputText class="mb-2" label="First Name" v-model="firstName" />
+              <InputText
+                class="mb-2"
+                label="First Name"
+                name="fname"
+                autocomplete="given-name"
+                v-model="firstName"
+              />
               <template v-if="$v.firstName.$dirty">
                 <span class="label-sm text-error" v-if="!$v.firstName.required"
                   >Please enter your first name.</span
@@ -31,7 +37,13 @@
             </div>
 
             <div class="mb-6">
-              <InputText class="mb-2" label="Last Name" v-model="lastName" />
+              <InputText
+                class="mb-2"
+                label="Last Name"
+                name="surname"
+                autocmplete="family-name"
+                v-model="lastName"
+              />
               <template v-if="$v.lastName.$dirty">
                 <span class="label-sm text-error" v-if="!$v.lastName.required"
                   >Please enter your last name.</span
@@ -44,7 +56,13 @@
             </div>
 
             <div class="mb-6">
-              <InputText class="mb-2" label="Address" v-model="address1" />
+              <InputText
+                class="mb-2"
+                label="Address"
+                name="address1"
+                autocomplete="address-line1"
+                v-model="address1"
+              />
               <template v-if="$v.address1.$dirty">
                 <span class="label-sm text-error" v-if="!$v.address1.required"
                   >Please enter your address.</span
@@ -52,10 +70,22 @@
               </template>
             </div>
 
-            <InputText class="mb-6" label="Apartment / Floor / Suite" v-model="address2" />
+            <InputText
+              class="mb-6"
+              label="Apartment / Floor / Suite"
+              name="address2"
+              autocomplete="address-line2"
+              v-model="address2"
+            />
 
             <div class="mb-6">
-              <InputText class="mb-2" label="City" v-model="city" />
+              <InputText
+                class="mb-2"
+                label="City"
+                name="city"
+                autocomplete="address-level2"
+                v-model="city"
+              />
               <template v-if="$v.city.$dirty">
                 <span class="label-sm text-error" v-if="!$v.city.required"
                   >Please enter your address.</span
@@ -90,7 +120,13 @@
               </div>
 
               <div class="w-1/2 ml-3">
-                <InputText class="mb-2" label="Zip Code" v-model="zip" />
+                <InputText
+                  class="mb-2"
+                  label="Zip Code"
+                  name="zipCode"
+                  autocomplete="postal-code"
+                  v-model="zip"
+                />
 
                 <template v-if="$v.zip.$dirty">
                   <span class="label-sm text-error" v-if="!$v.zip.required"

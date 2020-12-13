@@ -8,6 +8,8 @@
       v-on:input="$emit('input', $event.target.value)"
       :disabled="disabled"
       :placeholder="placeholder"
+      :name="name"
+      :autocomplete="autocomplete"
     />
 
     <span v-if="hint" class="inline-block text-sm text-primary-dark mt-1">{{ hint }}</span>
@@ -39,6 +41,14 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    name: {
+      type: String,
+      default: ''
+    },
+    autocomplete: {
+      type: String,
+      default: ''
     }
   }
 }
