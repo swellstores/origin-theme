@@ -129,7 +129,7 @@ export default {
           return ['Your order is currently on hold.', 'On hold']
           break
         case 'complete':
-          return ['Your order has been fulfilled.', 'Fulilled']
+          return ['Your order has been fulfilled.', 'Fulfilled']
           break
         case 'canceled':
           return ['Your order has been cancelled', 'Cancelled']
