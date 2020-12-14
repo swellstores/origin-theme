@@ -19,7 +19,7 @@
           />
 
           <template v-if="otherAddresses && otherAddresses.length">
-            <span v-if="defaultAddress" class="block md:hidden label-xs-bold-faded my-6"
+            <span v-if="defaultAddress" class="block md:hidden label-xs-bold-faded"
               >Other addresses</span
             >
 

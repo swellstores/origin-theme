@@ -111,21 +111,19 @@ export default {
 
 .confirmPanel-enter .panel,
 .confirmPanel-leave-to .panel {
-  @apply transform translate-y-full;
+  @apply transform translate-y-1/4 opacity-0;
 
   @screen md {
     transform: translate(-50%, calc(-50% + 5rem));
-    opacity: 0;
   }
 }
 
 .confirmPanel-enter-to .panel,
 .confirmPanel-leave .overlay {
-  @apply transform translate-y-0;
+  @apply transform translate-y-0 opacity-100;
 
   @screen md {
     transform: translate(-50%, -50%);
-    opacity: 1;
   }
 }
 </style>
