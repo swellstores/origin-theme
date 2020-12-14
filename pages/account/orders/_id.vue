@@ -46,10 +46,10 @@
               <span class="font-semibold">May 13, 2020</span>
             </div>
 
-            <div class="pb-2 md:pb-0">
+            <!-- <div class="pb-2 md:pb-0">
               <span>Shipped</span>
               <span class="font-semibold">May 13, 2020</span>
-            </div>
+            </div> -->
 
             <div>
               <span>Total</span>
@@ -271,6 +271,7 @@ export default {
     const order = await this.$swell.account.getOrder(this.$route.params.id)
 
     if (order) this.order = order
+    console.log(order)
   },
 
   data() {
