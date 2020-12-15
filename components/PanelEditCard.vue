@@ -378,6 +378,20 @@ export default {
 
           if (!card) throw Error('There was an error creating your Payment method.')
 
+          if (this.billingAddress) {
+            const res = await this.$swell.account.updateCard(card.id, {
+              billing: {
+                name: this.billingAddress.name,
+                address1: this.billingAddress.address1,
+                address2: this.billingAddress.address2,
+                city: this.billingAddress.city,
+                state: this.billingAddress.state,
+                zip: this.billingAddress.zip,
+                country: this.billingAddress.country
+              }
+            })
+          }
+
           if (this.setDefault) {
             // Set current address as default
             await this.$swell.account.update({
