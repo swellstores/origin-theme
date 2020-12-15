@@ -46,7 +46,7 @@
 export default {
   fetch() {
     const { $swell } = this
-
+    
     // Set component data
     this.store = $swell.settings.get('store', {})
   },
@@ -67,7 +67,7 @@ export default {
   mounted() {
     // If routing from order, set breadcrumb.
     if (this.$nuxt.context.from) {
-      this.previousRoute = this.$nuxt.context.from.path
+      this.previousOrderRoute = this.$nuxt.context.from.path
     }
   },
 
