@@ -13,6 +13,7 @@
   "dependencies": {
     "@nuxtjs/pwa": "3.0.2",
     "@nuxtjs/sentry": "3.2.2",
+    "@nuxtjs/sitemap": "2.4.0",
     "build-url": "3.0.0",
     "lazysizes": "5.2.2",
     "lodash": "4.17.20",

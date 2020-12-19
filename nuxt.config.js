@@ -55,6 +55,14 @@ export default {
         // manifest: {},
         // workbox: {}
       }
+    ],
+
+    [
+      '@nuxtjs/sitemap'
+      /*
+       ** Automatically generate or serve sitemap.xml for Nuxt projects
+       *
+       */
     ]
   ],
 
@@ -118,14 +126,35 @@ export default {
       }
     ],
 
-    'vue-balance-text/nuxt/module'
+    'vue-balance-text/nuxt/module',
     /*
      ** Balances wrapping lines of text to improve typography aesthetics.
      *
      *  Add the v-balance-text directive on HTML elements to balance their content.
      *  Add the v-balance-text.children directive if using v-html to render content.
      */
+
+    '@/modules/dynamic-route-generator'
+    /*
+     ** Uses Nuxt's crawler to generate all static and dynamic routes to be used within @nuxt/sitemap routes object.
+     *
+     */
   ],
+
+  /*
+   *  Use the object below to set config options for the @nuxt/sitemap module.
+   *  See https://github.com/nuxt-community/sitemap-module for all available options and defaults.
+   */
+  sitemap: {
+    hostname: process.env.SWELL_STORE_URL,
+    exclude: [],
+    gzip: true,
+    defaults: {
+      changefreq: 'daily',
+      priority: 1,
+      lastmod: new Date()
+    }
+  },
 
   /*
    ** Build configuration
