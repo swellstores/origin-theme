@@ -1371,6 +1371,11 @@
     jimp-compact "^0.12.1"
     workbox-cdn "^5.1.3"
 
+"@nuxtjs/robots@2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/robots/-/robots-2.4.2.tgz#9a96c91abb70e39b414eec502ef1cf7d5ef0235e"
+  integrity sha512-BW3qhvxlPBKlMkZHtARFPeliFraiZHS28G3j4qgRbSfOBtHC0yDX3Dnq1LkQMzAbPfbw6A1L3sdjgBVZZnfFAw==
+
 "@nuxtjs/sentry@3.2.2":
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/@nuxtjs/sentry/-/sentry-3.2.2.tgz#ee0add861b18844f8367e1e30d5c7bac1e5f5c91"

@@ -63,6 +63,19 @@ export default {
        ** Automatically generate or serve sitemap.xml for Nuxt projects
        *
        */
+    ],
+
+    [
+      '@nuxtjs/robots',
+      /*
+       ** Automatically generate or serve robots.txt for Nuxt projects
+       *
+       *  Use the object below to set config options.
+       *  See https://github.com/nuxt-community/robots-module for all available options and defaults.
+       */
+      {
+
+      }
     ]
   ],
 
