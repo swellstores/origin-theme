@@ -81,6 +81,18 @@ button {
   }
 }
 
+input {
+  &:-webkit-autofill {
+    -webkit-text-fill-color: var(--colors-primary-darkest);
+    -webkit-box-shadow: 0 0 0 60px var(--colors-primary-lightest) inset;
+
+    &.dark {
+      -webkit-text-fill-color: var(--colors-primary-lightest);
+      -webkit-box-shadow: 0 0 0 60px var(--colors-primary-darkest) inset;
+    }
+  }
+}
+
 img {
   &.loaded {
     transition: opacity 0.4s ease;
