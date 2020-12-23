@@ -16,7 +16,7 @@ export default async function(moduleOptions) {
     src: path.resolve(__dirname, './settings-loader.js'),
     fileName: 'swell-editor-settings-loader.js',
     options: {
-      ...options,
+      ...options
     }
   })
 
@@ -49,4 +49,25 @@ export default async function(moduleOptions) {
     // Add middleware for editor iframe helpers
     this.options.router.middleware.push('editorFrame')
   }
+
+  // Register @nuxt/sitemap module
+  await this.addModule([
+    '@nuxtjs/sitemap',
+    {
+      hostname: process.env.SWELL_STORE_URL,
+      exclude: [],
+      gzip: true,
+      defaults: {
+        changefreq: 'daily',
+        priority: 1,
+        lastmod: new Date()
+      }
+    }
+  ])
+
+  // Listen for route crawler and push routes to `generate.routes` for @nuxt/sitemap to use
+  this.nuxt.hook('generate:routeCreated', ({ route, errors }) => {
+    if (errors.length) return
+    this.nuxt.options.generate.routes.push(route)
+  })
 }
