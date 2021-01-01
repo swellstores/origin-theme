@@ -1,12 +1,9 @@
 <template>
   <div class="relative">
-    <div :class="{ 'overflow-y-hidden': searchIsActive || customerPanelIsActive || cartIsActive }">
+    <div :class="{ 'overflow-y-hidden': searchIsActive || cartIsActive }">
       <TheHeader
         @click-cart="cartIsActive = true"
         @click-search="searchIsActive = true"
-        @click-customer-login="
-          $store.commit('setState', { key: 'customerPanelIsActive', value: true })
-        "
       />
       <div style="min-height: 100vh">
         <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
@@ -24,10 +21,6 @@
       />
     </transition>
     <TheCart v-show="cartIsActive" @click-close="cartIsActive = false" />
-    <TheCustomerPanel
-      v-show="customerPanelIsActive"
-      @click-close="$store.commit('setState', { key: 'customerPanelIsActive', value: false })"
-    />
     <transition name="fade">
       <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
     </transition>
@@ -48,7 +41,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['notification', 'cookiesWereAccepted', 'customerPanelIsActive'])
+    ...mapState(['notification', 'cookiesWereAccepted'])
   },
 
   watch: {

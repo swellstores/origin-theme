@@ -77,12 +77,9 @@
                 <BaseIcon icon="uil:search" />
               </button>
               <!-- Account icon -->
-              <button
-                class="hidden h-10 p-2 lg:inline-block"
-                @click.prevent="$emit('click-customer-login')"
-              >
+              <NuxtLink class="hidden h-10 p-2 lg:inline-block" :to="customerLoggedIn ? '/account/orders/' : '/account/login/'">
                 <BaseIcon icon="uil:user" />
-              </button>
+              </NuxtLink>
               <!-- Cart icon -->
               <button
                 class="relative h-10 p-2"

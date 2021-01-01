@@ -1,12 +1,9 @@
 <template>
   <div class="relative">
-    <div :class="{ 'overflow-y-hidden': searchIsActive || customerPanelIsActive || cartIsActive }">
+    <div :class="{ 'overflow-y-hidden': searchIsActive || cartIsActive }">
       <TheHeader
         @click-cart="cartIsActive = true"
         @click-search="searchIsActive = true"
-        @click-customer-login="
-          $store.commit('setState', { key: 'customerPanelIsActive', value: true })
-        "
       />
 
       <div class="min-h-screen bg-primary-lighter">
@@ -19,35 +16,29 @@
               <div class="md:pr-10 pb-6">
                 <h3>{{ customer.firstName }} {{ customer.lastName }}</h3>
                 <p>{{ customer.email }}</p>
+
                 <button
                   class="flex flex-row whitespace-no-wrap items-center mt-2 cursor-pointer"
                   @click="editProfilePanelIsActive = true"
                 >
                   <BaseIcon icon="uil:edit" size="sm" /><span class="ml-2">Edit profile</span>
                 </button>
+
+                <button
+                  class="flex flex-row whitespace-no-wrap items-center mt-2 cursor-pointer"
+                  @click="logoutPanelIsActive = true"
+                >
+                  <BaseIcon icon="uil:signout" size="sm" /><span class="ml-2">Log out </span>
+                </button>
               </div>
 
               <!-- Views (Desktop) -->
               <ul class="hidden md:block border-t border-primary-light text-base">
-                <li>
+                <li v-for="view in views" :key="view.value">
                   <NuxtLink
                     class="pl-3 py-4 block hover:bg-primary-light rounded-none"
-                    to="/account/orders/"
-                    >Orders & Returns</NuxtLink
-                  >
-                </li>
-                <li>
-                  <NuxtLink
-                    class="pl-3 py-4 block hover:bg-primary-light rounded-none"
-                    to="/account/addresses/"
-                    >Addresses</NuxtLink
-                  >
-                </li>
-                <li>
-                  <NuxtLink
-                    class="pl-3 py-4 block hover:bg-primary-light rounded-none"
-                    to="/account/payments/"
-                    >Payment methods</NuxtLink
+                    :to="`/account/${view.value}/`"
+                    >{{ view.label }}</NuxtLink
                   >
                 </li>
               </ul>
@@ -88,13 +79,20 @@
     </transition>
 
     <TheCart v-show="cartIsActive" @click-close="cartIsActive = false" />
-    <TheCustomerPanel
-      v-show="customerPanelIsActive"
-      @click-close="$store.commit('setState', { key: 'customerPanelIsActive', value: false })"
-    />
+
     <transition name="fade">
       <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
     </transition>
+
+    <PanelConfirmation
+      v-if="logoutPanelIsActive"
+      heading="Logout"
+      promptMessage="Are you sure you want to logout?"
+      acceptLabel="Yes"
+      refuseLabel="No"
+      @accept="logout"
+      @click-close="logoutPanelIsActive = false"
+    />
   </div>
 </template>
 
@@ -103,6 +101,20 @@
 import { mapState } from 'vuex'
 
 export default {
+  head() {
+    return {
+      script: [
+        // Iconify API script for loading SVG icons on demand
+        {
+          type: 'text/javascript',
+          src: 'https://code.iconify.design/1/1.0.1/iconify.min.js',
+          async: true,
+          body: true
+        }
+      ]
+    }
+  },
+
   data() {
     return {
       views: [
@@ -120,13 +132,14 @@ export default {
         }
       ],
       editProfilePanelIsActive: false,
+      logoutPanelIsActive: false,
       cartIsActive: false,
       searchIsActive: false
     }
   },
 
   computed: {
-    ...mapState(['notification', 'customer', 'customerLoggedIn', 'customerPanelIsActive']),
+    ...mapState(['notification', 'customer', 'customerLoggedIn']),
     currentRouteValue() {
       const path = this.$route.path
 
@@ -150,23 +163,24 @@ export default {
     }
   },
 
-  head() {
-    return {
-      script: [
-        // Iconify API script for loading SVG icons on demand
-        {
-          type: 'text/javascript',
-          src: 'https://code.iconify.design/1/1.0.1/iconify.min.js',
-          async: true,
-          body: true
-        }
-      ]
-    }
-  },
+  methods: {
+    async logout() {
+      try {
+        await this.$swell.account.logout()
+        this.$store.commit('setState', { key: 'customerLoggedIn', value: false })
 
-  created () {
-    // Close customer panel by default
-    this.$store.commit('setState', { key: 'customerPanelIsActive', value: false })
+        // Close panel
+        this.$emit('click-close')
+        this.$store.dispatch('showNotification', { message: 'You’ve succesfully logged out.' })
+
+        // Re-route if still in accounts
+        if (this.$route.path.includes('/account/')) {
+          this.$router.push('/')
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
   },
 
   async mounted() {
@@ -176,14 +190,12 @@ export default {
     // Persistent middleware workaround
     if (customer) {
       this.$store.dispatch('initializeCustomer')
-
     } else {
       this.$store.dispatch('showNotification', {
         message: 'You are currently not loogged in. Please log in to continue.',
         type: 'error'
       })
-      this.$store.commit('setState', { key: 'customerPanelIsActive', value: true })
-      this.$router.push('/')
+      this.$router.push('/account/login/')
     }
   }
 }

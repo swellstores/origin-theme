@@ -5,7 +5,6 @@ export const state = () => ({
   currency: 'USD',
   customer: null,
   customerLoggedIn: false,
-  customerPanelIsActive: false,
   locale: 'en-US',
   notification: null,
   cookiesWereAccepted: false,

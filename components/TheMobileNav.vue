@@ -29,12 +29,15 @@
           ref="miscLinks"
           class="bottom-0 w-full flex flex-wrap border-b border-primary-light md:px-10 md:pb-6 md:border-b-0 md:justify-center"
         >
-          <a class="sw-nav-button" href="#">
+          <button class="sw-nav-button" @click.prevent="$emit('click-search')">
             <BaseIcon icon="uil:search" size="sm" /><span class="ml-3">Search</span>
-          </a>
-          <button class="sw-nav-button" @click="$emit('click-customer-login')">
-            <BaseIcon icon="uil:user" size="sm" /><span class="ml-3">Account</span>
           </button>
+          <NuxtLink
+            class="sw-nav-button"
+            :to="customerLoggedIn ? '/account/orders/' : '/account/login/'"
+          >
+            <BaseIcon icon="uil:user" size="sm" /><span class="ml-3">Account</span>
+          </NuxtLink>
           <a class="sw-nav-button" href="#">{{ formatMoney() }} {{ $store.state.currency }}</a>
           <a class="sw-nav-button" href="#">
             <BaseIcon icon="uil:comment-alt-lines" size="sm" /><span class="ml-3">English</span>
