@@ -11,11 +11,11 @@
     <template v-else>
       <template v-if="addresses && addresses.length">
         <div class="grid md:hidden gap-8">
-          <PanelAddress
+          <AccountAddressContainer
             v-if="defaultAddress"
             :address="defaultAddress"
             :isDefault="true"
-            @click-open="openEditPanel('update', defaultAddress)"
+            @click-open="openEditPopup('update', defaultAddress)"
           />
 
           <template v-if="otherAddresses && otherAddresses.length">
@@ -23,18 +23,18 @@
               >Other addresses</span
             >
 
-            <PanelAddress
+            <AccountAddressContainer
               v-for="(address, index) in otherAddresses"
               :key="`address-${index}`"
               :address="address"
               :class="{ 'md:mb-0': index < otherAddresses.length - 1 }"
-              @click-open="openEditPanel('update', address)"
+              @click-open="openEditPopup('update', address)"
               @delete-address="
-                deletePanelIsActive = true
+                deletePopupIsActive = true
                 addressToDelete = $event
               "
               @set-default="
-                defaultPanelIsActive = true
+                defaultPopupIsActive = true
                 addressToSetDefault = $event
               "
             />
@@ -42,19 +42,19 @@
         </div>
 
         <div class="hidden md:grid md:grid-cols-2 md:auto-rows-fr md:gap-8">
-          <PanelAddress
+          <AccountAddressContainer
             v-for="(address, index) in sortedAddresses"
             :key="`address-${index}`"
             :address="address"
             :isDefault="defaultAddressId === address.id"
             :class="{ 'mb-6 md:mb-0': index < otherAddresses.length - 1 }"
-            @click-open="openEditPanel('update', address)"
+            @click-open="openEditPopup('update', address)"
             @delete-address="
-              deletePanelIsActive = true
+              deletePopupIsActive = true
               addressToDelete = $event
             "
             @set-default="
-              defaultPanelIsActive = true
+              defaultPopupIsActive = true
               addressToSetDefault = $event
             "
           />
@@ -65,22 +65,22 @@
         There are no addresses associated with this account.
       </p>
 
-      <button class="btn w-full md:w-auto light mt-10" type="button" @click="openEditPanel('new')">
+      <button class="btn w-full md:w-auto light mt-10" type="button" @click="openEditPopup('new')">
         Add new address
       </button>
 
-      <PanelEditAddress
-        v-if="editAddressPanelIsActive"
+      <AccountAddressPopup
+        v-if="editAddressPopupIsActive"
         :type="editAddressType"
         :address="addressToEdit"
         :addressesLength="addresses.length"
         :defaultAddressId="defaultAddressId"
-        @click-close="editAddressPanelIsActive = false"
+        @click-close="editAddressPopupIsActive = false"
         @refresh="$fetch"
       />
 
-      <PanelConfirmation
-        v-if="deletePanelIsActive"
+      <AccountConfirmationPopup
+        v-if="deletePopupIsActive"
         heading="Delete address"
         promptMessage="Are you sure you want to remove this address?"
         acceptLabel="Yes, remove it"
@@ -88,11 +88,11 @@
         :isLoading="isDeleting"
         loadingLabel="Removing"
         @accept="deleteAddress(addressToDelete)"
-        @click-close="deletePanelIsActive = false"
+        @click-close="deletePopupIsActive = false"
       />
 
-      <PanelConfirmation
-        v-if="defaultPanelIsActive"
+      <AccountConfirmationPopup
+        v-if="defaultPopupIsActive"
         heading="Set default address"
         promptMessage="Are you sure you want to make this your default address?"
         acceptLabel="Yes"
@@ -100,7 +100,7 @@
         :isLoading="isUpdating"
         loadingLabel="Setting as default"
         @accept="setDefaultAddress(addressToSetDefault)"
-        @click-close="defaultPanelIsActive = false"
+        @click-close="defaultPopupIsActive = false"
       />
     </template>
   </div>
@@ -124,14 +124,14 @@ export default {
   data() {
     return {
       addresses: null,
-      editAddressPanelIsActive: false,
+      editAddressPopupIsActive: false,
       editAddressType: 'update',
       addressToEdit: '',
       addressToDelete: '',
       addressToSetDefault: '',
       defaultAddressId: '',
-      deletePanelIsActive: false,
-      defaultPanelIsActive: false,
+      deletePopupIsActive: false,
+      defaultPopupIsActive: false,
       isDeleting: false,
       isUpdating: false
     }
@@ -157,15 +157,15 @@ export default {
   },
 
   methods: {
-    openEditPanel(method, existing) {
+    openEditPopup(method, existing) {
       switch (method) {
         case 'update':
-          this.editAddressPanelIsActive = true
+          this.editAddressPopupIsActive = true
           this.editAddressType = 'update'
           this.addressToEdit = existing
           break
         case 'new':
-          this.editAddressPanelIsActive = true
+          this.editAddressPopupIsActive = true
           this.editAddressType = 'new'
           this.addressToEdit = null
           break
@@ -179,9 +179,9 @@ export default {
         this.isDeleting = true
         await this.$swell.account.deleteAddress(id)
 
-        // Close panel and fetch updated data
+        // Close Popup and fetch updated data
         this.isDeleting = false
-        this.deletePanelIsActive = false
+        this.deletePopupIsActive = false
         this.$fetch()
         this.$store.dispatch('showNotification', { message: 'Address deleted.', type: 'error' })
       } catch (err) {
@@ -198,9 +198,9 @@ export default {
           }
         })
 
-        // Close panel and fetch updated data
+        // Close Popup and fetch updated data
         this.isUpdating = false
-        this.defaultPanelIsActive = false
+        this.defaultPopupIsActive = false
         this.$store.dispatch('showNotification', { message: 'New address set as default.' })
         this.$store.dispatch('initializeCustomer')
         this.$fetch()

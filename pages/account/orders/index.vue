@@ -10,7 +10,7 @@
 
     <div v-else>
       <template v-if="orders && orders.length">
-        <PanelOrder
+        <AccountOrderContainer
           class="mb-6 last:mb-0"
           v-for="(order, index) in orders"
           :key="`order-${index}`"

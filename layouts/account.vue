@@ -19,14 +19,14 @@
 
                 <button
                   class="flex flex-row whitespace-no-wrap items-center mt-2 cursor-pointer"
-                  @click="editProfilePanelIsActive = true"
+                  @click="editProfilePopupIsActive = true"
                 >
                   <BaseIcon icon="uil:edit" size="sm" /><span class="ml-2">Edit profile</span>
                 </button>
 
                 <button
                   class="flex flex-row whitespace-no-wrap items-center mt-2 cursor-pointer"
-                  @click="logoutPanelIsActive = true"
+                  @click="logoutPopupIsActive = true"
                 >
                   <BaseIcon icon="uil:signout" size="sm" /><span class="ml-2">Log out </span>
                 </button>
@@ -45,9 +45,9 @@
             </div>
           </div>
 
-          <PanelEditProfile
-            v-if="editProfilePanelIsActive"
-            @click-close="editProfilePanelIsActive = false"
+          <AccountProfilePopup
+            v-if="editProfilePopupIsActive"
+            @click-close="editProfilePopupIsActive = false"
           />
 
           <!-- Views (Mobile) -->
@@ -84,14 +84,14 @@
       <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
     </transition>
 
-    <PanelConfirmation
-      v-if="logoutPanelIsActive"
+    <AccountConfirmationPopup
+      v-if="logoutPopupIsActive"
       heading="Logout"
       promptMessage="Are you sure you want to logout?"
       acceptLabel="Yes"
       refuseLabel="No"
       @accept="logout"
-      @click-close="logoutPanelIsActive = false"
+      @click-close="logoutPopupIsActive = false"
     />
   </div>
 </template>
@@ -131,8 +131,8 @@ export default {
           value: 'payments'
         }
       ],
-      editProfilePanelIsActive: false,
-      logoutPanelIsActive: false,
+      editProfilePopupIsActive: false,
+      logoutPopupIsActive: false,
       cartIsActive: false,
       searchIsActive: false
     }
@@ -169,7 +169,7 @@ export default {
         await this.$swell.account.logout()
         this.$store.commit('setState', { key: 'customerLoggedIn', value: false })
 
-        // Close panel
+        // Close Popup
         this.$emit('click-close')
         this.$store.dispatch('showNotification', { message: 'You’ve succesfully logged out.' })
 

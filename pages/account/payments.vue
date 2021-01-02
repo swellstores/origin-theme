@@ -11,20 +11,20 @@
     <template v-else>
       <template v-if="cards && cards.length">
         <div class="md:grid md:grid-cols-2 md:gap-8">
-          <PanelCard
+          <AccountCardContainer
             v-if="defaultCard"
             :card="defaultCard"
             :isDefault="true"
             :class="{ 'md:mb-0 mb-6': otherCards.length }"
-            @click-open="openEditPanel('update', defaultCard)"
+            @click-open="openEditPopup('update', defaultCard)"
           />
 
-          <PanelCard
+          <AccountCardContainer
             v-for="(card, index) in otherCards"
             :key="`card-${index}`"
             :card="card"
             :class="{ 'md:mb-0 mb-6': index < otherCards.length - 1 }"
-            @click-open="openEditPanel('update', card)"
+            @click-open="openEditPopup('update', card)"
           />
         </div>
       </template>
@@ -33,29 +33,29 @@
         There are no payment methods associated with this account.
       </p>
 
-      <button class="btn w-full md:w-auto light mt-10" type="button" @click="openEditPanel('new')">
+      <button class="btn w-full md:w-auto light mt-10" type="button" @click="openEditPopup('new')">
         Add new payment method
       </button>
 
-      <PanelEditCard
-        v-if="editCardPanelIsActive"
+      <AccountCardPopup
+        v-if="editCardPopupIsActive"
         :type="editCardType"
         :card="cardToEdit"
         :cardsLength="cards.length"
         :defaultCardId="defaultCardId"
-        :refresh="refreshCardPanel"
+        :refresh="refreshCardPopup"
         :newBillingAddress="newBillingAddress"
-        @click-close="editCardPanelIsActive = false"
-        @new-address="editAddressPanelIsActive = true"
+        @click-close="editCardPopupIsActive = false"
+        @new-address="editAddressPopupIsActive = true"
         @refresh="$fetch"
       />
 
-      <PanelEditAddress
-        v-if="editAddressPanelIsActive"
+      <AccountAddressPopup
+        v-if="editAddressPopupIsActive"
         type="new"
         flow="payment"
-        @click-close="editAddressPanelIsActive = false"
-        @refresh="refreshCardPanel = true"
+        @click-close="editAddressPopupIsActive = false"
+        @refresh="refreshCardPopup = true"
         @new-billing-address="newBillingAddress = $event"
       />
     </template>
@@ -77,11 +77,11 @@ export default {
   data() {
     return {
       cards: null,
-      editCardPanelIsActive: false,
+      editCardPopupIsActive: false,
       editCardType: 'update',
       cardToEdit: null,
-      editAddressPanelIsActive: false,
-      refreshCardPanel: false,
+      editAddressPopupIsActive: false,
+      refreshCardPopup: false,
       defaultCardId: '',
       newBillingAddress: null
     }
@@ -102,15 +102,15 @@ export default {
   },
 
   methods: {
-    openEditPanel(method, existing) {
+    openEditPopup(method, existing) {
       switch (method) {
         case 'update':
-          this.editCardPanelIsActive = true
+          this.editCardPopupIsActive = true
           this.editCardType = 'update'
           this.cardToEdit = existing
           break
         case 'new':
-          this.editCardPanelIsActive = true
+          this.editCardPopupIsActive = true
           this.editCardType = 'new'
           this.cardToEdit = null
           break
