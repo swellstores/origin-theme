@@ -1,6 +1,6 @@
 <template>
   <component v-bind="attributes" :is="null" :title="link.title">
-    {{ link.label }}
+    <slot />
   </component>
 </template>
 
@@ -9,7 +9,7 @@ export default {
   name: 'BaseLink',
   props: {
     link: {
-      type: Object,
+      type: [Object, String],
       required: true
     }
   },

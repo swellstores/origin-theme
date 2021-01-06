@@ -31,7 +31,15 @@
       </div>
       <!-- Image panel -->
       <template v-else-if="panel.type === 'image'">
+        <BaseLink v-if="panel.url" :link="panel.url">
+          <VisualMedia
+            :source="panel.image"
+            :is-background="true"
+            sizes="(min-width: 768px) 50vw, 100vw"
+          />
+        </BaseLink>
         <VisualMedia
+          v-else
           :source="panel.image"
           :is-background="true"
           sizes="(min-width: 768px) 50vw, 100vw"
@@ -49,7 +57,9 @@
             class="m-1 mx-2"
             :class="{ 'inline-block': panel.links.length < 3 }"
           >
-            <BaseLink :link="link" class="cta-link mt-4 mb-1 mx-3 inline-block" />
+            <BaseLink :link="link" class="cta-link mt-4 mb-1 mx-3 inline-block">
+              {{ link.label }}
+            </BaseLink>
           </div>
         </div>
       </template>
