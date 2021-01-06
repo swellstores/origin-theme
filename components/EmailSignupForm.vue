@@ -5,11 +5,12 @@
         v-model="email"
         type="text"
         :class="{
-          'border-primary-med bg-primary-lightest': theme === 'light',
-          'border-primary-darker bg-primary-darker': theme === 'dark'
+          'border-primary-darker bg-primary-darker': theme === 'dark',
+          'border-primary-med bg-primary-darkest dark': theme === 'dark'
         }"
         class="rounded w-full h-12 pl-4 pr-14 py-2 border outline-none transition focus:shadow-outline"
         placeholder="Email address"
+        autocomplete="email"
         @input="delayTouch($v.email)"
       />
       <button

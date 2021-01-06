@@ -22,6 +22,18 @@ button {
   }
 }
 
+input {
+  &:-webkit-autofill {
+    -webkit-text-fill-color: var(--colors-primary-darkest);
+    -webkit-box-shadow: 0 0 0 60px var(--colors-primary-lightest) inset;
+
+    &.dark {
+      -webkit-text-fill-color: var(--colors-primary-lightest);
+      -webkit-box-shadow: 0 0 0 60px var(--colors-primary-darkest) inset;
+    }
+  }
+}
+
 .btn {
   @apply inline-block h-10 px-5 py-3 rounded bg-primary-light text-sm leading-tight text-center font-semibold tracking-wide uppercase cursor-pointer;
 
