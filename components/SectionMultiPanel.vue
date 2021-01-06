@@ -54,10 +54,16 @@
           <div
             v-for="(link, i) in panel.links"
             :key="`link-${i}`"
-            class="m-1 mx-2"
             :class="{ 'inline-block': panel.links.length < 3 }"
           >
-            <BaseLink :link="link" class="cta-link mt-4 mb-1 mx-3 inline-block">
+            <BaseLink
+              :link="link"
+              class="inline-block"
+              :class="{
+                'cta-link mt-5 mb-1 mx-3': link.style === 'text',
+                'btn mt-6 mx-3': link.style === 'button_primary'
+              }"
+            >
               {{ link.label }}
             </BaseLink>
           </div>
