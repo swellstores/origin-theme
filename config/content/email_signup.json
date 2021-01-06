@@ -94,6 +94,10 @@
             {
               "value": "right",
               "label": "Right"
+            },
+            {
+              "value": "center",
+              "label": "Center"
             }
           ]
         },
@@ -102,6 +106,7 @@
           "label": "Text alignment",
           "type": "select",
           "default": "left",
+          "conditions": { "align_x": { "$ne": "center" } },
           "options": [
             {
               "value": "left",
