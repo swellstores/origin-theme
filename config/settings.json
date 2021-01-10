@@ -70,6 +70,10 @@
       "url": ""
     }
   },
+  "customer_accounts": {
+    "returns_heading": "Returns",
+    "returns_info_text": "<p>Test</p>"
+  },
   "typography": {
     "heading_font": {
       "provider": "Google",

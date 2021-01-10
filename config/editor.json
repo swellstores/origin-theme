@@ -437,6 +437,24 @@
           "placeholder": "https://vimeo.com/mystore"
         }
       ]
+    },
+    {
+      "id": "customer_accounts",
+      "url": "/account/orders/returns/",
+      "label": "Customer accounts",
+      "fields": [
+        {
+          "id": "customer_accounts.returns_heading",
+          "label": "Returns info heading",
+          "type": "short_text",
+          "default": "Returns"
+        },
+        {
+          "id": "customer_accounts.returns_info_text",
+          "label": "Returns info text",
+          "type": "basic_html"
+        }
+      ]
     }
   ],
   "page_route": "/:slug/",
