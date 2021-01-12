@@ -313,10 +313,16 @@ export default {
 
         if (this.newBillingAddress) {
           this.billingAddress = this.newBillingAddress
-          this.formattedDefaultAddress = `${this.newBillingAddress.name}, ${this.newBillingAddress
-            .address2 || ''} ${this.newBillingAddress.address1}, ${this.newBillingAddress.state}, ${
-            this.newBillingAddress.city
-          } ${this.newBillingAddress.zip}, ${this.getCountryName(this.newBillingAddress.country)}`
+
+          const { name, address1, address2, state, city, zip, country } = this.newBillingAddress
+
+          this.formattedDefaultAddress = `
+            ${name}, 
+            ${address2 || ''} ${address1},
+            ${state}, 
+            ${city} ${zip},
+            ${this.getCountryName(country)}
+          `
         }
       }
     }
@@ -328,15 +334,17 @@ export default {
         this.isUpdating = true
 
         if (this.billingAddress) {
+          const { name, address1, address2, city, state, zip, country } = this.billingAddress
+
           const res = await this.$swell.account.updateCard(this.card.id, {
             billing: {
-              name: this.billingAddress.name,
-              address1: this.billingAddress.address1,
-              address2: this.billingAddress.address2,
-              city: this.billingAddress.city,
-              state: this.billingAddress.state,
-              zip: this.billingAddress.zip,
-              country: this.billingAddress.country
+              name,
+              address1,
+              address2,
+              city,
+              state,
+              zip,
+              country
             }
           })
         }
@@ -385,15 +393,17 @@ export default {
           if (!card) throw Error('There was an error creating your Payment method.')
 
           if (this.billingAddress) {
+            const { name, address1, address2, city, state, zip, country } = this.billingAddress
+
             const res = await this.$swell.account.updateCard(card.id, {
               billing: {
-                name: this.billingAddress.name,
-                address1: this.billingAddress.address1,
-                address2: this.billingAddress.address2,
-                city: this.billingAddress.city,
-                state: this.billingAddress.state,
-                zip: this.billingAddress.zip,
-                country: this.billingAddress.country
+                name,
+                address1,
+                address2,
+                city,
+                state,
+                zip,
+                country
               }
             })
           }
@@ -490,10 +500,16 @@ export default {
       // Set default address
       if (this.card.billing && !values(this.card.billing).every(isEmpty)) {
         this.billingAddress = this.card.billing
-        this.formattedDefaultAddress = `${this.card.billing.name}, ${this.card.billing.address2 ||
-          ''} ${this.card.billing.address1}, ${this.card.billing.state}, ${
-          this.card.billing.city
-        } ${this.card.billing.zip}, ${this.getCountryName(this.card.billing.country)}`
+
+        const { name, address1, address2, state, city, zip, country } = this.card.billing
+
+        this.formattedDefaultAddress = `
+          ${name}, 
+          ${address2 || ''} ${address1},
+          ${state}, 
+          ${city} ${zip},
+          ${this.getCountryName(country)}
+        `
       }
     }
 
