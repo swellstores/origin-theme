@@ -71,39 +71,6 @@ export default {
 </script>
 
 <style lang="postcss">
-.checkbox {
-  @apply flex pb-1;
-
-  & input {
-    @apply p-0 m-0 border-0 appearance-none w-0 h-0 invisible;
-  }
-
-  & :checked + label {
-    & .indicator {
-      @apply bg-primary-darkest border-primary-darkest;
-    }
-  }
-
-  & label {
-    @apply relative flex items-center appearance-none;
-
-    & .indicator {
-      @apply flex justify-center items-center cursor-pointer w-6 h-6 border border-primary-med rounded;
-      transition: all 0.2s ease;
-    }
-
-    & p {
-      @apply ml-3 font-semibold;
-    }
-  }
-
-  & .check {
-    &:hover {
-      opacity: 1;
-    }
-  }
-}
-
 .box-selector {
   @apply flex mr-1;
 

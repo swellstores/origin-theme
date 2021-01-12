@@ -1,7 +1,10 @@
 <template>
   <div class="relative">
-    <div :class="{ 'overflow-y-hidden': searchIsActive }">
-      <TheHeader @click-cart="cartIsActive = true" @click-search="searchIsActive = true" />
+    <div :class="{ 'overflow-y-hidden': searchIsActive || cartIsActive }">
+      <TheHeader
+        @click-cart="cartIsActive = true"
+        @click-search="searchIsActive = true"
+      />
       <div style="min-height: 100vh">
         <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
       </div>
@@ -33,7 +36,7 @@ export default {
     return {
       cartIsActive: false,
       searchIsActive: false,
-      cookieNotificationIsActive: false // TODO set true
+      cookieNotificationIsActive: false // TODO set true,
     }
   },
 
@@ -57,9 +60,13 @@ export default {
   },
 
   mounted() {
+    // Check if cookies are accepted
     if (this.getCookie('cookiesAccepted')) {
       this.$store.commit('setState', { key: 'cookiesWereAccepted', value: true })
     }
+
+    // Initialize customer (if logged in, set customer state)
+    this.$store.dispatch('initializeCustomer')
   },
 
   methods: {

@@ -1,4 +1,4 @@
-<template functional>
+<template>
   <transition name="nav-menu" :duration="500" appear>
     <div class="z-30 fixed inset-0">
       <div
@@ -11,28 +11,31 @@
             tag="ul"
             appear
             class="text-center text-4xl font-semibold"
-            :style="{ '--length': props.menuItems.length }"
+            :style="{ '--length': menuItems.length }"
           >
             <li
-              v-for="(item, index) in props.menuItems"
+              v-for="(item, index) in menuItems"
               :key="'mobileNavItem' + index"
               :style="{ '--i': index }"
             >
-              <NuxtLink :to="parent.resolveUrl(item)" class="sw-nav-link">{{ item.name }}</NuxtLink>
+              <NuxtLink :to="resolveUrl(item)" class="sw-nav-link">{{ item.name }}</NuxtLink>
             </li>
           </transition-group>
         </div>
 
         <!-- Misc. Links -->
-        <!--TODO
+
         <div
           ref="miscLinks"
           class="bottom-0 w-full flex flex-wrap border-b border-primary-light md:px-10 md:pb-6 md:border-b-0 md:justify-center"
         >
-          <a class="sw-nav-button" href="#">
+          <button class="sw-nav-button" @click.prevent="$emit('click-search')">
             <BaseIcon icon="uil:search" size="sm" /><span class="ml-3">Search</span>
-          </a>
-          <NuxtLink to="/account" class="sw-nav-button">
+          </button>
+          <NuxtLink
+            class="sw-nav-button"
+            :to="customerLoggedIn ? '/account/orders/' : '/account/login/'"
+          >
             <BaseIcon icon="uil:user" size="sm" /><span class="ml-3">Account</span>
           </NuxtLink>
           <a class="sw-nav-button" href="#">{{ formatMoney() }} {{ $store.state.currency }}</a>
@@ -40,13 +43,14 @@
             <BaseIcon icon="uil:comment-alt-lines" size="sm" /><span class="ml-3">English</span>
           </a>
         </div>
-        -->
       </div>
     </div>
   </transition>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'TheMobileNav',
 
@@ -54,6 +58,19 @@ export default {
     menuItems: {
       type: Array,
       default: () => []
+    }
+  },
+
+  computed: {
+    ...mapState(['customerLoggedIn'])
+  },
+
+  methods: {
+    checkIfLoggedIn() {
+      if (this.customerLoggedIn) {
+        this.$emit('click-close')
+        this.$router.push('/account/')
+      }
     }
   }
 }

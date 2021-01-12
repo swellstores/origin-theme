@@ -3,6 +3,8 @@ export const state = () => ({
   cartError: null,
   cartIsUpdating: false,
   currency: 'USD',
+  customer: null,
+  customerLoggedIn: false,
   locale: 'en-US',
   notification: null,
   cookiesWereAccepted: false,
@@ -147,6 +149,20 @@ export const actions = {
       if (cart) commit('setState', { key: 'currency', value: cart.currency })
       // Update cart state
       commit('setState', { key: 'cart', value: cart })
+    } catch (err) {
+      dispatch('handleError', err)
+    }
+  },
+
+  async initializeCustomer({ commit, dispatch }) {
+    try {
+      let loggedInCustomer = await this.$swell.account.get()
+
+      // Check if customer exists
+      if (loggedInCustomer) {
+        commit('setState', { key: 'customer', value: loggedInCustomer })
+        commit('setState', { key: 'customerLoggedIn', value: true })
+      }
     } catch (err) {
       dispatch('handleError', err)
     }

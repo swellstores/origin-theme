@@ -10,7 +10,7 @@
     </div>
 
     <!-- Full screen nav for small screens -->
-    <TheMobileNav v-if="mobileNavIsVisible" :menu-items="menu.items" />
+    <TheMobileNav v-on="$listeners" v-if="mobileNavIsVisible" :menu-items="menu.items" />
 
     <!-- Main header -->
     <div class="z-40 fixed top-0 w-full">
@@ -77,11 +77,9 @@
                 <BaseIcon icon="uil:search" />
               </button>
               <!-- Account icon -->
-              <!--TODO awaiting customer account area
-              <a class="hidden h-10 p-2 lg:inline-block" href="#">
+              <NuxtLink class="hidden h-10 p-2 lg:inline-block" :to="customerLoggedIn ? '/account/orders/' : '/account/login/'">
                 <BaseIcon icon="uil:user" />
-              </a>
-              -->
+              </NuxtLink>
               <!-- Cart icon -->
               <button
                 class="relative h-10 p-2"
@@ -155,7 +153,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['cart'])
+    ...mapState(['cart', 'customerLoggedIn'])
   },
 
   watch: {

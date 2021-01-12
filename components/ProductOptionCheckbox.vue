@@ -39,31 +39,3 @@ export default {
   }
 }
 </script>
-
-<style lang="postcss" scoped>
-.checkbox-wrapper {
-  & label {
-    &:before {
-      @apply bg-primary-lightest absolute right-0 inline-block w-6 h-6 border rounded;
-      content: '';
-      transition: background 0.1s ease-out;
-    }
-
-    &:hover {
-      &:before {
-        @apply bg-accent;
-      }
-    }
-  }
-
-  & input[type='checkbox'] {
-    &:focus + label:before {
-      @apply shadow-outline border-none;
-    }
-
-    &:checked + label:before {
-      @apply bg-primary-darkest border-none;
-    }
-  }
-}
-</style>

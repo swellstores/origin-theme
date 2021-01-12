@@ -3,6 +3,13 @@ import settings from './config/settings'
 import { getGoogleFontConfig } from './modules/swell-editor/utils'
 
 export default {
+  vue: {
+    config: {
+      devtools: true,
+      productionTip: false
+    }
+  },
+
   /*
    ** Make all components in the /components folder available in templates without
    *  needing to import them explicitly or define them on the Vue instance object.
@@ -17,7 +24,12 @@ export default {
   /*
    ** Vue plugins to load before mounting the App
    */
-  plugins: [{ src: '~/plugins/vue-slider-component', mode: 'client' }],
+  plugins: [
+    { src: '~/plugins/vue-slider-component', mode: 'client' },
+    { src: '~/plugins/vue-country-region-select', mode: 'client' },
+    { src: '~/plugins/vue-credit-card-validation', mode: 'client' },
+    { src: '~/plugins/directives', mode: 'client' }
+  ],
 
   /*
    ** Nuxt.js modules
