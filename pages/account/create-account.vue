@@ -8,14 +8,14 @@
         label="First Name"
         name="fname"
         autocomplete="given-name"
-        v-model="customerFirstName"
+        v-model="firstName"
       />
-      <template v-if="$v.customerFirstName.$dirty">
-        <span class="label-sm text-error" v-if="!$v.customerFirstName.required"
+      <template v-if="$v.firstName.$dirty">
+        <span class="label-sm text-error" v-if="!$v.firstName.required"
           >Please enter your first name.</span
         >
 
-        <span class="label-sm text-error" v-if="!$v.customerFirstName.maxLength"
+        <span class="label-sm text-error" v-if="!$v.firstName.maxLength"
           >First name cannot exceed 40 characters.</span
         >
       </template>
@@ -27,14 +27,14 @@
         label="Last Name"
         name="lastName"
         autocomplete="family-name"
-        v-model="customerLastName"
+        v-model="lastName"
       />
-      <template v-if="$v.customerLastName.$dirty">
-        <span class="label-sm text-error" v-if="!$v.customerLastName.required"
+      <template v-if="$v.lastName.$dirty">
+        <span class="label-sm text-error" v-if="!$v.lastName.required"
           >Please enter your last name.</span
         >
 
-        <span class="label-sm text-error" v-if="!$v.customerLastName.maxLength"
+        <span class="label-sm text-error" v-if="!$v.lastName.maxLength"
           >Last name cannot exceed 40 characters.</span
         >
       </template>
@@ -47,15 +47,15 @@
         placeholder="Your email address"
         name="email"
         autocomplete="email"
-        v-model="customerEmail"
+        v-model="email"
       />
 
-      <template v-if="$v.customerEmail.$dirty">
-        <span class="label-sm text-error" v-if="!$v.customerEmail.email"
+      <template v-if="$v.email.$dirty">
+        <span class="label-sm text-error" v-if="!$v.email.email"
           >Please enter a valid email address.</span
         >
 
-        <span class="label-sm text-error" v-else-if="!$v.customerEmail.required"
+        <span class="label-sm text-error" v-else-if="!$v.email.required"
           >Please enter your email address.</span
         >
       </template>
@@ -70,15 +70,15 @@
         placeholder="Your password"
         name="newPassword"
         autocomplete="new-password"
-        v-model="customerPassword"
+        v-model="password"
       />
 
-      <template v-if="$v.customerPassword.$dirty">
-        <span class="label-sm text-error" v-if="!$v.customerPassword.minLength"
+      <template v-if="$v.password.$dirty">
+        <span class="label-sm text-error" v-if="!$v.password.minLength"
           >Your password needs to be at least six characters.</span
         >
 
-        <span class="label-sm text-error" v-if="!$v.customerPassword.required"
+        <span class="label-sm text-error" v-if="!$v.password.required"
           >Please enter your password.</span
         >
       </template>
@@ -107,10 +107,10 @@ export default {
 
   data() {
     return {
-      customerEmail: '',
-      customerPassword: '',
-      customerFirstName: '',
-      customerLastName: '',
+      email: '',
+      password: '',
+      firstName: '',
+      lastName: '',
       isProcessing: false,
       errorMessage: ''
     }
@@ -124,12 +124,14 @@ export default {
 
         this.isProcessing = true
 
+        const { email, firstName, lastName, password } = this
+
         const account = await this.$swell.account.create({
-          email: this.customerEmail,
-          first_name: this.customerFirstName,
-          last_name: this.customerLastName,
-          password: this.customerPassword,
-          email_optin: true
+          email,
+          firstName,
+          lastName,
+          password,
+          emailOptin: true
         })
 
         this.isProcessing = false
@@ -140,6 +142,7 @@ export default {
           this.$store.dispatch('showNotification', {
             message: 'You’ve succesfully created an account.'
           })
+          this.$router.push('/account/orders/')
         } else {
           throw {
             account,
@@ -147,6 +150,8 @@ export default {
           }
         }
       } catch (err) {
+        console.log(err.error)
+        console.log(err.code)
         // Throw error if email already exists
         if (err.account) {
           if (err.account.email && err.account.email.code === 'UNIQUE') {
@@ -155,9 +160,11 @@ export default {
               type: 'error'
             })
           }
+          // Throw auth error
         } else {
           this.$store.dispatch('showNotification', {
-            message: 'There was an error creating your account. Please try again later.',
+            message:
+              err.message || 'There was an error creating your account. Please try again later.',
             type: 'error'
           })
         }
@@ -170,10 +177,10 @@ export default {
   },
 
   validations: {
-    customerFirstName: { required, maxLength: maxLength(40) },
-    customerLastName: { required, maxLength: maxLength(40) },
-    customerEmail: { required, email },
-    customerPassword: { required, minLength: minLength(6) }
+    firstName: { required, maxLength: maxLength(40) },
+    lastName: { required, maxLength: maxLength(40) },
+    email: { required, email },
+    password: { required, minLength: minLength(6) }
   }
 }
 </script>
