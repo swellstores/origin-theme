@@ -301,7 +301,6 @@ export default {
         } else {
           // If is default, unset it.
           if (this.defaultAddressId === this.address.id) {
-            console.log('aha')
             // Set current address as default
             await this.$swell.account.update({
               shipping: {

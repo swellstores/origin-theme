@@ -271,7 +271,6 @@ export default {
     const order = await this.$swell.account.getOrder(this.$route.params.id)
 
     if (order) this.order = order
-    console.log(order)
   },
 
   data() {
