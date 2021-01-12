@@ -1,7 +1,54 @@
-.center-y {
-  @apply top-1/2 transform -translate-y-1/2;
+@variants responsive {
+  .center-y {
+    @apply top-1/2 transform -translate-y-1/2;
+  }
+
+  .center-xy {
+    @apply left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
+  }
+
+  .h-vh-gap {
+    height: calc(100vh - 2rem);
+  }
 }
 
-.center-xy {
-  @apply left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
+.popup-enter-active .overlay,
+.popup-leave-active .overlay {
+  @apply transition-all duration-500 ease-in-out;
+}
+
+.popup-enter .overlay,
+.popup-leave-to .overlay {
+  @apply opacity-0;
+}
+
+.popup-enter-to .overlay,
+.popup-leave .overlay {
+  @apply opacity-50;
+}
+
+.popup-enter-active .panel,
+.popup-leave-active .panel {
+  @apply transition-all duration-700;
+  transition-timing-function: cubic-bezier(0.6, 0.2, 0, 1);
+}
+
+.popup-enter .panel,
+.popup-leave-to .panel {
+  @apply transform translate-y-full;
+
+  @screen md {
+    transform: translate(-50%, calc(-50% + 5rem));
+    opacity: 0;
+  }
+}
+
+.popup-enter-to .panel,
+.popup-leave .overlay {
+  @apply transform translate-y-0;
+
+  @screen md {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
 }

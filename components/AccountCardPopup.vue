@@ -1,11 +1,17 @@
 <template>
-  <transition name="editPanel" :duration="700" appear>
+  <transition name="popup" :duration="700" appear>
     <div class="z-40 fixed inset-0" v-enter-key="handleEnterKey">
       <!-- Overlay -->
-      <div class="overlay" @click="$emit('click-close')"></div>
+      <div
+        class="overlay opacity-50 absolute w-full h-full bg-primary-darker"
+        @click="$emit('click-close')"
+      ></div>
 
       <!-- Panel -->
-      <div class="panel">
+      <div
+        class="panel w-full md:w-128 h-vh-gap md:h-auto md:max-h-80vh absolute md:relative bottom-0 
+        rounded-t md:rounded bg-primary-lighter overflow-scroll md:center-xy"
+      >
         <div class="container relative py-2">
           <div class="flex py-4">
             <h3 v-if="type === 'new'">Add new payment method</h3>
@@ -504,60 +510,3 @@ export default {
   }
 }
 </script>
-
-<style lang="postcss" scoped>
-.overlay {
-  @apply opacity-50 fixed w-full h-full bg-primary-darker;
-}
-
-.panel {
-  @apply w-full absolute bottom-0 rounded-t bg-primary-lighter overflow-scroll;
-  height: calc(100vh - 2rem);
-
-  @screen md {
-    @apply relative w-128 h-auto rounded left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
-    max-height: 80vh;
-  }
-}
-
-.editPanel-enter-active .overlay,
-.editPanel-leave-active .overlay {
-  @apply transition-all duration-500 ease-in-out;
-}
-
-.editPanel-enter .overlay,
-.editPanel-leave-to .overlay {
-  @apply opacity-0;
-}
-
-.editPanel-enter-to .overlay,
-.editPanel-leave .overlay {
-  @apply opacity-50;
-}
-
-.editPanel-enter-active .panel,
-.editPanel-leave-active .panel {
-  @apply transition-all duration-700;
-  transition-timing-function: cubic-bezier(0.6, 0.2, 0, 1);
-}
-
-.editPanel-enter .panel,
-.editPanel-leave-to .panel {
-  @apply transform translate-y-full;
-
-  @screen md {
-    transform: translate(-50%, calc(-50% + 5rem));
-    opacity: 0;
-  }
-}
-
-.editPanel-enter-to .panel,
-.editPanel-leave .overlay {
-  @apply transform translate-y-0;
-
-  @screen md {
-    transform: translate(-50%, -50%);
-    opacity: 1;
-  }
-}
-</style>
