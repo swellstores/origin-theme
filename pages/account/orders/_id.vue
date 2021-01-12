@@ -288,11 +288,9 @@ export default {
     },
 
     expDate() {
-      return `${padStart(
-        this.billing.card.expMonth,
-        2,
-        '0'
-      )} / ${this.billing.card.expYear.toString().slice(-2)}`
+      const mm = padStart(this.billing.card.expMonth, 2, '0')
+      const yy = this.billing.card.expYear.toString().slice(-2)
+      return `${mm} / ${yy}`
     },
 
     statusMessage() {
@@ -327,4 +325,3 @@ export default {
   layout: 'account'
 }
 </script>
-
