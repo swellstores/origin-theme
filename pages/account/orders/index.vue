@@ -52,5 +52,3 @@ export default {
   layout: 'account'
 }
 </script>
-
-<style lang="scss" scoped></style>

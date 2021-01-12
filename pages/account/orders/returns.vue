@@ -83,5 +83,3 @@ export default {
   layout: 'account'
 }
 </script>
-
-<style lang="postcss" scoped></style>
