@@ -110,7 +110,7 @@
             </div>
 
             <div class="checkbox mb-6">
-              <input type="checkbox" id="set-default" v-model="optInEmail" />
+              <input type="checkbox" id="set-default" v-model="emailOptin" />
 
               <label class="w-full" for="set-default">
                 <p>Subscribe to newsletter</p>
@@ -151,7 +151,7 @@ export default {
       email: '',
       password: '',
       confirmPassword: '',
-      optInEmail: false,
+      emailOptin: false,
       isUpdating: false
     }
   },
@@ -169,12 +169,14 @@ export default {
 
         this.isUpdating = true
 
+        const { email, firstName, lastName, emailOptin, password } = this
+
         const res = await this.$swell.account.update({
-          email: this.email,
-          first_name: this.firstName,
-          last_name: this.lastName,
-          email_optin: this.optInEmail,
-          password: this.password
+          email,
+          firstName,
+          lastName,
+          emailOptin,
+          password
         })
 
         if (res) {
@@ -200,7 +202,7 @@ export default {
     this.firstName = this.customer.firstName
     this.lastName = this.customer.lastName
     this.email = this.customer.email
-    this.optInEmail = this.customer.emailOptin
+    this.emailOptin = this.customer.emailOptin
   },
 
   validations: {

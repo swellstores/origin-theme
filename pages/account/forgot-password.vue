@@ -13,15 +13,15 @@
         placeholder="Your email address"
         name="email"
         autocomplete="email"
-        v-model="customerEmail"
+        v-model="email"
       />
 
-      <template v-if="$v.customerEmail.$dirty">
-        <span class="label-sm text-error" v-if="!$v.customerEmail.email"
+      <template v-if="$v.email.$dirty">
+        <span class="label-sm text-error" v-if="!$v.email.email"
           >Please enter a valid email address.</span
         >
 
-        <span class="label-sm text-error" v-else-if="!$v.customerEmail.required"
+        <span class="label-sm text-error" v-else-if="!$v.email.required"
           >Please enter your email address.</span
         >
       </template>
@@ -50,8 +50,7 @@ export default {
 
   data() {
     return {
-      customerEmail: '',
-      customerPassword: '',
+      email: '',
       isProcessing: false
     }
   },
@@ -65,7 +64,7 @@ export default {
         this.isProcessing = true
 
         const res = await this.$swell.account.recover({
-          email: this.customerEmail,
+          email: this.email,
           reset_url: `http://localhost:3333/reset-password/?key={key}`
         })
 
@@ -91,8 +90,7 @@ export default {
   },
 
   validations: {
-    customerEmail: { required, email },
-    customerPassword: { required }
+    email: { required, email }
   }
 }
 </script>

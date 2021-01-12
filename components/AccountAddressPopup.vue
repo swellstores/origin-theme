@@ -331,14 +331,16 @@ export default {
 
         this.isCreating = true
 
+        const { firstName, lastName, address1, address2, city, state, zip, country } = this
+
         const address = await this.$swell.account.createAddress({
-          name: `${this.firstName.trim()} ${this.lastName.trim()}`,
-          address1: this.address1,
-          address2: this.address2,
-          city: this.city,
-          state: this.state,
-          zip: this.zip,
-          country: this.country
+          name: `${firstName.trim()} ${lastName.trim()}`,
+          address1,
+          address2,
+          city,
+          state,
+          zip,
+          country
         })
 
         if (this.setDefault && address.id) {

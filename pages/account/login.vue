@@ -9,15 +9,15 @@
         placeholder="Your email address"
         name="email"
         autocomplete="email"
-        v-model="customerEmail"
+        v-model="email"
       />
 
-      <template v-if="$v.customerEmail.$dirty">
-        <span class="label-sm text-error" v-if="!$v.customerEmail.email"
+      <template v-if="$v.email.$dirty">
+        <span class="label-sm text-error" v-if="!$v.email.email"
           >Please enter a valid email address.</span
         >
 
-        <span class="label-sm text-error" v-else-if="!$v.customerEmail.required"
+        <span class="label-sm text-error" v-else-if="!$v.email.required"
           >Please enter your email address.</span
         >
       </template>
@@ -31,11 +31,11 @@
         placeholder="Your password"
         name="currentPassword"
         autocomplete="current-password"
-        v-model="customerPassword"
+        v-model="password"
       />
 
-      <template v-if="$v.customerPassword.$dirty">
-        <span class="label-sm text-error" v-if="!$v.customerPassword.required"
+      <template v-if="$v.password.$dirty">
+        <span class="label-sm text-error" v-if="!$v.password.required"
           >Please enter your password.</span
         >
       </template>
@@ -71,8 +71,8 @@ export default {
 
   data() {
     return {
-      customerEmail: '',
-      customerPassword: '',
+      email: '',
+      password: '',
       isProcessing: false
     }
   },
@@ -85,8 +85,10 @@ export default {
 
         this.isProcessing = true
 
-        const res = await this.$swell.account.login(this.customerEmail, this.customerPassword)
-        console.log(res)
+        const { email, password } = this
+
+        const res = await this.$swell.account.login(email, password)
+
         this.isProcessing = false
 
         if (!res || res === null) {
@@ -109,8 +111,8 @@ export default {
   },
 
   validations: {
-    customerEmail: { required, email },
-    customerPassword: { required }
+    email: { required, email },
+    password: { required }
   }
 }
 </script>
