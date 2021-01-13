@@ -16,7 +16,11 @@
       />
 
       <template v-if="$v.password.$dirty">
-        <span class="label-sm text-error" v-if="!$v.password.minLength"
+        <span class="label-sm text-error" v-if="!$v.password.required"
+          >Please enter your new password.</span
+        >
+
+        <span class="label-sm text-error" v-else-if="!$v.password.minLength"
           >Your password needs to be at least six characters.</span
         >
       </template>
@@ -49,7 +53,7 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, email, maxLength, minLength, sameAs } from 'vuelidate/lib/validators'
+import { required, minLength, sameAs } from 'vuelidate/lib/validators'
 
 export default {
   mixins: [validationMixin],
@@ -64,22 +68,36 @@ export default {
   },
   methods: {
     async changePassword() {
+      // Validate fields
+      this.$v.$touch()
+      if (this.$v.$invalid) return
+
       this.isProcessing = true
 
-      const { resetKey, password } = this
+      try {
+        const { resetKey, password } = this
 
-      const res = await this.$swell.account.recover({
-        resetKey,
-        password
-      })
-
-      this.isProcessing = false
-
-      if (res.success) {
-        this.$store.dispatch('showNotification', {
-          message: 'You’ve successfully updated your password.'
+        const res = await this.$swell.account.recover({
+          resetKey,
+          password
         })
-        this.$router.push('/')
+
+        this.isProcessing = false
+
+        if (res.success) {
+          this.$store.dispatch('showNotification', {
+            message: 'You’ve successfully updated your password.'
+          })
+          this.$router.push('/')
+        }
+      } catch (err) {
+        this.isProcessing = false
+        
+        this.$store.dispatch('showNotification', {
+          message:
+            'There was an error updating your password. The reset password key may have expired.',
+          type: 'error'
+        })
       }
     }
   },
@@ -93,8 +111,8 @@ export default {
   },
 
   validations: {
-    password: { minLength: minLength(6) },
-    confirmPassword: { sameAsPassword: sameAs('password') }
+    password: { required, minLength: minLength(6) },
+    confirmPassword: { required, sameAsPassword: sameAs('password') }
   }
 }
 </script>
