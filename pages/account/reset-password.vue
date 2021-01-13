@@ -1,33 +1,64 @@
 <template>
-  <div class="container">
-    <div class="mx-auto text-center max-w-112 my-12">
-      <h2 class="mb-10 text-3xl sm:text-4xl md:text-5xl lg:text-6xl" style="">
-        Change your password
-      </h2>
+  <div class="relative container md:max-w-112 md:pt-24" v-enter-key="changePassword">
+    <h2 class="pb-6">Change your password</h2>
 
-      <p>Please enter your new password</p>
+    <p class="text-sm mb-10">Please enter your new password.</p>
 
-      <div class="w-72 mx-auto my-6">
-        <InputText type="password" v-model="newPassword" placeholder="Password" />
-      </div>
-
-      <ButtonLoading
-        class="dark w-72"
-        @click.native="changePassword()"
-        label="Change password"
-        loadingLabel="Processing…"
-        :isLoading="isProcessing"
+    <div class="mb-6">
+      <InputText
+        class="mb-2"
+        type="password"
+        hint="Must include a minimum of 6 characters."
+        placeholder="Enter your new password"
+        name="new-password"
+        autcomplete="new-password"
+        v-model="password"
       />
+
+      <template v-if="$v.password.$dirty">
+        <span class="label-sm text-error" v-if="!$v.password.minLength"
+          >Your password needs to be at least six characters.</span
+        >
+      </template>
     </div>
+
+    <div class="mb-6">
+      <InputText
+        class="mb-2"
+        type="password"
+        placeholder="Confirm new password"
+        v-model="confirmPassword"
+      />
+
+      <template v-if="$v.confirmPassword.$dirty">
+        <span class="label-sm text-error" v-if="!$v.confirmPassword.sameAsPassword"
+          >Passwords do not match.</span
+        >
+      </template>
+    </div>
+
+    <ButtonLoading
+      class="dark w-full"
+      @click.native="changePassword()"
+      label="Change password"
+      loadingLabel="Processing…"
+      :isLoading="isProcessing"
+    />
   </div>
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required, email, maxLength, minLength, sameAs } from 'vuelidate/lib/validators'
+
 export default {
+  mixins: [validationMixin],
+
   data() {
     return {
-      key: '',
-      newPassword: '',
+      resetKey: null,
+      password: null,
+      confirmPassword: null,
       isProcessing: false
     }
   },
@@ -35,9 +66,11 @@ export default {
     async changePassword() {
       this.isProcessing = true
 
+      const { resetKey, password } = this
+
       const res = await this.$swell.account.recover({
-        reset_key: this.key,
-        password: this.newPassword
+        resetKey,
+        password
       })
 
       this.isProcessing = false
@@ -53,11 +86,15 @@ export default {
 
   created() {
     // Get password reset key query
-    this.key = this.$route.query['key']
+    this.resetKey = this.$route.query['key']
 
     // If no key is set, route to homepage.
-    if (!this.key) this.$router.push('/')
+    if (!this.resetKey) this.$router.push('/')
+  },
+
+  validations: {
+    password: { minLength: minLength(6) },
+    confirmPassword: { sameAsPassword: sameAs('password') }
   }
 }
 </script>
-
