@@ -2,7 +2,11 @@
   <section
     :class="[
       `bg-${bgColor}`,
-      { 'flex-row-reverse': alignX === 'right', 'text-center': textAlign === 'center' },
+      {
+        'flex-row-reverse': alignX === 'right',
+        'justify-center': alignX === 'center',
+        'text-center': textAlign === 'center' || alignX === 'center'
+      },
       {
         'mx-0': outerSpacingX === 'none',
         'mx-2 lg:mx-4': outerSpacingX === 'sm',
@@ -25,7 +29,7 @@
       <p v-balance-text class="mb-6">{{ description }}</p>
       <EmailSignupForm :class="{ 'mx-auto': textAlign === 'center' }" class="max-w-96" />
     </div>
-    <div class="relative w-full md:w-1/2">
+    <div v-if="alignX !== 'center'" class="relative w-full md:w-1/2">
       <VisualMedia
         v-if="image"
         :source="image"
