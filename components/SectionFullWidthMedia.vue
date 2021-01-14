@@ -85,7 +85,9 @@
                 'btn mt-6 mx-3': link.style === 'button_primary',
                 lighter: textColor === 'light'
               }"
-            />
+            >
+              {{ link.label }}
+            </BaseLink>
           </div>
         </div>
         <!-- END Text content -->

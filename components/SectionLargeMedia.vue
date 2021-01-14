@@ -12,9 +12,18 @@
       <p v-balance-text>
         {{ description }}
       </p>
-      <div class="relative xl:mx-12">
+      <div v-if="image" class="relative xl:mx-12">
+        <BaseLink v-if="url" :link="url">
+          <VisualMedia
+            :source="image"
+            aspect-ratio="16:9"
+            sizes="(min-width: 1200px) 1120px, 100vw"
+            class="rounded overflow-hidden mt-10 lg:mt-12"
+          />
+        </BaseLink>
+
         <VisualMedia
-          v-if="image"
+          v-else
           :source="image"
           aspect-ratio="16:9"
           sizes="(min-width: 1200px) 1120px, 100vw"
@@ -45,6 +54,10 @@ export default {
     bgColor: {
       type: String,
       default: 'primary-lighter'
+    },
+    url: {
+      type: String,
+      default: null
     }
   }
 }

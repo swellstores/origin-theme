@@ -35,6 +35,22 @@
                   "max": 2,
                   "fields": [
                     {
+                      "id": "style",
+                      "label": "Style",
+                      "type": "select",
+                      "default": "button_primary",
+                      "options": [
+                        {
+                          "value": "text",
+                          "label": "Text"
+                        },
+                        {
+                          "value": "button_primary",
+                          "label": "Primary button"
+                        }
+                      ]
+                    },
+                    {
                       "id": "label",
                       "label": "Label text",
                       "type": "text",
@@ -75,6 +91,11 @@
                   "label": "Background image",
                   "type": "image",
                   "required": true
+                },
+                {
+                  "id": "url",
+                  "label": "Image URL",
+                  "type": "url"
                 }
               ]
             }

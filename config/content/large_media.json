@@ -21,6 +21,11 @@
           "label": "Large image",
           "type": "image",
           "required": true
+        },
+        {
+          "id": "url",
+          "label": "Image URL",
+          "type": "url"
         }
       ]
     },
