@@ -106,7 +106,7 @@ export default {
 
   computed: {
     previewImage() {
-      return get(this, 'item.product.images.0')
+      return get(this, 'item.variant.images.0') || get(this, 'item.product.images.0')
     }
   },
 
