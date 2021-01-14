@@ -132,7 +132,7 @@
                 {{ shipping.name }}<br />
                 {{ shipping.address2 }} {{ shipping.address1 }}, {{ shipping.city }}
                 {{ shipping.zip }}<br />
-                {{ shipping.state }} {{ getCountryName(shipping.country) }}
+                {{ shipping.state }} {{ shipping.country }}
               </p>
             </div>
             <div v-if="shipping.phone" class="rounded text-sm border border-primary-med p-4 -mt-px">
@@ -248,7 +248,7 @@
                     {{ billing.name }}<br />
                     {{ billing.address2 }} {{ billing.address1 }}, {{ billing.city }}
                     {{ billing.zip }}<br />
-                    {{ billing.state }} {{ getCountryName(billing.country) }}
+                    {{ billing.state }} {{ billing.country }}
                   </p>
                 </div>
               </div>

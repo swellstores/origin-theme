@@ -41,7 +41,7 @@
             <p v-if="card.billing.state">
               {{ card.billing.state }}
               <template v-if="card.billing.country">
-                {{ getCountryName(card.billing.country) }}
+                {{ card.billing.country }}
               </template>
             </p>
           </template>

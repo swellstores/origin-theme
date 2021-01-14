@@ -15,7 +15,7 @@
       <p v-if="address.state">
         {{ address.state }}
         <template v-if="address.country">
-          {{ getCountryName(address.country) }}
+          {{ address.country }}
         </template>
       </p>
     </div>

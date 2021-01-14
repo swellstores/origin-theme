@@ -272,7 +272,7 @@ export default {
           value: address,
           label: `${address.name}, ${address.address2 || ''} ${address.address1}, ${
             address.state
-          }, ${address.city} ${address.zip}, ${this.getCountryName(address.country)}`
+          }, ${address.city} ${address.zip}, ${address.country}`
         }
       })
     },
@@ -321,7 +321,7 @@ export default {
             ${address2 || ''} ${address1},
             ${state}, 
             ${city} ${zip},
-            ${this.getCountryName(country)}
+            ${country}
           `
         }
       }
@@ -508,7 +508,7 @@ export default {
           ${address2 || ''} ${address1},
           ${state}, 
           ${city} ${zip},
-          ${this.getCountryName(country)}
+          ${country}
         `
       }
     }
