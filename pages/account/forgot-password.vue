@@ -65,7 +65,7 @@ export default {
 
         const res = await this.$swell.account.recover({
           email: this.email,
-          reset_url: `http://localhost:3333/reset-password/?key={key}`
+          reset_url: `${window.location.origin}/account/reset-password/?key={key}`
         })
 
         this.isProcessing = false
