@@ -1,6 +1,6 @@
 <template>
   <div class="relative container md:max-w-112 md:pt-24" v-enter-key="login">
-    <h2 class="pb-6">Login</h2>
+    <h2 class="pb-6">Log in</h2>
 
     <div class="mb-6">
       <InputText
