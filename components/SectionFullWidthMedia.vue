@@ -83,7 +83,7 @@
               :class="{
                 'cta-link mt-5 mb-1 mx-3': link.style === 'text',
                 'btn mt-6 mx-3': link.style === 'button_primary',
-                lighter: textColor === 'light'
+                'lighter': textColor === 'light'
               }"
             >
               {{ link.label }}
