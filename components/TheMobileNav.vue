@@ -38,7 +38,7 @@
           >
             <BaseIcon icon="uil:user" size="sm" /><span class="ml-3">Account</span>
           </NuxtLink>
-          <a class="sw-nav-button" href="#">{{ formatMoney() }} {{ $store.state.currency }}</a>
+          <a class="sw-nav-button" href="#">{{ formatMoney(null, currency) }} {{ currency }}</a>
           <a class="sw-nav-button" href="#">
             <BaseIcon icon="uil:comment-alt-lines" size="sm" /><span class="ml-3">English</span>
           </a>
@@ -62,7 +62,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['customerLoggedIn'])
+    ...mapState(['customerLoggedIn', 'currency'])
   },
 
   methods: {

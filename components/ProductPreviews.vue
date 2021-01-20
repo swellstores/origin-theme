@@ -65,14 +65,14 @@
           </NuxtLink>
           <!-- Sale price -->
           <div v-if="product.origPrice">
-            <span class="text-sm mr-1">{{ formatMoney(product.price) }}</span>
+            <span class="text-sm mr-1">{{ formatMoney(product.price, currency) }}</span>
             <span class="uppercase text-xs text-error whitespace-no-wrap">
-              Save {{ formatMoney(product.origPrice - product.price) }}
+              Save {{ formatMoney(product.origPrice - product.price, currency) }}
             </span>
           </div>
           <!-- Regular price -->
           <div v-else>
-            <span class="text-sm">{{ formatMoney(product.price) }}</span>
+            <span class="text-sm">{{ formatMoney(product.price, currency) }}</span>
           </div>
         </div>
       </div>
@@ -81,6 +81,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 // Helpers
 import get from 'lodash/get'
 
@@ -131,6 +133,10 @@ export default {
       sizes: null,
       widths: null
     }
+  },
+
+  computed: {
+    ...mapState(['currency'])
   }
 }
 </script>
