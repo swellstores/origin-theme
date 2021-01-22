@@ -30,7 +30,7 @@
         <!-- Price/quantity + item editor toggle -->
         <div class="mt-3 label-sm-bold leading-none clearfix">
           <div class="inline-block py-1 -mb-1">
-            <span>${{ item.price.toFixed(2) }}</span>
+            <span>{{ formatMoney(item.price, currency) }}</span>
             <span v-if="item.quantity > 1">&times; {{ item.quantity }}</span>
           </div>
           <button
@@ -82,6 +82,7 @@
 
 <script>
 // Helpers
+import { mapState } from 'vuex'
 import get from 'lodash/get'
 
 export default {
@@ -105,6 +106,8 @@ export default {
   },
 
   computed: {
+    ...mapState(['currency']),
+
     previewImage() {
       return get(this, 'item.variant.images.0') || get(this, 'item.product.images.0')
     }
