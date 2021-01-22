@@ -93,9 +93,17 @@
                   "required": true
                 },
                 {
-                  "id": "url",
-                  "label": "Image URL",
-                  "type": "url"
+                  "id": "link",
+                  "label": "Image Link",
+                  "type": "collection",
+                  "max": 1,
+                  "fields": [
+                    {
+                      "id": "url",
+                      "label": "Link URL",
+                      "type": "url"
+                    }
+                  ]
                 }
               ]
             }
