@@ -114,7 +114,7 @@ export default {
     statusMessage() {
       switch (this.order.status) {
         case 'pending':
-          return ['We have received your order!', 'Order recieved']
+          return ['We have received your order!', 'Order received']
           break
         case 'draft':
           return ['Your order is currently in draft mode.', 'Draft mode']
