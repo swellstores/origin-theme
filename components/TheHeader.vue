@@ -190,8 +190,9 @@ export default {
     getCurrencyOptions() {
       const { $swell } = this
 
-      return $swell.currency.list()
+      const options = $swell.currency.list()
         .map(currency => ({ value: currency.code, label: `${currency.symbol} ${currency.code}` }))
+      return options.length ? options : null;
     },
 
     selectCurrency(value) {
