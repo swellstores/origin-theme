@@ -35,7 +35,7 @@ function formatMoney(valueAmount, valueCurrency) {
 
   let formatter
   try {
-    const localeFormatted = locale.replace('_', '-')
+    const localeFormatted = (locale || 'en-US').replace('_', '-')
     formatter = new Intl.NumberFormat(localeFormatted, {
       style: 'currency',
       currency
@@ -107,4 +107,3 @@ function getContentPath({ type, value, url }) {
       return `/${slug}`
   }
 }
-
