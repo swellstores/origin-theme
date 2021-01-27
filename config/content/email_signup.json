@@ -86,6 +86,24 @@
           "label": "Form position",
           "type": "select",
           "default": "left",
+          "conditions": { "image.file": { "$empty": false } },
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "id": "align_x",
+          "label": "Form position",
+          "type": "select",
+          "default": "left",
+          "conditions": { "image.file": { "$empty": true } },
           "options": [
             {
               "value": "left",
