@@ -6,7 +6,7 @@
         type="text"
         :class="{
           'border-primary-med bg-primary-lightest': theme === 'light',
-          'border-primary-darker bg-primary-darker': theme === 'dark'
+          'border-primary-lightest bg-primary-darkest': theme === 'dark'
         }"
         class="rounded w-full h-12 pl-4 pr-14 py-2 border outline-none transition focus:shadow-outline"
         placeholder="Email address"
