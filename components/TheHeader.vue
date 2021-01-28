@@ -73,10 +73,12 @@
             <!-- Action menu -->
             <div class="flex flex-row items-center justify-end -mr-2 lg:w-1/4">
               <!-- Currency select -->
-              <InputDropdown
+              <CurrencySelect
+                class="hidden lg:block"
                 v-if="currencyOptions && currency"
                 :options="currencyOptions"
                 :value="currency"
+                appearance="float"
                 @change="selectCurrency"
               />
               <!-- Search icon -->
@@ -190,9 +192,14 @@ export default {
     getCurrencyOptions() {
       const { $swell } = this
 
-      const options = $swell.currency.list()
-        .map(currency => ({ value: currency.code, label: `${currency.symbol} ${currency.code}` }))
-      return options.length ? options : null;
+      const options = $swell.currency
+        .list()
+        .map(currency => ({
+          value: currency.code,
+          label: `${currency.symbol} ${currency.code}`,
+          symbol: currency.symbol
+        }))
+      return options.length ? options : null
     },
 
     selectCurrency(value) {
@@ -266,7 +273,7 @@ export default {
       setTimeout(() => {
         this.megaNavIsEnabled = true
       }, 10)
-    },
+    }
   }
 }
 </script>
