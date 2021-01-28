@@ -1,11 +1,8 @@
 <template>
   <div class="relative">
-    <div :class="{ 'overflow-y-hidden': searchIsActive || cartIsActive }">
-      <TheHeader
-        @click-cart="cartIsActive = true"
-        @click-search="searchIsActive = true"
-      />
-      <div style="min-height: 100vh">
+    <div :class="{ 'overflow-y-hidden': searchIsActive || cartIsActive }" class="flex flex-col min-h-screen">
+      <TheHeader @click-cart="cartIsActive = true" @click-search="searchIsActive = true" />
+      <div class="flex flex-col flex-grow">
         <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
       </div>
       <TheFooter />
