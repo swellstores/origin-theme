@@ -93,6 +93,16 @@ export default {
 
   watch: {
     value() {
+      this.setDefaultValue()
+    }
+  },
+
+  created() {
+    this.setDefaultValue()
+  },
+
+  methods: {
+    setDefaultValue() {
       const { value, options } = this
 
       if (value !== undefined) {
@@ -108,35 +118,14 @@ export default {
         // Fallback
         this.selected = value
       }
-    }
-  },
+    },
 
-  created() {
-    const { value, options } = this
-
-    if (value !== undefined) {
-      if (options && options.length > 0) {
-        const selected =
-          find(options, value) || find(options, { value }) || find(options, { label: value })
-        if (selected !== undefined) {
-          this.selected = selected
-          return
-        }
-      }
-
-      // Fallback
-      this.selected = value
-    }
-  },
-
-  methods: {
     toggleDropdown() {
       this.dropdownIsActive = !this.dropdownIsActive
     },
 
     selectOption(option) {
       this.selected = option
-      console.log(this.selected)
       this.dropdownIsActive = false
       this.$emit('change', option.value || option)
     },
