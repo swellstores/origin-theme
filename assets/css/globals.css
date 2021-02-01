@@ -148,6 +148,10 @@ img {
   &.light {
     @apply text-primary-lightest border-primary-lightest;
   }
+
+  &.lighter {
+    @apply text-primary-lighter border-primary-lighter;
+  }
 }
 
 .label-tag {

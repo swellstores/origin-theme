@@ -67,7 +67,7 @@ export default {
     },
     bgColor: {
       type: String,
-      default: 'primary-lighter'
+      default: 'primary-lightest'
     },
     outerSpacingX: {
       type: String,
