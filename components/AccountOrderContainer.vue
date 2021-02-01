@@ -51,7 +51,7 @@
 
         <p class="text-sm mb-2">
           <span class="pr-2">Total</span>
-          <span class="font-semibold">{{ formatMoney(order.grandTotal) }}</span>
+          <span class="font-semibold">{{ formatMoney(order.grandTotal, order.currency) }}</span>
         </p>
 
         <div class="md:hidden mb-10">
@@ -80,6 +80,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import flatMap from 'lodash/flatMap'
 import get from 'lodash/get'
 
@@ -92,6 +93,8 @@ export default {
   },
 
   computed: {
+    ...mapState(['currency']),
+
     itemMedia() {
       // Get max of 4 images per item of order
       if (!this.order.items) return

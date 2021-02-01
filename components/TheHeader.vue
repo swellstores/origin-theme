@@ -72,12 +72,24 @@
 
             <!-- Action menu -->
             <div class="flex flex-row items-center justify-end -mr-2 lg:w-1/4">
+              <!-- Currency select -->
+              <CurrencySelect
+                class="hidden lg:block"
+                v-if="currencyOptions && currency"
+                :options="currencyOptions"
+                :value="currency"
+                appearance="float"
+                @change="selectCurrency"
+              />
               <!-- Search icon -->
               <button class="h-10 p-2" @click.prevent="$emit('click-search')">
                 <BaseIcon icon="uil:search" />
               </button>
               <!-- Account icon -->
-              <NuxtLink class="hidden h-10 p-2 lg:inline-block" :to="customerLoggedIn ? '/account/orders/' : '/account/login/'">
+              <NuxtLink
+                class="hidden h-10 p-2 lg:inline-block"
+                :to="customerLoggedIn ? '/account/orders/' : '/account/login/'"
+              >
                 <BaseIcon icon="uil:user" />
               </NuxtLink>
               <!-- Cart icon -->
@@ -134,6 +146,7 @@ export default {
     this.menu = $swell.settings.menus(menuId)
     this.storeName = $swell.settings.get('store.name', 'ORIGIN')
     this.logoSrc = $swell.settings.get('header.logo.file.url')
+    this.currencyOptions = this.getCurrencyOptions()
   },
 
   data() {
@@ -148,12 +161,13 @@ export default {
       hideHeader: false,
       lastScrollPos: 0,
       isScrolled: false,
-      scrollRAF: null
+      scrollRAF: null,
+      currencyOptions: null
     }
   },
 
   computed: {
-    ...mapState(['cart', 'customerLoggedIn'])
+    ...mapState(['cart', 'customerLoggedIn', 'currency'])
   },
 
   watch: {
@@ -166,6 +180,7 @@ export default {
 
   mounted() {
     this.setScrollListener(true)
+    this.$store.dispatch('selectCurrency')
   },
 
   beforeDestroy() {
@@ -174,6 +189,24 @@ export default {
   },
 
   methods: {
+    getCurrencyOptions() {
+      const { $swell } = this
+
+      const options = $swell.currency
+        .list()
+        .map(currency => ({
+          value: currency.code,
+          label: `${currency.symbol} ${currency.code}`,
+          symbol: currency.symbol
+        }))
+      return options.length ? options : null
+    },
+
+    selectCurrency(value) {
+      const { $swell } = this
+      this.$store.dispatch('selectCurrency', { code: value })
+    },
+
     setMobileNavVisibility(value) {
       if (typeof value === 'boolean') {
         // Explicitly set visibility

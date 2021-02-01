@@ -21,39 +21,8 @@ function settings(self, id, def = undefined) {
   return get(self, `$store.$swell.settings.state.${id}`, def)
 }
 
-function formatMoney(valueAmount, valueCurrency) {
-  const amount = valueAmount
-  const state = get(this, '$nuxt.$store.state', {})
-
-  const { locale, currency } = settings(this, 'store', state)
-
-  if (valueCurrency !== currency) {
-    // Convert the price currency into the display currency
-    // const rate = exchangeRates[valueCurrency]
-    // amount = (amount / 100) * rate
-  }
-
-  let formatter
-  try {
-    const localeFormatted = (locale || 'en-US').replace('_', '-')
-    formatter = new Intl.NumberFormat(localeFormatted, {
-      style: 'currency',
-      currency
-    })
-  } catch (err) {
-    console.error(err)
-  }
-
-  // TODO polyfill?
-  if (!formatter) return ''
-
-  if (typeof amount === 'number') {
-    // If amount passed, return it with the appropriate currency symbol
-    return formatter.format(amount)
-  } else {
-    // Otherwise return the currency symbol only, falling back to '$'
-    return get(formatter.formatToParts(0), '0.value', '$')
-  }
+function formatMoney(amount, code) {
+  return this.$nuxt.$store.$swell.currency.format(amount, { code })
 }
 
 function resolveUrl(item) {

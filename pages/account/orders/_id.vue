@@ -53,7 +53,7 @@
 
             <div>
               <span>Total</span>
-              <span class="font-semibold">{{ formatMoney(order.grandTotal) }}</span>
+              <span class="font-semibold">{{ formatMoney(order.grandTotal, order.currency) }}</span>
             </div>
           </div>
 
@@ -89,31 +89,31 @@
                 >
                   <span>{{ option.name }}: {{ option.value }}</span>
                 </p>
-                <p class="pt-2 font-semibold text-sm">{{ formatMoney(item.priceTotal) }}</p>
+                <p class="pt-2 font-semibold text-sm">{{ formatMoney(item.priceTotal, order.currency) }}</p>
               </div>
             </div>
           </div>
 
           <div class="flex pb-2">
             <span>Subtotal</span>
-            <span class="ml-auto">{{ formatMoney(order.subTotal) }}</span>
+            <span class="ml-auto">{{ formatMoney(order.subTotal, order.currency) }}</span>
           </div>
 
           <div v-if="order.shipmentDelivery" class="flex pb-2">
             <span>Shipping</span>
             <span class="ml-auto">{{
-              order.shipmentPrice === 0 ? 'Free' : formatMoney(order.shipmentPrice)
+              order.shipmentPrice === 0 ? 'Free' : formatMoney(order.shipmentPrice, order.currency)
             }}</span>
           </div>
 
           <div v-if="order.itemDiscount > 0" class="flex pb-2">
             <span>Discounts & Credits</span>
-            <span class="ml-auto">-{{ formatMoney(order.itemDiscount) }}</span>
+            <span class="ml-auto">-{{ formatMoney(order.itemDiscount, order.currency) }}</span>
           </div>
 
           <div class="flex text-lg font-semibold">
             <span>Total</span>
-            <span class="ml-auto">{{ formatMoney(order.grandTotal) }}</span>
+            <span class="ml-auto">{{ formatMoney(order.grandTotal, order.currency) }}</span>
           </div>
         </div>
       </div>
@@ -212,7 +212,7 @@
 
                   <p class="text-sm pt-4">
                     <span class="font-semibold pr-2">Total</span
-                    ><span>{{ formatMoney(order.giftcardTotal) }}</span>
+                    ><span>{{ formatMoney(order.giftcardTotal, order.currency) }}</span>
                   </p>
                 </div>
 

@@ -101,7 +101,8 @@ module.exports = {
       '80vh': '80vh',
       full: '100%',
       '100vh': '100vh',
-      '6/5': '120%'
+      '6/5': '120%',
+      'max': 'max-content'
     },
     screens: {
       sm: '576px',

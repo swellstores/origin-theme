@@ -2,7 +2,7 @@ export const state = () => ({
   cart: null,
   cartError: null,
   cartIsUpdating: false,
-  currency: 'USD',
+  currency: null,
   customer: null,
   customerLoggedIn: false,
   locale: 'en-US',
@@ -12,6 +12,20 @@ export const state = () => ({
 })
 
 export const actions = {
+  selectCurrency({ commit, dispatch, state }, { code } = {}) {
+    try {
+      if (code) {
+        this.$swell.currency.select(code)
+        commit('setState', { key: 'currency', value: code })
+      } else {
+        const selected = this.$swell.currency.selected()
+        commit('setState', { key: 'currency', value: selected })
+      }
+    } catch (err) {
+      dispatch('handleError', err)
+    }
+  },
+
   /**
    * Product to be added to cart
    * @type {Object} Product
@@ -144,9 +158,6 @@ export const actions = {
         // Get cart from session (returns null if nothing in cart)
         cart = await this.$swell.cart.get()
       }
-
-      // Update currency state
-      if (cart) commit('setState', { key: 'currency', value: cart.currency })
       // Update cart state
       commit('setState', { key: 'cart', value: cart })
     } catch (err) {

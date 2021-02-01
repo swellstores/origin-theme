@@ -66,14 +66,14 @@
             <span class="text-sm">{{ reviews.total }} reviews</span>
             -->
             <div class="font-semibold text-lg flex items-center mt-2 mb-5 md:mb-8">
-              <span>{{ formatMoney(variation.price, variation.currency) }}</span>
+              <span>{{ formatMoney(variation.price, currency) }}</span>
               <span v-if="billingInterval" class="lowercase">&nbsp;{{ billingInterval }}</span>
               <span
                 v-if="variation.origPrice"
                 class="inline-block ml-3 rounded bg-error-faded -mt-2px px-2 h-6 leading-loose text-error uppercase text-xs"
               >
                 Save
-                {{ formatMoney(variation.origPrice - variation.price, variation.currency) }}
+                {{ formatMoney(variation.origPrice - variation.price, currency) }}
               </span>
             </div>
             <div v-html="product.description" />
@@ -104,10 +104,10 @@
                 <div v-show="!cartIsUpdating">
                   <span>Add to cart</span>
                   <span class="inline-block w-5 mx-1 mb-1 border-b border-primary-lightest"></span>
-                  <span>{{ formatMoney(variation.price, variation.currency) }}</span>
+                  <span>{{ formatMoney(variation.price, currency) }}</span>
                   <span v-if="billingInterval">{{ billingInterval }}</span>
                   <span v-if="variation.origPrice" class="ml-1 line-through text-primary-med">
-                    {{ formatMoney(variation.origPrice, variation.currency) }}
+                    {{ formatMoney(variation.origPrice, currency) }}
                   </span>
                 </div>
                 <div v-show="cartIsUpdating" class>
@@ -212,7 +212,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['cartIsUpdating', 'headerIsVisible']),
+    ...mapState(['cartIsUpdating', 'headerIsVisible', 'currency']),
 
     // Resulting combination of selected product options
     variation() {

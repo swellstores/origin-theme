@@ -1,4 +1,8 @@
 @variants responsive {
+  .center-x {
+    @apply left-1/2 transform -translate-x-1/2;
+  }
+
   .center-y {
     @apply top-1/2 transform -translate-y-1/2;
   }

@@ -69,9 +69,9 @@
                 <div v-for="giftcard in cart.giftcards" :key="giftcard.id" class="mt-4">
                   <p class="label-xs-bold flex items-center">
                     <span>**** **** **** {{ giftcard.last4 }}</span>
-                    <ButtonCross class="ml-3" @click="removeDiscount(giftcard.id)" />
+                    <ButtonCross class="ml-3" @click="removeDiscount(giftcard.id, currency)" />
                   </p>
-                  <p class="text-sm">{{ formatMoney(giftcard.amount) }} gift card</p>
+                  <p class="text-sm">{{ formatMoney(giftcard.amount, currency) }} gift card</p>
                 </div>
               </div>
             </div>
@@ -80,19 +80,19 @@
             <div class="container py-6 border-b">
               <div class="cart-line-total">
                 <span>Subtotal</span>
-                <span>{{ formatMoney(cart.subTotal) }}</span>
+                <span>{{ formatMoney(cart.subTotal, currency) }}</span>
               </div>
               <div class="cart-line-total">
                 <span>Shipping</span>
-                <span>{{ formatMoney(cart.shipmentTotal) }}</span>
+                <span>{{ formatMoney(cart.shipmentTotal, currency) }}</span>
               </div>
               <div v-show="cart.discountTotal" class="cart-line-total">
                 <span>Discounts</span>
-                <span>–{{ formatMoney(cart.discountTotal) }}</span>
+                <span>–{{ formatMoney(cart.discountTotal, currency) }}</span>
               </div>
               <h3 class="mt-3 flex justify-between text-xl font-semibold">
                 <span>Total</span>
-                <span>{{ formatMoney(cart.grandTotal) }}</span>
+                <span>{{ formatMoney(cart.grandTotal, currency) }}</span>
               </h3>
               <a
                 :href="cart.checkoutUrl"
@@ -135,7 +135,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['cart', 'cartIsUpdating'])
+    ...mapState(['cart', 'cartIsUpdating', 'currency'])
   },
 
   mounted() {
