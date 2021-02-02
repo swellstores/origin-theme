@@ -18,14 +18,30 @@ export default async (context, inject) => {
     throw new Error('[swell module]: a public API key must be provided')
   }
 
+  // Load cookies on server side
+  let cookies = {}
+  if (context.req) {
+    cookies = parseCookies(context.req);
+  }
+
   // Set up swell-js client
   swell.init(storeId, publicKey, {
     useCamelCase: true,
     previewContent: '<%= options.previewContent %>' === 'true',
-    url: '<%= options.storeUrl %>'
+    url: '<%= options.storeUrl %>',
+    session: cookies['swell-session'],
+    locale: cookies['swell-locale'],
+    currency: cookies['swell-currency']
   })
 
   // Inject client into nuxt context as $swell
   context.$swell = swell
   inject('swell', swell)
+}
+
+function parseCookies(req) {
+  return req.headers.cookie
+    .split(/;\s*/)
+    .map(line => line.split('='))
+    .reduce((acc, parts) => ({ ...acc, [parts[0].toLowerCase()]: parts[1] }), {})
 }

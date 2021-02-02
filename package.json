@@ -46,6 +46,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-unicorn": "^9.1.1",
     "eslint-plugin-vue": "6.2.2",
+    "locale-emoji": "0.3.0",
     "nodemon": "^1.18.9"
   },
   "scripts": {

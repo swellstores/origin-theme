@@ -72,6 +72,15 @@
 
             <!-- Action menu -->
             <div class="flex flex-row items-center justify-end -mr-2 lg:w-1/4">
+              <!-- Locale select -->
+              <LocaleSelect
+                class="hidden lg:block"
+                v-if="localeOptions && locale"
+                :options="localeOptions"
+                :value="locale"
+                appearance="float"
+                @change="selectLocale"
+              />
               <!-- Currency select -->
               <CurrencySelect
                 class="hidden lg:block"
@@ -147,6 +156,7 @@ export default {
     this.storeName = $swell.settings.get('store.name', 'ORIGIN')
     this.logoSrc = $swell.settings.get('header.logo.file.url')
     this.currencyOptions = this.getCurrencyOptions()
+    this.localeOptions = this.getLocaleOptions()
   },
 
   data() {
@@ -162,12 +172,13 @@ export default {
       lastScrollPos: 0,
       isScrolled: false,
       scrollRAF: null,
-      currencyOptions: null
+      currencyOptions: null,
+      localeOptions: null
     }
   },
 
   computed: {
-    ...mapState(['cart', 'customerLoggedIn', 'currency'])
+    ...mapState(['cart', 'customerLoggedIn', 'currency', 'locale'])
   },
 
   watch: {
@@ -181,6 +192,7 @@ export default {
   mounted() {
     this.setScrollListener(true)
     this.$store.dispatch('selectCurrency')
+    this.$store.dispatch('selectLocale')
   },
 
   beforeDestroy() {
@@ -202,9 +214,27 @@ export default {
       return options.length ? options : null
     },
 
+    getLocaleOptions() {
+      const { $swell } = this
+
+      const options = $swell.locale
+        .list()
+        .map(locale => ({
+          value: locale.code,
+          label: locale.name,
+          icon: locale.icon
+        }))
+      return options.length ? options : null
+    },
+
     selectCurrency(value) {
       const { $swell } = this
       this.$store.dispatch('selectCurrency', { code: value })
+    },
+
+    selectLocale(value) {
+      const { $swell } = this
+      this.$store.dispatch('selectLocale', { code: value })
     },
 
     setMobileNavVisibility(value) {
