@@ -9,7 +9,8 @@
         {
           "id": "heading",
           "label": "Heading",
-          "type": "text"
+          "type": "text",
+          "localized": true
         },
         {
           "id": "reviews",
@@ -19,17 +20,20 @@
             {
               "id": "quote",
               "label": "Review text/Quote",
-              "type": "textarea"
+              "type": "textarea",
+              "localized": true
             },
             {
               "id": "name",
               "label": "Customer's name",
-              "type": "text"
+              "type": "text",
+              "localized": true
             },
             {
               "id": "location",
               "label": "Customer's location",
-              "type": "text"
+              "type": "text",
+              "localized": true
             },
             {
               "id": "score",

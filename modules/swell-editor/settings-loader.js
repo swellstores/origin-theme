@@ -10,6 +10,8 @@ export default async (context, inject) => {
     // Load settings from filesystem
     context.app.$swell.settings.state = normalizeKeys(settings)
     context.app.$swell.settings.menuState = normalizeKeys(menus)
+
+    // TODO: figure how to load locale settings in production
   } else {
     // Load all settings via API
     await context.app.$swell.settings.load()

@@ -18,7 +18,8 @@
           "id": "text",
           "label": "Benefit text",
           "type": "text",
-          "required": true
+          "required": true,
+          "localized": true
         }
       ],
       "default": [

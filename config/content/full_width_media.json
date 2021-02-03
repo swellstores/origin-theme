@@ -10,13 +10,15 @@
           "id": "heading",
           "label": "Heading text",
           "type": "text",
-          "required": true
+          "required": true,
+          "localized": true
         },
         {
           "id": "description",
           "label": "Description text",
           "type": "basic_html",
-          "required": true
+          "required": true,
+          "localized": true
         },
         {
           "id": "image",
@@ -37,7 +39,8 @@
               "options": [
                 {
                   "value": "text",
-                  "label": "Text"
+                  "label": "Text",
+                  "localized": true
                 },
                 {
                   "value": "button_primary",
@@ -49,7 +52,8 @@
               "id": "label",
               "label": "Label text",
               "type": "text",
-              "required": true
+              "required": true,
+              "localized": true
             },
             {
               "id": "url",

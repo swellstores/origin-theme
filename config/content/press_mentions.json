@@ -14,12 +14,14 @@
             {
               "id": "quote",
               "label": "Quote",
-              "type": "textarea"
+              "type": "textarea",
+              "localized": true
             },
             {
               "id": "name",
               "label": "Publication name",
-              "type": "text"
+              "type": "text",
+              "localized": true
             },
             {
               "id": "logo",

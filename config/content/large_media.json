@@ -9,12 +9,14 @@
         {
           "id": "heading",
           "label": "Heading",
-          "type": "text"
+          "type": "text",
+          "localized": true
         },
         {
           "id": "description",
           "label": "Description",
-          "type": "short_text"
+          "type": "short_text",
+          "localized": true
         },
         {
           "id": "image",

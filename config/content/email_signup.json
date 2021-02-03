@@ -11,14 +11,16 @@
           "label": "Heading text",
           "type": "text",
           "default": "Email signup",
-          "required": true
+          "required": true,
+          "localized": true
         },
         {
           "id": "description",
           "label": "Description text",
           "type": "textarea",
           "default": "Enter your email address and we'll send you updates.",
-          "required": true
+          "required": true,
+          "localized": true
         },
         {
           "id": "image",

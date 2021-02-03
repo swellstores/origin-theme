@@ -19,10 +19,7 @@ export default async (context, inject) => {
   }
 
   // Load cookies on server side
-  let cookies = {}
-  if (context.req) {
-    cookies = parseCookies(context.req);
-  }
+  const cookies = parseCookies(context.req);
 
   // Set up swell-js client
   swell.init(storeId, publicKey, {
@@ -40,6 +37,9 @@ export default async (context, inject) => {
 }
 
 function parseCookies(req) {
+  if (!req || !req.headers.cookies) {
+    return {};
+  }
   return req.headers.cookie
     .split(/;\s*/)
     .map(line => line.split('='))
