@@ -1,7 +1,18 @@
 <template>
   <div class="relative">
-    <div :class="{ 'overflow-y-hidden': searchIsActive || cartIsActive }" class="flex flex-col min-h-screen">
+    <div
+      class="flex flex-col min-h-screen"
+      :class="{ 'overflow-y-hidden': searchIsActive || cartIsActive }"
+    >
       <TheHeader @click-cart="cartIsActive = true" @click-search="searchIsActive = true" />
+      <transition name="fade-up-out">
+        <TheToastNotification
+          v-if="notification"
+          @open-cart="cartIsActive = true"
+          :message="notification.message"
+          :type="notification.type"
+        />
+      </transition>
       <div class="flex flex-col flex-grow">
         <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
       </div>
@@ -10,13 +21,7 @@
     <transition name="fade-up">
       <TheCookieNotification />
     </transition>
-    <transition name="fade-up">
-      <TheToastNotification
-        v-if="notification"
-        :message="notification.message"
-        :type="notification.type"
-      />
-    </transition>
+
     <TheCart v-show="cartIsActive" @click-close="cartIsActive = false" />
     <transition name="fade">
       <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
@@ -43,8 +48,14 @@ export default {
 
   watch: {
     $route(to, from) {
+      // Hide cart and search on reroute
       this.cartIsActive = false
       this.searchIsActive = false
+
+      // Hide notification on reroute
+      this.$store.commit('setState', { key: 'notification', value: null })
+
+      // Track page
       if (this.$swellAnalytics) {
         this.$swellAnalytics.trackPage(to.path)
       }

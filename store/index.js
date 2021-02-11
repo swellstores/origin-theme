@@ -8,7 +8,8 @@ export const state = () => ({
   locale: 'en-US',
   notification: null,
   cookiesWereAccepted: false,
-  headerIsVisible: true
+  headerIsVisible: true,
+  addedItem: null
 })
 
 export const actions = {
@@ -50,8 +51,24 @@ export const actions = {
       const cart = await this.$swell.cart.addItem(item)
       // Replace cart state
       commit('setState', { key: 'cart', value: cart })
-      // Trigger success confirmation
-      dispatch('showNotification', { message: 'Added to cart' })
+      // Set item to be displayed in the notification
+      commit('setState', { key: 'addedItem', value: item })
+
+      if (state.notification !== null) {
+        // If notification is already visible, close it to show new notification
+        commit('setState', { key: 'notification', value: null })
+
+        window.setTimeout(() => {
+          dispatch('showNotification', {
+            message: `Added ${item.quantity} item(s) to cart`,
+            type: 'product',
+            isSticky: true
+          })
+        }, 200)
+      } else {
+        // Trigger success confirmation
+        dispatch('showNotification', { message: 'Added to cart', type: 'product', isSticky: true })
+      }
     } catch (err) {
       dispatch('handleError', err)
     }
@@ -187,6 +204,11 @@ export const actions = {
    * @param {boolean} isSticky - Whether notification requires manually closing
    */
   showNotification({ commit, state }, { message, type = 'confirmation', isSticky = false } = {}) {
+    // If non-product notification, set addedItem as null
+    if (type !== 'product') {
+      commit('setState', { key: 'addedItem', value: null })
+    }
+
     commit('setState', { key: 'notification', value: { message, type } })
 
     // If sticky setting isn't true, remove the notification after a few seconds

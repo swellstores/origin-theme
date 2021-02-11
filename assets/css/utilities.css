@@ -14,6 +14,14 @@
   .h-vh-gap {
     height: calc(100vh - 2rem);
   }
+
+  .w-full-px-6 {
+    width: calc(100% - theme('spacing.6'));
+  } 
+
+  .w-full-px-12 {
+    width: calc(100% - theme('spacing.12'));
+  } 
 }
 
 .popup-enter-active .overlay,

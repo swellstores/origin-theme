@@ -192,13 +192,11 @@ export default {
     getCurrencyOptions() {
       const { $swell } = this
 
-      const options = $swell.currency
-        .list()
-        .map(currency => ({
-          value: currency.code,
-          label: `${currency.symbol} ${currency.code}`,
-          symbol: currency.symbol
-        }))
+      const options = $swell.currency.list().map(currency => ({
+        value: currency.code,
+        label: `${currency.symbol} ${currency.code}`,
+        symbol: currency.symbol
+      }))
       return options.length ? options : null
     },
 
@@ -235,9 +233,19 @@ export default {
       if (Math.abs(currentScrollPosition - this.lastScrollPos) < 50) return
 
       if (currentScrollPosition > this.lastScrollPos) {
+        // Stop executing if hide header is already true
+        if (this.hideHeader) {
+          this.lastScrollPos = currentScrollPosition
+          return
+        }
         this.hideHeader = true
         this.$store.commit('setState', { key: 'headerIsVisible', value: false })
       } else {
+        // Stop executing if hide header is already false
+        if (!this.hideHeader) {
+          this.lastScrollPos = currentScrollPosition
+          return
+        }
         this.hideHeader = false
         this.$store.commit('setState', { key: 'headerIsVisible', value: true })
       }

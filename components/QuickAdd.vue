@@ -1,0 +1,199 @@
+<template>
+  <div>
+    <button
+      v-if="!quickAddIsActive && !cartIsUpdating"
+      class="btn light w-full shadow"
+      @click="interact"
+    >
+      {{ label }}
+    </button>
+
+    <!-- Quick Add -->
+    <transition name="fade" :duration="200">
+      <div
+        v-if="quickAddIsActive"
+        class="w-full bottom-0 px-4 py-3 bg-primary-lighter shadow rounded z-10"
+      >
+        <!-- Product options -->
+        <div v-for="(input, index) in optionInputs" :key="input.name">
+          <component
+            :is="input.component"
+            v-if="visibleOptionIds.includes(input.option.id)"
+            v-show="index === quickAddIndex"
+            :option="input.option"
+            :current-value="optionState[input.option.name]"
+            @value-changed="setOptionValue"
+          />
+        </div>
+      </div>
+    </transition>
+  </div>
+</template>
+
+<script>
+// Helpers
+import get from 'lodash/get'
+import { listVisibleOptions } from '~/modules/swell'
+import { mapState } from 'vuex'
+
+export default {
+  async fetch() {
+    // Compute initial values for options
+    const optionState =
+      this.optionState ||
+      (this.product.options || []).reduce((options, { name, values }) => {
+        // Set first available value for current option
+        options[name] = get(values, '0.name')
+        return options
+      }, {})
+
+    // Set component data
+    this.optionState = optionState
+  },
+
+  props: {
+    product: {
+      type: Object,
+      default: () => {}
+    }
+  },
+
+  data() {
+    return {
+      label: null,
+      flow: null,
+      optionState: null,
+      quickAddIsActive: false,
+      quickAddIndex: 0
+    }
+  },
+
+  computed: {
+    ...mapState(['cartIsUpdating']),
+
+    options() {
+      if (!this.product) return
+      return this.product.options
+    },
+
+    // Resulting combination of selected product options
+    variation() {
+      if (!this.product) return {}
+      return this.$swell.products.variation(this.product, this.optionState)
+    },
+
+    optionInputs() {
+      if (!this.product) return {}
+      const options = get(this, 'product.options', [])
+
+      return options.reduce((optionInputs, option) => {
+        let componentName
+
+        switch (option.inputType) {
+          case 'short_text':
+            componentName = 'ProductOptionText'
+            break
+          case 'long_text':
+            componentName = 'ProductOptionText'
+            break
+          case 'toggle':
+            componentName = 'ProductOptionCheckbox'
+            break
+          default:
+            componentName = 'ProductOptionSelect'
+        }
+
+        // Don't include subscription plan if there's only one option value available
+        if (option.subscription && option.values.length < 2) return optionInputs
+
+        optionInputs.push({
+          option,
+          component: () => import(`~/components/${componentName}`)
+        })
+
+        return optionInputs
+      }, [])
+    },
+
+    visibleOptionIds() {
+      const options = get(this, 'product.options', [])
+      const optionState = this.optionState
+
+      return listVisibleOptions(options, optionState).map(({ id }) => id)
+    }
+  },
+
+  methods: {
+    // Sets flow of product purchase + labels
+    setFlow() {
+      const { options } = this
+      if (options.length > 2) {
+        this.label = 'Quick view'
+        this.flow = 'quick-view'
+      } else if (options.length > 0 && options.length < 3) {
+        this.label = 'Quick add'
+        this.flow = 'quick-add'
+      } else {
+        this.label = 'Add to cart'
+        this.flow = 'add-to-cart'
+      }
+    },
+
+    // Update an option value based on user input
+    setOptionValue({ option, value }) {
+      // Use $set to update the data object because options are dynamic
+      // and optionState won't be reactive otherwise
+      // TODO in Vue 3 this.optionState[option] = value should work
+      this.$set(this.optionState, option, value)
+      this.$emit('keep-alive', true)
+
+      // Add to cart if only one option was available
+      if (this.options.length === 1 || this.quickAddIndex + 1 >= this.options.length) {
+        this.addToCart()
+
+        // Hide options when adding to cart
+        this.quickAddIsActive = false
+      } else {
+        // Move onto next option if available
+        this.quickAddIndex++
+      }
+    },
+
+    // Handle flow on click event
+    interact() {
+      switch (this.flow) {
+        case 'quick-view':
+          this.$emit('open-quick-view')
+          break
+        case 'quick-add':
+          this.quickAddIsActive = true
+          break
+        case 'add-to-cart':
+          this.addToCart()
+          break
+        default:
+          this.addToCart()
+      }
+    },
+
+    // Add product to cart with selected options
+    addToCart() {
+      // Emit event to show updating label
+      this.$emit('adding-to-cart')
+
+      // Emit event to hide quick add button if keep-alive is active
+      this.$emit('keep-alive', false)
+
+      this.$store.dispatch('addCartItem', {
+        productId: this.variation.id,
+        quantity: 1,
+        options: this.optionState
+      })
+    }
+  },
+
+  created() {
+    this.setFlow()
+  }
+}
+</script>

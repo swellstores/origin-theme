@@ -55,6 +55,24 @@
   @apply transform translate-y-6 opacity-0;
 }
 
+/* Vue fade-up and out transition */
+.fade-up-out-enter-active {
+  @apply transition duration-300 ease-out;
+}
+
+.fade-up-out-leave-active {
+  @apply transition duration-500 ease-in;
+}
+
+.fade-up-out-enter {
+  @apply transform translate-y-6 opacity-0;
+}
+
+.fade-up-out-leave-to {
+  @apply transform opacity-0;
+}
+
+
 /* Vue fade transition */
 .fade-enter-active,
 .fade-leave-active {

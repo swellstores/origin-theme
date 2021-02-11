@@ -19,7 +19,12 @@
 
       <div v-else class="relative block h-full rounded">
         <!-- Preview media -->
-        <div v-if="product.images" class="relative">
+        <div
+          v-if="product.images"
+          class="relative"
+          @mouseenter="showQuickAdd(product.id)"
+          @mouseleave="hideQuickAdd(product.id)"
+        >
           <NuxtLink
             :to="resolveUrl({ type: 'product', value: product.slug })"
             class="relative block rounded overflow-hidden"
@@ -50,6 +55,28 @@
           >
             Sale
           </div>
+
+          <!-- TODO: Hook up settings config -->
+          <transition name="fade-up" :duration="400">
+            <QuickAdd
+              v-if="
+                (currentProductId === product.id && quickAddIsVisible) ||
+                  (currentProductId === product.id && quickAddKeepAlive)
+              "
+              class="hidden lg:block w-full absolute bottom-0 px-6 mb-5"
+              :product="product"
+              @open-quick-view="openQuickView(product)"
+              @adding-to-cart="productBeingAdded = product.id"
+              @keep-alive="keepQuickAddAlive"
+            />
+          </transition>
+
+          <div
+            v-if="cartIsUpdating && productBeingAdded === product.id"
+            class="absolute w-full-px-12 mx-6 flex items-center justify-center bottom-0 h-10 mb-5 text-center text-sm trackind-wide uppercase bg-primary-lighter shadow rounded z-10"
+          >
+            Adding...
+          </div>
         </div>
         <div
           v-else
@@ -77,6 +104,11 @@
         </div>
       </div>
     </article>
+    <QuickViewPopup
+      v-if="quickViewIsVisible"
+      :productId="quickViewProduct.id"
+      @click-close="quickViewIsVisible = false"
+    />
   </section>
 </template>
 
@@ -131,12 +163,47 @@ export default {
       textAlign: 'left',
       ratioPadding: null,
       sizes: null,
-      widths: null
+      widths: null,
+      quickAddKeepAlive: false,
+      quickAddIsVisible: false,
+      currentProductId: null,
+      quickViewIsVisible: false,
+      quickViewProduct: null,
+      productBeingAdded: null
     }
   },
 
   computed: {
-    ...mapState(['currency'])
+    ...mapState(['currency', 'cartIsUpdating'])
+  },
+
+  methods: {
+    showQuickAdd(id) {
+      // If keep alive is active, don't hide until same product has been moused over again
+      // This is so that for dropdown option that extend past the original element, the flow isn't lost.
+      if (this.quickAddKeepAlive) {
+        if (this.currentProductId !== id) return
+        this.quickAddKeepAlive = false
+      }
+      this.quickAddIsVisible = true
+      this.currentProductId = id
+    },
+
+    hideQuickAdd(id) {
+      if (this.quickAddKeepAlive) return
+      this.quickAddIsVisible = false
+      this.currentProductId = null
+    },
+
+    openQuickView(product) {
+      if (!product) return
+      this.quickViewProduct = product
+      this.quickViewIsVisible = true
+    },
+
+    keepQuickAddAlive(bool) {
+      this.quickAddKeepAlive = bool
+    }
   }
 }
 </script>
