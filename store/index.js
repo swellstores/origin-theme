@@ -67,7 +67,7 @@ export const actions = {
         }, 200)
       } else {
         // Trigger success confirmation
-        dispatch('showNotification', { message: 'Added to cart', type: 'product', isSticky: true })
+        dispatch('showNotification', { message: `Added ${item.quantity} item(s) to cart`, type: 'product', isSticky: true })
       }
     } catch (err) {
       dispatch('handleError', err)
