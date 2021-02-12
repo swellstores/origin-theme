@@ -104,7 +104,9 @@ export default {
         }
 
         // Don't include subscription plan if there's only one option value available
-        if (option.subscription && option.values.length < 2) return optionInputs
+        if (option.subscription && option.values.length < 2) {
+          return optionInputs
+        }
 
         optionInputs.push({
           option,
@@ -126,11 +128,12 @@ export default {
   methods: {
     // Sets flow of product purchase + labels
     setFlow() {
-      const { options } = this
-      if (options.length > 2) {
+      const { optionInputs } = this
+
+      if (optionInputs.length > 2) {
         this.label = 'Quick view'
         this.flow = 'quick-view'
-      } else if (options.length > 0 && options.length < 3) {
+      } else if (optionInputs.length > 0 && optionInputs.length < 3) {
         this.label = 'Quick add'
         this.flow = 'quick-add'
       } else {
@@ -141,14 +144,15 @@ export default {
 
     // Update an option value based on user input
     setOptionValue({ option, value }) {
+      const { optionState, optionInputs, quickAddIndex, quickAddIsActive } = this
       // Use $set to update the data object because options are dynamic
       // and optionState won't be reactive otherwise
       // TODO in Vue 3 this.optionState[option] = value should work
-      this.$set(this.optionState, option, value)
+      this.$set(optionState, option, value)
       this.$emit('keep-alive', true)
 
       // Add to cart if only one option was available
-      if (this.options.length === 1 || this.quickAddIndex + 1 >= this.options.length) {
+      if (optionInputs.length === 1 || quickAddIndex + 1 >= optionInputs.length) {
         this.addToCart()
 
         // Hide options when adding to cart
