@@ -46,25 +46,42 @@
             <!-- Main nav menu -->
             <nav v-if="menu" class="w-full lg:w-auto hidden lg:flex">
               <ul class="flex justify-center">
-                <li v-for="item in menu.items" :key="item.name" class="sw-nav-link-wrapper mb-0">
+                <li
+                  v-for="(item, index) in menu.items"
+                  :key="item.name"
+                  class="sw-nav-link-wrapper mb-0"
+                >
                   <NuxtLink
                     :to="resolveUrl(item)"
                     :title="item.description"
                     class="sw-nav-link relative flex items-center h-full px-5 pt-1 rounded-none border-transparent border-b-4"
                     @click.native="megaNavIsEnabled = false"
-                    @mouseleave.native="resetMegaNav"
+                    @mouseleave.native="hideMegaNav"
+                    @mouseenter.native="showMegaNav(index)"
                   >
                     <span class="relative">
                       {{ item.name }}
                     </span>
                   </NuxtLink>
                   <!-- Show mega nav if item has child items -->
-                  <div
-                    v-if="item && item.items && megaNavIsEnabled"
-                    class="mega-nav fade-in hidden absolute left-0 right-0 min-h-full"
-                  >
-                    <MegaNav :items="item.items" @click="resetMegaNav" />
-                  </div>
+                  <transition name="fade">
+                    <div
+                      v-if="
+                        (item &&
+                          item.items &&
+                          item.items.length &&
+                          megaNavIsEnabled &&
+                          currentMegaNavIndex === index) ||
+                          !isMounted
+                      "
+                      class="absolute left-0 right-0 min-h-full"
+                      :class="{ 'mega-nav hidden fade-in': !isMounted }"
+                      @mouseenter="showMegaNav(index)"
+                      @mouseleave="hideMegaNav"
+                    >
+                      <MegaNav :items="item.items" @click="hideMegaNav" />
+                    </div>
+                  </transition>
                 </li>
               </ul>
             </nav>
@@ -131,6 +148,7 @@
 // Helpers
 import { mapState } from 'vuex'
 import get from 'lodash/get'
+import debounce from 'lodash/debounce'
 
 export default {
   name: 'TheHeader',
@@ -157,10 +175,12 @@ export default {
       logoSrc: null,
       mounted: false,
       megaNavIsEnabled: true,
+      currentMegaNavIndex: null,
       mobileNavIsVisible: false,
       hideHeader: false,
       lastScrollPos: 0,
       isScrolled: false,
+      isMounted: false,
       scrollRAF: null,
       currencyOptions: null
     }
@@ -178,7 +198,13 @@ export default {
     }
   },
 
+  created() {
+    // Attach debounce method, to allow it to be cancelled
+    this.hideMegaNav = debounce(this.hideMegaNav, 200)
+  },
+
   mounted() {
+    this.isMounted = true
     this.setScrollListener(true)
     this.$store.dispatch('selectCurrency')
   },
@@ -192,13 +218,11 @@ export default {
     getCurrencyOptions() {
       const { $swell } = this
 
-      const options = $swell.currency
-        .list()
-        .map(currency => ({
-          value: currency.code,
-          label: `${currency.symbol} ${currency.code}`,
-          symbol: currency.symbol
-        }))
+      const options = $swell.currency.list().map(currency => ({
+        value: currency.code,
+        label: `${currency.symbol} ${currency.code}`,
+        symbol: currency.symbol
+      }))
       return options.length ? options : null
     },
 
@@ -222,6 +246,17 @@ export default {
       } else {
         this.setScrollListener(true)
       }
+    },
+
+    showMegaNav(index) {
+      this.hideMegaNav.cancel()
+      this.megaNavIsEnabled = true
+      this.currentMegaNavIndex = index
+    },
+
+    hideMegaNav() {
+      this.megaNavIsEnabled = false
+      this.currentMegaNavIndex = null
     },
 
     setHeaderVisibility() {
@@ -261,18 +296,6 @@ export default {
         window.removeEventListener('scroll', this.handleScroll)
         this.hideHeader = false
       }
-    },
-
-    resetMegaNav(event) {
-      // When a link is clicked, make the mega nav disappear
-      if (event.type === 'click') {
-        this.megaNavIsEnabled = false
-      }
-
-      // Wait for the hover state to be broken then re-enable the nav
-      setTimeout(() => {
-        this.megaNavIsEnabled = true
-      }, 10)
     }
   }
 }
