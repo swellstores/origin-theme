@@ -192,7 +192,7 @@ export default {
       this.$store.dispatch('initializeCustomer')
     } else {
       this.$store.dispatch('showNotification', {
-        message: 'You are currently not loogged in. Please log in to continue.',
+        message: 'You are currently not logged in. Please log in to continue.',
         type: 'error'
       })
       this.$router.push('/account/login/')
