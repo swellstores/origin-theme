@@ -455,6 +455,18 @@
           "type": "basic_html"
         }
       ]
+    },
+    {
+      "id": "products_list",
+      "url": "/categories/",
+      "label": "Products list",
+      "fields": [
+        {
+          "id": "products_list.enable_add_to_cart",
+          "label": "Enable 'Add to Cart' button",
+          "type": "toggle"
+        }
+      ]
     }
   ],
   "page_route": "/:slug/",

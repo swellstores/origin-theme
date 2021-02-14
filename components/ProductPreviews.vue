@@ -57,19 +57,21 @@
           </div>
 
           <!-- TODO: Hook up settings config -->
-          <transition name="fade-up" :duration="400">
-            <QuickAdd
-              v-if="
-                (currentProductId === product.id && quickAddIsVisible) ||
-                  (currentProductId === product.id && quickAddKeepAlive)
-              "
-              class="hidden lg:block w-full absolute bottom-0 px-6 mb-5"
-              :product="product"
-              @open-quick-view="openQuickView(product)"
-              @adding-to-cart="productBeingAdded = product.id"
-              @keep-alive="keepQuickAddAlive"
-            />
-          </transition>
+          <template v-if="enableAddToCart">
+            <transition name="fade-up" :duration="400">
+              <QuickAdd
+                v-if="
+                  (currentProductId === product.id && quickAddIsVisible) ||
+                    (currentProductId === product.id && quickAddKeepAlive)
+                "
+                class="hidden lg:block w-full absolute bottom-0 px-6 mb-5"
+                :product="product"
+                @open-quick-view="openQuickView(product)"
+                @adding-to-cart="productBeingAdded = product.id"
+                @keep-alive="keepQuickAddAlive"
+              />
+            </transition>
+          </template>
 
           <div
             v-if="cartIsUpdating && productBeingAdded === product.id"
@@ -135,6 +137,7 @@ export default {
   fetch() {
     this.aspectRatio = this.$swell.settings.get('productPreviews.aspectRatio', '1:1')
     this.textAlign = this.$swell.settings.get('productPreviews.textAlign', 'left')
+    this.enableAddToCart = this.$swell.settings.get('productsList.enableAddToCart')
 
     // Set ratio padding
     const [x, y] = this.aspectRatio.split(':')
@@ -164,6 +167,7 @@ export default {
       ratioPadding: null,
       sizes: null,
       widths: null,
+      enableAddToCart: false,
       quickAddKeepAlive: false,
       quickAddIsVisible: false,
       currentProductId: null,
