@@ -37,11 +37,11 @@ export default async (context, inject) => {
 }
 
 function parseCookies(req) {
-  if (!req || !req.headers.cookies) {
+  if (!req || !req.headers.cookie) {
     return {};
   }
   return req.headers.cookie
     .split(/;\s*/)
     .map(line => line.split('='))
-    .reduce((acc, parts) => ({ ...acc, [parts[0].toLowerCase()]: parts[1] }), {})
+    .reduce((acc, parts) => ({ ...acc, [parts[0].toLowerCase()]: decodeURIComponent(parts[1]) }), {})
 }

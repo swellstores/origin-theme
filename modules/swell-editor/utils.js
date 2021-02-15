@@ -42,10 +42,9 @@ export const editor = {
 
   // Send a message to the parent window of the iframe
   sendMessage(msg) {
-    const targetOrigin = '*'
-
     try {
       if (process.browser && window.parent) {
+        const targetOrigin = '*'
         window.parent.postMessage(msg, targetOrigin)
       }
     } catch (err) {
@@ -104,6 +103,17 @@ export const editor = {
           const settings = $swell.settings.get()
           setCssVariables(settings)
           updateGoogleFontsLink(settings)
+
+          // Tell them of our selected locale
+          const locale = $swell.locale.selected()
+          if (locale) {
+            editor.sendMessage({
+              type: 'locale.changed',
+              details: {
+                locale
+              }
+            })
+          }
         }
         break
 

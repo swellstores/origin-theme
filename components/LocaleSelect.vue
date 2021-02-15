@@ -60,7 +60,7 @@ import find from 'lodash/find'
 import localeEmoji from 'locale-emoji'
 
 export default {
-  name: 'InputDropdown',
+  name: 'LocaleSelect',
 
   props: {
     options: {
@@ -99,10 +99,8 @@ export default {
         if (options && options.length > 0) {
           const selected =
             find(options, value) || find(options, { value }) || find(options, { label: value })
-          if (selected !== undefined) {
-            this.selected = selected
-            return
-          }
+          this.selected = selected || options[0]
+          return
         }
 
         // Fallback
@@ -118,10 +116,8 @@ export default {
       if (options && options.length > 0) {
         const selected =
           find(options, value) || find(options, { value }) || find(options, { label: value })
-        if (selected !== undefined) {
-          this.selected = selected
-          return
-        }
+        this.selected = selected || options[0]
+        return
       }
 
       // Fallback
@@ -148,7 +144,7 @@ export default {
     },
 
     icon(code) {
-      return localeEmoji(code)
+      return typeof code === 'string' ? localeEmoji(code) : null
     }
   },
 

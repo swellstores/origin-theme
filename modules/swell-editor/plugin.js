@@ -23,13 +23,20 @@ export default async (context, inject) => {
     // Listen for unload to tell the editor when we're gone
     window.addEventListener(
       'unload',
-      event =>
+      event => {
         editor.sendMessage({
           type: 'route.changed',
           details: {
             location: ''
           }
-        }),
+        })
+        editor.sendMessage({
+          type: 'locale.changed',
+          details: {
+            locale: ''
+          }
+        })
+      },
       false
     )
 
