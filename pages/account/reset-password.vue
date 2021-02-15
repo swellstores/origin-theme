@@ -1,5 +1,5 @@
 <template>
-  <div class="relative container md:max-w-112 md:pt-24" v-enter-key="changePassword">
+  <div class="relative container pt-6 pb-24 md:max-w-112 md:pt-24" v-enter-key="changePassword">
     <h2 class="pb-6">Change your password</h2>
 
     <p class="text-sm mb-10">Please enter your new password.</p>
@@ -92,7 +92,7 @@ export default {
         }
       } catch (err) {
         this.isProcessing = false
-        
+
         this.$store.dispatch('showNotification', {
           message:
             'There was an error updating your password. The reset password key may have expired.',
