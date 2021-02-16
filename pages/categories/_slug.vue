@@ -25,9 +25,20 @@
         class="absolute w-full h-full inset-0 bg-primary-darkest"
       ></div>
       <div v-if="category" class="container absolute text-center center-xy">
-        <h1 class="text-primary-lightest">{{ category.name }}</h1>
+        <h1
+          :class="{
+            'text-primary-lightest': settings.textColor === 'light',
+            'text-primary-darkest': settings.textColor === 'dark'
+          }"
+        >
+          {{ category.name }}
+        </h1>
         <div
-          class="mx-auto text-lg text-primary-lightest max-w-128"
+          class="mx-auto text-lg max-w-128"
+          :class="{
+            'text-primary-lightest': settings.textColor === 'light',
+            'text-primary-darkest': settings.textColor === 'dark'
+          }"
           v-html="category.description"
         ></div>
       </div>
