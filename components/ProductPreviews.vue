@@ -57,7 +57,7 @@
           </div>
 
           <!-- TODO: Hook up settings config -->
-          <template v-if="enableAddToCart">
+          <template v-if="quickAddIsEnabled">
             <transition name="fade-up" :duration="400">
               <QuickAdd
                 v-if="
@@ -67,14 +67,14 @@
                 class="hidden lg:block w-full absolute bottom-0 px-6 mb-5"
                 :product="product"
                 @open-quick-view="openQuickView(product)"
-                @adding-to-cart="productBeingAdded = product.id"
+                @adding-to-cart="cartIsUpdating = product.id"
                 @keep-alive="keepQuickAddAlive"
               />
             </transition>
           </template>
 
           <div
-            v-if="cartIsUpdating && productBeingAdded === product.id"
+            v-if="cartIsUpdating && cartIsUpdating === product.id"
             class="absolute w-full-px-12 mx-6 flex items-center justify-center bottom-0 h-10 mb-5 text-center font-semibold trackind-wide uppercase bg-primary-lighter shadow rounded z-10"
           >
             Adding...
@@ -108,7 +108,7 @@
     </article>
     <QuickViewPopup
       v-if="quickViewIsVisible"
-      :productId="quickViewProduct.id"
+      :product-id="quickViewProduct.id"
       @click-close="quickViewIsVisible = false"
     />
   </section>
@@ -116,9 +116,6 @@
 
 <script>
 import { mapState } from 'vuex'
-
-// Helpers
-import get from 'lodash/get'
 
 export default {
   name: 'ProductPreviews',
@@ -137,7 +134,7 @@ export default {
   fetch() {
     this.aspectRatio = this.$swell.settings.get('productPreviews.aspectRatio', '1:1')
     this.textAlign = this.$swell.settings.get('productPreviews.textAlign', 'left')
-    this.enableAddToCart = this.$swell.settings.get('productsList.enableAddToCart')
+    this.quickAddIsEnabled = this.$swell.settings.get('productList.enableQuickAdd')
 
     // Set ratio padding
     const [x, y] = this.aspectRatio.split(':')
@@ -167,13 +164,13 @@ export default {
       ratioPadding: null,
       sizes: null,
       widths: null,
-      enableAddToCart: false,
+      quickAddIsEnabled: false,
       quickAddKeepAlive: false,
       quickAddIsVisible: false,
       currentProductId: null,
       quickViewIsVisible: false,
       quickViewProduct: null,
-      productBeingAdded: null
+      cartIsUpdating: null
     }
   },
 
