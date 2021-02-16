@@ -1,10 +1,6 @@
 <template>
   <div>
-    <button
-      v-if="!quickAddIsActive && !cartIsUpdating"
-      class="btn light w-full shadow"
-      @click="interact"
-    >
+    <button v-if="!quickAddIsActive && !cartIsUpdating" class="btn w-full shadow" @click="interact">
       {{ label }}
     </button>
 
@@ -33,11 +29,18 @@
 <script>
 // Helpers
 import get from 'lodash/get'
-import { listVisibleOptions } from '~/modules/swell'
 import { mapState } from 'vuex'
+import { listVisibleOptions } from '~/modules/swell'
 
 export default {
-  async fetch() {
+  props: {
+    product: {
+      type: Object,
+      default: () => {}
+    }
+  },
+
+  fetch() {
     // Compute initial values for options
     const optionState =
       this.optionState ||
@@ -49,13 +52,6 @@ export default {
 
     // Set component data
     this.optionState = optionState
-  },
-
-  props: {
-    product: {
-      type: Object,
-      default: () => {}
-    }
   },
 
   data() {
@@ -125,6 +121,10 @@ export default {
     }
   },
 
+  created() {
+    this.setFlow()
+  },
+
   methods: {
     // Sets flow of product purchase + labels
     setFlow() {
@@ -144,7 +144,7 @@ export default {
 
     // Update an option value based on user input
     setOptionValue({ option, value }) {
-      const { optionState, optionInputs, quickAddIndex, quickAddIsActive } = this
+      const { optionState, optionInputs, quickAddIndex } = this
       // Use $set to update the data object because options are dynamic
       // and optionState won't be reactive otherwise
       // TODO in Vue 3 this.optionState[option] = value should work
@@ -194,10 +194,6 @@ export default {
         options: this.optionState
       })
     }
-  },
-
-  created() {
-    this.setFlow()
   }
 }
 </script>

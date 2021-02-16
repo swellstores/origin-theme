@@ -75,7 +75,7 @@
     "returns_info_text": "<p>Test</p>"
   },
   "product_list": {
-    "enable_quick_add": false
+    "enable_quick_add": true
   },
   "typography": {
     "heading_font": {

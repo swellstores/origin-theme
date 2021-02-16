@@ -56,9 +56,8 @@
             Sale
           </div>
 
-          <!-- TODO: Hook up settings config -->
           <template v-if="quickAddIsEnabled">
-            <transition name="fade-up" :duration="400">
+            <transition name="fade-up" :duration="300">
               <QuickAdd
                 v-if="
                   (currentProductId === product.id && quickAddIsVisible) ||
@@ -67,15 +66,15 @@
                 class="hidden lg:block w-full absolute bottom-0 px-6 mb-5"
                 :product="product"
                 @open-quick-view="openQuickView(product)"
-                @adding-to-cart="cartIsUpdating = product.id"
+                @adding-to-cart="productBeingAdded = product.id"
                 @keep-alive="keepQuickAddAlive"
               />
             </transition>
           </template>
 
           <div
-            v-if="cartIsUpdating && cartIsUpdating === product.id"
-            class="absolute w-full-px-12 mx-6 flex items-center justify-center bottom-0 h-10 mb-5 text-center font-semibold trackind-wide uppercase bg-primary-lighter shadow rounded z-10"
+            v-if="cartIsUpdating && productBeingAdded === product.id"
+            class="absolute w-full-px-12 mx-6 flex items-center justify-center bottom-0 h-10 mb-5 text-center font-semibold tracking-wide uppercase bg-primary-lighter shadow rounded z-10"
           >
             Adding...
           </div>
@@ -170,7 +169,7 @@ export default {
       currentProductId: null,
       quickViewIsVisible: false,
       quickViewProduct: null,
-      cartIsUpdating: null
+      productBeingAdded: null
     }
   },
 
