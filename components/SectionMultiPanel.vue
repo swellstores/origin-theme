@@ -31,7 +31,7 @@
       </div>
       <!-- Image panel -->
       <template v-else-if="panel.type === 'image'">
-        <BaseLink v-if="panel.url" :link="panel.url">
+        <BaseLink v-if="panel.link && panel.link.length" :link="panel.link[0]">
           <VisualMedia
             :source="panel.image"
             :is-background="true"

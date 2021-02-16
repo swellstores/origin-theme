@@ -13,7 +13,7 @@
         {{ description }}
       </p>
       <div v-if="image" class="relative xl:mx-12">
-        <BaseLink v-if="url" :link="url">
+        <BaseLink v-if="link && link.length" :link="link[0]">
           <VisualMedia
             :source="image"
             aspect-ratio="16:9"
@@ -55,9 +55,9 @@ export default {
       type: String,
       default: 'primary-lighter'
     },
-    url: {
-      type: String,
-      default: null
+    link: {
+      type: [Object, Array],
+      default: () => ({})
     }
   }
 }
