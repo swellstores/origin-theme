@@ -66,14 +66,7 @@
                   <!-- Show mega nav if item has child items -->
                   <transition name="fade">
                     <div
-                      v-if="
-                        (item &&
-                          item.items &&
-                          item.items.length &&
-                          megaNavIsEnabled &&
-                          currentMegaNavIndex === index) ||
-                          !isMounted
-                      "
+                      v-if="megaNavIsActive(item, index)"
                       class="absolute left-0 right-0 min-h-full"
                       :class="{ 'mega-nav hidden fade-in': !isMounted }"
                       @mouseenter="showMegaNav(index)"
@@ -187,7 +180,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['cart', 'customerLoggedIn', 'currency'])
+    ...mapState(['cart', 'customerLoggedIn', 'currency']),
   },
 
   watch: {
@@ -246,6 +239,19 @@ export default {
       } else {
         this.setScrollListener(true)
       }
+    },
+
+    megaNavIsActive(item, index) {
+      const { items } = item
+
+      // Don't show if there are no items set within the MegaNav
+      if (!item || !items || !items.length) return
+
+      // Before mounted, allow for CSS to override and show the MegaNav 
+      if (!this.isMounted) return true
+
+      // Show MegaNav, depending on which nav link is selected
+      if (this.megaNavIsEnabled && this.currentMegaNavIndex === index) return true
     },
 
     showMegaNav(index) {
