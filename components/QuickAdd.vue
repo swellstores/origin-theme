@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button v-if="!quickAddIsActive && !cartIsUpdating" class="btn w-full shadow" @click="interact">
+    <button v-if="!quickAddIsActive && !cartIsUpdating" class="btn w-full shadow-md" @click="interact">
       {{ label }}
     </button>
 
@@ -8,7 +8,7 @@
     <transition name="fade" :duration="200">
       <div
         v-if="quickAddIsActive"
-        class="w-full bottom-0 px-4 py-3 bg-primary-lighter shadow rounded z-10"
+        class="w-full bottom-0 px-4 py-3 bg-primary-lighter shadow-md rounded z-10"
       >
         <!-- Product options -->
         <div v-for="(input, index) in optionInputs" :key="input.name">
