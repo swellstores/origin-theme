@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-primary-darkest text-center x-padding py-24">
-    <div class="container mx-auto md:px-40 my-16 content-center text-primary-lightest">
+  <div class="flex flex-grow bg-primary-darkest text-center x-padding py-24">
+    <div class="container mx-auto md:px-40 my-16 content-center">
       <span
         v-if="error.statusCode"
         class="mx-auto text-center uppercase label-xs-bold-faded leading-none max-w-128"
@@ -15,21 +15,10 @@
           {{ error.message }}
         </p>
         <div class="inline-block">
-          <div class="relative mt-6">
-            <input
-              type="text"
-              class="text-input transition-all duration-200"
-              placeholder="Search"
-            />
-            <div class="absolute top-3 right-3 text-primary-dark transition-all duration-200">
-              <BaseIcon icon="uil:search" size="sm" />
-            </div>
-          </div>
-
           <NuxtLink
             to="/"
             title="Home"
-            class="w-full inline-block mt-6 px-6 py-3 uppercase tracking-wide bg-primary-lighter"
+            class="btn lighter mt-6 px-6 py-3"
             >Return Home</NuxtLink
           >
         </div>

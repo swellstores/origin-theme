@@ -18,7 +18,7 @@
 
     <div v-else>
       <div class="container">
-        <div class="pb-6">
+        <div class="pb-6 border-b border-primary-med mb-10">
           <h2 class="text-2xl">Order #{{ order.number }}</h2>
 
           <div class="my-4">
@@ -118,8 +118,6 @@
         </div>
       </div>
 
-      <div class="border-b border-primary-med mb-10" />
-
       <!-- Delivery details -->
       <div class="container">
         <template v-if="order.shipmentDelivery">
@@ -161,7 +159,7 @@
                 <!-- Method: Card -->
                 <div
                   v-if="billing.card && billing.method === 'card'"
-                  class="md:border-b-0 md: border-r border-b border-primary-med p-4"
+                  class="md:border-b-0 md:border-r border-b border-primary-med p-4"
                 >
                   <div class="flex mb-4">
                     <BrandCardIcon :brand="billing.card.brand" />
@@ -185,7 +183,7 @@
                 <!-- Method: Account Credit -->
                 <div
                   v-else-if="billing.method === 'account'"
-                  class="md:border-b-0 md: border-r border-b border-primary-med p-4"
+                  class="md:border-b-0 md:border-r border-b border-primary-med p-4"
                 >
                   <div class="flex mb-4">
                     <BaseIcon icon="uil:money-bill" />
@@ -219,7 +217,7 @@
                 <!-- Method: Bank Deposity -->
                 <div
                   v-else-if="billing.method === 'bank_deposit'"
-                  class="md:border-b-0 md: border-r border-b border-primary-med p-4"
+                  class="md:border-b-0 md:border-r border-b border-primary-med p-4"
                 >
                   <div class="flex mb-4">
                     <BaseIcon icon="uil:University" />

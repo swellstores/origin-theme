@@ -148,6 +148,10 @@ img {
   &.light {
     @apply text-primary-lightest border-primary-lightest;
   }
+
+  &.lighter {
+    @apply text-primary-lighter border-primary-lighter;
+  }
 }
 
 .label-tag {
@@ -179,7 +183,7 @@ img {
     @apply relative flex items-center appearance-none;
 
     & .indicator {
-      @apply flex justify-center items-center cursor-pointer w-6 h-6 border border-primary-med rounded;
+      @apply flex justify-center items-center cursor-pointer w-6 h-6 mr-3 border border-primary-med rounded;
       transition: all 0.2s ease;
     }
 

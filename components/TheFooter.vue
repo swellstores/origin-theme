@@ -45,7 +45,6 @@
           class="my-10 lg:w-1/4 lg:my-0"
         >
           <ul v-if="column.items">
-            <li v-if="showMenuLabel" class="text-sm mb-3">Explore</li>
             <li v-for="(item, i) in column.items" :key="item.name" class="mb-0">
               <!-- Heading -->
               <p
@@ -171,10 +170,6 @@ export default {
       return ['twitter', 'facebook', 'pinterest', 'instagram', 'youtube', 'vimeo']
         .map(id => ({ id, ...get(this, `socialLinks.${id}`, {}) })) // Get the network's link value from settings
         .filter(link => link.show && link.url) // Only include if it's switched on and  has a url
-    },
-    showMenuLabel() {
-      const firstItem = get(this, 'menu.items.0.items.0', {})
-      return firstItem.type !== 'heading'
     }
   }
 }
