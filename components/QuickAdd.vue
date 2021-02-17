@@ -1,6 +1,10 @@
 <template>
   <div>
-    <button v-if="!quickAddIsActive && !cartIsUpdating" class="btn w-full shadow-md" @click="interact">
+    <button
+      v-if="!quickAddIsActive && !cartIsUpdating"
+      class="btn w-full shadow-md"
+      @click="interact"
+    >
       {{ label }}
     </button>
 
@@ -23,6 +27,13 @@
         </div>
       </div>
     </transition>
+
+    <ButtonLoading
+      v-if="cartIsUpdating"
+      class="absolute left-0 bottom-0 w-full dark"
+      label="Adding..."
+      loadingLabel="Adding..."
+    />
   </div>
 </template>
 

@@ -71,13 +71,6 @@
               />
             </transition>
           </template>
-
-          <div
-            v-if="cartIsUpdating && productBeingAdded === product.id"
-            class="absolute w-full-px-12 mx-6 flex items-center justify-center bottom-0 h-10 mb-5 text-center font-semibold tracking-wide uppercase bg-primary-lighter shadow-md rounded z-10"
-          >
-            Adding...
-          </div>
         </div>
         <div
           v-else
