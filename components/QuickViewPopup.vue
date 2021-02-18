@@ -10,18 +10,20 @@
       <!-- Panel -->
       <div
         class="panel w-full md:w-max h-vh-gap md:h-auto md:max-h-80vh absolute md:relative bottom-0 
-        rounded-t md:rounded-md bg-primary-lighter md:center-xy overflow-scroll"
+        rounded-t md:rounded-md bg-primary-lighter md:center-xy overflow-scroll hide-scroll"
       >
         <button
-          class="relative md:absolute mt-3 mr-3 float-right md:float-none right-0 md:mr-6 md:mt-6 z-10"
+          class="absolute mt-3 mr-3 float-right md:float-none right-0 md:mr-6 md:mt-6 z-10"
           @click.prevent="$emit('click-close')"
         >
           <BaseIcon icon="uil:multiply" size="sm" />
         </button>
 
-        <div class="container md:overflow-hidden grid grid-cols-1 md:grid-cols-2 pt-3 md:p-6">
+        <div
+          class="container md:max-w-auto md:overflow-hidden grid grid-cols-1 md:grid-cols-2 pt-3 md:p-6"
+        >
           <!-- Product image -->
-          <div class="relative h-min mb-5 md:mb-0 md:w-120">
+          <div class="relative h-min mb-5 md:mb-0 md:w-96 lg:w-120">
             <MediaSlider :media="product.images" class="md:hidden h-0 pb-full" />
             <!-- Media stack for large screens -->
             <div class="hidden h-full md:block">
@@ -47,11 +49,7 @@
                   }"
                   @click="setProductPreview(index)"
                 >
-                  <VisualMedia
-                    :source="image"
-                    :alt="image.alt"
-                    sizes="(min-width: 768px) 120px"
-                  />
+                  <VisualMedia :source="image" :alt="image.alt" sizes="(min-width: 768px) 120px" />
                 </button>
               </div>
             </div>
@@ -59,7 +57,7 @@
 
           <!-- Product details -->
           <div class="relative pb-6 md:pb-0 md:ml-5">
-            <div class="relative h-full md:overflow-scroll">
+            <div class="relative h-full md:overflow-scroll hide-scroll">
               <div class="relative md:absolute w-full">
                 <h2 v-balance-text class="mb-4 leading-tight">{{ product.name }}</h2>
                 <NuxtLink
@@ -91,7 +89,11 @@
               </div>
             </div>
             <!-- Cart button & stock info -->
-            <div v-if="variation" class="w-full-px-12 fixed md:w-full md:absolute bottom-0">
+
+            <div
+              v-if="variation"
+              class="container center-x fixed md:px-0 md:w-full md:absolute bottom-0"
+            >
               <!-- Gradient overlay to cover overflow elements -->
               <div class="gradient"></div>
 
@@ -252,6 +254,16 @@ export default {
 </script>
 
 <style lang="postcss">
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scroll {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 .gradient {
   @apply w-full h-12;
   background: rgb(255, 255, 255);
