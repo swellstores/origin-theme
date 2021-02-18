@@ -21,7 +21,6 @@
             v-if="visibleOptionIds.includes(input.option.id)"
             v-show="index === quickAddIndex"
             :option="input.option"
-            :current-value="optionState[input.option.name]"
             @value-changed="setOptionValue"
           />
         </div>
