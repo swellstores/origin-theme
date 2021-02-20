@@ -31,7 +31,7 @@ export default async (context, inject) => {
 function normalizeKeys(obj, params) {
   const options = {
     case: 'camel',
-    ignoredKeys: ['$cache'],
+    ignoredKeys: ['$cache', '$locale'],
     ...params
   }
   if (obj && obj.constructor === Object) {
