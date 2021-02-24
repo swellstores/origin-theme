@@ -38,17 +38,8 @@
           >
             <BaseIcon icon="uil:user" size="sm" /><span class="ml-3">Account</span>
           </NuxtLink>
-          <CurrencySelect
-            class="sw-nav-button"
-            v-if="currencyOptions && currency"
-            :options="currencyOptions"
-            :value="currency"
-            appearance="popup"
-            @change="selectCurrency"
-          />
-          <a class="sw-nav-button" href="#">
-            <BaseIcon icon="uil:comment-alt-lines" size="sm" /><span class="ml-3">English</span>
-          </a>
+          <LocaleSelect class="sw-nav-button" appearance="popup" />
+          <CurrencySelect class="sw-nav-button z-10" appearance="popup" />
         </div>
       </div>
     </div>
@@ -60,17 +51,6 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'TheMobileNav',
-
-  fetch() {
-    // Set component data
-    this.currencyOptions = this.getCurrencyOptions()
-  },
-
-  data() {
-    return {
-      currencyOptions: null
-    }
-  },
 
   props: {
     menuItems: {
@@ -84,21 +64,6 @@ export default {
   },
 
   methods: {
-    getCurrencyOptions() {
-      const { $swell } = this
-
-      const options = $swell.currency.list().map(currency => ({
-        value: currency.code,
-        label: `${currency.symbol} ${currency.code}`,
-        symbol: currency.symbol
-      }))
-      return options.length ? options : null
-    },
-
-    selectCurrency(value) {
-      this.$store.dispatch('selectCurrency', { code: value })
-    },
-
     checkIfLoggedIn() {
       if (this.customerLoggedIn) {
         this.$emit('click-close')

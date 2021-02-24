@@ -1,13 +1,22 @@
 <template>
-  <div v-if="options && locale" class="relative z-50 transition-all duration-300 ease-in-out">
+  <div v-if="options && locale" class="relative transition-all duration-300 ease-in-out">
     <div
       ref="dropdown"
-      class="relative w-full flex p-2 items-center bg-primary-lightest text-center font-medium cursor-pointer rounded focus:outline-none focus:shadow-outline hover:text-accent"
-      :class="{ 'font-semibold': appearance === 'popup' }"
+      class="w-full flex p-2 items-center text-center font-medium cursor-pointer focus:outline-none focus:shadow-outline hover:text-accent"
+      :class="{
+        'font-semibold h-full': appearance === 'popup',
+        'rounded bg-primary-lightest ': appearance === 'float'
+      }"
       @click="toggleDropdown()"
     >
-      <div v-if="selected && selected.value" class="mx-auto">
+      <div v-if="selected && selected.value" class="mx-auto transition-all duration-200 ease-out">
         <span class="text-lg relative top-px">{{ icon(selected.value) }}</span>
+        <span
+          v-if="appearance === 'popup'"
+          class="font-medium"
+          :class="{ 'ml-2 font-semibold': appearance === 'popup' }"
+          >{{ selected.label }}</span
+        >
       </div>
     </div>
 
@@ -109,6 +118,10 @@ export default {
   },
 
   created() {
+    if (this.locale) {
+      this.value = this.locale
+    }
+
     this.setDefaultValue()
   },
 
