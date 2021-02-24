@@ -21,7 +21,7 @@
         <!-- Preview media -->
         <div
           v-if="product.images"
-          class="product-preview relative"
+          class="group relative"
           @mouseenter="showQuickAdd(product.id)"
           @mouseleave="hideQuickAdd(product.id)"
         >
@@ -39,7 +39,7 @@
             <!-- Hover image -->
             <div
               v-if="product.images[1]"
-              class="hover-image absolute w-full h-full inset-0 opacity-0 transition-opacity duration-75"
+              class="group-hover:opacity-100 absolute w-full h-full inset-0 opacity-0 transition-opacity duration-150"
             >
               <VisualMedia
                 :source="product.images[1]"
@@ -200,9 +200,3 @@ export default {
   }
 }
 </script>
-
-<style lang="postcss">
-.product-preview:hover .hover-image {
-  @apply opacity-100;
-}
-</style>
