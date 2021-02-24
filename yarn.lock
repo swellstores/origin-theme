@@ -6010,6 +6010,11 @@ loadjs@^4.2.0:
   resolved "https://registry.yarnpkg.com/loadjs/-/loadjs-4.2.0.tgz#2a0336376397a6a43edf98c9ec3229ddd5abb6f6"
   integrity sha512-AgQGZisAlTPbTEzrHPb6q+NYBMD+DP9uvGSIjSUM5uG+0jG15cb8axWpxuOIqrmQjn6scaaH8JwloiP27b2KXA==
 
+locale-emoji@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/locale-emoji/-/locale-emoji-0.3.0.tgz#7f38262f7c877bd27659725570335b263f88742a"
+  integrity sha512-JGm8+naU49CBDnH1jksS3LecPdfWQLxFgkLN6ZhYONKa850pJ0Xt8DPGJnYK0ZuJI8jTuiDDPCDtSL3nyacXwg==
+
 locate-path@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"
@@ -9193,10 +9198,10 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-swell-js@3.6.1:
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/swell-js/-/swell-js-3.6.1.tgz#6e3dd9e00af7d0a62e45dc8cb98dbd6f48736e5e"
-  integrity sha512-M5EkfFyP2ozi6AoMYZu1MDhgZLTFs+m2edEAEkRukYUeE0KMLTzxQINqdvVHPe8ywVHzUDtMWuBMGKN76CKDkA==
+swell-js@3.8.2:
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/swell-js/-/swell-js-3.8.2.tgz#5fc02a55b0b86214bbc7b299a9c7a65c61762857"
+  integrity sha512-0nYLMiA+JKX9hGxsE533WwPAG67+F4G9d4K8JqfsOnPSbUrdjoKrBRtYd43N7mf29Ht1TDJg8jEM7w1rGUA/pg==
   dependencies:
     "@babel/runtime" "7.4.5"
     deepmerge "4.2.2"

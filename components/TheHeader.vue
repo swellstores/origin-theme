@@ -73,23 +73,9 @@
             <!-- Action menu -->
             <div class="flex flex-row items-center justify-end -mr-2 lg:w-1/4">
               <!-- Locale select -->
-              <LocaleSelect
-                class="hidden lg:block"
-                v-if="localeOptions && locale"
-                :options="localeOptions"
-                :value="locale"
-                appearance="float"
-                @change="selectLocale"
-              />
+              <LocaleSelect class="hidden lg:block" appearance="float" />
               <!-- Currency select -->
-              <CurrencySelect
-                class="hidden lg:block"
-                v-if="currencyOptions && currency"
-                :options="currencyOptions"
-                :value="currency"
-                appearance="float"
-                @change="selectCurrency"
-              />
+              <CurrencySelect class="hidden lg:block" appearance="float" />
               <!-- Search icon -->
               <button class="h-10 p-2" @click.prevent="$emit('click-search')">
                 <BaseIcon icon="uil:search" />
@@ -155,8 +141,6 @@ export default {
     this.menu = $swell.settings.menus(menuId)
     this.storeName = $swell.settings.get('store.name', 'ORIGIN')
     this.logoSrc = $swell.settings.get('header.logo.file.url')
-    this.currencyOptions = this.getCurrencyOptions()
-    this.localeOptions = this.getLocaleOptions()
   },
 
   data() {
@@ -171,14 +155,12 @@ export default {
       hideHeader: false,
       lastScrollPos: 0,
       isScrolled: false,
-      scrollRAF: null,
-      currencyOptions: null,
-      localeOptions: null
+      scrollRAF: null
     }
   },
 
   computed: {
-    ...mapState(['cart', 'customerLoggedIn', 'currency', 'locale'])
+    ...mapState(['cart', 'customerLoggedIn'])
   },
 
   watch: {
@@ -201,42 +183,6 @@ export default {
   },
 
   methods: {
-    getCurrencyOptions() {
-      const { $swell } = this
-
-      const options = $swell.currency
-        .list()
-        .map(currency => ({
-          value: currency.code,
-          label: `${currency.symbol} ${currency.code}`,
-          symbol: currency.symbol
-        }))
-      return options.length ? options : null
-    },
-
-    getLocaleOptions() {
-      const { $swell } = this
-
-      const options = $swell.locale
-        .list()
-        .map(locale => ({
-          value: locale.code,
-          label: locale.name,
-          icon: locale.icon
-        }))
-      return options.length ? options : null
-    },
-
-    selectCurrency(value) {
-      const { $swell } = this
-      this.$store.dispatch('selectCurrency', { code: value })
-    },
-
-    selectLocale(value) {
-      const { $swell } = this
-      this.$store.dispatch('selectLocale', { code: value })
-    },
-
     setMobileNavVisibility(value) {
       if (typeof value === 'boolean') {
         // Explicitly set visibility

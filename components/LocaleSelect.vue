@@ -1,12 +1,12 @@
 <template>
-  <div class="relative z-50 transition-all duration-300 ease-in-out">
+  <div v-if="options && locale" class="relative z-50 transition-all duration-300 ease-in-out">
     <div
       ref="dropdown"
       class="relative w-full flex p-2 items-center bg-primary-lightest text-center font-medium cursor-pointer rounded focus:outline-none focus:shadow-outline hover:text-accent"
       :class="{ 'font-semibold': appearance === 'popup' }"
       @click="toggleDropdown()"
     >
-      <div class="mx-auto">
+      <div v-if="selected && selected.value" class="mx-auto">
         <span class="text-lg relative top-px">{{ icon(selected.value) }}</span>
       </div>
     </div>
@@ -58,18 +58,17 @@
 // Helpers
 import find from 'lodash/find'
 import localeEmoji from 'locale-emoji'
+import { mapState } from 'vuex'
 
 export default {
   name: 'LocaleSelect',
 
+  fetch() {
+    // Set component data
+    this.options = this.getLocaleOptions()
+  },
+
   props: {
-    options: {
-      type: Array,
-      default: () => []
-    },
-    value: {
-      type: String
-    },
     appearance: {
       type: String,
       default: 'float'
@@ -78,12 +77,16 @@ export default {
 
   data() {
     return {
+      value: null,
+      options: [],
       dropdownIsActive: false,
       selected: ''
     }
   },
 
   computed: {
+    ...mapState(['locale']),
+
     selectedLabel() {
       if (this.selected !== undefined) {
         return this.selected.label || this.selected
@@ -92,49 +95,61 @@ export default {
   },
 
   watch: {
+    locale() {
+      const { locale } = this
+
+      // Set initial value when locale has been fetched
+      if (locale === null) return
+      this.value = locale
+    },
+
     value() {
+      this.setDefaultValue()
+    }
+  },
+
+  created() {
+    this.setDefaultValue()
+  },
+
+  methods: {
+    getLocaleOptions() {
+      const { $swell } = this
+
+      const options = $swell.locale.list().map(locale => ({
+        value: locale.code,
+        label: locale.name,
+        icon: locale.icon
+      }))
+      return options.length ? options : null
+    },
+
+    setDefaultValue() {
       const { value, options } = this
 
       if (value !== undefined) {
         if (options && options.length > 0) {
           const selected =
             find(options, value) || find(options, { value }) || find(options, { label: value })
-          this.selected = selected || options[0]
-          return
+          if (selected !== undefined) {
+            this.selected = selected
+            return
+          }
         }
 
         // Fallback
         this.selected = value
       }
-    }
-  },
+    },
 
-  created() {
-    const { value, options } = this
-
-    if (value !== undefined) {
-      if (options && options.length > 0) {
-        const selected =
-          find(options, value) || find(options, { value }) || find(options, { label: value })
-        this.selected = selected || options[0]
-        return
-      }
-
-      // Fallback
-      this.selected = value
-    }
-  },
-
-  methods: {
     toggleDropdown() {
       this.dropdownIsActive = !this.dropdownIsActive
     },
 
     selectOption(option) {
       this.selected = option
-      console.log(this.selected)
       this.dropdownIsActive = false
-      this.$emit('change', option.value || option)
+      this.$store.dispatch('selectLocale', { code: option.value })
     },
 
     clickOutside(e) {

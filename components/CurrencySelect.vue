@@ -1,12 +1,12 @@
 <template>
-  <div class="relative z-50 transition-all duration-300 ease-in-out">
+  <div v-if="options && currency" class="relative z-50 transition-all duration-300 ease-in-out">
     <div
       ref="dropdown"
       class="relative w-full flex p-2 items-center bg-primary-lightest text-center font-medium cursor-pointer rounded focus:outline-none focus:shadow-outline hover:text-accent"
       :class="{ 'font-semibold': appearance === 'popup' }"
       @click="toggleDropdown()"
     >
-      <div class="mx-auto">
+      <div v-if="selected" class="mx-auto">
         <span class="font-semibold">{{ selected.symbol }}</span>
         <span class="font-medium">{{ selected.value }}</span>
       </div>
@@ -58,18 +58,17 @@
 <script>
 // Helpers
 import find from 'lodash/find'
+import { mapState } from 'vuex'
 
 export default {
   name: 'CurrencySelect',
 
+  fetch() {
+    // Set component data
+    this.options = this.getCurrencyOptions()
+  },
+
   props: {
-    options: {
-      type: Array,
-      default: () => []
-    },
-    value: {
-      type: String
-    },
     appearance: {
       type: String,
       default: 'float'
@@ -78,12 +77,16 @@ export default {
 
   data() {
     return {
+      value: null,
+      options: [],
       dropdownIsActive: false,
       selected: ''
     }
   },
 
   computed: {
+    ...mapState(['currency']),
+
     selectedLabel() {
       if (this.selected !== undefined) {
         return this.selected.label || this.selected
@@ -92,6 +95,14 @@ export default {
   },
 
   watch: {
+    currency() {
+      const { currency } = this
+
+      // Set initial value when currency has been fetched
+      if (currency === null) return
+      this.value = currency
+    },
+
     value() {
       this.setDefaultValue()
     }
@@ -102,6 +113,17 @@ export default {
   },
 
   methods: {
+    getCurrencyOptions() {
+      const { $swell } = this
+
+      const options = $swell.currency.list().map(currency => ({
+        value: currency.code,
+        label: `${currency.symbol} ${currency.code}`,
+        symbol: currency.symbol
+      }))
+      return options.length ? options : null
+    },
+
     setDefaultValue() {
       const { value, options } = this
 
@@ -127,7 +149,7 @@ export default {
     selectOption(option) {
       this.selected = option
       this.dropdownIsActive = false
-      this.$emit('change', option.value || option)
+      this.$store.dispatch('selectCurrency', { code: option.value })
     },
 
     clickOutside(e) {
