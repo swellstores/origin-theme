@@ -3,20 +3,9 @@
     <!-- Duplicate header element  -->
     <div class="absolute w-full top-0 right-0">
       <div
-        v-if="header"
-        ref="header"
-        class="relative opacity-0 transition-all ease-in-out duration-200"
-        :class="{
-          'max-h-0': (header.hideOnScroll && !headerIsVisible) || reachedTop,
-          'max-h-40': header.hideOnScroll && headerIsVisible && !reachedTop
-        }"
-      >
-        <ThePromoBar v-if="header.showPromo" text="|" :hidden="header.hideOnScroll && hideHeader" />
-        <div class="py-3">
-          <span v-if="logoSrc" :style="{ height: header.logoHeight + 'px' }" class="block"></span>
-          <span v-else class="text-3xl sm:text-4xl">|</span>
-        </div>
-      </div>
+        :style="{ height: `${headerHeightOffset}px` }"
+        class="relative w-full transition-all ease duration-50"
+      ></div>
 
       <div
         class="w-full-px-6 top-0 right-0 mx-auto md:mr-3 md:max-w-max mt-3 bg-primary-lightest shadow-md rounded-md"
@@ -141,12 +130,12 @@ export default {
       header: null,
       logoSrc: null,
       product: null,
-      scrollY: 0
+      scrollY: null
     }
   },
 
   computed: {
-    ...mapState(['cart', 'cartIsUpdating', 'addedItem', 'headerIsVisible']),
+    ...mapState(['cart', 'cartIsUpdating', 'addedItem', 'headerIsVisible', 'headerHeight']),
 
     options() {
       if (!this.addedItem) return
@@ -155,8 +144,16 @@ export default {
       return options.join(', ')
     },
 
-    reachedTop() {
-      return this.scrollY < 50
+    headerHeightOffset() {
+      // Set initial height before scroll initiates
+      if (this.scrollY === null) {
+        return this.headerHeight
+      }
+
+      if (this.scrollY < this.headerHeight) {
+        return this.headerHeight - (this.headerHeight - this.scrollY)
+      }
+      return this.headerHeight
     }
   },
 

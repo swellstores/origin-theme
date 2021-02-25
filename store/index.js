@@ -9,6 +9,7 @@ export const state = () => ({
   notification: null,
   cookiesWereAccepted: false,
   headerIsVisible: true,
+  headerHeight: 0,
   addedItem: null
 })
 
