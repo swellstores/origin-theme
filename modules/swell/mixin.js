@@ -60,11 +60,8 @@ function getCountryCodeFromLocale(locale) {
   const country = split.pop()
   let code
 
-  if (!country) {
-    code = getLocaleDefaults[lang.toLowerCase()];
-  } else {
-    code = country
-  }
+  if (country) code = country
+  if (!country) code = getLocaleDefaults[lang.toLowerCase()]
 
   return code.toLowerCase()
 }

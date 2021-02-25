@@ -5,7 +5,7 @@
       class="w-full flex p-2 items-center text-center font-medium cursor-pointer focus:outline-none focus:shadow-outline hover:text-accent"
       :class="{
         'font-semibold h-full': appearance === 'popup',
-        'rounded bg-primary-lightest ': appearance === 'float'
+        'rounded bg-primary-lightest': appearance === 'float'
       }"
       @click="toggleDropdown()"
     >
@@ -44,7 +44,7 @@
         v-for="(option, index) in options"
         :key="`option-${index}`"
         :class="{ 'pointer-events-none': option.value === selected.value || option === selected }"
-        class="inline-block mb-0 px-2 flex items-center cursor-pointer hover:bg-primary-lighter border-b border-primary-light last:border-b-0"
+        class="mb-0 px-2 flex items-center cursor-pointer hover:bg-primary-lighter border-b border-primary-light last:border-b-0"
         role="option"
         @click="selectOption(option)"
       >
@@ -69,7 +69,6 @@
 <script>
 // Helpers
 import find from 'lodash/find'
-import localeEmoji from 'locale-emoji'
 import { mapState } from 'vuex'
 
 // External styles
@@ -78,16 +77,16 @@ import 'flag-icon-css/css/flag-icon.css'
 export default {
   name: 'LocaleSelect',
 
-  fetch() {
-    // Set component data
-    this.options = this.getLocaleOptions()
-  },
-
   props: {
     appearance: {
       type: String,
       default: 'float'
     }
+  },
+
+  fetch() {
+    // Set component data
+    this.options = this.getLocaleOptions()
   },
 
   data() {
@@ -100,13 +99,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['locale']),
-
-    selectedLabel() {
-      if (this.selected !== undefined) {
-        return this.selected.label || this.selected
-      }
-    }
+    ...mapState(['locale'])
   },
 
   watch: {
@@ -130,6 +123,16 @@ export default {
     this.setDefaultValue()
   },
 
+  mounted() {
+    // Toggle off dropdown if clicked outside
+    window.addEventListener('click', this.clickOutside)
+  },
+
+  beforeDestroy() {
+    // Remove event listeners
+    window.removeEventListener('click', this.clickOutside)
+  },
+
   methods: {
     getLocaleOptions() {
       const { $swell } = this
@@ -145,19 +148,18 @@ export default {
     setDefaultValue() {
       const { value, options } = this
 
-      if (value !== undefined) {
-        if (options && options.length > 0) {
-          const selected =
-            find(options, value) || find(options, { value }) || find(options, { label: value })
-          if (selected !== undefined) {
-            this.selected = selected
-            return
-          }
-        }
+      if (!value) return
 
-        // Fallback
-        this.selected = value
-      }
+      // Fallback
+      this.selected = value
+
+      if (!options || !options.length) return
+
+      const selected = find(options, { value })
+
+      if (!selected) return
+
+      this.selected = selected
     },
 
     toggleDropdown() {
@@ -174,21 +176,7 @@ export default {
       if (!this.$el.contains(e.target)) {
         this.dropdownIsActive = false
       }
-    },
-
-    icon(code) {
-      return typeof code === 'string' ? localeEmoji(code) : null
     }
-  },
-
-  mounted() {
-    // Toggle off dropdown if clicked outside
-    window.addEventListener('click', this.clickOutside)
-  },
-
-  beforeDestroy() {
-    // Remove event listeners
-    window.removeEventListener('click', this.clickOutside)
   }
 }
 </script>
