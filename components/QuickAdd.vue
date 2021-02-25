@@ -27,12 +27,14 @@
       </div>
     </transition>
 
-    <ButtonLoading
-      v-if="cartIsUpdating"
-      class="absolute left-0 bottom-0 w-full dark"
-      label="Adding..."
-      loadingLabel="Adding..."
-    />
+    <!-- Adding in progress -->
+    <div v-if="cartIsUpdating" class="relative px-4">
+      <ButtonLoading
+        class="absolute left-0 bottom-0 w-full dark px-4 py-3"
+        label="Adding..."
+        loadingLabel="Adding..."
+      />
+    </div>
   </div>
 </template>
 
