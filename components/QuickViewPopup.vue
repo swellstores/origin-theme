@@ -58,7 +58,7 @@
           <!-- Product details -->
           <div class="relative pb-6 md:pb-0 md:ml-5">
             <div class="relative h-full md:overflow-scroll hide-scroll">
-              <div class="relative md:absolute w-full">
+              <div class="relative md:absolute w-full px-1">
                 <h2 v-balance-text class="mb-4 leading-tight">{{ product.name }}</h2>
                 <NuxtLink
                   class="inline-block underline mb-5"
