@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import get from 'lodash/get'
+import { getLocaleDefaults } from '~/modules/swell/utils/getLocaleDefaults'
 
 // Components
 import VisualMedia from '~/modules/swell/components/VisualMedia'
@@ -9,7 +10,8 @@ Vue.use({
     Vue.mixin({
       methods: {
         formatMoney,
-        resolveUrl
+        resolveUrl,
+        getCountryCodeFromLocale
       }
     })
 
@@ -50,6 +52,21 @@ function resolveUrl(item) {
     // Treat item as complete URL
     return item
   }
+}
+
+function getCountryCodeFromLocale(locale) {
+  const split = locale.toUpperCase().split(/-|_/)
+  const lang = split.shift()
+  const country = split.pop()
+  let code
+
+  if (!country) {
+    code = getLocaleDefaults[lang.toLowerCase()];
+  } else {
+    code = country
+  }
+
+  return code.toLowerCase()
 }
 
 function getContentPath({ type, value, url }) {

@@ -10,7 +10,7 @@
       @click="toggleDropdown()"
     >
       <div v-if="selected && selected.value" class="mx-auto transition-all duration-200 ease-out">
-        <span class="text-lg relative top-px">{{ icon(selected.value) }}</span>
+        <span class="flag-icon" :class="`flag-icon-${getCountryCodeFromLocale(selected.value)}`" />
         <span
           v-if="appearance === 'popup'"
           class="font-medium"
@@ -55,7 +55,10 @@
             'my-2 mx-auto': appearance === 'popup'
           }"
         >
-          <span class="inline-block mr-0.5 relative top-px">{{ icon(option.value) }}</span>
+          <span
+            class="inline-block mr-1 relative top-px flag-icon"
+            :class="`flag-icon-${getCountryCodeFromLocale(option.value)}`"
+          />
           {{ option.label }}
         </div>
       </li>
@@ -68,6 +71,9 @@
 import find from 'lodash/find'
 import localeEmoji from 'locale-emoji'
 import { mapState } from 'vuex'
+
+// External styles
+import 'flag-icon-css/css/flag-icon.css'
 
 export default {
   name: 'LocaleSelect',
@@ -106,7 +112,6 @@ export default {
   watch: {
     locale() {
       const { locale } = this
-
       // Set initial value when locale has been fetched
       if (locale === null) return
       this.value = locale
