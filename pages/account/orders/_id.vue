@@ -43,7 +43,7 @@
           >
             <div class="pb-2 md:pb-0">
               <span>Order date</span>
-              <span class="font-semibold">May 13, 2020</span>
+              <span class="font-semibold">{{ formatDate(order.dateCreated) }}</span>
             </div>
 
             <!-- <div class="pb-2 md:pb-0">
@@ -89,7 +89,9 @@
                 >
                   <span>{{ option.name }}: {{ option.value }}</span>
                 </p>
-                <p class="pt-2 font-semibold text-sm">{{ formatMoney(item.priceTotal, order.currency) }}</p>
+                <p class="pt-2 font-semibold text-sm">
+                  {{ formatMoney(item.priceTotal, order.currency) }}
+                </p>
               </div>
             </div>
           </div>
@@ -317,6 +319,18 @@ export default {
         default:
           return
       }
+    }
+  },
+
+  methods: {
+    formatDate(iso) {
+      const date = new Date(iso)
+
+      return new Intl.DateTimeFormat('default', {
+        month: 'long',
+        day: '2-digit',
+        year: 'numeric'
+      }).format(date)
     }
   },
 

@@ -34,7 +34,7 @@
             <!-- Hover image -->
             <div
               v-if="product.images[1]"
-              class="absolute w-full h-full inset-0 opacity-0 transition-opacity duration-75 hover:opacity-100"
+              class="absolute w-full h-full inset-0 opacity-0 transition-opacity duration-150 hover:opacity-100"
             >
               <VisualMedia
                 :source="product.images[1]"

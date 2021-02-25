@@ -40,7 +40,8 @@ export default {
 
   async fetch() {
     const { $swell, $route } = this
-    const slug = $route.params.slug || 'home'
+    const homePage = await $swell.settings.get('store.homePage')
+    const slug = $route.params.slug || homePage || 'home'
 
     const page = await $swell.content.get('pages', slug)
 
