@@ -48,6 +48,8 @@
           <div class="flex px-3">
             <div class="w-24 mr-3">
               <VisualMedia
+                v-if="product.images && product.images.length"
+                :source="product.images[0]"
                 :widths="[96, 192]"
                 sizes="96px"
                 ratio="1:1"
@@ -70,7 +72,7 @@
               <!-- Price/quantity + item editor toggle -->
               <div class="label-sm-bold leading-none">
                 <div class="inline-block py-1 -mb-1">
-                  <span>${{ product.price.toFixed(2) }}</span>
+                  <span>{{ formatMoney(product.price) }}</span>
                   <span v-if="product.quantity > 1">&times; {{ product.quantity }}</span>
                 </div>
               </div>
@@ -110,9 +112,11 @@ export default {
   async fetch() {
     const { $swell } = this
 
-    // Fetch item that ahs been recently added to the cart
+    // Fetch item that has been recently added to the cart
     if (this.addedItem) {
-      const product = await $swell.products.get(this.addedItem.productId)
+      const baseProduct = await $swell.products.get(this.addedItem.productId)
+      const product = await $swell.products.variation(baseProduct, this.addedItem.options)
+
       this.product = product
     }
 
