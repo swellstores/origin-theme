@@ -68,7 +68,7 @@
                     <div
                       v-if="megaNavIsActive(item, index)"
                       class="absolute left-0 right-0 min-h-full"
-                      :class="{ 'mega-nav hidden fade-in': !isMounted }"
+                      :class="{ 'mega-nav hidden fade-in': !mounted }"
                       @mouseenter="showMegaNav(index)"
                       @mouseleave="hideMegaNav"
                     >
@@ -189,7 +189,7 @@ export default {
   },
 
   mounted() {
-    this.isMounted = true
+    this.mounted = true
     this.setScrollListener(true)
     this.$store.dispatch('selectCurrency')
     this.$store.dispatch('selectLocale')
@@ -225,7 +225,7 @@ export default {
       if (!item || !items || !items.length) return
 
       // Before mounted, allow for CSS to override and show the MegaNav 
-      if (!this.isMounted) return true
+      if (!this.mounted) return true
 
       // Show MegaNav, depending on which nav link is selected
       if (this.megaNavIsEnabled && this.currentMegaNavIndex === index) return true
