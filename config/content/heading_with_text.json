@@ -9,19 +9,22 @@
         {
           "id": "label",
           "label": "Label",
-          "type": "text"
+          "type": "text",
+          "localized": true
         },
         {
           "id": "heading",
           "label": "Heading",
           "type": "text",
-          "required": true
+          "required": true,
+          "localized": true
         },
         {
           "id": "text",
           "label": "Text",
           "type": "rich_html",
-          "required": true
+          "required": true,
+          "localized": true
         }
       ]
     },

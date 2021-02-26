@@ -10,7 +10,8 @@
           "id": "heading",
           "label": "Heading text",
           "type": "text",
-          "required": true
+          "required": true,
+          "localized": true
         },
         {
           "id": "features",
@@ -27,7 +28,8 @@
               "id": "label",
               "label": "Label",
               "type": "text",
-              "required": true
+              "required": true,
+              "localized": true
             }
           ]
         }

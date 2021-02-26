@@ -68,7 +68,7 @@
                     <div
                       v-if="megaNavIsActive(item, index)"
                       class="absolute left-0 right-0 min-h-full"
-                      :class="{ 'mega-nav hidden fade-in': !isMounted }"
+                      :class="{ 'mega-nav hidden fade-in': !mounted }"
                       @mouseenter="showMegaNav(index)"
                       @mouseleave="hideMegaNav"
                     >
@@ -82,15 +82,10 @@
 
             <!-- Action menu -->
             <div class="flex flex-row items-center justify-end -mr-2 lg:w-1/4">
+              <!-- Locale select -->
+              <LocaleSelect class="hidden lg:block" appearance="float" />
               <!-- Currency select -->
-              <CurrencySelect
-                class="hidden lg:block"
-                v-if="currencyOptions && currency"
-                :options="currencyOptions"
-                :value="currency"
-                appearance="float"
-                @change="selectCurrency"
-              />
+              <CurrencySelect class="hidden lg:block" appearance="float" />
               <!-- Search icon -->
               <button class="h-10 p-2" @click.prevent="$emit('click-search')">
                 <BaseIcon icon="uil:search" />
@@ -157,7 +152,6 @@ export default {
     this.menu = $swell.settings.menus(menuId)
     this.storeName = $swell.settings.get('store.name', 'ORIGIN')
     this.logoSrc = $swell.settings.get('header.logo.file.url')
-    this.currencyOptions = this.getCurrencyOptions()
   },
 
   data() {
@@ -173,14 +167,12 @@ export default {
       hideHeader: false,
       lastScrollPos: 0,
       isScrolled: false,
-      isMounted: false,
-      scrollRAF: null,
-      currencyOptions: null
+      scrollRAF: null
     }
   },
 
   computed: {
-    ...mapState(['cart', 'customerLoggedIn', 'currency']),
+    ...mapState(['cart', 'customerLoggedIn'])
   },
 
   watch: {
@@ -197,10 +189,11 @@ export default {
   },
 
   mounted() {
-    this.isMounted = true
+    this.mounted = true
     this.setScrollListener(true)
     this.$store.dispatch('selectCurrency')
     this.$store.commit('setState', { key: 'headerHeight', value: this.$refs.header.offsetHeight })
+    this.$store.dispatch('selectLocale')
   },
 
   beforeDestroy() {
@@ -209,22 +202,6 @@ export default {
   },
 
   methods: {
-    getCurrencyOptions() {
-      const { $swell } = this
-
-      const options = $swell.currency.list().map(currency => ({
-        value: currency.code,
-        label: `${currency.symbol} ${currency.code}`,
-        symbol: currency.symbol
-      }))
-      return options.length ? options : null
-    },
-
-    selectCurrency(value) {
-      const { $swell } = this
-      this.$store.dispatch('selectCurrency', { code: value })
-    },
-
     setMobileNavVisibility(value) {
       if (typeof value === 'boolean') {
         // Explicitly set visibility
@@ -248,8 +225,8 @@ export default {
       // Don't show if there are no items set within the MegaNav
       if (!item || !items || !items.length) return
 
-      // Before mounted, allow for CSS to override and show the MegaNav 
-      if (!this.isMounted) return true
+      // Before mounted, allow for CSS to override and show the MegaNav
+      if (!this.mounted) return true
 
       // Show MegaNav, depending on which nav link is selected
       if (this.megaNavIsEnabled && this.currentMegaNavIndex === index) return true

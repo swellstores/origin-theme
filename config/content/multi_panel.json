@@ -21,12 +21,14 @@
                   "id": "heading",
                   "label": "Heading text",
                   "type": "text",
-                  "required": true
+                  "required": true,
+                  "localized": true
                 },
                 {
                   "id": "description",
                   "label": "Description text",
-                  "type": "textarea"
+                  "type": "textarea",
+                  "localized": true
                 },
                 {
                   "id": "links",
@@ -54,7 +56,8 @@
                       "id": "label",
                       "label": "Label text",
                       "type": "text",
-                      "required": true
+                      "required": true,
+                      "localized": true
                     },
                     {
                       "id": "url",

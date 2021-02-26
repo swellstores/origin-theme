@@ -233,7 +233,8 @@
           "id": "header.promo_text",
           "label": "Promo bar text",
           "type": "short_text",
-          "conditions": { "header.show_promo": true }
+          "conditions": { "header.show_promo": true },
+          "localized": true
         },
         {
           "id": "header.promo_url",
@@ -300,13 +301,15 @@
           "label": "Contact info heading",
           "type": "short_text",
           "default": "Contact us",
-          "conditions": { "footer.show_contact_info": true }
+          "conditions": { "footer.show_contact_info": true },
+          "localized": true
         },
         {
           "id": "footer.contact_info_text",
           "label": "Contact info text",
           "type": "basic_html",
-          "conditions": { "footer.show_contact_info": true }
+          "conditions": { "footer.show_contact_info": true },
+          "localized": true
         },
         {
           "id": "footer.show_email_signup",
@@ -319,13 +322,15 @@
           "label": "Email signup heading",
           "type": "short_text",
           "default": "Email newsletter",
-          "conditions": { "footer.show_email_signup": true }
+          "conditions": { "footer.show_email_signup": true },
+          "localized": true
         },
         {
           "id": "footer.email_signup_text",
-          "label": "Show email signup text",
+          "label": "Email signup text",
           "type": "basic_html",
-          "conditions": { "footer.show_email_signup": true }
+          "conditions": { "footer.show_email_signup": true },
+          "localized": true
         },
         {
           "id": "footer.background",
@@ -352,7 +357,8 @@
         {
           "id": "cart.info_text",
           "label": "Cart info text",
-          "type": "basic_html"
+          "type": "basic_html",
+          "localized": true
         }
       ]
     },
@@ -447,12 +453,14 @@
           "id": "customer_accounts.returns_heading",
           "label": "Returns info heading",
           "type": "short_text",
-          "default": "Returns"
+          "default": "Returns",
+          "localized": true
         },
         {
           "id": "customer_accounts.returns_info_text",
           "label": "Returns info text",
-          "type": "basic_html"
+          "type": "basic_html",
+          "localized": true
         }
       ]
     },

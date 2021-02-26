@@ -4,15 +4,18 @@ import settings from '~/config/settings.json'
 import menus from '~/config/menus.json'
 
 export default async (context, inject) => {
+  const { $swell } = context.app;
   const useEditorSettings = '<%= options.useEditorSettings %>' !== 'false'
 
   if (process.env.NODE_ENV === 'production' || !useEditorSettings) {
     // Load settings from filesystem
-    context.app.$swell.settings.state = normalizeKeys(settings)
-    context.app.$swell.settings.menuState = normalizeKeys(menus)
+    $swell.settings.state = normalizeKeys(settings)
+    $swell.settings.menuState = normalizeKeys(menus)
+
+    // TODO: figure how to load locale settings in production
   } else {
     // Load all settings via API
-    await context.app.$swell.settings.load()
+    await $swell.settings.load()
     // Notify editor when settings are loaded
     if (useEditorSettings) {
       try {
@@ -28,7 +31,7 @@ export default async (context, inject) => {
 function normalizeKeys(obj, params) {
   const options = {
     case: 'camel',
-    ignoredKeys: ['$cache'],
+    ignoredKeys: ['$cache', '$locale'],
     ...params
   }
   if (obj && obj.constructor === Object) {

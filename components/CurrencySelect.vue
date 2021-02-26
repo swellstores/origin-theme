@@ -1,14 +1,19 @@
 <template>
-  <div class="relative z-50 transition-all duration-300 ease-in-out">
+  <div v-if="currency" class="relative transition-all duration-300 ease-in-out">
     <div
       ref="dropdown"
-      class="relative w-full flex p-2 items-center bg-primary-lightest text-center font-medium cursor-pointer rounded focus:outline-none focus:shadow-outline hover:text-accent"
-      :class="{ 'font-semibold': appearance === 'popup' }"
+      class="w-full flex p-2 items-center text-center font-medium cursor-pointer focus:outline-none focus:shadow-outline hover:text-accent"
+      :class="{
+        'font-semibold h-full': appearance === 'popup',
+        'rounded bg-primary-lightest': appearance === 'float'
+      }"
       @click="toggleDropdown()"
     >
-      <div class="mx-auto">
+      <div v-if="selected" class="mx-auto transition-all duration-200 ease-out">
+        <span class="font-medium" :class="{ 'ml-2 font-semibold': appearance === 'popup' }">{{
+          selected.value
+        }}</span>
         <span class="font-semibold">{{ selected.symbol }}</span>
-        <span class="font-medium">{{ selected.value }}</span>
       </div>
     </div>
 
@@ -28,7 +33,7 @@
         'w-max shadow-md absolute border center-x': appearance === 'float',
         'w-full max-w-80 mx-auto center-xy fixed': appearance === 'popup'
       }"
-      class="block -mt-px bg-primary-lightest rounded z-40 
+      class="block -mt-px bg-primary-lightest rounded z-40
       overflow-scroll"
       role="listbox"
     >
@@ -36,7 +41,7 @@
         v-for="(option, index) in options"
         :key="`option-${index}`"
         :class="{ 'pointer-events-none': option.value === selected.value || option === selected }"
-        class="inline-block mb-0 px-2 flex items-center cursor-pointer hover:bg-primary-lighter border-b border-primary-light last:border-b-0"
+        class="mb-0 px-2 items-center cursor-pointer hover:bg-primary-lighter border-b border-primary-light last:border-b-0"
         role="option"
         @click="selectOption(option)"
       >
@@ -47,8 +52,8 @@
             'my-2 mx-auto': appearance === 'popup'
           }"
         >
-          <span class="font-semibold">{{ option.symbol }}</span>
           {{ option.value }}
+          <span class="font-semibold">{{ option.symbol }}</span>
         </div>
       </li>
     </ul>
@@ -58,83 +63,56 @@
 <script>
 // Helpers
 import find from 'lodash/find'
+import { mapState } from 'vuex'
 
 export default {
-  name: 'InputDropdown',
+  name: 'CurrencySelect',
 
   props: {
-    options: {
-      type: Array,
-      default: () => []
-    },
-    value: {
-      type: String
-    },
     appearance: {
       type: String,
       default: 'float'
     }
   },
 
+  fetch() {
+    // Set component data
+    this.options = this.getCurrencyOptions()
+  },
+
   data() {
     return {
+      value: null,
+      options: [],
       dropdownIsActive: false,
       selected: ''
     }
   },
 
   computed: {
-    selectedLabel() {
-      if (this.selected !== undefined) {
-        return this.selected.label || this.selected
-      }
-    }
+    ...mapState(['currency'])
   },
 
   watch: {
+    currency() {
+      const { currency } = this
+
+      // Set initial value when currency has been fetched
+      if (currency === null) return
+      this.value = currency
+    },
+
     value() {
       this.setDefaultValue()
     }
   },
 
   created() {
-    this.setDefaultValue()
-  },
-
-  methods: {
-    setDefaultValue() {
-      const { value, options } = this
-
-      if (value !== undefined) {
-        if (options && options.length > 0) {
-          const selected =
-            find(options, value) || find(options, { value }) || find(options, { label: value })
-          if (selected !== undefined) {
-            this.selected = selected
-            return
-          }
-        }
-
-        // Fallback
-        this.selected = value
-      }
-    },
-
-    toggleDropdown() {
-      this.dropdownIsActive = !this.dropdownIsActive
-    },
-
-    selectOption(option) {
-      this.selected = option
-      this.dropdownIsActive = false
-      this.$emit('change', option.value || option)
-    },
-
-    clickOutside(e) {
-      if (!this.$el.contains(e.target)) {
-        this.dropdownIsActive = false
-      }
+    if (this.currency) {
+      this.value = this.currency
     }
+
+    this.setDefaultValue()
   },
 
   mounted() {
@@ -145,6 +123,52 @@ export default {
   beforeDestroy() {
     // Remove event listeners
     window.removeEventListener('click', this.clickOutside)
+  },
+
+  methods: {
+    getCurrencyOptions() {
+      const { $swell } = this
+
+      const options = $swell.currency.list().map(currency => ({
+        value: currency.code,
+        label: `${currency.symbol} ${currency.code}`,
+        symbol: currency.symbol
+      }))
+      return options.length ? options : null
+    },
+
+    setDefaultValue() {
+      const { value, options } = this
+
+      if (!value) return
+
+      // Fallback
+      this.selected = value
+
+      if (!options || !options.length) return
+
+      const selected = find(options, { value })
+
+      if (!selected) return
+
+      this.selected = selected
+    },
+
+    toggleDropdown() {
+      this.dropdownIsActive = !this.dropdownIsActive
+    },
+
+    selectOption(option) {
+      this.selected = option
+      this.dropdownIsActive = false
+      this.$store.dispatch('selectCurrency', { code: option.value })
+    },
+
+    clickOutside(e) {
+      if (!this.$el.contains(e.target)) {
+        this.dropdownIsActive = false
+      }
+    }
   }
 }
 </script>

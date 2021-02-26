@@ -5,7 +5,7 @@ export const state = () => ({
   currency: null,
   customer: null,
   customerLoggedIn: false,
-  locale: 'en-US',
+  locale: null,
   notification: null,
   cookiesWereAccepted: false,
   headerIsVisible: true,
@@ -22,6 +22,21 @@ export const actions = {
       } else {
         const selected = this.$swell.currency.selected()
         commit('setState', { key: 'currency', value: selected })
+      }
+    } catch (err) {
+      dispatch('handleError', err)
+    }
+  },
+
+  async selectLocale({ commit, dispatch, state }, { code } = {}) {
+    try {
+      if (code) {
+        await this.$swell.locale.select(code)
+        // TODO: better way to refetch all the data
+        window && window.location.reload()
+      } else {
+        const selected = this.$swell.locale.selected()
+        commit('setState', { key: 'locale', value: selected })
       }
     } catch (err) {
       dispatch('handleError', err)
