@@ -84,6 +84,7 @@ module.exports = {
       '80': '20rem',
       '96': '24rem',
       '112': '28rem',
+      '120': '30rem',
       '128': '32rem',
       '160': '40rem',
       '256': '64rem',
@@ -102,7 +103,8 @@ module.exports = {
       full: '100%',
       '100vh': '100vh',
       '6/5': '120%',
-      'max': 'max-content'
+      min: 'min-content',
+      max: 'max-content'
     },
     screens: {
       sm: '576px',
@@ -147,7 +149,7 @@ module.exports = {
     },
     extend: {
       boxShadow: theme => ({
-        md: '0 2px 4px 0 rgba(0,0,0,0.08)',
+        md: '0 2px 8px 0 rgba(0,0,0,0.08)',
         outline: `0 0 0 3px ${theme('colors.outline')}`
       })
     }

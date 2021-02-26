@@ -239,7 +239,8 @@ export default {
         limit: this.limit,
         sort: this.sortMode,
         categories: this.slug,
-        $filters: filterState
+        $filters: filterState,
+        expand: ['variants']
       })
     },
     setProducts(products) {

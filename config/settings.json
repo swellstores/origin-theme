@@ -74,6 +74,9 @@
     "returns_heading": "Returns",
     "returns_info_text": "<p>Test</p>"
   },
+  "product_list": {
+    "enable_quick_add": true
+  },
   "typography": {
     "heading_font": {
       "provider": "Google",

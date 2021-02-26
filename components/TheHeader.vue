@@ -1,5 +1,5 @@
 <template>
-  <div data-sw-path="header">
+  <div ref="header" data-sw-path="header">
     <!-- Duplicate elements to match header height and push main content down -->
     <div class="opacity-0">
       <ThePromoBar v-if="header.showPromo" text="|" :hidden="header.hideOnScroll && hideHeader" />
@@ -200,6 +200,7 @@ export default {
     this.isMounted = true
     this.setScrollListener(true)
     this.$store.dispatch('selectCurrency')
+    this.$store.commit('setState', { key: 'headerHeight', value: this.$refs.header.offsetHeight })
   },
 
   beforeDestroy() {
@@ -276,9 +277,19 @@ export default {
       if (Math.abs(currentScrollPosition - this.lastScrollPos) < 50) return
 
       if (currentScrollPosition > this.lastScrollPos) {
+        // Stop executing if hide header is already true
+        if (this.hideHeader) {
+          this.lastScrollPos = currentScrollPosition
+          return
+        }
         this.hideHeader = true
         this.$store.commit('setState', { key: 'headerIsVisible', value: false })
       } else {
+        // Stop executing if hide header is already false
+        if (!this.hideHeader) {
+          this.lastScrollPos = currentScrollPosition
+          return
+        }
         this.hideHeader = false
         this.$store.commit('setState', { key: 'headerIsVisible', value: true })
       }

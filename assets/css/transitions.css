@@ -43,16 +43,33 @@
 
 /* Vue fade-up transition */
 .fade-up-enter-active {
-  @apply transition duration-300 ease-out;
+  @apply transition duration-200 ease-out;
 }
 
 .fade-up-leave-active {
-  @apply transition duration-500 ease-in;
+  @apply transition duration-100 ease-in;
 }
 
 .fade-up-enter,
 .fade-up-leave-to {
-  @apply transform translate-y-6 opacity-0;
+  @apply transform translate-y-2 opacity-0;
+}
+
+/* Vue fade-up and out transition */
+.fade-up-out-enter-active {
+  @apply transition duration-300 ease-out;
+}
+
+.fade-up-out-leave-active {
+  @apply transition duration-150 ease-in;
+}
+
+.fade-up-out-enter {
+  @apply transform translate-y-4 opacity-0;
+}
+
+.fade-up-out-leave-to {
+  @apply transform opacity-0;
 }
 
 /* Vue fade transition */

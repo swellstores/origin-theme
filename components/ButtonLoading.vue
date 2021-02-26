@@ -1,6 +1,6 @@
 <template>
   <button
-    class="relative btn"
+    class="btn"
     :class="[{ loading: isLoading, disabled: disabled }]"
     type="button"
   >

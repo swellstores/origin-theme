@@ -41,7 +41,8 @@ export default {
     const products = await this.$swell.products.list({
       search: this.inputValue,
       limit,
-      sort: 'popularity asc'
+      sort: 'popularity asc',
+      expand: ['variants']
     })
 
     this.products = products.results

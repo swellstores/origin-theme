@@ -19,7 +19,12 @@
 
       <div v-else class="relative block h-full rounded">
         <!-- Preview media -->
-        <div v-if="product.images" class="relative">
+        <div
+          v-if="product.images"
+          class="group relative"
+          @mouseenter="showQuickAdd(product.id)"
+          @mouseleave="hideQuickAdd(product.id)"
+        >
           <NuxtLink
             :to="resolveUrl({ type: 'product', value: product.slug })"
             class="relative block rounded overflow-hidden"
@@ -34,7 +39,7 @@
             <!-- Hover image -->
             <div
               v-if="product.images[1]"
-              class="absolute w-full h-full inset-0 opacity-0 transition-opacity duration-150 hover:opacity-100"
+              class="group-hover:opacity-100 absolute w-full h-full inset-0 opacity-0 transition-opacity duration-150"
             >
               <VisualMedia
                 :source="product.images[1]"
@@ -50,6 +55,22 @@
           >
             Sale
           </div>
+
+          <template v-if="quickAddIsEnabled">
+            <transition name="fade-up" :duration="300">
+              <QuickAdd
+                v-if="
+                  (currentProductId === product.id && quickAddIsVisible) ||
+                    (currentProductId === product.id && quickAddKeepAlive)
+                "
+                class="hidden lg:block w-full absolute bottom-0 px-6 mb-5"
+                :product="product"
+                @open-quick-view="openQuickView(product)"
+                @adding-to-cart="productBeingAdded = product.id"
+                @keep-alive="keepQuickAddAlive"
+              />
+            </transition>
+          </template>
         </div>
         <div
           v-else
@@ -77,14 +98,16 @@
         </div>
       </div>
     </article>
+    <QuickViewPopup
+      v-if="quickViewIsVisible"
+      :product-id="quickViewProduct.id"
+      @click-close="quickViewIsVisible = false"
+    />
   </section>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-
-// Helpers
-import get from 'lodash/get'
 
 export default {
   name: 'ProductPreviews',
@@ -103,6 +126,7 @@ export default {
   fetch() {
     this.aspectRatio = this.$swell.settings.get('productPreviews.aspectRatio', '1:1')
     this.textAlign = this.$swell.settings.get('productPreviews.textAlign', 'left')
+    this.quickAddIsEnabled = this.$swell.settings.get('productList.enableQuickAdd')
 
     // Set ratio padding
     const [x, y] = this.aspectRatio.split(':')
@@ -131,12 +155,48 @@ export default {
       textAlign: 'left',
       ratioPadding: null,
       sizes: null,
-      widths: null
+      widths: null,
+      quickAddIsEnabled: false,
+      quickAddKeepAlive: false,
+      quickAddIsVisible: false,
+      currentProductId: null,
+      quickViewIsVisible: false,
+      quickViewProduct: null,
+      productBeingAdded: null
     }
   },
 
   computed: {
-    ...mapState(['currency'])
+    ...mapState(['currency', 'cartIsUpdating'])
+  },
+
+  methods: {
+    showQuickAdd(id) {
+      // If keep alive is active, don't hide until same product has been moused over again
+      // This is so that for dropdown option that extend past the original element, the flow isn't lost.
+      if (this.quickAddKeepAlive) {
+        if (this.currentProductId !== id) return
+        this.quickAddKeepAlive = false
+      }
+      this.quickAddIsVisible = true
+      this.currentProductId = id
+    },
+
+    hideQuickAdd(id) {
+      if (this.quickAddKeepAlive) return
+      this.quickAddIsVisible = false
+      this.currentProductId = null
+    },
+
+    openQuickView(product) {
+      if (!product) return
+      this.quickViewProduct = product
+      this.quickViewIsVisible = true
+    },
+
+    keepQuickAddAlive(bool) {
+      this.quickAddKeepAlive = bool
+    }
   }
 }
 </script>

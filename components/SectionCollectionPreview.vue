@@ -53,8 +53,12 @@ export default {
       return
     }
 
-    // Fetch category with products
-    const category = await $swell.categories.get(this.categoryId, { expand: 'products:4' })
+    // Fetch category and products
+    const category = await $swell.categories.get(this.categoryId)
+    const products = await $swell.products.list({
+      $filters: { category: [this.categoryId] },
+      expand: ['variants']
+    })
 
     if (!category) {
       throw new Error(`Category "${this.categoryId}" inactive or not found`)
@@ -64,7 +68,7 @@ export default {
     this.name = category.name
     this.slug = category.slug
     this.productCols = get(category, 'content.productCols', 4)
-    this.products = get(category, 'products.results', []).slice(0, this.productCols)
+    this.products = get(products, 'results', []).slice(0, this.productCols)
 
     this.loaded = true
   },
