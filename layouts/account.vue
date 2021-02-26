@@ -1,10 +1,7 @@
 <template>
   <div class="relative">
     <div :class="{ 'overflow-y-hidden': searchIsActive || cartIsActive }">
-      <TheHeader
-        @click-cart="cartIsActive = true"
-        @click-search="searchIsActive = true"
-      />
+      <TheHeader @click-cart="cartIsActive = true" @click-search="searchIsActive = true" />
 
       <div class="min-h-screen bg-primary-lighter">
         <div v-if="customer" class="w-full md:container md:flex relative md:pt-12 pt-6 pb-24">
@@ -24,11 +21,12 @@
                   <BaseIcon icon="uil:edit" size="sm" /><span class="ml-2">Edit profile</span>
                 </button>
 
+                <!-- Log out (Desktop) -->
                 <button
-                  class="flex flex-row whitespace-no-wrap items-center mt-2 cursor-pointer"
+                  class="flex flex-row md:hidden whitespace-no-wrap items-center mt-2 cursor-pointer"
                   @click="logoutPopupIsActive = true"
                 >
-                  <BaseIcon icon="uil:signout" size="sm" /><span class="ml-2">Log out </span>
+                  <BaseIcon icon="uil:signout" size="sm" /><span class="ml-2">Log out</span>
                 </button>
               </div>
 
@@ -36,12 +34,22 @@
               <ul class="hidden md:block border-t border-primary-light text-base">
                 <li v-for="view in views" :key="view.value">
                   <NuxtLink
-                    class="pl-3 py-4 block hover:bg-primary-light rounded-none"
+                    class="view-link pl-3 py-4 block hover:bg-primary-light rounded-none"
                     :to="`/account/${view.value}/`"
                     >{{ view.label }}</NuxtLink
                   >
                 </li>
               </ul>
+
+              <!-- Log out (Mobile) -->
+              <div class="hidden md:block border-t border-primary-light pt-6">
+                <button
+                  class="flex flex-row whitespace-no-wrap items-center mt-2 cursor-pointer"
+                  @click="logoutPopupIsActive = true"
+                >
+                  <BaseIcon icon="uil:signout" size="sm" /><span class="ml-2">Log out</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -192,7 +200,7 @@ export default {
       this.$store.dispatch('initializeCustomer')
     } else {
       this.$store.dispatch('showNotification', {
-        message: 'You are currently not loogged in. Please log in to continue.',
+        message: 'You are currently not logged in. Please log in to continue.',
         type: 'error'
       })
       this.$router.push('/account/login/')
@@ -204,5 +212,13 @@ export default {
 <style lang="postcss">
 .min-h-screen {
   min-height: 100vh;
+}
+
+.view-link.nuxt-link-active {
+  @apply font-bold bg-primary-light;
+
+  &:hover {
+    @apply text-primary-darkest;
+  }
 }
 </style>

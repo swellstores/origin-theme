@@ -20,6 +20,7 @@
         </p>
         <span class="ml-auto">{{ expDate }}</span>
       </div>
+      <p v-if="card.billing && card.billing.name">{{ card.billing.name }}</p>
     </div>
 
     <div class="border-t border-primary-med mt-4 pt-4">

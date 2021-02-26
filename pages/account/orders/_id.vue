@@ -18,7 +18,7 @@
 
     <div v-else>
       <div class="container">
-        <div class="pb-6">
+        <div class="pb-6 border-b border-primary-med mb-10">
           <h2 class="text-2xl">Order #{{ order.number }}</h2>
 
           <div class="my-4">
@@ -43,7 +43,7 @@
           >
             <div class="pb-2 md:pb-0">
               <span>Order date</span>
-              <span class="font-semibold">May 13, 2020</span>
+              <span class="font-semibold">{{ formatDate(order.dateCreated) }}</span>
             </div>
 
             <!-- <div class="pb-2 md:pb-0">
@@ -89,7 +89,9 @@
                 >
                   <span>{{ option.name }}: {{ option.value }}</span>
                 </p>
-                <p class="pt-2 font-semibold text-sm">{{ formatMoney(item.priceTotal, order.currency) }}</p>
+                <p class="pt-2 font-semibold text-sm">
+                  {{ formatMoney(item.priceTotal, order.currency) }}
+                </p>
               </div>
             </div>
           </div>
@@ -117,8 +119,6 @@
           </div>
         </div>
       </div>
-
-      <div class="border-b border-primary-med mb-10" />
 
       <!-- Delivery details -->
       <div class="container">
@@ -161,7 +161,7 @@
                 <!-- Method: Card -->
                 <div
                   v-if="billing.card && billing.method === 'card'"
-                  class="md:border-b-0 md: border-r border-b border-primary-med p-4"
+                  class="md:border-b-0 md:border-r border-b border-primary-med p-4"
                 >
                   <div class="flex mb-4">
                     <BrandCardIcon :brand="billing.card.brand" />
@@ -185,7 +185,7 @@
                 <!-- Method: Account Credit -->
                 <div
                   v-else-if="billing.method === 'account'"
-                  class="md:border-b-0 md: border-r border-b border-primary-med p-4"
+                  class="md:border-b-0 md:border-r border-b border-primary-med p-4"
                 >
                   <div class="flex mb-4">
                     <BaseIcon icon="uil:money-bill" />
@@ -219,7 +219,7 @@
                 <!-- Method: Bank Deposity -->
                 <div
                   v-else-if="billing.method === 'bank_deposit'"
-                  class="md:border-b-0 md: border-r border-b border-primary-med p-4"
+                  class="md:border-b-0 md:border-r border-b border-primary-med p-4"
                 >
                   <div class="flex mb-4">
                     <BaseIcon icon="uil:University" />
@@ -319,6 +319,18 @@ export default {
         default:
           return
       }
+    }
+  },
+
+  methods: {
+    formatDate(iso) {
+      const date = new Date(iso)
+
+      return new Intl.DateTimeFormat('default', {
+        month: 'long',
+        day: '2-digit',
+        year: 'numeric'
+      }).format(date)
     }
   },
 

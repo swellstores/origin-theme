@@ -2,6 +2,8 @@
 
 Origin is a universal progressive web app for online stores, using modern JavaScript and front-end tooling. It's intended as a reference example and starter project for building custom storefronts powered by Swell.
 
+> Note: this project is in beta and will have major changes made to support Vue/Nuxt 3.
+
 #### Features
 
 - Built with Nuxt.js (the Vue equivalent of Next.js)
@@ -14,7 +16,6 @@ Origin is a universal progressive web app for online stores, using modern JavaSc
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
 
 - [Getting started](#getting-started)
   - [Connecting to Swell](#connecting-to-swell)
@@ -151,7 +152,7 @@ By default, the contents of the `colors` and `fonts` objects in `settings.json` 
 
 **Example**
 
-If `colors.primary.darkest` in `settings.json` has a value of `#222222`, because `colors` is configured as a style property, that will generate the CSS variable `--colors-primary-darkest: #222222;`. If you have a field configured in `editor.json` with `id: 'trogdor.the.burninator'`, the following config would convert any properties on the `trogdor` object to variables. 
+If `colors.primary.darkest` in `settings.json` has a value of `#222222`, because `colors` is configured as a style property, that will generate the CSS variable `--colors-primary-darkest: #222222;`. If you have a field configured in `editor.json` with `id: 'trogdor.the.burninator'`, the following config would convert any properties on the `trogdor` object to variables.
 
 ```js
 // nuxt.config.js
