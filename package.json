@@ -11,6 +11,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@babel/preset-env": "7.12.17",
     "@nuxtjs/pwa": "3.0.2",
     "@nuxtjs/sentry": "3.2.2",
     "build-url": "3.0.0",
@@ -19,7 +20,7 @@
     "lodash": "4.17.20",
     "mitt": "2.1.0",
     "nuxt": "2.14.5",
-    "swell-js": "3.8.3",
+    "swell-js": "3.8.4",
     "vue-balance-text": "1.2.3",
     "vue-country-region-select": "2.0.14",
     "vue-credit-card-validation": "0.1.10",
