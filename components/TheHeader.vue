@@ -83,9 +83,19 @@
             <!-- Action menu -->
             <div class="flex flex-row items-center justify-end -mr-2 lg:w-1/4">
               <!-- Locale select -->
-              <LocaleSelect class="hidden lg:block" appearance="float" />
+              <LocaleSelect
+                v-if="locale"
+                :locale="locale"
+                class="hidden lg:block"
+                appearance="float"
+              />
               <!-- Currency select -->
-              <CurrencySelect class="hidden lg:block" appearance="float" />
+              <CurrencySelect
+                v-if="currency"
+                :currency="currency"
+                class="hidden lg:block"
+                appearance="float"
+              />
               <!-- Search icon -->
               <button class="h-10 p-2" @click.prevent="$emit('click-search')">
                 <BaseIcon icon="uil:search" />
@@ -172,7 +182,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['cart', 'customerLoggedIn'])
+    ...mapState(['cart', 'customerLoggedIn', 'currency', 'locale'])
   },
 
   watch: {

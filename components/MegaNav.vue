@@ -1,10 +1,10 @@
-<template functional>
+<template>
   <div class="w-full bg-primary-lightest shadow-md border-primary-light border-t">
-    <div v-if="props.items" class="container">
+    <div class="container">
       <div class="flex flex-wrap items-stretch pt-6 -mx-4">
         <!-- Columns -->
         <ul
-          v-for="(column, index) in props.items"
+          v-for="(column, index) in items"
           :key="'megaNavCol' + index"
           class="flex-initial px-4 mb-6 w-1/4 min-w-48"
         >
@@ -12,7 +12,7 @@
             <!-- Product preview -->
             <NuxtLink
               v-if="item.type === 'product' && typeof item.value === 'object'"
-              :to="parent.resolveUrl(item)"
+              :to="resolveUrl(item)"
               class="block mt-1"
               @click.native="listeners.click"
             >
@@ -44,7 +44,7 @@
             <!-- Standard link -->
             <NuxtLink
               v-else
-              :to="parent.resolveUrl(item)"
+              :to="resolveUrl(item)"
               class="block -mx-1 p-1 leading-tight"
               @click.native="listeners.click"
               >{{ item.name }}</NuxtLink
