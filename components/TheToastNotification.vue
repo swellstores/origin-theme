@@ -77,7 +77,7 @@
               Checkout
             </a>
 
-            <button class="w-full relative btn light" @click="openCart" type="button">
+            <button class="w-full relative btn light" type="button" @click="openCart">
               View cart
               <div
                 v-if="cart && cart.itemQuantity"
@@ -98,6 +98,17 @@
 import { mapState } from 'vuex'
 
 export default {
+  props: {
+    message: {
+      type: String,
+      default: ''
+    },
+    type: {
+      type: String,
+      default: ''
+    }
+  },
+
   async fetch() {
     const { $swell } = this
 
@@ -112,17 +123,6 @@ export default {
     // Set component data
     this.header = $swell.settings.get('header', {})
     this.logoSrc = $swell.settings.get('header.logo.file.url')
-  },
-
-  props: {
-    message: {
-      type: String,
-      default: ''
-    },
-    type: {
-      type: String,
-      default: ''
-    }
   },
 
   data() {
@@ -147,14 +147,24 @@ export default {
     headerHeightOffset() {
       // Set initial height before scroll initiates
       if (this.scrollY === null) {
-        return this.headerHeight
+        if (!this.headerIsVisible) return 0
+        if (this.headerIsVisible) return this.headerHeight
       }
+
+      if (!this.headerIsVisible) return 0
 
       if (this.scrollY < this.headerHeight) {
         return this.headerHeight - (this.headerHeight - this.scrollY)
       }
       return this.headerHeight
     }
+  },
+
+  mounted() {
+    window.addEventListener('scroll', this.onScroll)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.onScroll)
   },
 
   methods: {
@@ -167,13 +177,6 @@ export default {
       this.$emit('open-cart')
       this.$store.commit('setState', { key: 'notification', value: null })
     }
-  },
-
-  mounted() {
-    window.addEventListener('scroll', this.onScroll)
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.onScroll)
   }
 }
 </script>
