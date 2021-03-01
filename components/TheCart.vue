@@ -90,10 +90,21 @@
                 <span>Discounts</span>
                 <span>–{{ formatMoney(cart.discountTotal, currency) }}</span>
               </div>
+              <div v-show="cart.taxTotal" class="cart-line-total">
+                <span>Taxes</span>
+                <span>{{ formatMoney(cart.taxTotal, currency) }}</span>
+              </div>
               <h3 class="mt-3 flex justify-between text-xl font-semibold">
                 <span>Total</span>
                 <span>{{ formatMoney(cart.grandTotal, currency) }}</span>
               </h3>
+              <div
+                v-show="account && account.balance > 0"
+                class="cart-line-total border-t mt-4 pt-4"
+              >
+                <span>Account balance</span>
+                <span>{{ formatMoney(account.balance, currency) }}</span>
+              </div>
               <a
                 :href="cart.checkoutUrl"
                 :class="{ loading: cartIsUpdating }"
@@ -135,7 +146,12 @@ export default {
   },
 
   computed: {
-    ...mapState(['cart', 'cartIsUpdating', 'currency'])
+    ...mapState(['cart', 'cartIsUpdating', 'currency']),
+
+    account() {
+      if (!this.cart.account) return
+      return this.cart.account
+    }
   },
 
   mounted() {
