@@ -27,7 +27,7 @@ button {
 }
 
 .btn {
-  @apply inline-block h-10 px-5 py-3 rounded bg-primary-light text-sm leading-tight text-center font-semibold tracking-wide uppercase cursor-pointer;
+  @apply relative inline-block h-10 px-5 py-3 rounded bg-primary-light text-sm leading-tight text-center font-semibold tracking-wide uppercase cursor-pointer;
 
   &:hover {
     @apply bg-primary-darker text-primary-lightest;
