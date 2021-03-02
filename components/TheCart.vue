@@ -99,7 +99,7 @@
                 <span>{{ formatMoney(cart.grandTotal, currency) }}</span>
               </h3>
               <div
-                v-show="account && account.balance > 0"
+                v-if="account && account.balance && account.balance > 0"
                 class="cart-line-total border-t mt-4 pt-4"
               >
                 <span>Account balance</span>
