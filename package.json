@@ -11,6 +11,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@babel/preset-env": "7.12.17",
     "@nuxtjs/pwa": "3.0.2",
     "@nuxtjs/sentry": "3.2.2",
     "build-url": "3.0.0",

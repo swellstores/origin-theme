@@ -183,7 +183,7 @@ export default {
 
         // Re-route if still in accounts
         if (this.$route.path.includes('/account/')) {
-          this.$router.push('/')
+          this.$router.replace('/')
         }
       } catch (err) {
         console.log(err)
