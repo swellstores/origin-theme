@@ -55,7 +55,7 @@
             :style="`background: ${swatchColor}`"
             class="inline-block w-7 h-7 mr-1 rounded-sm"
           ></span>
-          <span class="ml-2 my-1">{{ currentValue }}</span>
+          <span class="ml-2 my-1">{{ currentValue || initialValue }}</span>
           <div v-show="dropdownIsActive" class="absolute right-3 mt-px">
             <BaseIcon icon="uil:angle-up" />
           </div>
@@ -120,7 +120,8 @@ export default {
       active: {
         uid: null
       },
-      dropdownIsActive: false
+      dropdownIsActive: false,
+      initialValue: null
     }
   },
 
@@ -148,6 +149,7 @@ export default {
     },
 
     swatchColor() {
+      if (!this.currentValue) return
       const currentValue = this.option.values.find(value => value.name === this.currentValue)
       return currentValue.color
     }
@@ -158,6 +160,24 @@ export default {
     activeDropdownUID(activeUID) {
       if (activeUID !== this._uid) this.dropdownIsActive = false
     }
+  },
+
+  created() {
+    // Set initial value if prop value isn't passed (for quick add component)
+    if (this.currentValue) return
+    if (!this.option || (!this.option.values && !this.option.values.length)) return
+
+    this.initialValue = this.option.values[0].name
+  },
+
+  mounted() {
+    // Toggle off dropdown if clicked outside
+    window.addEventListener('click', this.clickOutside)
+  },
+
+  beforeDestroy() {
+    // Remove event listeners
+    window.removeEventListener('click', this.clickOutside)
   },
 
   methods: {
@@ -176,16 +196,6 @@ export default {
         this.dropdownIsActive = false
       }
     }
-  },
-
-  mounted() {
-    // Toggle off dropdown if clicked outside
-    window.addEventListener('click', this.clickOutside)
-  },
-
-  beforeDestroy() {
-    // Remove event listeners
-    window.removeEventListener('click', this.clickOutside)
   }
 }
 </script>
