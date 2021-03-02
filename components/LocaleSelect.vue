@@ -83,6 +83,10 @@ export default {
     appearance: {
       type: String,
       default: 'float'
+    },
+    locale: {
+      type: String,
+      default: null
     }
   },
 
@@ -98,10 +102,6 @@ export default {
       dropdownIsActive: false,
       selected: ''
     }
-  },
-
-  computed: {
-    ...mapState(['locale'])
   },
 
   watch: {

@@ -9,7 +9,7 @@ export default async function(moduleOptions) {
   const options = { ...this.options.swellEditor, ...moduleOptions }
   const stylesheetPath = path.resolve(this.options.rootDir, './assets/css/variables.css')
   const settingsPath = path.resolve(this.options.rootDir, './config/settings.json')
-  const { default: settings } = await import(settingsPath)
+  const settings = await import(settingsPath)
 
   // Load settings and menus
   this.addPlugin({

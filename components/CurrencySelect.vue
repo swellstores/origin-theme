@@ -1,5 +1,5 @@
 <template>
-  <div v-if="currency" class="relative transition-all duration-300 ease-in-out">
+  <div class="relative transition-all duration-300 ease-in-out">
     <div
       ref="dropdown"
       class="w-full flex p-2 items-center text-center font-medium cursor-pointer focus:outline-none focus:shadow-outline hover:text-accent"
@@ -72,6 +72,10 @@ export default {
     appearance: {
       type: String,
       default: 'float'
+    },
+    currency: {
+      type: String,
+      default: null
     }
   },
 
@@ -87,10 +91,6 @@ export default {
       dropdownIsActive: false,
       selected: ''
     }
-  },
-
-  computed: {
-    ...mapState(['currency'])
   },
 
   watch: {
@@ -111,7 +111,6 @@ export default {
     if (this.currency) {
       this.value = this.currency
     }
-
     this.setDefaultValue()
   },
 
@@ -134,6 +133,7 @@ export default {
         label: `${currency.symbol} ${currency.code}`,
         symbol: currency.symbol
       }))
+
       return options.length ? options : null
     },
 
