@@ -17,7 +17,7 @@
           <VisualMedia
             :source="image"
             aspect-ratio="16:9"
-            sizes="(min-width: 1200px) 1120px, 100vw"
+            sizes="(min-width: 375px) 80vw, (min-width: 1440px) 70vw, 90vw"
             class="rounded overflow-hidden mt-10 lg:mt-12"
           />
         </BaseLink>

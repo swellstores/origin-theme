@@ -32,6 +32,7 @@
         v-if="image && (image.file || image.url)"
         :source="image"
         :is-background="true"
+        sizes="(min-resolution: 2dppx) 50vw, 80vw"
       />
       <!-- Background darkening overlay -->
       <div
