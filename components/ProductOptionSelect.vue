@@ -120,8 +120,7 @@ export default {
       active: {
         uid: null
       },
-      dropdownIsActive: false,
-      initialValue: null
+      dropdownIsActive: false
     }
   },
 
@@ -148,6 +147,13 @@ export default {
       }
     },
 
+    initialValue() {
+      // Set initial value for menu dropdownif a current value isn't supplied
+      if (this.currentValue) return
+      if (!this.option.values && !this.option.values.length) return
+      return this.option.values[0].name
+    },
+
     swatchColor() {
       if (!this.currentValue) return
       const currentValue = this.option.values.find(value => value.name === this.currentValue)
@@ -160,14 +166,6 @@ export default {
     activeDropdownUID(activeUID) {
       if (activeUID !== this._uid) this.dropdownIsActive = false
     }
-  },
-
-  created() {
-    // Set initial value if prop value isn't passed (for quick add component)
-    if (this.currentValue) return
-    if (!this.option || (!this.option.values && !this.option.values.length)) return
-
-    this.initialValue = this.option.values[0].name
   },
 
   mounted() {
