@@ -8,10 +8,14 @@
 
   <section v-else class="py-16">
     <div class="container">
-      <div v-if="!loaded && $fetchState.pending" class="loader-el w-64 h-8 mb-2 md:h-10"></div>
-      <NuxtLink v-else :to="resolveUrl({ type: 'category', value: slug })">
-        <h2>{{ name }}</h2>
-      </NuxtLink>
+      <template v-if="showTitle">
+        <div v-if="!loaded && $fetchState.pending" class="loader-el w-64 h-8 mb-2 md:h-10"></div>
+        <NuxtLink v-else :to="resolveUrl({ type: 'category', value: slug })">
+          <h1 v-if="titleSize === 'lg'" class="mb-2">{{ name }}</h1>
+          <h2 v-if="titleSize === 'md'" class="mb-2">{{ name }}</h2>
+          <h3 v-if="titleSize === 'sm'" class="mb-2">{{ name }}</h3>
+        </NuxtLink>
+      </template>
 
       <!-- Product previews -->
       <ProductPreviews :products="products" :column-count="productCols" />
@@ -38,6 +42,22 @@ export default {
     categoryId: {
       type: String,
       default: null
+    },
+    showTitle: {
+      type: Boolean,
+      default: true
+    },
+    titleSize: {
+      type: String,
+      default: 'md'
+    },
+    productCols: {
+      type: Number,
+      default: 3
+    },
+    productRows: {
+      type: Number,
+      default: 1
     }
   },
 
@@ -46,7 +66,7 @@ export default {
 
     // Set preload data
     if (!this.loaded) {
-      this.products = [...Array(4).keys()].map(() => ({}))
+      this.products = [...Array(this.productCols * this.productRows).keys()].map(() => ({}))
     }
 
     if (!this.categoryId) {
@@ -67,8 +87,7 @@ export default {
     // Set component data
     this.name = category.name
     this.slug = category.slug
-    this.productCols = get(category, 'content.productCols', 4)
-    this.products = get(products, 'results', []).slice(0, this.productCols)
+    this.products = get(products, 'results', []).slice(0, this.productCols * this.productRows)
 
     this.loaded = true
   },
@@ -78,7 +97,6 @@ export default {
       name: null,
       slug: null,
       products: [],
-      productCols: 4,
       loaded: false
     }
   },

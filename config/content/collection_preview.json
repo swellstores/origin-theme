@@ -12,6 +12,61 @@
           "type": "category_lookup"
         }
       ]
+    },
+    {
+      "label": "Styling",
+      "type": "field_group",
+      "fields": [
+        {
+          "label": "Layout",
+          "type": "heading"
+        },
+        {
+          "id": "product_cols",
+          "label": "Number of products per row",
+          "type": "select",
+          "options": [2, 3, 4],
+          "default": 3
+        },
+        {
+          "id": "product_rows",
+          "label": "Number of rows per block",
+          "type": "select",
+          "options": [1, 2],
+          "default": 1
+        },
+        {
+          "label": "Title",
+          "type": "heading"
+        },
+        {
+          "id": "show_title",
+          "label": "Show category title",
+          "type": "toggle",
+          "default": true
+        },
+        {
+          "id": "title_size",
+          "label": "Category title size",
+          "type": "select",
+          "options": [
+            {
+              "value": "sm",
+              "label": "Small"
+            },
+            {
+              "value": "md",
+              "label": "Medium"
+            },
+            {
+              "value": "lg",
+              "label": "Large"
+            }
+          ],
+          "default": "md",
+          "conditions": { "show_title": true }
+        }
+      ]
     }
   ]
 }
