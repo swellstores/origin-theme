@@ -141,11 +141,25 @@
                     attribute.value.length > 50
                 "
                 :heading="attribute.name"
-                class="mt-6"
               >
                 <div class="pb-3" v-html="attribute.value" />
               </AccordionItem>
-              <div v-else-if="attribute.visible" class="py-3 flex flex-no-wrap border-b">
+              <div
+                v-else-if="attribute.visible && typeof attribute.value === 'string'"
+                class="py-3 flex flex-no-wrap border-b"
+              >
+                <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
+                <span v-if="attribute.value instanceof Array" class="w-3/4">
+                  {{ attribute.value }}
+                </span>
+                <span v-else class="w-3/4">{{ attribute.value }}</span>
+              </div>
+              <div
+                v-else-if="
+                  attribute.visible && Array.isArray(attribute.value) && attribute.value.length > 0
+                "
+                class="py-3 flex flex-no-wrap border-b"
+              >
                 <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
                 <span v-if="attribute.value instanceof Array" class="w-3/4">
                   {{ attribute.value.join(', ') }}
