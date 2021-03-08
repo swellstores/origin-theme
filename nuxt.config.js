@@ -62,7 +62,7 @@ export default {
       {
         // icon: {},
         meta: {
-          title: get(settings, 'store.name')
+          name: get(settings, 'store.name')
         }
         // manifest: {},
         // workbox: {}
