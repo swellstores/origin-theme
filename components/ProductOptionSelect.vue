@@ -55,7 +55,7 @@
             :style="`background: ${swatchColor}`"
             class="inline-block w-7 h-7 mr-1 rounded-sm"
           ></span>
-          <span class="ml-2 my-1">{{ currentValue }}</span>
+          <span class="ml-2 my-1">{{ currentValue || initialValue }}</span>
           <div v-show="dropdownIsActive" class="absolute right-3 mt-px">
             <BaseIcon icon="uil:angle-up" />
           </div>
@@ -147,7 +147,15 @@ export default {
       }
     },
 
+    initialValue() {
+      // Set initial value for menu dropdownif a current value isn't supplied
+      if (this.currentValue) return
+      if (!this.option.values && !this.option.values.length) return
+      return this.option.values[0].name
+    },
+
     swatchColor() {
+      if (!this.currentValue) return
       const currentValue = this.option.values.find(value => value.name === this.currentValue)
       return currentValue.color
     }
@@ -158,6 +166,16 @@ export default {
     activeDropdownUID(activeUID) {
       if (activeUID !== this._uid) this.dropdownIsActive = false
     }
+  },
+
+  mounted() {
+    // Toggle off dropdown if clicked outside
+    window.addEventListener('click', this.clickOutside)
+  },
+
+  beforeDestroy() {
+    // Remove event listeners
+    window.removeEventListener('click', this.clickOutside)
   },
 
   methods: {
@@ -176,16 +194,6 @@ export default {
         this.dropdownIsActive = false
       }
     }
-  },
-
-  mounted() {
-    // Toggle off dropdown if clicked outside
-    window.addEventListener('click', this.clickOutside)
-  },
-
-  beforeDestroy() {
-    // Remove event listeners
-    window.removeEventListener('click', this.clickOutside)
   }
 }
 </script>
