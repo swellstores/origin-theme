@@ -1,5 +1,5 @@
 <template>
-  <div class="relative container pt-6 pb-24 md:max-w-112 md:pt-24" v-enter-key="sendPasswordReset">
+  <div v-enter-key="sendPasswordReset" class="relative container pt-6 pb-24 md:max-w-112 md:pt-24">
     <h2 class="pb-6">Forgot your password?</h2>
 
     <p class="text-sm mb-10">
@@ -8,20 +8,20 @@
 
     <div class="mb-6">
       <InputText
+        v-model="email"
         class="mb-2"
         label="Email"
         placeholder="Your email address"
         name="email"
         autocomplete="email"
-        v-model="email"
       />
 
       <template v-if="$v.email.$dirty">
-        <span class="label-sm text-error" v-if="!$v.email.email"
+        <span v-if="!$v.email.email" class="label-sm text-error"
           >Please enter a valid email address.</span
         >
 
-        <span class="label-sm text-error" v-else-if="!$v.email.required"
+        <span v-else-if="!$v.email.required" class="label-sm text-error"
           >Please enter your email address.</span
         >
       </template>
@@ -29,21 +29,21 @@
 
     <ButtonLoading
       class="dark w-full mt-6 mb-4"
-      @click.native="sendPasswordReset()"
       label="Send Email"
-      loadingLabel="Processing"
-      :isLoading="isProcessing"
+      loading-label="Processing"
+      :is-loading="isProcessing"
+      @click.native="sendPasswordReset()"
     />
 
     <NuxtLink class="btn light w-full" to="/account/login/">
-      Back to Login
+      Back to log in
     </NuxtLink>
   </div>
 </template>
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, email, minLength, maxLength } from 'vuelidate/lib/validators'
+import { required, email } from 'vuelidate/lib/validators'
 
 export default {
   mixins: [validationMixin],
@@ -53,6 +53,10 @@ export default {
       email: '',
       isProcessing: false
     }
+  },
+
+  activated() {
+    this.$v.$reset()
   },
 
   methods: {
@@ -83,10 +87,6 @@ export default {
         })
       }
     }
-  },
-
-  activated() {
-    this.$v.$reset()
   },
 
   validations: {
