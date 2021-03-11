@@ -154,7 +154,7 @@
             </div>
 
             <!-- Share product -->
-            <div class="py-3 flex flex-no-wrap">
+            <div v-if="enableSocialSharing" class="py-3 flex flex-no-wrap">
               <strong class="w-1/4 text-primary-darkest pr-6">Share it</strong>
               <div class="w-3/4 flex justify-end">
                 <SocialShare
@@ -244,6 +244,7 @@ export default {
     this.optionState = optionState
     this.relatedProducts = relatedProducts
     this.productBenefits = get(product, 'content.productBenefits', [])
+    this.enableSocialSharing = get(product, 'content.enablSocialSharing')
   },
 
   data() {
@@ -252,6 +253,7 @@ export default {
       relatedProducts: [], // TODO
       optionState: null,
       productBenefits: [],
+      enableSocialSharing: false,
       activeDropdownUID: null
     }
   },
