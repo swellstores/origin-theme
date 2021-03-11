@@ -6,7 +6,8 @@
       :class="[
         { 'w-1/2': columnCount === 2 },
         { 'w-1/2 md:w-1/3': columnCount === 3 },
-        { 'w-1/2 md:w-1/4': columnCount === 4 }
+        { 'w-1/2 md:w-1/4': columnCount === 4 },
+        { 'w-1/2 md:w-1/5': columnCount === 5 }
       ]"
       class="mb-3 px-1 sm:px-2 xl:px-3 xl:mb-4"
     >
