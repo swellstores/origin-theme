@@ -1,12 +1,12 @@
 <template>
-  <a href="#" @click="() => [rawLink.substring(0, 4) === 'http' ? 'openSharePopup' : 'share']()">
+  <a href="#" @click="handleShare()">
     <slot />
   </a>
 </template>
 
 <script>
 const networkUrls = {
-  email: 'mailto:?subject=@t&body=@u%0D%0A@d',
+  email: 'mailto:%20?subject=@t&body=@u%0D%0A@d',
   facebook: 'https://www.facebook.com/sharer/sharer.php?u=@u&title=@t&description=@d',
   pinterest: 'https://pinterest.com/pin/create/button/?url=@u&media=@m&description=@t',
   twitter: 'https://twitter.com/intent/tweet?text=@t&url=@u'
@@ -90,6 +90,14 @@ export default {
   },
 
   methods: {
+    handleShare() {
+      if (this.rawLink.substring(0, 4) === 'http') {
+        this.openSharePopup()
+      } else {
+        this.share()
+      }
+    },
+
     /**
      * Center the popup on multi-screens
      * http://stackoverflow.com/questions/4068373/center-a-popup-window-on-screen/32261263
