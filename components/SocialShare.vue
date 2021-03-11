@@ -1,11 +1,18 @@
+<template>
+  <a href="#" @click="() => [rawLink.substring(0, 4) === 'http' ? 'openSharePopup' : 'share']()">
+    <slot />
+  </a>
+</template>
+
 <script>
 const networkUrls = {
   email: 'mailto:?subject=@t&body=@u%0D%0A@d',
   facebook: 'https://www.facebook.com/sharer/sharer.php?u=@u&title=@t&description=@d',
+  pinterest: 'https://pinterest.com/pin/create/button/?url=@u&media=@m&description=@t',
   twitter: 'https://twitter.com/intent/tweet?text=@t&url=@u'
 }
 
-let $window = typeof window !== 'undefined' ? window : null
+const $window = typeof window !== 'undefined' ? window : null
 
 export default {
   name: 'SocialShare',
@@ -62,7 +69,7 @@ export default {
        * On IOS, SMS sharing link need a special formatting
        * Source: https://weblog.west-wind.com/posts/2013/Oct/09/Prefilling-an-SMS-on-Mobile-Devices-with-the-sms-Uri-Scheme#Body-only
        */
-      if (ua.indexOf('ipad') > -1) {
+      if (ua.includes('ipad') > -1) {
         return networkUrls[network].replace(':?', ':&')
       }
 
@@ -80,22 +87,6 @@ export default {
         .replace(/@d/g, encodeURIComponent(this.description))
         .replace(/@m/g, encodeURIComponent(this.media))
     }
-  },
-
-  render: function(createElement) {
-    if (!networkUrls.hasOwnProperty(this.network)) {
-      throw new Error('Network ' + this.key + ' does not exist')
-    }
-
-    const node = {
-      on: {
-        click: () => this[this.rawLink.substring(0, 4) === 'http' ? 'openSharePopup' : 'share']()
-      }
-    }
-
-    if (this.tag === 'a') node.attrs = { href: '#' }
-
-    return createElement('a', node, this.$slots.default)
   },
 
   methods: {
