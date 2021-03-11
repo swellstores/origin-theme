@@ -178,6 +178,16 @@
                 </SocialShare>
 
                 <SocialShare
+                  class="mr-2 cursor-pointer"
+                  network="pinterest"
+                  :url="pageMeta.url"
+                  :description="pageMeta.description"
+                  :media="pageMeta.image"
+                >
+                  <BaseIcon icon="mdi:pinterest" />
+                </SocialShare>
+
+                <SocialShare
                   class="cursor-pointer"
                   network="email"
                   :url="pageMeta.url"
