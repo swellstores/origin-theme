@@ -252,8 +252,7 @@ export default {
       relatedProducts: [], // TODO
       optionState: null,
       productBenefits: [],
-      activeDropdownUID: null,
-      productUrl: null
+      activeDropdownUID: null
     }
   },
 
