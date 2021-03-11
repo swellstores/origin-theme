@@ -32,7 +32,7 @@
 
               <!-- Views (Desktop) -->
               <ul class="hidden md:block border-t border-primary-light text-base">
-                <li v-for="view in views" :key="view.value">
+                <li v-for="view in views" :key="view.value" class="last:mb-0">
                   <NuxtLink
                     class="view-link pl-3 py-4 block hover:bg-primary-light rounded-none"
                     :to="`/account/${view.value}/`"
