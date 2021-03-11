@@ -244,7 +244,7 @@ export default {
     this.optionState = optionState
     this.relatedProducts = relatedProducts
     this.productBenefits = get(product, 'content.productBenefits', [])
-    this.enableSocialSharing = get(product, 'content.enablSocialSharing')
+    this.enableSocialSharing = get(product, 'content.enableSocialSharing')
   },
 
   data() {
