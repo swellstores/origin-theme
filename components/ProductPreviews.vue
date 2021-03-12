@@ -162,7 +162,6 @@ export default {
   data() {
     return {
       aspectRatio: '1:1',
-      textAlign: 'left',
       ratioPadding: null,
       sizes: null,
       widths: null,
