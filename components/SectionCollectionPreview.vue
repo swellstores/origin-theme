@@ -18,7 +18,12 @@
       </template>
 
       <!-- Product previews -->
-      <ProductPreviews :products="products" :column-count="productCols" />
+      <ProductPreviews
+        :products="products"
+        :column-count="productCols"
+        :text-align="textAlign"
+        :show-price="showPrice"
+      />
     </div>
   </section>
 </template>
@@ -47,6 +52,14 @@ export default {
       type: Boolean,
       default: true
     },
+    useCategoryTitle: {
+      type: Boolean,
+      default: true
+    },
+    title: {
+      type: String,
+      default: ''
+    },
     titleSize: {
       type: String,
       default: 'md'
@@ -58,6 +71,14 @@ export default {
     productRows: {
       type: Number,
       default: 1
+    },
+    showPrice: {
+      type: Boolean,
+      default: true
+    },
+    textAlign: {
+      type: String,
+      default: 'left'
     }
   },
 
@@ -85,7 +106,7 @@ export default {
     }
 
     // Set component data
-    this.name = category.name
+    this.name = this.useCategoryTitle ? category.name : this.title
     this.slug = category.slug
     this.products = get(products, 'results', []).slice(0, this.productCols * this.productRows)
 

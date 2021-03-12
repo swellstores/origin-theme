@@ -36,18 +36,53 @@
           "default": 1
         },
         {
+          "id": "text_align",
+          "label": "Text alignment",
+          "type": "select",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ]
+        },
+        {
+          "id": "show_price",
+          "label": "Show product price",
+          "type": "toggle",
+          "default": true
+        },
+        {
           "label": "Title",
           "type": "heading"
         },
         {
           "id": "show_title",
-          "label": "Show category title",
+          "label": "Show title",
           "type": "toggle",
           "default": true
         },
         {
+          "id": "use_category_title",
+          "label": "Use category name as title",
+          "type": "toggle",
+          "default": true,
+          "conditions": { "show_title": true }
+        },
+        {
+          "id": "title",
+          "label": "Title",
+          "type": "text",
+          "conditions": { "show_title": true, "use_category_title": false }
+        },
+        {
           "id": "title_size",
-          "label": "Category title size",
+          "label": "Title size",
           "type": "select",
           "options": [
             {

@@ -86,16 +86,18 @@
             <h4 v-balance-text>{{ product.name }}</h4>
           </NuxtLink>
           <!-- Sale price -->
-          <div v-if="product.origPrice">
-            <span class="text-sm mr-1">{{ formatMoney(product.price, currency) }}</span>
-            <span class="uppercase text-xs text-error whitespace-no-wrap">
-              Save {{ formatMoney(product.origPrice - product.price, currency) }}
-            </span>
-          </div>
-          <!-- Regular price -->
-          <div v-else>
-            <span class="text-sm">{{ formatMoney(product.price, currency) }}</span>
-          </div>
+          <template v-if="showPrice">
+            <div v-if="product.origPrice">
+              <span class="text-sm mr-1">{{ formatMoney(product.price, currency) }}</span>
+              <span class="uppercase text-xs text-error whitespace-no-wrap">
+                Save {{ formatMoney(product.origPrice - product.price, currency) }}
+              </span>
+            </div>
+            <!-- Regular price -->
+            <div v-else>
+              <span class="text-sm">{{ formatMoney(product.price, currency) }}</span>
+            </div>
+          </template>
         </div>
       </div>
     </article>
@@ -121,12 +123,19 @@ export default {
     columnCount: {
       type: Number,
       default: 4
+    },
+    textAlign: {
+      type: String,
+      default: 'left'
+    },
+    showPrice: {
+      type: Boolean,
+      default: true
     }
   },
 
   fetch() {
     this.aspectRatio = this.$swell.settings.get('productPreviews.aspectRatio', '1:1')
-    this.textAlign = this.$swell.settings.get('productPreviews.textAlign', 'left')
     this.quickAddIsEnabled = this.$swell.settings.get('productList.enableQuickAdd')
 
     // Set ratio padding
