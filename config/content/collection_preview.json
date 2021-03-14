@@ -36,8 +36,12 @@
           "default": 1
         },
         {
+          "label": "Products",
+          "type": "heading"
+        },
+        {
           "id": "text_align",
-          "label": "Text alignment",
+          "label": "Product title alignment",
           "type": "select",
           "default": "left",
           "options": [
