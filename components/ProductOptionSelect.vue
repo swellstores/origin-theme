@@ -91,6 +91,12 @@
         </ul>
       </div>
     </div>
+
+    <span
+      v-if="valueDescription"
+      class="inline-block text-xs font-semibold text-primary-dark mt-4"
+      >{{ valueDescription }}</span
+    >
   </div>
 </template>
 
@@ -152,6 +158,12 @@ export default {
       if (this.currentValue) return
       if (!this.option.values && !this.option.values.length) return
       return this.option.values[0].name
+    },
+
+    valueDescription() {
+      const matchedValue = this.option.values.find(value => value.name === this.currentValue)
+      if (!matchedValue) return
+      return matchedValue.description || ''
     },
 
     swatchColor() {
