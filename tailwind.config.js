@@ -151,7 +151,10 @@ module.exports = {
       boxShadow: theme => ({
         md: '0 2px 8px 0 rgba(0,0,0,0.08)',
         outline: `0 0 0 3px ${theme('colors.outline')}`
-      })
+      }),
+      gridTemplateColumns: {
+        '2-max': 'max-content 1fr'
+      }
     }
   },
   variants: {

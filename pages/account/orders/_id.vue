@@ -79,7 +79,7 @@
 
               <div>
                 <h4 class="pb-2">{{ item.product.name }}</h4>
-                <p class="text-sm text-primary-darker" v-if="item.quantity > 1">
+                <p v-if="item.quantity > 1" class="text-sm text-primary-darker">
                   Qty: {{ item.quantity }}
                 </p>
                 <p
@@ -113,6 +113,11 @@
             <span class="ml-auto">-{{ formatMoney(order.itemDiscount, order.currency) }}</span>
           </div>
 
+          <div v-if="order.taxTotal > 0" class="flex pb-2">
+            <span>Taxes</span>
+            <span class="ml-auto">{{ formatMoney(order.taxTotal, order.currency) }}</span>
+          </div>
+
           <div class="flex text-lg font-semibold">
             <span>Total</span>
             <span class="ml-auto">{{ formatMoney(order.grandTotal, order.currency) }}</span>
@@ -141,14 +146,42 @@
                 {{ shipping.phone }}
               </p>
             </div>
-            <div
-              v-if="shipping.serviceName"
-              class="rounded text-sm border border-primary-med p-4 -mt-px"
-            >
+            <div class="rounded text-sm border border-primary-med p-4 -mt-px">
               <p class="font-semibold pb-2">Delivery method</p>
-              <p>
+              <p v-if="shipping.serviceName">
                 {{ shipping.serviceName }}
+                <span v-if="shipping.price">
+                  ({{ formatMoney(shipping.price, order.currency) }})
+                </span>
               </p>
+            </div>
+            <div v-if="shipments" class="rounded text-sm border border-primary-med p-4 -mt-px">
+              <p class="font-semibold pb-2">Fulfilled deliveries</p>
+              <div v-for="shipment in shipments" :key="shipment.id" class="mb-4">
+                <div class="grid grid-cols-2-max">
+                  <strong class="pr-4">Items</strong>
+                  <div>
+                    <p v-for="item in shipment.items" :key="item.id">
+                      {{ item.quantity }} × {{ item.product.name }}
+                    </p>
+                  </div>
+
+                  <template v-if="shipment.carrierName">
+                    <strong class="pr-4">Carrier</strong>
+                    <div>{{ shipment.carrierName }}</div>
+                  </template>
+
+                  <template v-if="shipment.trackingCode">
+                    <strong class="pr-4">Tracking code</strong>
+                    <div>{{ shipment.trackingCode }}</div>
+                  </template>
+
+                  <template v-if="shipment.dateCreated">
+                    <strong class="pr-4">Date shipped</strong>
+                    <div>{{ formatDate(shipment.dateCreated) }}</div>
+                  </template>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -157,7 +190,7 @@
             <div class="mb-10">
               <p class="text-base font-semibold pb-4">Payment method</p>
 
-              <div class="grid gridcols-1 md:grid-cols-2 rounded border border-primary-med">
+              <div class="grid grid-cols-1 md:grid-cols-2 rounded border border-primary-med">
                 <!-- Method: Card -->
                 <div
                   v-if="billing.card && billing.method === 'card'"
@@ -216,7 +249,7 @@
                   </p>
                 </div>
 
-                <!-- Method: Bank Deposity -->
+                <!-- Method: Bank Deposit -->
                 <div
                   v-else-if="billing.method === 'bank_deposit'"
                   class="md:border-b-0 md:border-r border-b border-primary-med p-4"
@@ -228,7 +261,7 @@
                   <p>Your order was paid using bank deposit.</p>
                 </div>
 
-                <!-- Method: Bank Deposity -->
+                <!-- Method: Cash on delivery -->
                 <div
                   v-else-if="billing.method === 'cash_on_delivery'"
                   class="md:border-b-0 md: border-r border-b border-primary-med p-4"
@@ -261,7 +294,6 @@
 </template>
 
 <script>
-import find from 'lodash/find'
 import padStart from 'lodash/padStart'
 
 export default {
@@ -283,8 +315,14 @@ export default {
     shipping() {
       return this.order.shipping
     },
+
     billing() {
       return this.order.billing
+    },
+
+    shipments() {
+      if (!this.order.shipments || !this.order.shipments.results.length) return
+      return this.order.shipments.results
     },
 
     expDate() {
@@ -297,27 +335,20 @@ export default {
       switch (this.order.status) {
         case 'pending':
           return 'Order is pending'
-          break
         case 'draft':
           return 'Draft'
-          break
         case 'payment_pending':
           return 'Pending payment'
-          break
         case 'delivery_pending':
           return 'Pending delivery'
-          break
         case 'hold':
           return 'On hold'
-          break
         case 'complete':
           return 'Fulfilled'
-          break
         case 'canceled':
           return 'Cancelled'
-          break
         default:
-          return
+          return ''
       }
     }
   },
