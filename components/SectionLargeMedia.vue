@@ -30,6 +30,7 @@
           class="rounded overflow-hidden mt-10 lg:mt-12"
         />
       </div>
+      <span v-if="caption" class="inline-block label-sm mt-3">{{ caption }}</span>
     </div>
   </section>
 </template>
@@ -56,6 +57,10 @@ export default {
       default: 'primary-lighter'
     },
     url: {
+      type: String,
+      default: null
+    },
+    caption: {
       type: String,
       default: null
     }
