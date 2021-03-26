@@ -1,7 +1,7 @@
 <template>
   <!-- Error/empty state -->
   <SectionUndefined
-    v-if="!heading && !text"
+    v-if="!heading && !description && !Object.entries(image).length"
     heading="Large media"
     description="No heading or description added"
   />
@@ -18,7 +18,8 @@
             :source="image"
             aspect-ratio="16:9"
             sizes="(min-width: 375px) 80vw, (min-width: 1440px) 70vw, 90vw"
-            class="rounded overflow-hidden mt-10 lg:mt-12"
+            class="rounded overflow-hidden"
+            :class="{ 'mt-10 lg:mt-12': description || heading }"
           />
         </BaseLink>
 
@@ -27,7 +28,8 @@
           :source="image"
           aspect-ratio="16:9"
           sizes="(min-width: 1200px) 1120px, 100vw"
-          class="rounded overflow-hidden mt-10 lg:mt-12"
+          class="rounded overflow-hidden"
+          :class="{ 'mt-10 lg:mt-12': description || heading }"
         />
       </div>
     </div>
