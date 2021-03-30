@@ -28,6 +28,12 @@
           "id": "url",
           "label": "Image URL",
           "type": "url"
+        },
+        {
+          "id": "caption",
+          "label": "Image caption",
+          "type": "text",
+          "localized": true
         }
       ]
     },
