@@ -36,6 +36,11 @@
           "text": "98% customer satisfaction rating"
         }
       ]
+    },
+    {
+      "id": "enable_social_sharing",
+      "label": "Enable social sharing",
+      "type": "toggle"
     }
   ]
 }

@@ -141,7 +141,6 @@
                     attribute.value.length > 50
                 "
                 :heading="attribute.name"
-                class="mt-6"
               >
                 <div class="pb-3" v-html="attribute.value" />
               </AccordionItem>
@@ -151,6 +150,52 @@
                   {{ attribute.value.join(', ') }}
                 </span>
                 <span v-else class="w-3/4">{{ attribute.value }}</span>
+              </div>
+            </div>
+
+            <!-- Share product -->
+            <div v-if="enableSocialSharing" class="py-3 flex flex-no-wrap">
+              <strong class="w-1/4 text-primary-darkest pr-6">Share it</strong>
+              <div class="w-3/4 flex justify-end">
+                <SocialShare
+                  class="mr-2 cursor-pointer"
+                  network="facebook"
+                  :url="pageMeta.url"
+                  :title="pageMeta.title"
+                  :description="pageMeta.description"
+                >
+                  <BaseIcon icon="mdi:facebook" />
+                </SocialShare>
+
+                <SocialShare
+                  class="mr-2 cursor-pointer"
+                  network="twitter"
+                  :url="pageMeta.url"
+                  :title="pageMeta.title"
+                  :description="pageMeta.description"
+                >
+                  <BaseIcon icon="mdi:twitter" />
+                </SocialShare>
+
+                <SocialShare
+                  class="mr-2 cursor-pointer"
+                  network="pinterest"
+                  :url="pageMeta.url"
+                  :description="pageMeta.description"
+                  :media="pageMeta.image"
+                >
+                  <BaseIcon icon="mdi:pinterest" />
+                </SocialShare>
+
+                <SocialShare
+                  class="cursor-pointer"
+                  network="email"
+                  :url="pageMeta.url"
+                  :title="pageMeta.title"
+                  :description="pageMeta.description"
+                >
+                  <BaseIcon icon="mdi:envelope" />
+                </SocialShare>
               </div>
             </div>
           </div>
@@ -199,6 +244,7 @@ export default {
     this.optionState = optionState
     this.relatedProducts = relatedProducts
     this.productBenefits = get(product, 'content.productBenefits', [])
+    this.enableSocialSharing = get(product, 'content.enableSocialSharing')
   },
 
   data() {
@@ -207,6 +253,7 @@ export default {
       relatedProducts: [], // TODO
       optionState: null,
       productBenefits: [],
+      enableSocialSharing: false,
       activeDropdownUID: null
     }
   },
