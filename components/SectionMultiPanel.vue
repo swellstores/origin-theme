@@ -49,7 +49,7 @@
       <!-- Text panel -->
       <template v-else-if="panel.type === 'text'">
         <h2>{{ panel.heading }}</h2>
-        <p class="mt-4">{{ panel.description }}</p>
+        <p v-balance-text.children class="whitespace-pre-line mt-4" v-html="panel.description"></p>
         <div :class="{ '-ml-3': textAlign !== 'center' }">
           <div
             v-for="(link, i) in panel.links"
