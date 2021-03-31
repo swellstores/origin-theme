@@ -10,22 +10,16 @@
       <span class="ml-1">Back to order</span>
     </NuxtLink>
 
-    <div class="mb-16" v-if="accountsSettings">
-      <h1 class="text-2xl">{{ accountsSettings.returnsHeading || 'Returns' }}</h1>
+    <div v-if="accountsSettings" class="mb-16">
+      <h1 v-if="accountsSettings.returnsHeading" class="text-2xl">
+        {{ accountsSettings.returnsHeading }}
+      </h1>
       <p
         v-if="accountsSettings.returnsInfoText"
         v-balance-text.children
         class="text-sm"
         v-html="accountsSettings.returnsInfoText"
       ></p>
-      <p class="text-sm" v-else>
-        We’re sorry that you were unhappy with our product. Contact us at
-        <a :href="`mailto:${storeSettings.supportEmail}`">{{ storeSettings.supportEmail }}</a
-        >, so we can start the return process. Don’t forget to include the order number and the
-        reason for returning. In the meantime take a look at our
-        <NuxtLink to="/shipping-returns/">Returns & Polices</NuxtLink> to seek any further
-        clarification.
-      </p>
     </div>
 
     <div class="flex">
