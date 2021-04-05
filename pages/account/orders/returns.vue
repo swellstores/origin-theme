@@ -10,15 +10,15 @@
       <span class="ml-1">Back to order</span>
     </NuxtLink>
 
-    <div v-if="accountsSettings" class="mb-16">
-      <h1 v-if="accountsSettings.returnsHeading" class="text-2xl">
-        {{ accountsSettings.returnsHeading }}
+    <div v-if="accountSettings" class="mb-16">
+      <h1 v-if="accountSettings.returnsHeading" class="text-2xl">
+        {{ accountSettings.returnsHeading }}
       </h1>
       <p
-        v-if="accountsSettings.returnsInfoText"
+        v-if="accountSettings.returnsInfoText"
         v-balance-text.children
         class="text-sm"
-        v-html="accountsSettings.returnsInfoText"
+        v-html="accountSettings.returnsInfoText"
       ></p>
     </div>
 
@@ -48,13 +48,13 @@ export default {
     const { $swell } = this
 
     // Set component data
-    this.accountsSettings = $swell.settings.get('customerAccounts')
+    this.accountSettings = $swell.settings.get('customerAccount')
     this.storeSettings = $swell.settings.get('store', {})
   },
 
   data() {
     return {
-      accountsSettings: {},
+      accountSettings: {},
       storeSettings: {},
       previousOrderRoute: ''
     }
