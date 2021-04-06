@@ -17,12 +17,14 @@
 
   .w-full-px-6 {
     width: calc(100% - theme('spacing.6'));
-  } 
+  }
 
   .w-full-px-12 {
     width: calc(100% - theme('spacing.12'));
-  } 
+  }
 }
+
+/* Vue custom transition classes */
 
 .popup-enter-active .overlay,
 .popup-leave-active .overlay {
@@ -63,4 +65,50 @@
     transform: translate(-50%, -50%);
     opacity: 1;
   }
+}
+
+.slide-modal-rtl-enter-active .overlay,
+.slide-modal-rtl-leave-active .overlay,
+.slide-modal-ltr-enter-active .overlay,
+.slide-modal-ltr-leave-active .overlay {
+  @apply transition-all duration-500 ease-in-out;
+}
+
+.slide-modal-rtl-enter .overlay,
+.slide-modal-rtl-leave-to .overlay,
+.slide-modal-ltr-enter .overlay,
+.slide-modal-ltr-leave-to .overlay {
+  @apply opacity-0;
+}
+
+.slide-modal-rtl-enter-to .overlay,
+.slide-modal-rtl-leave .overlay,
+.slide-modal-ltr-enter-to .overlay,
+.slide-modal-ltr-leave .overlay {
+  @apply opacity-50;
+}
+
+.slide-modal-rtl-enter-active .panel,
+.slide-modal-rtl-leave-active .panel,
+.slide-modal-ltr-enter-active .panel,
+.slide-modal-ltr-leave-active .panel {
+  @apply transition-all duration-700;
+  transition-timing-function: cubic-bezier(0.6, 0.2, 0, 1);
+}
+
+.slide-modal-rtl-enter .panel,
+.slide-modal-rtl-leave-to .panel {
+  @apply transform translate-x-full;
+}
+
+.slide-modal-rtl-enter-to .panel,
+.slide-modal-rtl-leave .overlay,
+.slide-modal-ltr-enter-to .panel,
+.slide-modal-ltr-leave .overlay {
+  @apply transform translate-x-0;
+}
+
+.slide-modal-ltr-enter .panel,
+.slide-modal-ltr-leave-to .panel {
+  @apply transform -translate-x-full;
 }

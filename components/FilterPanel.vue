@@ -1,16 +1,14 @@
 <template>
-  <transition name="filter" :duration="700">
+  <transition name="slide-modal-ltr" :duration="700">
     <div class="z-50 fixed inset-0">
       <!-- Overlay -->
       <div
-        ref="overlay"
         class="overlay absolute w-full h-full bg-primary-darker opacity-50 hidden md:block"
         @click="$emit('click-close')"
       ></div>
 
       <!-- Filter Panel -->
       <div
-        ref="panel"
         class="panel absolute w-full h-full left-0 bg-primary-lightest overflow-scroll md:max-w-112"
       >
         <div class="flex items-center p-6 border-b border-primary-light">
@@ -184,34 +182,5 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-.filter-enter-active .overlay,
-.filter-leave-active .overlay {
-  @apply transition-all duration-500 ease-in-out;
-}
 
-.filter-enter .overlay,
-.filter-leave-to .overlay {
-  @apply opacity-0;
-}
-
-.filter-enter-to .overlay,
-.filter-leave .overlay {
-  @apply opacity-50;
-}
-
-.filter-enter-active .panel,
-.filter-leave-active .panel {
-  @apply transition-all duration-700;
-  transition-timing-function: cubic-bezier(0.6, 0.2, 0, 1);
-}
-
-.filter-enter .panel,
-.filter-leave-to .panel {
-  @apply transform -translate-x-full;
-}
-
-.filter-enter-to .panel,
-.filter-leave .overlay {
-  @apply transform translate-x-0;
-}
 </style>

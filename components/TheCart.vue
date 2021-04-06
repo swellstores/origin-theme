@@ -1,9 +1,9 @@
 <template>
-  <transition name="cart" :duration="700">
+  <transition name="slide-modal-rtl" :duration="700">
     <div class="z-40 fixed inset-0">
       <!-- Overlay -->
       <div
-        class="overlay absolute w-full h-full bg-primary-darker hidden md:block"
+        class="overlay opacity-50 absolute w-full h-full bg-primary-darker hidden md:block"
         @click="$emit('click-close')"
       ></div>
 
@@ -178,40 +178,5 @@ export default {
 <style lang="postcss" scoped>
 .cart-line-total {
   @apply flex justify-between mb-1;
-}
-
-.overlay {
-  @apply opacity-50;
-}
-
-.cart-enter-active .overlay,
-.cart-leave-active .overlay {
-  @apply transition-all duration-500 ease-in-out;
-}
-
-.cart-enter .overlay,
-.cart-leave-to .overlay {
-  @apply opacity-0;
-}
-
-.cart-enter-to .overlay,
-.cart-leave .overlay {
-  @apply opacity-50;
-}
-
-.cart-enter-active .panel,
-.cart-leave-active .panel {
-  @apply transition-all duration-700;
-  transition-timing-function: cubic-bezier(0.6, 0.2, 0, 1);
-}
-
-.cart-enter .panel,
-.cart-leave-to .panel {
-  @apply transform translate-x-full;
-}
-
-.cart-enter-to .panel,
-.cart-leave .overlay {
-  @apply transform translate-x-0;
 }
 </style>

@@ -1,7 +1,6 @@
 <template>
   <div class="relative transition-all duration-300 ease-in-out">
     <div
-      ref="dropdown"
       class="w-full flex p-2 items-center text-center font-medium cursor-pointer focus:outline-none focus:shadow-outline hover:text-accent"
       :class="{
         'font-semibold h-full': appearance === 'popup',
