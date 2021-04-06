@@ -115,27 +115,24 @@ export default {
       image.height = file.height
     }
 
-    // Merge passed class string with staticClass from context
-    const mergeClasses = classes => {
-      const contextClasses = context.data.staticClass
-      return contextClasses ? `${classes} ${contextClasses}` : classes
-    }
-
     // Set lazy-load attributes
     if (lazyLoad) {
       image.loading = 'lazy'
     }
 
     const wrapperClass = isBackground
-      ? mergeClasses('h-full overflow-hidden')
-      : mergeClasses('relative bg-primary-lighter w-full pb-full overflow-hidden')
+      ? 'h-full overflow-hidden'
+      : 'relative bg-primary-lighter w-full pb-full overflow-hidden'
 
     const imgClass = isBackground
       ? 'absolute top-0 left-0 w-full h-full object-cover'
       : 'absolute inset-0 w-full h-full object-cover'
 
     return (
-      <div class={wrapperClass} style={isBackground ? null : `padding-bottom: ${ratioPadding}`}>
+      <div
+        class={[context.data.class, context.data.staticClass, wrapperClass]}
+        style={isBackground ? null : `padding-bottom: ${ratioPadding}`}
+      >
         <img {...{ attrs: image }} style="object-fit: cover;" class={imgClass} />
       </div>
     )
