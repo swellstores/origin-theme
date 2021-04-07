@@ -70,7 +70,7 @@
       "url": ""
     }
   },
-  "customer_accounts": {
+  "customer_account": {
     "returns_heading": "Returns",
     "returns_info_text": "<p>Test</p>"
   },
