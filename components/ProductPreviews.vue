@@ -15,7 +15,7 @@
       <div v-if="!product.slug" class="pb-5">
         <div class="loader-el pb-full mb-4" :style="{ paddingBottom: ratioPadding }"></div>
         <div class="loader-el w-2/3 h-4 mb-2"></div>
-        <div class="loader-el w-24 h-3"></div>
+        <div v-if="showPrice" class="loader-el w-24 h-3"></div>
       </div>
 
       <div v-else class="relative block h-full rounded">
