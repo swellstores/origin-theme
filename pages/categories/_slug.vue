@@ -115,7 +115,6 @@
 <script>
 // Helpers
 import get from 'lodash/get'
-import isObject from 'lodash/isObject'
 import pageMeta from '~/mixins/pageMeta'
 import { getFilterStateFromQuery } from '~/modules/swell'
 
@@ -155,7 +154,7 @@ export default {
 
     // Set category and filter data
     this.category = category
-    this.filters = $swell.products.filters(products)
+    this.filters = await $swell.products.filters(products)
     this.filterState = getFilterStateFromQuery($route.query, this.filters)
 
     // If there's a filter query, get filtered products
