@@ -71,7 +71,7 @@
         </div>
 
         <div class="p-6">
-          <div v-for="filter in filters">
+          <div v-for="filter in filters" :key="filter.id">
             <!-- Label -->
             <span class="label-xs-bold-faded uppercase">{{ filter.label }}</span>
             <!-- Range slider input -->
