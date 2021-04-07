@@ -52,10 +52,6 @@ export default {
       type: Boolean,
       default: true
     },
-    useCategoryTitle: {
-      type: Boolean,
-      default: true
-    },
     title: {
       type: String,
       default: ''
@@ -106,7 +102,7 @@ export default {
     }
 
     // Set component data
-    this.name = this.useCategoryTitle ? category.name : this.title
+    this.name = this.title ? this.title : category.name
     this.slug = category.slug
     this.products = get(products, 'results', []).slice(0, this.productCols * this.productRows)
 
