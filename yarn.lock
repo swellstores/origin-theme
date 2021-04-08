@@ -9026,9 +9026,10 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-swell-js@swellstores/swell-js#v4.0.0-0:
-  version "4.0.0-0"
-  resolved "https://codeload.github.com/swellstores/swell-js/tar.gz/142758c59d58b79730b4185399ee5b6fbd6b1399"
+swell-js@3.8.8:
+  version "3.8.8"
+  resolved "https://registry.yarnpkg.com/swell-js/-/swell-js-3.8.8.tgz#c15533731f20ebafee9ee7eb7c3ba5023a467ab3"
+  integrity sha512-4QrjCuZC3u6zU0UzVg7KrLxli7hTxYlPJIfcuUZFvkja7KvcILbSI5i7Lcrhn04XYxpGUox8xrehjAAPeUnYow==
   dependencies:
     "@babel/runtime" "7.4.5"
     deepmerge "4.2.2"
