@@ -25,6 +25,7 @@
           "id": "title",
           "label": "Title text",
           "type": "text",
+          "description": "Custom title text, fallbacks to category name if empty",
           "conditions": { "show_title": true }
         }
       ]
