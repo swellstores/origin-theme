@@ -102,7 +102,7 @@ export default {
     }
 
     // Set component data
-    this.name = this.title ? this.title : category.name
+    this.name = this.title || category.name
     this.slug = category.slug
     this.products = get(products, 'results', []).slice(0, this.productCols * this.productRows)
 
