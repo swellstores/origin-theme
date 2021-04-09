@@ -25,7 +25,7 @@
           "id": "title",
           "label": "Title text",
           "type": "text",
-          "description": "Custom title text, fallbacks to category name if empty",
+          "description": "This changes the category title. Leave blank if you want to keep the original.",
           "conditions": { "show_title": true }
         }
       ]
