@@ -93,12 +93,25 @@
 
             <!-- Cart button & stock info -->
             <div v-if="variation" class="relative my-8">
-              <!--TODO fix null status value <StockStatus :status-value="variation.stockStatus" />-->
-              <StockStatus status-value="in_stock" />
+              <StockStatus
+                v-if="product.stockTracking && !product.stockPurchasable"
+                :status-value="variation.stockStatus"
+              />
               <button
-                :class="{ loading: cartIsUpdating }"
+                :class="{
+                  loading: cartIsUpdating,
+                  disabled:
+                    (variation.stockStatus === 'out_of_stock' || !variation.stockStatus) &&
+                    product.stockTracking &&
+                    !product.stockPurchasable
+                }"
                 type="submit"
                 class="btn btn--lg relative w-full"
+                :disabled="
+                  (variation.stockStatus === 'out_of_stock' || !variation.stockStatus) &&
+                    product.stockTracking &&
+                    !product.stockPurchasable
+                "
                 @click.prevent="addToCart"
               >
                 <div v-show="!cartIsUpdating">
@@ -271,6 +284,10 @@ export default {
       enableSocialSharing: false,
       activeDropdownUID: null
     }
+  },
+
+  mounted() {
+    console.log(this.product)
   },
 
   computed: {
