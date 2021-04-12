@@ -6,7 +6,8 @@
       :class="[
         { 'w-1/2': columnCount === 2 },
         { 'w-1/2 md:w-1/3': columnCount === 3 },
-        { 'w-1/2 md:w-1/4': columnCount === 4 }
+        { 'w-1/2 md:w-1/4': columnCount === 4 },
+        { 'w-1/2 md:w-1/5': columnCount === 5 }
       ]"
       class="mb-3 px-1 sm:px-2 xl:px-3 xl:mb-4"
     >
@@ -14,7 +15,7 @@
       <div v-if="!product.slug" class="pb-5">
         <div class="loader-el pb-full mb-4" :style="{ paddingBottom: ratioPadding }"></div>
         <div class="loader-el w-2/3 h-4 mb-2"></div>
-        <div class="loader-el w-24 h-3"></div>
+        <div v-if="showPrice" class="loader-el w-24 h-3"></div>
       </div>
 
       <div v-else class="relative block h-full rounded">
@@ -85,16 +86,18 @@
             <h4 v-balance-text>{{ product.name }}</h4>
           </NuxtLink>
           <!-- Sale price -->
-          <div v-if="product.origPrice">
-            <span class="text-sm mr-1">{{ formatMoney(product.price, currency) }}</span>
-            <span class="uppercase text-xs text-error whitespace-no-wrap">
-              Save {{ formatMoney(product.origPrice - product.price, currency) }}
-            </span>
-          </div>
-          <!-- Regular price -->
-          <div v-else>
-            <span class="text-sm">{{ formatMoney(product.price, currency) }}</span>
-          </div>
+          <template v-if="showPrice">
+            <div v-if="product.origPrice">
+              <span class="text-sm mr-1">{{ formatMoney(product.price, currency) }}</span>
+              <span class="uppercase text-xs text-error whitespace-no-wrap">
+                Save {{ formatMoney(product.origPrice - product.price, currency) }}
+              </span>
+            </div>
+            <!-- Regular price -->
+            <div v-else>
+              <span class="text-sm">{{ formatMoney(product.price, currency) }}</span>
+            </div>
+          </template>
         </div>
       </div>
     </article>
@@ -120,12 +123,19 @@ export default {
     columnCount: {
       type: Number,
       default: 4
+    },
+    textAlign: {
+      type: String,
+      default: 'left'
+    },
+    showPrice: {
+      type: Boolean,
+      default: true
     }
   },
 
   fetch() {
     this.aspectRatio = this.$swell.settings.get('productPreviews.aspectRatio', '1:1')
-    this.textAlign = this.$swell.settings.get('productPreviews.textAlign', 'left')
     this.quickAddIsEnabled = this.$swell.settings.get('productList.enableQuickAdd')
 
     // Set ratio padding
@@ -152,7 +162,6 @@ export default {
   data() {
     return {
       aspectRatio: '1:1',
-      textAlign: 'left',
       ratioPadding: null,
       sizes: null,
       widths: null,
