@@ -100,18 +100,11 @@
               <button
                 :class="{
                   loading: cartIsUpdating,
-                  disabled:
-                    (variation.stockStatus === 'out_of_stock' || !variation.stockStatus) &&
-                    product.stockTracking &&
-                    !product.stockPurchasable
+                  disabled: disableOnVariantStockStatus(variation.stockStatus)
                 }"
                 type="submit"
                 class="btn btn--lg relative w-full"
-                :disabled="
-                  (variation.stockStatus === 'out_of_stock' || !variation.stockStatus) &&
-                    product.stockTracking &&
-                    !product.stockPurchasable
-                "
+                :disabled="disableOnVariantStockStatus(variation.stockStatus)"
                 @click.prevent="addToCart"
               >
                 <div v-show="!cartIsUpdating">
@@ -286,10 +279,6 @@ export default {
     }
   },
 
-  mounted() {
-    console.log(this.product)
-  },
-
   computed: {
     ...mapState(['cartIsUpdating', 'headerIsVisible', 'currency']),
 
@@ -347,6 +336,15 @@ export default {
     // Set which dropdown is active by UID, so that only one dropdown is active at any time.
     setActiveDropdownUID(uid) {
       this.activeDropdownUID = uid
+    },
+
+    // Determine whether to disable Add to Cart button based on the variant's stock status
+    disableOnVariantStockStatus(stockStatus) {
+      return (
+        (stockStatus === 'out_of_stock' || !stockStatus) &&
+        this.product.stockTracking &&
+        !this.product.stockPurchasable
+      )
     },
 
     // Add product to cart with selected options
