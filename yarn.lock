@@ -855,7 +855,7 @@
     "@babel/helper-create-regexp-features-plugin" "^7.12.13"
     "@babel/helper-plugin-utils" "^7.12.13"
 
-"@babel/preset-env@~7.12.17":
+"@babel/preset-env@7.12.17", "@babel/preset-env@~7.12.17":
   version "7.12.17"
   resolved "https://registry.yarnpkg.com/@babel/preset-env/-/preset-env-7.12.17.tgz#94a3793ff089c32ee74d76a3c03a7597693ebaaa"
   integrity sha512-9PMijx8zFbCwTHrd2P4PJR5nWGH3zWebx2OcpTjqQrHhCiL2ssSR2Sc9ko2BsI2VmVBfoaQmPrlMTCui4LmXQg==
@@ -9244,10 +9244,10 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-swell-js@3.8.6:
-  version "3.8.6"
-  resolved "https://registry.yarnpkg.com/swell-js/-/swell-js-3.8.6.tgz#6ce0db8412b14091c5e5575acb2ffd7305860fc0"
-  integrity sha512-zILf9n1W/oFh/WD2Pt0cM2glpyPOxFFl3gIBm3774Wx8Qz0i2aGfOu0rjZWECWXnaFHJVc4xsJSoTUgVRagTjg==
+swell-js@3.8.9:
+  version "3.8.9"
+  resolved "https://registry.yarnpkg.com/swell-js/-/swell-js-3.8.9.tgz#c83c0704850192ed74b548437d88dc0bce947674"
+  integrity sha512-yNoZ7fzdbH+k7rDssvmYSTujHt0aqhCjdkjtn07j8TV5pFxXhP9Y50+vwTg8NRSWKmEetoCL6ZavsLYnRm/rgQ==
   dependencies:
     "@babel/runtime" "7.4.5"
     deepmerge "4.2.2"
