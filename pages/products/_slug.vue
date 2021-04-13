@@ -93,12 +93,18 @@
 
             <!-- Cart button & stock info -->
             <div v-if="variation" class="relative my-8">
-              <!--TODO fix null status value <StockStatus :status-value="variation.stockStatus" />-->
-              <StockStatus status-value="in_stock" />
+              <StockStatus
+                v-if="product.stockTracking && !product.stockPurchasable"
+                :status-value="variation.stockStatus"
+              />
               <button
-                :class="{ loading: cartIsUpdating }"
+                :class="{
+                  loading: cartIsUpdating,
+                  disabled: disableOnVariantStockStatus(variation.stockStatus)
+                }"
                 type="submit"
                 class="btn btn--lg relative w-full"
+                :disabled="disableOnVariantStockStatus(variation.stockStatus)"
                 @click.prevent="addToCart"
               >
                 <div v-show="!cartIsUpdating">
@@ -330,6 +336,15 @@ export default {
     // Set which dropdown is active by UID, so that only one dropdown is active at any time.
     setActiveDropdownUID(uid) {
       this.activeDropdownUID = uid
+    },
+
+    // Determine whether to disable Add to Cart button based on the variant's stock status
+    disableOnVariantStockStatus(stockStatus) {
+      return (
+        (stockStatus === 'out_of_stock' || !stockStatus) &&
+        this.product.stockTracking &&
+        !this.product.stockPurchasable
+      )
     },
 
     // Add product to cart with selected options

@@ -34,9 +34,7 @@ const statuses = {
   },
   out_of_stock: {
     color: 'error',
-    label: 'Out of stock',
-    message: 'Get notified when available',
-    link: true
+    label: 'Out of stock'
   }
 }
 
@@ -52,7 +50,7 @@ export default {
 
   computed: {
     status() {
-      return get(statuses, this.statusValue, {})
+      return get(statuses, this.statusValue || 'out_of_stock', {})
     }
   }
 }
