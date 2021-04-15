@@ -10,7 +10,7 @@
         :clickable="false"
         tooltip="always"
         tooltip-placement="bottom"
-        :tooltip-formatter="'${value}'"
+        :tooltip-formatter="'{value}'"
         :process-style="slider.processStyle"
         :rail-style="slider.railStyle"
         :dot-size="20"
@@ -21,7 +21,7 @@
         </template>
 
         <template v-slot:tooltip="{ value: rangeValue }">
-          <div class="label-sm">${{ rangeValue }}</div>
+          <div class="label-sm">{{ currencySymbol }}{{ rangeValue }}</div>
         </template>
       </vue-slider>
     </ClientOnly>
@@ -29,6 +29,9 @@
 </template>
 
 <script>
+// Helpers
+import { mapState } from 'vuex'
+
 // Components
 import 'vue-slider-component/dist-css/vue-slider-component.css'
 import 'vue-slider-component/theme/default.css'
@@ -54,6 +57,13 @@ export default {
   },
 
   computed: {
+    ...mapState(['currency']),
+
+    currencySymbol() {
+      const { symbol } = this.$swell.currency.get(this.currency)
+      return symbol
+    },
+
     slider() {
       const [min, max] = this.filter.options
 
@@ -67,7 +77,8 @@ export default {
   },
 
   watch: {
-    filterState: 'setValue'
+    filterState: 'setValue',
+    filter: 'setValue'
   },
 
   created() {
