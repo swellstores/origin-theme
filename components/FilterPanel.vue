@@ -76,7 +76,7 @@
             <span class="label-xs-bold-faded uppercase">{{ filter.label }}</span>
             <!-- Range slider input -->
             <div v-if="filter.type === 'range'" class="w-full pt-4 pb-10">
-              <RangeSlider
+              <PriceRangeSlider
                 :filter="filter"
                 :filter-state="localFilterState"
                 @change="updateFilter"
@@ -120,6 +120,7 @@
 
 <script>
 // Helpers
+import { mapState } from 'vuex'
 import { mergeFilterState, listActiveFilters } from '~/modules/swell'
 
 export default {
@@ -143,9 +144,16 @@ export default {
   },
 
   computed: {
+    ...mapState(['currency']),
+
+    currencyObj() {
+      return this.$swell.currency.get(this.currency)
+    },
+
     activeFilters() {
       return listActiveFilters(this.filters, this.localFilterState)
     },
+
     activeFilterCountLabel() {
       const count = this.activeFilters.length
       return `${count} filter${count === 1 ? '' : 's'} active`
@@ -174,13 +182,23 @@ export default {
 
     activeRangeLabel(filter) {
       const [lower, upper] = filter.options
-      const prefix = filter.id === 'price' ? '$' : ''
-      return prefix + lower.label + '–' + upper.label
+
+      let prefix
+      let lowerLabel = lower.label
+      let upperLabel = upper.label
+
+      if (filter.id === 'price') {
+        const { rate, symbol } = this.currencyObj
+        console.log(rate)
+        prefix = symbol
+        lowerLabel = Math.floor((lowerLabel *= rate))
+        upperLabel = Math.floor((upperLabel *= rate))
+      }
+
+      return prefix + lowerLabel + '–' + upperLabel
     }
   }
 }
 </script>
 
-<style lang="postcss" scoped>
-
-</style>
+<style lang="postcss" scoped></style>
