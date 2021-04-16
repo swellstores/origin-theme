@@ -21,7 +21,7 @@
         </template>
 
         <template v-slot:tooltip="{ value: rangeValue }">
-          <div class="label-sm">${{ rangeValue }}</div>
+          <div class="label-sm">{{ formatTooltip(rangeValue) }}</div>
         </template>
       </vue-slider>
     </ClientOnly>
@@ -29,6 +29,9 @@
 </template>
 
 <script>
+// Helpers
+import { mapState } from 'vuex'
+
 // Components
 import 'vue-slider-component/dist-css/vue-slider-component.css'
 import 'vue-slider-component/theme/default.css'
@@ -44,6 +47,10 @@ export default {
     filterState: {
       type: Object,
       default: () => ({})
+    },
+    isPrice: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -54,6 +61,12 @@ export default {
   },
 
   computed: {
+    ...mapState(['currency']),
+
+    currencyObj() {
+      return this.$swell.currency.get(this.currency)
+    },
+
     slider() {
       const [min, max] = this.filter.options
 
@@ -75,6 +88,21 @@ export default {
   },
 
   methods: {
+    formatTooltip(value) {
+      if (this.isPrice) {
+        const { rate } = this.currencyObj
+        const price = value * rate
+
+        return new Intl.NumberFormat('default', {
+          style: 'currency',
+          currency: this.currency,
+          currencyDisplay: 'narrowSymbol',
+          maximumFractionDigits: 0
+        }).format(price)
+      }
+      return value
+    },
+
     setValue() {
       const [min, max] = this.filter.options
       const stateValue = this.filterState[this.filter.id]

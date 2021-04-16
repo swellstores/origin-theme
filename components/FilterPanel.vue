@@ -74,9 +74,19 @@
           <div v-for="filter in filters">
             <!-- Label -->
             <span class="label-xs-bold-faded uppercase">{{ filter.label }}</span>
+            <!-- Price range slider input -->
+            <div v-if="filter.type === 'range' && filter.id === 'price'" class="w-full pt-4 pb-10">
+              <RangeSlider
+                :filter="filter"
+                :filter-state="localFilterState"
+                :is-price="true"
+                @change="updateFilter"
+              />
+            </div>
+
             <!-- Range slider input -->
-            <div v-if="filter.type === 'range'" class="w-full pt-4 pb-10">
-              <PriceRangeSlider
+            <div v-else-if="filter.type === 'range'" class="w-full pt-4 pb-10">
+              <RangeSlider
                 :filter="filter"
                 :filter-state="localFilterState"
                 @change="updateFilter"
@@ -183,19 +193,28 @@ export default {
     activeRangeLabel(filter) {
       const [lower, upper] = filter.options
 
-      let prefix
       let lowerLabel = lower.label
       let upperLabel = upper.label
 
       if (filter.id === 'price') {
-        const { rate, symbol } = this.currencyObj
-        console.log(rate)
-        prefix = symbol
-        lowerLabel = Math.floor((lowerLabel *= rate))
-        upperLabel = Math.floor((upperLabel *= rate))
+        const { rate } = this.currencyObj
+        const lowerPrice = lower.value * rate
+        const upperPrice = upper.value * rate
+
+        lowerLabel = new Intl.NumberFormat('default', {
+          style: 'currency',
+          currency: this.currency,
+          currencyDisplay: 'narrowSymbol',
+          maximumFractionDigits: 0
+        }).format(lowerPrice)
+
+        upperLabel = new Intl.NumberFormat('default', {
+          style: 'decimal',
+          maximumFractionDigits: 0
+        }).format(upperPrice)
       }
 
-      return prefix + lowerLabel + '–' + upperLabel
+      return lowerLabel + ' – ' + upperLabel
     }
   }
 }
