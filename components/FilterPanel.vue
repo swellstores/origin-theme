@@ -75,23 +75,15 @@
             <!-- Label -->
             <span class="label-xs-bold-faded uppercase">{{ filter.label }}</span>
             <!-- Price range slider input -->
-            <div v-if="filter.type === 'range' && filter.id === 'price'" class="w-full pt-4 pb-10">
+            <div v-if="filter.type === 'range'" class="w-full pt-4 pb-10">
               <RangeSlider
                 :filter="filter"
                 :filter-state="localFilterState"
-                :is-price="true"
+                :is-price="filter.id === 'price'"
                 @change="updateFilter"
               />
             </div>
 
-            <!-- Range slider input -->
-            <div v-else-if="filter.type === 'range'" class="w-full pt-4 pb-10">
-              <RangeSlider
-                :filter="filter"
-                :filter-state="localFilterState"
-                @change="updateFilter"
-              />
-            </div>
             <!-- Checkbox input -->
             <div v-else class="pt-4 pb-8">
               <InputSelect
