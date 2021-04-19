@@ -6,7 +6,7 @@
         :value="value"
         :min="slider.minValue"
         :max="slider.maxValue"
-        :interval="filter.interval"
+        :interval="slider.interval"
         :clickable="false"
         tooltip="always"
         tooltip-placement="bottom"
@@ -51,6 +51,10 @@ export default {
     isPrice: {
       type: Boolean,
       default: false
+    },
+    withIntervals: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -69,10 +73,35 @@ export default {
 
     slider() {
       const [min, max] = this.filter.options
+      let minVal = min.value
+      let maxVal = max.value
+      let interval = 1
+
+      if (this.withIntervals) {
+        if (minVal === maxval) return
+        interval = Math.ceil((maxVal - minVal) / 10) || 1
+        if (interval > 1000) {
+          interval = 1000
+        } else if (interval > 100) {
+          interval = 100
+        } else if (interval > 10) {
+          interval = 10
+        }
+        if (maxVal % interval > 0) {
+          maxVal = interval + maxVal - (maxVal % interval)
+        }
+        if (minVal % interval > 0) {
+          minVal = minVal - (minVal % interval)
+        }
+        while (((maxVal - minVal) / interval) % 1 > 0) {
+          maxVal++
+        }
+      }
 
       return {
-        minValue: min.value,
-        maxValue: max.value,
+        minValue: minVal,
+        maxValue: maxVal,
+        interval: interval,
         railStyle: { background: this.$swell.settings.get('colors.primary.light') },
         processStyle: { background: this.$swell.settings.get('colors.primary.darkest') }
       }
