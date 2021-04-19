@@ -73,13 +73,13 @@ export default {
 
     slider() {
       const [min, max] = this.filter.options
-      let minVal = min.value
-      let maxVal = max.value
+      let minValue = min.value
+      let maxValue = max.value
       let interval = 1
 
       if (this.withIntervals) {
-        if (minVal === maxval) return
-        interval = Math.ceil((maxVal - minVal) / 10) || 1
+        if (minValue === maxValue) return
+        interval = Math.ceil((maxValue - minValue) / 10) || 1
         if (interval > 1000) {
           interval = 1000
         } else if (interval > 100) {
@@ -87,21 +87,21 @@ export default {
         } else if (interval > 10) {
           interval = 10
         }
-        if (maxVal % interval > 0) {
-          maxVal = interval + maxVal - (maxVal % interval)
+        if (maxValue % interval > 0) {
+          maxValue = interval + maxValue - (maxValue % interval)
         }
-        if (minVal % interval > 0) {
-          minVal = minVal - (minVal % interval)
+        if (minValue % interval > 0) {
+          minValue = minValue - (minValue % interval)
         }
-        while (((maxVal - minVal) / interval) % 1 > 0) {
-          maxVal++
+        while (((maxValue - minValue) / interval) % 1 > 0) {
+          maxValue++
         }
       }
 
       return {
-        minValue: minVal,
-        maxValue: maxVal,
-        interval: interval,
+        minValue,
+        maxValue,
+        interval,
         railStyle: { background: this.$swell.settings.get('colors.primary.light') },
         processStyle: { background: this.$swell.settings.get('colors.primary.darkest') }
       }
