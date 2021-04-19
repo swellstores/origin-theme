@@ -117,6 +117,7 @@
 import get from 'lodash/get'
 import pageMeta from '~/mixins/pageMeta'
 import { getFilterStateFromQuery } from '~/modules/swell'
+import { mapState } from 'vuex'
 
 // Calculate product limit from category rows/cols
 function getProductLimit(category) {
@@ -182,6 +183,7 @@ export default {
   },
 
   computed: {
+    ...mapState(['currency']),
     settings() {
       return get(this, 'category.content', {})
     },
@@ -206,7 +208,13 @@ export default {
 
   watch: {
     // Call the update method when the URL query changes
-    '$route.query': 'updateProductsFiltered'
+    '$route.query': 'updateProductsFiltered',
+
+    // Grab new filter value ranges when currency is chanegd
+    currency() {
+      if (!this.currency) return
+      this.filters = this.$swell.products.filters(this.products, { currency: this.currency })
+    }
   },
 
   created() {
