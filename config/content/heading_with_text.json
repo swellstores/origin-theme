@@ -84,6 +84,23 @@
               "label": "Single column"
             }
           ]
+        },
+        {
+          "id": "text_column_width",
+          "label": "Column width",
+          "type": "select",
+          "default": "compact",
+          "conditions": { "text_columns": "single" },
+          "options": [
+            {
+              "value": "compact",
+              "label": "Compact"
+            },
+            {
+              "value": "full",
+              "label": "Full"
+            }
+          ]
         }
       ]
     }
