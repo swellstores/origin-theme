@@ -14,7 +14,8 @@
       <div
         :class="{
           'md:w-1/3': headingPosition === 'left',
-          'text-center mx-auto': headingPosition === 'top-center'
+          'text-center mx-auto': headingPosition === 'top-center',
+          'mx-auto': textColumnWidth === 'compact' && textColumns === 'single'
         }"
         class="max-w-2/3 md:mb-0"
       >
@@ -27,9 +28,9 @@
       <div
         v-if="text"
         :class="{
-          'mx-auto md:w-2/3': headingPosition === 'top-center' && textColumns === 'single',
+          'mx-auto md:w-2/3': textColumnWidth === 'compact' && textColumns === 'single',
           'sw-multi-column': headingPosition.includes('top') && textColumns === 'dual',
-          'md:mt-8 lg:mt-10 xl:mt-12': headingPosition.includes('top'),
+          'mt-8 lg:mt-10 xl:mt-12': headingPosition.includes('top'),
           'mt-1 md:w-2/3 md:pl-12 lg:pl-16 xl:pl-20': headingPosition === 'left'
         }"
         class="lg:text-lg"
@@ -75,6 +76,10 @@ export default {
     textColumns: {
       type: String,
       default: 'dual'
+    },
+    textColumnWidth: {
+      type: String,
+      default: 'compact'
     }
   }
 }
