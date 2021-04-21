@@ -80,7 +80,9 @@ export default {
         newSections.map((section, index) => {
           if (JSON.stringify(section) !== JSON.stringify(this.sections[index])) {
             // Update section if current data isn't identical
-            this.$set(this.sections, index, section)
+            const cleanSection = { ...section }
+            delete cleanSection.$locale // $locale is not a valid attribute name
+            this.$set(this.sections, index, cleanSection)
           }
         })
       } else {
