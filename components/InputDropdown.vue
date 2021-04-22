@@ -6,7 +6,7 @@
       :class="{ 'rounded-b-none': dropdownIsActive }"
       @click="toggleDropdown()"
     >
-      <span class="ml-2 my-1">{{ selectedLabel }}</span>
+      <span class="ml-2 my-1 whitespace-no-wrap">{{ selectedLabel }}</span>
       <div v-show="dropdownIsActive" class="absolute right-3 mt-px">
         <BaseIcon icon="uil:angle-up" />
       </div>
@@ -25,7 +25,7 @@
       <li
         v-for="(option, index) in options"
         :key="`option-${index}`"
-        class="inline-block mb-0 px-2 flex items-center cursor-pointer hover:bg-primary-lighter"
+        class="mb-0 px-2 inline-flex items-center cursor-pointer hover:bg-primary-lighter"
         role="option"
         @click="selectOption(option)"
       >
@@ -111,6 +111,16 @@ export default {
     }
   },
 
+  mounted() {
+    // Toggle off dropdown if clicked outside
+    window.addEventListener('click', this.clickOutside)
+  },
+
+  beforeDestroy() {
+    // Remove event listeners
+    window.removeEventListener('click', this.clickOutside)
+  },
+
   methods: {
     toggleDropdown() {
       this.dropdownIsActive = !this.dropdownIsActive
@@ -126,17 +136,6 @@ export default {
         this.dropdownIsActive = false
       }
     }
-  },
-
-  mounted() {
-    // Toggle off dropdown if clicked outside
-    window.addEventListener('click', this.clickOutside)
-  },
-
-  beforeDestroy() {
-    // Remove event listeners
-    window.removeEventListener('click', this.clickOutside)
   }
 }
 </script>
-

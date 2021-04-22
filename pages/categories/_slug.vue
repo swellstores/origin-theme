@@ -115,9 +115,9 @@
 <script>
 // Helpers
 import get from 'lodash/get'
+import { mapState } from 'vuex'
 import pageMeta from '~/mixins/pageMeta'
 import { getFilterStateFromQuery } from '~/modules/swell'
-import { mapState } from 'vuex'
 
 // Calculate product limit from category rows/cols
 function getProductLimit(category) {
@@ -240,12 +240,12 @@ export default {
 
   methods: {
     fetchProducts(filterState) {
-      const { $swell } = this
+      const { $swell, page, limit, sortMode, slug } = this
       return $swell.products.list({
-        page: this.page,
-        limit: this.limit,
-        sort: this.sortMode,
-        categories: this.slug,
+        page,
+        limit,
+        sort: typeof sortMode.value === 'undefined' ? sortMode : sortMode.value,
+        categories: slug,
         $filters: filterState,
         expand: ['variants']
       })
@@ -272,7 +272,10 @@ export default {
       this.toggleFilterModal()
     },
     updateSortMode(option) {
-      this.updateRouteQuery({ ...this.filterState, sort: option.value })
+      this.updateRouteQuery({
+        ...this.filterState,
+        sort: typeof option.value === 'undefined' ? option : option.value
+      })
     },
     updateRouteQuery(newQuery) {
       const { path, query: currentQuery } = this.$route
@@ -281,9 +284,12 @@ export default {
       // Remove filters from merged query if not present in new query
       const currentFilterState = getFilterStateFromQuery(currentQuery, this.filters)
       const newFilterState = getFilterStateFromQuery(newQuery, this.filters)
+
       Object.keys(currentFilterState).map(key => {
         if (!newFilterState[key]) delete query[key]
       })
+
+      if (!query.sort) delete query.sort
 
       this.$router.replace({ path, query }).catch(_err => {
         // Avoid duplicate navigation error
