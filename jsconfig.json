@@ -1,0 +1,9 @@
+{
+  "exclude": ["node_modules", "dist", ".nuxt"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"]
+    }
+  }
+}
