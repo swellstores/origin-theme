@@ -140,38 +140,71 @@
 
             <!-- Details & attributes -->
             <div v-for="attribute in product.attributes" :key="attribute.id">
-              <AccordionItem
-                v-if="
-                  attribute.visible &&
-                    typeof attribute.value === 'string' &&
-                    attribute.value.length > 50
-                "
-                :heading="attribute.name"
-              >
-                <div class="pb-3" v-html="attribute.value" />
-              </AccordionItem>
-              <div
-                v-else-if="attribute.visible && typeof attribute.value === 'string'"
-                class="py-3 flex flex-no-wrap border-b"
-              >
-                <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
-                <span v-if="Array.isArray(attribute.value)" class="w-3/4">
-                  {{ attribute.value }}
-                </span>
-                <span v-else class="w-3/4">{{ attribute.value }}</span>
-              </div>
-              <div
-                v-else-if="
-                  attribute.visible && Array.isArray(attribute.value) && attribute.value.length > 0
-                "
-                class="py-3 flex flex-no-wrap border-b"
-              >
-                <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
-                <span v-if="Array.isArray(attribute.value)" class="w-3/4">
-                  {{ attribute.value.join(', ') }}
-                </span>
-                <span v-else class="w-3/4">{{ attribute.value }}</span>
-              </div>
+              <template v-if="attribute.visible">
+                <AccordionItem
+                  v-if="typeof attribute.value === 'string' && attribute.value.length > 50"
+                  :heading="attribute.name"
+                >
+                  <div class="pb-3" v-html="attribute.value" />
+                </AccordionItem>
+                <div
+                  v-else-if="typeof attribute.value === 'string'"
+                  class="py-3 flex flex-no-wrap border-b"
+                >
+                  <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
+                  <span v-if="Array.isArray(attribute.value)" class="w-3/4">
+                    {{ attribute.value }}
+                  </span>
+                  <span v-else class="w-3/4">{{ attribute.value }}</span>
+                </div>
+                <div
+                  v-else-if="
+                    attribute.value.file ||
+                      (Array.isArray(attribute.value) &&
+                        attribute.value.length > 0 &&
+                        attribute.value[0].file)
+                  "
+                  class="py-3 flex flex-no-wrap border-b"
+                >
+                  <template v-if="Array.isArray(attribute.value)">
+                    <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
+                    <div>
+                      <a
+                        v-for="{ file } in attribute.value"
+                        :key="file.id"
+                        :href="file.url"
+                        class="flex items-center font-normal mb-2 last:mb-0"
+                        target="_blank"
+                      >
+                        <BaseIcon icon="uil:file-download" size="sm" class="mr-2 inline-block" />
+                        {{ file.filename }}
+                      </a>
+                    </div>
+                  </template>
+
+                  <template v-else>
+                    <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
+                    <a
+                      :href="attribute.value.file.url"
+                      class="flex items-center font-normal"
+                      target="_blank"
+                    >
+                      <BaseIcon icon="uil:file-download" size="sm" class="mr-2 inline-block" />
+                      {{ attribute.value.file.filename }}
+                    </a>
+                  </template>
+                </div>
+                <div
+                  v-else-if="Array.isArray(attribute.value) && attribute.value.length > 0"
+                  class="py-3 flex flex-no-wrap border-b"
+                >
+                  <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
+                  <span v-if="Array.isArray(attribute.value)" class="w-3/4">
+                    {{ attribute.value.join(', ') }}
+                  </span>
+                  <span v-else class="w-3/4">{{ attribute.value }}</span>
+                </div>
+              </template>
             </div>
 
             <!-- Share product -->
