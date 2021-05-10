@@ -140,6 +140,7 @@
 
             <!-- Details & attributes -->
             <div v-for="attribute in product.attributes" :key="attribute.id">
+              <!-- Long text -->
               <template v-if="attribute.visible">
                 <AccordionItem
                   v-if="typeof attribute.value === 'string' && attribute.value.length > 50"
@@ -147,23 +148,21 @@
                 >
                   <div class="pb-3" v-html="attribute.value" />
                 </AccordionItem>
+                <!-- Short text -->
                 <div
                   v-else-if="typeof attribute.value === 'string'"
                   class="py-3 flex flex-no-wrap border-b"
                 >
                   <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
                   <span v-if="Array.isArray(attribute.value)" class="w-3/4">
-                    {{ attribute.value }}
+                    {{ attribute.value.join(', ') }}
                   </span>
                   <span v-else class="w-3/4">{{ attribute.value }}</span>
                 </div>
+
+                <!-- File -->
                 <div
-                  v-else-if="
-                    attribute.value.file ||
-                      (Array.isArray(attribute.value) &&
-                        attribute.value.length > 0 &&
-                        attribute.value[0].file)
-                  "
+                  v-else-if="attribute.type === 'file' && attribute.value.length"
                   class="py-3 flex flex-no-wrap border-b"
                 >
                   <template v-if="Array.isArray(attribute.value)">
@@ -194,6 +193,8 @@
                     </a>
                   </template>
                 </div>
+
+                <!-- Array -->
                 <div
                   v-else-if="Array.isArray(attribute.value) && attribute.value.length > 0"
                   class="py-3 flex flex-no-wrap border-b"
