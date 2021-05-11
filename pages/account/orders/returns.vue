@@ -3,40 +3,35 @@
     <!-- Breadcrumb -->
     <NuxtLink
       v-if="previousOrderRoute"
-      :to="previousOrderRoute ? previousOrderRoute : '/account/orders/'"
+      :to="localePath(previousOrderRoute ? previousOrderRoute : '/account/orders/')"
       class="flex items-center cursor-pointer mb-6"
     >
       <BaseIcon icon="uil:angle-left" size="sm" />
-      <span class="ml-1">Back to order</span>
+      <span class="ml-1">{{
+        $tc('account.orders.returns.backToOrders', previousOrderRoute ? 1 : 2)
+      }}</span>
     </NuxtLink>
 
-    <div v-if="accountSettings" class="mb-16">
-      <h1 v-if="accountSettings.returnsHeading" class="text-2xl">
-        {{ accountSettings.returnsHeading }}
-      </h1>
-      <p
-        v-if="accountSettings.returnsInfoText"
-        v-balance-text.children
-        class="text-sm"
-        v-html="accountSettings.returnsInfoText"
-      ></p>
+    <div class="mb-16">
+      <h1 class="text-2xl">{{ $t('account.orders.returns.title') }}</h1>
+      <p v-balance-text.children class="text-sm" v-html="$t('account.orders.returns.infoText')"></p>
     </div>
 
     <div class="flex">
       <NuxtLink
         v-if="previousOrderRoute"
-        to="/account/orders/"
+        :to="localePath('/account/orders/')"
         class="w-full md:w-auto btn light mb-6 md:mr-6"
       >
-        Back to all orders
+        {{ $tc('account.orders.returns.backToOrders', 2) }}
       </NuxtLink>
 
       <NuxtLink
-        to="/products/"
+        :to="localePath('/products/')"
         class="w-full md:w-auto inline-flex justify-center items-center btn dark"
       >
         <BaseIcon icon="uil:shopping-bag" size="sm" class="mr-2" />
-        Start shopping
+        {{ $t('account.orders.backToProducts') }}
       </NuxtLink>
     </div>
   </div>
@@ -44,33 +39,29 @@
 
 <script>
 export default {
-  fetch() {
-    const { $swell } = this
-
-    // Set component data
-    this.accountSettings = $swell.settings.get('customerAccount')
-    this.storeSettings = $swell.settings.get('store', {})
-  },
-
   data() {
     return {
-      accountSettings: {},
-      storeSettings: {},
       previousOrderRoute: ''
     }
   },
 
   watch: {
     // If routing from order, set breadcrumb.
-    $route(to, from) {
+    $route(_to, from) {
       if (from.params.id) this.previousOrderRoute = from.path
     }
   },
 
   mounted() {
+    const {
+      $nuxt: {
+        context: { from }
+      }
+    } = this
+
     // If routing from order, set breadcrumb.
-    if (this.$nuxt.context.from) {
-      this.previousOrderRoute = this.$nuxt.context.from.path
+    if (from) {
+      this.previousOrderRoute = from.path
     }
   },
 

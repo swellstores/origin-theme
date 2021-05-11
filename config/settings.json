@@ -70,10 +70,6 @@
       "url": ""
     }
   },
-  "customer_account": {
-    "returns_heading": "Returns",
-    "returns_info_text": "<p>Test</p>"
-  },
   "product_list": {
     "enable_quick_add": true
   },
@@ -101,5 +97,414 @@
   },
   "product_previews": {
     "aspect_ratio": "1:1"
+  },
+  "lang": {
+    "cart": {
+      "item": { "remove": "Remove", "closeEdit": "Close", "edit": "Edit" },
+      "updating": "Updating",
+      "checkout": "Checkout",
+      "account_balance": "Account balance",
+      "total": "Total",
+      "taxes": "Taxes",
+      "discounts": "Discounts",
+      "shipping": "Shipping",
+      "subtotal": "Subtotal",
+      "giftCard": "{amount} gift card",
+      "apply_coupon": "Apply coupon",
+      "back_to_products": "Shop now",
+      "empty": "Your cart is empty.",
+      "title": "Cart"
+    },
+    "errors": {
+      "category_not_found": "Category not found",
+      "page_not_found": {
+        "message": "The link you clicked may have changed or the URL is incorrect. Try searching?",
+        "title": "Page not found"
+      },
+      "internal": {
+        "reload": "Reload page",
+        "message": "Something went wrong, but the issue has been logged and we’ll look into it.",
+        "title": "Internal server error"
+      },
+      "return_home": "Return home",
+      "error_code": "{code} error"
+    },
+    "email_signup": {
+      "email": { "error": "That doesn't look like an email..." },
+      "success": "You're on the list!"
+    },
+    "notifications": {
+      "cookies": {
+        "privacy": "Learn more",
+        "message": "We use cookies to improve your shopping experience."
+      },
+      "cart": "View cart",
+      "checkout": "Checkout"
+    },
+    "navigation": { "account": "Account", "search": "Search" },
+    "search": {
+      "info": "Press enter to search",
+      "placeholder": "e.g. product model",
+      "title": "Search products"
+    },
+    "products": {
+      "preview": {
+        "save": "Save",
+        "sale": "Sale",
+        "quick_add": {
+          "adding": { "loading_label": "Adding...", "label": "Adding..." },
+          "add_to_cart": "Add to cart",
+          "quick_add": "Quick add",
+          "quick_view": "Quick view"
+        }
+      },
+      "_slug": {
+        "share": "Share it",
+        "updating": "Updating",
+        "save": "Save",
+        "add_to_cart": "Add to cart",
+        "stock_status": {
+          "out_of_stock": { "message": "", "label": "Out of stock" },
+          "limited_availability": { "message": "Ships in 1–2 days", "label": "Low stock" },
+          "in_stock": { "message": "Ships in 1–2 days", "label": "In stock" },
+          "custom": { "message": "Ships in 9–16 days", "label": "Custom order" }
+        }
+      }
+    },
+    "categories": {
+      "_slug": {
+        "pagination": {
+          "page": "Page {currentPage} of {pagesCount}",
+          "next": "Next",
+          "previous": "Previous"
+        },
+        "apply": "Apply filters",
+        "clear": "Clear all",
+        "refine": "Refine results",
+        "edit_filters": "Edit filters",
+        "category_products_not_found": "We couldn't find any products in this category.",
+        "filter_products_not_found": "We couldn't find any products matching your criteria.",
+        "sort_modes": {
+          "price_desc": "Price, high to low",
+          "price_asc": "Price, low to high",
+          "popularity": "Best selling",
+          "latest": "Latest"
+        },
+        "sort": "Sort",
+        "products_count": "{n} products | {n} product | {n} products",
+        "filters": "Filters"
+      }
+    },
+    "account": {
+      "payments": {
+        "popup": {
+          "delete": {
+            "error": "There was an issue deleting this card.",
+            "success": "Card deleted.",
+            "button": { "loading_label": "Deleting", "label": "Delete card" }
+          },
+          "save": {
+            "error": "There was an issue updating your payment method.",
+            "success": "Payment method updated.",
+            "button": { "loading_label": "Saving", "label": "Save card" }
+          },
+          "create": {
+            "error": "There was an issue adding your payment method.",
+            "success": "Payment method created.",
+            "button": { "loading_label": "Adding", "label": "Add new payment method" }
+          },
+          "new_billing_address": "Add a new address",
+          "no_billing_address": "You have no existing addresses. Create one below.",
+          "billing_address": "Billing address",
+          "card": { "set_as_default": "Use as default card." },
+          "cvc": {
+            "format": "Enter a valid card security code.",
+            "required": "Please enter your card security code.",
+            "label": "CVC"
+          },
+          "card_expiry": {
+            "date": "Enter a valid expiry date.",
+            "required": "Enter your card expiry date.",
+            "label": "Card expiry"
+          },
+          "card_number": {
+            "max_length": "Please enter a valid card number.",
+            "required": "Please enter your card number.",
+            "label": "Card number"
+          },
+          "edit": { "title": "Edit payment method" },
+          "new": { "title": "Add new payment method" }
+        },
+        "card": {
+          "edit": "Edit",
+          "no_billing_address": "No billing address assigned yet.",
+          "billing_address": "Billing address",
+          "default": "Default"
+        },
+        "add_payment_method": "Add new payment method",
+        "no_payment_methods": "There are no payment methods associated with this account.",
+        "title": "Payment methods"
+      },
+      "login": {
+        "error": "Your email or password was entered incorrectly.",
+        "success": "You’ve succesfully logged in.",
+        "button": { "loading_label": "Logging in", "label": "Log in" },
+        "create_account": "Create account",
+        "forgot_password": "Did you forgot your password?",
+        "password": {
+          "required": "Please enter your password.",
+          "placeholder": "Your password",
+          "label": "Password"
+        },
+        "email": {
+          "format": "Please enter a valid e-mail address.",
+          "required": "Please enter your e-mail address.",
+          "placeholder": "E-mail",
+          "label": "E-mail"
+        },
+        "title": "Log in",
+        "not_logged_in": "You are currently not logged in. Please log in to continue."
+      },
+      "reset_password": {
+        "error": "There was an error updating your password. The reset password key may have expired.",
+        "success": "You’ve successfully updated your password.",
+        "button": { "loading_label": "Processing...", "label": "Change password" },
+        "confirm_password": {
+          "not_match": "Passwords do not match.",
+          "placeholder": "Confirm new password"
+        },
+        "password": {
+          "min_length": "Your password needs to be at least {n} characters.",
+          "required": "Please enter your password.",
+          "hint": "Must include a minimum of {n} characters.",
+          "placeholder": "Your password",
+          "label": "Password"
+        },
+        "info_text": "Please enter your new password.",
+        "title": "Change your password"
+      },
+      "forgot_password": {
+        "error": "There was an error resetting your password.",
+        "success": "An email has been sent to reset your password.",
+        "log_in": "Back to log in",
+        "email": {
+          "format": "Please enter a valid e-mail address.",
+          "required": "Please enter your e-mail address.",
+          "placeholder": "E-mail",
+          "label": "E-mail"
+        },
+        "info_text": "Enter your email address and we’ll send you an email on how to reset your password.",
+        "title": "Forgot your password?"
+      },
+      "create_account": {
+        "error": "There was an error creating your account. Please try again later.",
+        "already_exists": "An account already exists under this e-mail address. Please log in.",
+        "success": "You’ve succesfully created an account.",
+        "log_in": "Log in",
+        "button": { "loading_label": "Creating", "label": "Create account" },
+        "password": {
+          "min_length": "Your password needs to be at least {n} characters.",
+          "required": "Please enter your password.",
+          "hint": "Must include a minimum of {n} characters.",
+          "placeholder": "Your password",
+          "label": "Password"
+        },
+        "email": {
+          "format": "Please enter a valid e-mail address.",
+          "required": "Please enter your e-mail address.",
+          "placeholder": "E-mail",
+          "label": "E-mail"
+        },
+        "last_name": {
+          "max_length": "Last name cannot exceed {n} characters.",
+          "required": "Please enter your last name.",
+          "label": "Last name"
+        },
+        "first_name": {
+          "max_length": "First name cannot exceed {n} characters.",
+          "required": "Please enter your first name.",
+          "label": "First name"
+        },
+        "title": "Create account"
+      },
+      "addresses": {
+        "popup": {
+          "delete": {
+            "error": "There was an error deleting this address.",
+            "success": "Address deleted.",
+            "button": { "loading_label": "Deleting address", "label": "Delete address" }
+          },
+          "save": {
+            "error": "There was an error updating this address.",
+            "success": "Address updated.",
+            "button": { "loading_label": "Saving address", "label": "Save address" }
+          },
+          "create": {
+            "error": "There was an error updating this address.",
+            "success": "Address created.",
+            "button": { "loading_label": "Creating address", "label": "Create address" }
+          },
+          "set_as_default": "Make this my default shipping address.",
+          "country": { "required": "Please enter your country.", "label": "Country" },
+          "zipCode": { "required": "Please enter your zip code.", "label": "Zip code" },
+          "region": { "required": "Please enter your region.", "label": "Region" },
+          "city": { "required": "Please enter your city.", "label": "City" },
+          "address2": { "label": "Apartment / Floor / Suite" },
+          "address1": { "required": "Please enter your address.", "label": "Address" },
+          "last_name": {
+            "max_length": "Last name cannot exceed {n} characters.",
+            "required": "Please enter your last name.",
+            "label": "Last name"
+          },
+          "first_name": {
+            "max_length": "First name cannot exceed {n} characters.",
+            "required": "Please enter your first name.",
+            "label": "First name"
+          },
+          "edit": { "title": "Edit address" },
+          "new": { "title": "Add new address" }
+        },
+        "edit": "Edit",
+        "remove": "Remove",
+        "use_as_default": "Use as default",
+        "default": "Default",
+        "set_default_address": {
+          "success": "Address set as default.",
+          "loading": "Setting as default",
+          "no": "No",
+          "yes": "Yes",
+          "text": "Are you sure you want to make this your default address?",
+          "title": "Set default address"
+        },
+        "delete_address": {
+          "success": "Address deleted.",
+          "loading": "Removing",
+          "no": "No, keep it.",
+          "yes": "Yes, remove it.",
+          "text": "Are you sure you want to remove this address?",
+          "title": "Delete address"
+        },
+        "add_address": "Add new address",
+        "no_addresses": "There are no addresses associated with this account.",
+        "other_addresses": "Other addresses",
+        "title": "Addresses"
+      },
+      "orders": {
+        "returns": {
+          "info_text": "Contact us, so we can start the return process. Don’t forget to include the order number and the reason for returning.",
+          "title": "Returns",
+          "back_to_orders": "Back to order | Back to orders"
+        },
+        "_id": {
+          "order_status": {
+            "cancelled": "Cancelled",
+            "complete": "Fulfilled",
+            "hold": "On hold",
+            "pending_delivery": "Pending delivery",
+            "pending_payment": "Pending payment",
+            "draft": "Draft",
+            "pending": "Order is pending"
+          },
+          "billing_address": "Billing address",
+          "cash_on_delivery_message": "Your order can be paid with cash on delivery.",
+          "cash_on_delivery": "Cash on delivery",
+          "bank_deposit_message": "Your order was paid using bank deposit.",
+          "bank_deposit": "Bank deposit",
+          "gift_card": "Gift card",
+          "account_credit_message": "Your order was paid using your account credit.",
+          "account_credit": "Account credit",
+          "payment_method": "Payment method",
+          "date_shipped": "Date shipped",
+          "tracking_code": "Tracking code",
+          "carrier": "Carrier",
+          "fulfilled_deliveries": "Fulfilled deliveries",
+          "delivery_method": "Delivery method",
+          "phone_number": "Phone number",
+          "delivery_address": "Delivery address",
+          "delivery_details": "Delivery details",
+          "taxes": "Taxes",
+          "discounts_and_credits": "Discounts and credits",
+          "shipping": "Shipping",
+          "subtotal": "Subtotal",
+          "quantity": "Qty: {n}",
+          "items": "no items | {n} item | {n} items",
+          "order_summary": "Order summary",
+          "create_return": "Create a return",
+          "total": "Total",
+          "order_date": "Order date",
+          "order": "Order",
+          "back_to_orders": "Back to all orders"
+        },
+        "order": {
+          "status": {
+            "canceled_message": "Your order has been canceled.",
+            "canceled": "Canceled",
+            "complete_message": "Your order has been fulfilled.",
+            "complete": "Fulfilled",
+            "hold_message": "Your order is currently on hold.",
+            "hold": "On hold",
+            "pending_delivery_message": "Your order is pending delivery.",
+            "pending_delivery": "Pending delivery",
+            "pending_payment_message": "Your order is pending payment.",
+            "pending_payment": "Pending payment",
+            "draft_message": "Your order is currently in draft mode.",
+            "draft": "Draft mode",
+            "pending_message": "We have received your order!",
+            "pending": "Order received"
+          },
+          "view": "View order",
+          "total": "Total",
+          "date": "Order date",
+          "title": "Order"
+        },
+        "title": "Orders & Returns",
+        "back_to_products": "Start shopping",
+        "no_orders": "You haven’t ordered anything yet."
+      },
+      "popup": {
+        "save": {
+          "error": "There was an error updating your account.",
+          "success": "Account updated.",
+          "loading_label": "Saving",
+          "label": "Save changes"
+        },
+        "subscribe": { "label": "Create account" },
+        "confirm_password": {
+          "not_match": "Passwords do not match.",
+          "placeholder": "Confirm new password"
+        },
+        "password": {
+          "min_length": "Your password needs to be at least {n} characters.",
+          "required": "Please enter your password.",
+          "hint": "Must include a minimum of {n} characters.",
+          "placeholder": "Your password",
+          "label": "Password"
+        },
+        "email": {
+          "format": "Please enter a valid e-mail address.",
+          "required": "Please enter your e-mail address.",
+          "placeholder": "E-mail",
+          "label": "E-mail"
+        },
+        "last_name": {
+          "max_length": "Last name cannot exceed {n} characters.",
+          "required": "Please enter your last name.",
+          "label": "Last name"
+        },
+        "first_name": {
+          "max_length": "First name cannot exceed {n} characters.",
+          "required": "Please enter your first name.",
+          "label": "First name"
+        }
+      },
+      "edit": "Edit profile",
+      "logout": {
+        "label": "Log out",
+        "confirm": "Are you sure you want to log out?",
+        "confirm_yes": "Yes",
+        "confirm_no": "No",
+        "success": "You’ve succesfully logged out."
+      }
+    }
   }
 }

@@ -37,20 +37,20 @@
           </svg>
         </div>
 
-        <h2 class="md:hidden">Order #{{ order.number }}</h2>
+        <h2 class="md:hidden">{{ $t('account.orders.order.title') }} #{{ order.number }}</h2>
 
         <p class="text-sm mb-2">
-          <span class="pr-2">Order date</span>
+          <span class="pr-2">{{ $t('account.orders.order.date') }}</span>
           <span class="font-semibold">{{ formattedDate }}</span>
         </p>
 
         <p class="text-sm mb-2">
-          <span class="pr-2">Order</span>
+          <span class="pr-2">{{ $t('account.orders.order.title') }}</span>
           <span class="font-semibold">#{{ order.number }}</span>
         </p>
 
         <p class="text-sm mb-2">
-          <span class="pr-2">Total</span>
+          <span class="pr-2">{{ $t('account.orders.order.total') }}</span>
           <span class="font-semibold">{{ formatMoney(order.grandTotal, order.currency) }}</span>
         </p>
 
@@ -71,8 +71,12 @@
           <span class="text-sm">{{ statusMessage[0] }}</span>
         </div>
 
-        <NuxtLink :to="`${order.id}/`" append class="btn light w-full mt-auto">
-          View order
+        <NuxtLink
+          :to="localePath(`/account/orders/${order.id}/`)"
+          append
+          class="btn light w-full mt-auto"
+        >
+          {{ $t('account.orders.order.view') }}
         </NuxtLink>
       </div>
     </div>
@@ -117,28 +121,42 @@ export default {
     statusMessage() {
       switch (this.order.status) {
         case 'pending':
-          return ['We have received your order!', 'Order received']
-          break
+          return [
+            this.$t('account.orders.order.status.pendingMessage'),
+            this.$t('account.orders.order.status.pending')
+          ]
         case 'draft':
-          return ['Your order is currently in draft mode.', 'Draft mode']
-          break
+          return [
+            this.$t('account.orders.order.status.draftMessage'),
+            this.$t('account.orders.order.status.draft')
+          ]
         case 'payment_pending':
-          return ['Your order is pending payment.', 'Pending payment']
-          break
+          return [
+            this.$t('account.orders.order.status.pendingPaymentMessage'),
+            this.$t('account.orders.order.status.pendingPayment')
+          ]
         case 'delivery_pending':
-          return ['Your order is pending delivery.', 'Pending delivery']
-          break
+          return [
+            this.$t('account.orders.order.status.pendingDeliveryMessage'),
+            this.$t('account.orders.order.status.pendingDelivery')
+          ]
         case 'hold':
-          return ['Your order is currently on hold.', 'On hold']
-          break
+          return [
+            this.$t('account.orders.order.status.holdMessage'),
+            this.$t('account.orders.order.status.hold')
+          ]
         case 'complete':
-          return ['Your order has been fulfilled.', 'Fulfilled']
-          break
+          return [
+            this.$t('account.orders.order.status.completeMessage'),
+            this.$t('account.orders.order.status.complete')
+          ]
         case 'canceled':
-          return ['Your order has been cancelled', 'Cancelled']
-          break
+          return [
+            this.$t('account.orders.order.status.canceledMessage'),
+            this.$t('account.orders.order.status.canceled')
+          ]
         default:
-          return
+          return ['', '']
       }
     }
   }

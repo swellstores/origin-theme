@@ -2,11 +2,11 @@
   <div class="mb-3 flex flex-wrap justify-between">
     <div class="mr-2">
       <span :class="`bg-${status.color}`" class="inline-block rounded-full w-2 h-2 mr-1" />
-      <span class="label-xs-bold text-primary-dark">{{ status.label }}</span>
+      <span class="label-xs-bold text-primary-dark">{{ $t(status.label) }}</span>
     </div>
     <div class>
-      <a v-if="status.link" href="#" class="label-sm-bold">{{ status.message }}</a>
-      <span v-else class="label-sm-faded">{{ status.message }}</span>
+      <a v-if="status.link" href="#" class="label-sm-bold">{{ $t(status.message) }}</a>
+      <span v-else class="label-sm-faded">{{ $t(status.message) }}</span>
     </div>
   </div>
 </template>
@@ -19,22 +19,23 @@ import get from 'lodash/get'
 const statuses = {
   custom: {
     color: 'warning',
-    label: 'Custom order',
-    message: 'Ships in 9–16 days'
+    label: 'products.slug.stockStatus.custom.label',
+    message: 'products.slug.stockStatus.custom.message'
   },
   in_stock: {
     color: 'ok',
-    label: 'In stock',
-    message: 'Ships in 1–2 days'
+    label: 'products.slug.stockStatus.inStock.label',
+    message: 'products.slug.stockStatus.inStock.message'
   },
   limited_availability: {
     color: 'warning',
-    label: 'Low stock',
-    message: 'Ships in 1–2 days'
+    label: 'products.slug.stockStatus.limitedAvailability.label',
+    message: 'products.slug.stockStatus.limitedAvailability.message'
   },
   out_of_stock: {
     color: 'error',
-    label: 'Out of stock'
+    label: 'products.slug.stockStatus.outOfStock.label',
+    message: 'products.slug.stockStatus.outOfStock.message'
   }
 }
 

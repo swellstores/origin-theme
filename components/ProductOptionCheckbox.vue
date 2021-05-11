@@ -17,7 +17,9 @@
         <div class="absolute right-0 top-0 text-primary-lightest">
           <BaseIcon icon="uil:check" />
         </div>
-        <span v-if="option.price" class="inline-block mr-1">+{{ formatMoney(option.price, currency) }}</span>
+        <span v-if="option.price" class="inline-block mr-1"
+          >+{{ formatMoney(option.price, currency) }}</span
+        >
       </label>
     </div>
   </div>

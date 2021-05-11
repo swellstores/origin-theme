@@ -2,10 +2,10 @@
   <div>
     <div class="container">
       <!-- Breadcrumb -->
-      <NuxtLink to="/account/orders/" class="flex items-center cursor-pointer mb-6">
-        <BaseIcon icon="uil:angle-left" size="sm" /><span class="ml-1"
-          >Back to all orders</span
-        ></NuxtLink
+      <NuxtLink :to="localePath('/account/orders/')" class="flex items-center cursor-pointer mb-6">
+        <BaseIcon icon="uil:angle-left" size="sm" /><span class="ml-1">{{
+          $t('account.orders.id.backToOrders')
+        }}</span></NuxtLink
       >
     </div>
 
@@ -19,7 +19,7 @@
     <div v-else>
       <div class="container">
         <div class="pb-6 border-b border-primary-med mb-10">
-          <h2 class="text-2xl">Order #{{ order.number }}</h2>
+          <h2 class="text-2xl">{{ $t('account.orders.id.order') }} #{{ order.number }}</h2>
 
           <div class="my-4">
             <svg
@@ -42,7 +42,7 @@
             class="block md:flex md:justify-between text-sm rounded border border-primary-med p-4 mb-6"
           >
             <div class="pb-2 md:pb-0">
-              <span>Order date</span>
+              <span>{{ $t('account.orders.id.orderDate') }}</span>
               <span class="font-semibold">{{ formatDate(order.dateCreated) }}</span>
             </div>
 
@@ -52,19 +52,21 @@
             </div> -->
 
             <div>
-              <span>Total</span>
+              <span>{{ $t('account.orders.id.total') }}</span>
               <span class="font-semibold">{{ formatMoney(order.grandTotal, order.currency) }}</span>
             </div>
           </div>
 
-          <NuxtLink to="/account/orders/returns/" append class="btn light">
-            Create a return
+          <NuxtLink :to="localePath('/account/orders/returns/')" append class="btn light">
+            {{ $t('account.orders.id.createReturn') }}
           </NuxtLink>
 
           <!-- Order summary -->
           <div class="flex font-semibold py-6 border-b border-primary-med">
-            <span>Order summary</span>
-            <span class="ml-auto">{{ order.items.length }} items</span>
+            <span>{{ $t('account.orders.id.orderSummary') }}</span>
+            <span class="ml-auto">{{
+              $tc('account.orders.id.items', order.items.length, { count: order.items.length })
+            }}</span>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 md:gap-4 mb-6">
@@ -80,7 +82,7 @@
               <div>
                 <h4 class="pb-2">{{ item.product.name }}</h4>
                 <p v-if="item.quantity > 1" class="text-sm text-primary-darker">
-                  Qty: {{ item.quantity }}
+                  {{ $tc('account.orders.id.quantity', item.quantity, { count: item.quantity }) }}
                 </p>
                 <p
                   v-for="option in item.options"
@@ -97,29 +99,29 @@
           </div>
 
           <div class="flex pb-2">
-            <span>Subtotal</span>
+            <span>{{ $t('account.orders.id.subtotal') }}</span>
             <span class="ml-auto">{{ formatMoney(order.subTotal, order.currency) }}</span>
           </div>
 
           <div v-if="order.shipmentDelivery" class="flex pb-2">
-            <span>Shipping</span>
+            <span>{{ $t('account.orders.id.shipping') }}</span>
             <span class="ml-auto">{{
               order.shipmentPrice === 0 ? 'Free' : formatMoney(order.shipmentPrice, order.currency)
             }}</span>
           </div>
 
           <div v-if="order.itemDiscount > 0" class="flex pb-2">
-            <span>Discounts & Credits</span>
+            <span>{{ $t('account.orders.id.discountsAndCredits') }}</span>
             <span class="ml-auto">-{{ formatMoney(order.itemDiscount, order.currency) }}</span>
           </div>
 
           <div v-if="order.taxTotal > 0" class="flex pb-2">
-            <span>Taxes</span>
+            <span>{{ $t('account.orders.id.taxes') }}</span>
             <span class="ml-auto">{{ formatMoney(order.taxTotal, order.currency) }}</span>
           </div>
 
           <div class="flex text-lg font-semibold">
-            <span>Total</span>
+            <span>{{ $t('account.orders.id.total') }}</span>
             <span class="ml-auto">{{ formatMoney(order.grandTotal, order.currency) }}</span>
           </div>
         </div>
@@ -128,11 +130,11 @@
       <!-- Delivery details -->
       <div class="container">
         <template v-if="order.shipmentDelivery">
-          <p class="text-base font-semibold pb-4">Delivery Details</p>
+          <p class="text-base font-semibold pb-4">{{ $t('account.orders.id.deliveryDetails') }}</p>
 
           <div class="mb-10">
             <div class="rounded text-sm border border-primary-med p-4">
-              <p class="font-semibold pb-2">Delivery address</p>
+              <p class="font-semibold pb-2">{{ $t('account.orders.id.deliveryAddress') }}</p>
               <p>
                 {{ shipping.name }}<br />
                 {{ shipping.address2 }} {{ shipping.address1 }}, {{ shipping.city }}
@@ -141,13 +143,13 @@
               </p>
             </div>
             <div v-if="shipping.phone" class="rounded text-sm border border-primary-med p-4 -mt-px">
-              <p class="font-semibold pb-2">Phone number</p>
+              <p class="font-semibold pb-2">{{ $t('account.orders.id.phoneNumber') }}</p>
               <p>
                 {{ shipping.phone }}
               </p>
             </div>
             <div class="rounded text-sm border border-primary-med p-4 -mt-px">
-              <p class="font-semibold pb-2">Delivery method</p>
+              <p class="font-semibold pb-2">{{ $t('account.orders.id.deliveryMethod') }}</p>
               <p v-if="shipping.serviceName">
                 {{ shipping.serviceName }}
                 <span v-if="shipping.price">
@@ -156,10 +158,10 @@
               </p>
             </div>
             <div v-if="shipments" class="rounded text-sm border border-primary-med p-4 -mt-px">
-              <p class="font-semibold pb-2">Fulfilled deliveries</p>
+              <p class="font-semibold pb-2">{{ $t('account.orders.id.fulfilledDeliveries') }}</p>
               <div v-for="shipment in shipments" :key="shipment.id" class="mb-4">
                 <div class="grid grid-cols-2-max">
-                  <strong class="pr-4">Items</strong>
+                  <strong class="pr-4 capitalize">{{ $tc('account.orders.id.items', 2) }}</strong>
                   <div>
                     <p v-for="item in shipment.items" :key="item.id">
                       {{ item.quantity }} × {{ item.product.name }}
@@ -167,17 +169,17 @@
                   </div>
 
                   <template v-if="shipment.carrierName">
-                    <strong class="pr-4">Carrier</strong>
+                    <strong class="pr-4">{{ $t('account.orders.id.carrier') }}</strong>
                     <div>{{ shipment.carrierName }}</div>
                   </template>
 
                   <template v-if="shipment.trackingCode">
-                    <strong class="pr-4">Tracking code</strong>
+                    <strong class="pr-4">{{ $t('account.orders.id.trackingCode') }}</strong>
                     <div>{{ shipment.trackingCode }}</div>
                   </template>
 
                   <template v-if="shipment.dateCreated">
-                    <strong class="pr-4">Date shipped</strong>
+                    <strong class="pr-4">{{ $t('account.orders.id.dateShipped') }}</strong>
                     <div>{{ formatDate(shipment.dateCreated) }}</div>
                   </template>
                 </div>
@@ -188,7 +190,9 @@
           <!-- Payment details -->
           <template v-if="order.paid">
             <div class="mb-10">
-              <p class="text-base font-semibold pb-4">Payment method</p>
+              <p class="text-base font-semibold pb-4">
+                {{ $t('account.orders.id.paymentMethod') }}
+              </p>
 
               <div class="grid grid-cols-1 md:grid-cols-2 rounded border border-primary-med">
                 <!-- Method: Card -->
@@ -222,9 +226,11 @@
                 >
                   <div class="flex mb-4">
                     <BaseIcon icon="uil:money-bill" />
-                    <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold">Credit</span>
+                    <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold">{{
+                      $t('account.orders.id.accountCredit')
+                    }}</span>
                   </div>
-                  <p>Your order was paid using your account credit.</p>
+                  <p>{{ $t('account.orders.id.accountCreditMessage') }}</p>
                 </div>
 
                 <!-- Method: Gift Card -->
@@ -234,7 +240,9 @@
                 >
                   <div class="flex mb-4">
                     <BaseIcon icon="uil:gift" />
-                    <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold">Gift Card</span>
+                    <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold">{{
+                      $t('account.orders.id.giftCard')
+                    }}</span>
                   </div>
 
                   <p class="text-base tracking-large">
@@ -244,7 +252,7 @@
                   </p>
 
                   <p class="text-sm pt-4">
-                    <span class="font-semibold pr-2">Total</span
+                    <span class="font-semibold pr-2">{{ $t('account.orders.id.total') }}</span
                     ><span>{{ formatMoney(order.giftcardTotal, order.currency) }}</span>
                   </p>
                 </div>
@@ -256,9 +264,11 @@
                 >
                   <div class="flex mb-4">
                     <BaseIcon icon="uil:University" />
-                    <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold">Bank Deposit</span>
+                    <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold">{{
+                      $t('account.orders.id.bankDeposit')
+                    }}</span>
                   </div>
-                  <p>Your order was paid using bank deposit.</p>
+                  <p>{{ $t('account.orders.id.bankDepositMessage') }}</p>
                 </div>
 
                 <!-- Method: Cash on delivery -->
@@ -268,15 +278,15 @@
                 >
                   <div class="flex mb-4">
                     <BaseIcon icon="uil:money-bill" />
-                    <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold"
-                      >Cash On Delivery</span
-                    >
+                    <span class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold">{{
+                      $t('account.orders.id.cashOnDelivery')
+                    }}</span>
                   </div>
-                  <p>Your order can be paid with cash on delivery.</p>
+                  <p>{{ $t('account.orders.id.cashOnDeliveryMessage') }}</p>
                 </div>
 
                 <div class="text-sm p-4">
-                  <p class="font-semibold pb-2">Billing address</p>
+                  <p class="font-semibold pb-2">{{ $t('account.orders.id.billingAddress') }}</p>
                   <p>
                     {{ billing.name }}<br />
                     {{ billing.address2 }} {{ billing.address1 }}, {{ billing.city }}
@@ -334,19 +344,19 @@ export default {
     statusMessage() {
       switch (this.order.status) {
         case 'pending':
-          return 'Order is pending'
+          return this.$t('account.orders.order.status.pending')
         case 'draft':
-          return 'Draft'
+          return this.$t('account.orders.order.status.draft')
         case 'payment_pending':
-          return 'Pending payment'
+          return this.$t('account.orders.order.status.pendingPayment')
         case 'delivery_pending':
-          return 'Pending delivery'
+          return this.$t('account.orders.order.status.pendingDelivery')
         case 'hold':
-          return 'On hold'
+          return this.$t('account.orders.order.status.hold')
         case 'complete':
-          return 'Fulfilled'
+          return this.$t('account.orders.order.status.complete')
         case 'canceled':
-          return 'Cancelled'
+          return this.$t('account.orders.order.status.canceled')
         default:
           return ''
       }

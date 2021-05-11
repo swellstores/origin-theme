@@ -1,6 +1,6 @@
 <template>
   <transition name="popup" :duration="700" appear>
-    <div class="z-40 fixed inset-0" v-enter-key="handleEnterKey">
+    <div v-enter-key="handleEnterKey" class="z-40 fixed inset-0">
       <!-- Overlay -->
       <div
         class="overlay opacity-50 absolute w-full h-full bg-primary-darker"
@@ -14,8 +14,8 @@
       >
         <div class="container py-2">
           <div class="flex py-4">
-            <h3 v-if="type === 'new'">Add new address</h3>
-            <h3 v-else>Edit address</h3>
+            <h3 v-if="type === 'new'">{{ $t('account.addresses.popup.new.title') }}</h3>
+            <h3 v-else>{{ $t('account.addresses.popup.edit.title') }}</h3>
             <button class="ml-auto" @click.prevent="$emit('click-close')">
               <BaseIcon icon="uil:multiply" size="sm" />
             </button>
@@ -25,92 +25,94 @@
           <div class="pt-6">
             <div class="mb-6">
               <InputText
+                v-model="firstName"
                 class="mb-2"
-                label="First Name"
+                :label="$t('account.addresses.popup.firstName.label')"
                 name="fname"
                 autocomplete="given-name"
-                v-model="firstName"
               />
               <template v-if="$v.firstName.$dirty">
-                <span class="label-sm text-error" v-if="!$v.firstName.required"
-                  >Please enter your first name.</span
-                >
+                <span v-if="!$v.firstName.required" class="label-sm text-error">{{
+                  $t('account.addresses.popup.firstName.required')
+                }}</span>
 
-                <span class="label-sm text-error" v-if="!$v.firstName.maxLength"
-                  >First name cannot exceed 40 characters.</span
-                >
+                <span v-if="!$v.firstName.maxLength" class="label-sm text-error">{{
+                  $t('account.addresses.popup.firstName.maxLength', { n: 40 })
+                }}</span>
               </template>
             </div>
 
             <div class="mb-6">
               <InputText
+                v-model="lastName"
                 class="mb-2"
-                label="Last Name"
+                :label="$t('account.addresses.popup.lastName.label')"
                 name="surname"
                 autocmplete="family-name"
-                v-model="lastName"
               />
               <template v-if="$v.lastName.$dirty">
-                <span class="label-sm text-error" v-if="!$v.lastName.required"
-                  >Please enter your last name.</span
-                >
+                <span v-if="!$v.lastName.required" class="label-sm text-error">{{
+                  $t('account.addresses.popup.lastName.required')
+                }}</span>
 
-                <span class="label-sm text-error" v-if="!$v.lastName.maxLength"
-                  >Last name cannot exceed 40 characters.</span
-                >
+                <span v-if="!$v.lastName.maxLength" class="label-sm text-error">{{
+                  $t('account.addresses.popup.lastName.maxLength', { n: 40 })
+                }}</span>
               </template>
             </div>
 
             <div class="mb-6">
               <InputText
+                v-model="address1"
                 class="mb-2"
-                label="Address"
+                :label="$t('account.addresses.popup.address1.label')"
                 name="address1"
                 autocomplete="address-line1"
-                v-model="address1"
               />
               <template v-if="$v.address1.$dirty">
-                <span class="label-sm text-error" v-if="!$v.address1.required"
-                  >Please enter your address.</span
-                >
+                <span v-if="!$v.address1.required" class="label-sm text-error">{{
+                  $t('account.addresses.popup.address1.required')
+                }}</span>
               </template>
             </div>
 
             <InputText
+              v-model="address2"
               class="mb-6"
-              label="Apartment / Floor / Suite"
+              :label="$t('account.addresses.popup.address2.label')"
               name="address2"
               autocomplete="address-line2"
-              v-model="address2"
             />
 
             <div class="mb-6">
               <InputText
+                v-model="city"
                 class="mb-2"
-                label="City"
+                :label="$t('account.addresses.popup.city.label')"
                 name="city"
                 autocomplete="address-level2"
-                v-model="city"
               />
               <template v-if="$v.city.$dirty">
-                <span class="label-sm text-error" v-if="!$v.city.required"
-                  >Please enter your address.</span
-                >
+                <span v-if="!$v.city.required" class="label-sm text-error">{{
+                  $t('account.addresses.popup.city.required')
+                }}</span>
               </template>
             </div>
 
             <div class="flex flex-no-wrap mb-6">
               <div class="w-1/2 mr-3">
-                <label class="label-xs-bold-faded block mb-2" for="region-select">Region</label>
+                <label class="label-xs-bold-faded block mb-2" for="region-select">{{
+                  $t('account.addresses.popup.region.label')
+                }}</label>
 
                 <div class="relative mb-2">
                   <region-select
                     id="region-select"
-                    class="w-full pl-4 pr-6 py-3 bg-primary-lightest border border-primary-med rounded appearance-none truncate"
                     v-model="state"
+                    class="w-full pl-4 pr-6 py-3 bg-primary-lightest border border-primary-med rounded appearance-none truncate"
                     :country="country"
                     :region="state"
-                    :disablePlaceholder="true"
+                    :disable-placeholder="true"
                   />
 
                   <div>
@@ -119,37 +121,39 @@
                 </div>
 
                 <template v-if="$v.state.$dirty">
-                  <span class="label-sm text-error" v-if="!$v.state.required"
-                    >Region required.</span
-                  >
+                  <span v-if="!$v.state.required" class="label-sm text-error">{{
+                    $t('account.addresses.popup.region.required')
+                  }}</span>
                 </template>
               </div>
 
               <div class="w-1/2 ml-3">
                 <InputText
+                  v-model="zip"
                   class="mb-2"
-                  label="Zip Code"
+                  :label="$t('account.addresses.popup.zipCode.required')"
                   name="zipCode"
                   autocomplete="postal-code"
-                  v-model="zip"
                 />
 
                 <template v-if="$v.zip.$dirty">
-                  <span class="label-sm text-error" v-if="!$v.zip.required"
-                    >Zip code required.</span
-                  >
+                  <span v-if="!$v.zip.required" class="label-sm text-error">{{
+                    $t('account.addresses.popup.zipCode.required')
+                  }}</span>
                 </template>
               </div>
             </div>
 
             <div class="mb-6">
-              <label class="label-xs-bold-faded block mb-2" for="country-select">Country</label>
+              <label class="label-xs-bold-faded block mb-2" for="country-select">{{
+                $t('account.addresses.popup.country.label')
+              }}</label>
 
               <div class="relative mb-2">
                 <country-select
                   id="country-select"
-                  class="w-full px-4 py-3 bg-primary-lightest border border-primary-med rounded appearance-none"
                   v-model="country"
+                  class="w-full px-4 py-3 bg-primary-lightest border border-primary-med rounded appearance-none"
                   :country="country"
                   :autocomplete="true"
                 />
@@ -158,22 +162,22 @@
               </div>
 
               <template v-if="$v.state.$dirty">
-                <span class="label-sm text-error" v-if="!$v.country.required"
-                  >Country required.</span
-                >
+                <span v-if="!$v.country.required" class="label-sm text-error">{{
+                  $t('account.addresses.popup.country.required')
+                }}</span>
               </template>
             </div>
 
             <div v-if="flow === 'default'" class="checkbox mb-6">
               <input
-                type="checkbox"
                 id="set-default"
                 v-model="setDefault"
+                type="checkbox"
                 :disabled="disableDefaultOption"
               />
 
               <label class="w-full" for="set-default">
-                <p>Make this my default shipping address</p>
+                <p>{{ $t('account.addresses.popup.setAsDefault') }}</p>
                 <div class="indicator ml-auto text-primary-lighter">
                   <BaseIcon icon="uil:check" size="sm" />
                 </div>
@@ -186,31 +190,31 @@
             <ButtonLoading
               v-if="type === 'new'"
               class="w-full dark mt-4"
-              @click.native="createAddress()"
-              label="Create address"
-              loadingLabel="Creating"
-              :isLoading="isCreating"
+              :label="$t('account.addresses.popup.create.button.label')"
+              :loading-label="$t('account.addresses.popup.create.button.loadingLabel')"
+              :is-loading="isCreating"
               :disabled="isUpdating || isDeleting"
+              @click.native="createAddress()"
             />
 
             <ButtonLoading
               v-if="type === 'update'"
               class="w-full dark my-4"
-              @click.native="updateAddress()"
-              label="Save address"
-              loadingLabel="Saving"
-              :isLoading="isUpdating"
+              :label="$t('account.addresses.popup.save.button.label')"
+              :loading-label="$t('account.addresses.popup.save.button.loadingLabel')"
+              :is-loading="isUpdating"
               :disabled="isCreating || isDeleting"
+              @click.native="updateAddress()"
             />
 
             <ButtonLoading
               v-if="type === 'update'"
               class="w-full light-error"
-              @click.native="deleteAddress()"
-              label="Delete address"
-              loadingLabel="Deleting"
-              :isLoading="isDeleting"
+              :label="$t('account.addresses.popup.delete.button.label')"
+              :loading-label="$t('account.addresses.popup.delete.button.loadingLabel')"
+              :is-loading="isDeleting"
               :disabled="isCreating || isUpdating"
+              @click.native="deleteAddress()"
             />
           </div>
         </div>
@@ -221,7 +225,7 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, maxLength, integer, minValue } from 'vuelidate/lib/validators'
+import { required, maxLength } from 'vuelidate/lib/validators'
 
 export default {
   mixins: [validationMixin],
@@ -278,6 +282,30 @@ export default {
     }
   },
 
+  created() {
+    // Prefill form data for updating existing
+    if (this.address) {
+      this.firstName = this.address.firstName || ''
+      this.lastName = this.address.lastName || ''
+      this.address1 = this.address.address1 || ''
+      this.address2 = this.address.address2 || ''
+      this.state = this.address.state || ''
+      this.city = this.address.city || ''
+      this.zip = this.address.zip || ''
+      this.country = this.address.country || ''
+
+      // Set default check state
+      if (this.defaultAddressId === this.address.id) {
+        this.setDefault = true
+      }
+    }
+
+    // If there's no default card, force set default
+    if (!this.defaultAddressId && !this.addressesLength && this.type === 'new') {
+      this.setDefault = true
+    }
+  },
+
   methods: {
     async updateAddress() {
       try {
@@ -287,7 +315,7 @@ export default {
 
         this.isUpdating = true
 
-        const res = await this.$swell.account.updateAddress(this.address.id, {
+        await this.$swell.account.updateAddress(this.address.id, {
           name: `${this.firstName.trim()} ${this.lastName.trim()}`,
           address1: this.address1,
           address2: this.address2,
@@ -304,27 +332,27 @@ export default {
               accountAddressId: this.address.id
             }
           })
-        } else {
+        } else if (this.defaultAddressId === this.address.id) {
           // If is default, unset it.
-          if (this.defaultAddressId === this.address.id) {
-            // Set current address as default
-            await this.$swell.account.update({
-              shipping: {
-                accountAddressId: null
-              }
-            })
-          }
+          // Set current address as default
+          await this.$swell.account.update({
+            shipping: {
+              accountAddressId: null
+            }
+          })
         }
 
         // Close panel and fetch updated data
         this.isUpdating = true
         this.$emit('click-close')
         this.$store.dispatch('initializeCustomer')
-        this.$store.dispatch('showNotification', { message: 'Address updated.' })
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.popup.save.success')
+        })
         this.$emit('refresh')
       } catch (err) {
         this.$store.dispatch('showNotification', {
-          message: 'There was an error updating this address.',
+          message: this.$t('account.addresses.popup.save.error'),
           type: 'error'
         })
       }
@@ -366,11 +394,13 @@ export default {
         this.isCreating = false
         this.$emit('click-close')
         this.$store.dispatch('initializeCustomer')
-        this.$store.dispatch('showNotification', { message: 'Address created.' })
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.popup.create.success')
+        })
         this.$emit('refresh')
       } catch (err) {
         this.$store.dispatch('showNotification', {
-          message: 'There was an error creating the address.',
+          message: this.$t('account.addresses.popup.create.error'),
           type: 'error'
         })
       }
@@ -402,11 +432,14 @@ export default {
         this.isDeleting = false
         this.$emit('click-close')
         this.$store.dispatch('initializeCustomer')
-        this.$store.dispatch('showNotification', { message: 'Address deleted.', type: 'error' })
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.popup.delete.success'),
+          type: 'error'
+        })
         this.$emit('refresh')
       } catch (err) {
         this.$store.dispatch('showNotification', {
-          message: 'There was an error deleting the address.',
+          message: this.$t('account.addresses.popup.delete.error'),
           type: 'error'
         })
       }
@@ -421,32 +454,7 @@ export default {
           await this.createAddress()
           break
         default:
-          return
       }
-    }
-  },
-
-  created() {
-    // Prefill form data for updating existing
-    if (this.address) {
-      this.firstName = this.address.firstName || ''
-      this.lastName = this.address.lastName || ''
-      this.address1 = this.address.address1 || ''
-      this.address2 = this.address.address2 || ''
-      this.state = this.address.state || ''
-      this.city = this.address.city || ''
-      this.zip = this.address.zip || ''
-      this.country = this.address.country || ''
-
-      // Set default check state
-      if (this.defaultAddressId === this.address.id) {
-        this.setDefault = true
-      }
-    }
-
-    // If there's no default card, force set default
-    if (!this.defaultAddressId && !this.addressesLength && this.type === 'new') {
-      this.setDefault = true
     }
   },
 

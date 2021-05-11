@@ -46,7 +46,7 @@ export default {
       <section class="relative">
         <ul class={`flex flex-wrap ${postFrameClass}`}>
           <li class="w-1/2 m-0 md:w-1/4">
-            <a href="" class="block h-full p-4 flex flex-col justify-between">
+            <a href="" class="h-full p-4 flex flex-col justify-between">
               <div>
                 <svg class="w-6 h-6 mb-4">
                   <use xlinkHref="#icon-instagram" />

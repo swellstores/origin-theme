@@ -42,7 +42,7 @@ export default async (context, inject) => {
 
     // Catch unusual vue $destroy undefined error
     Vue.config.errorHandler = (err, vm, info) => {
-      if (String(err.message).indexOf('$destroy') >= 0) {
+      if (String(err.message).includes('$destroy')) {
         console.warn('Caught $destroy of undefined error')
         return
       }

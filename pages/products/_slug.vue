@@ -43,6 +43,7 @@
             <div class="loader-el w-20 h-4 mb-12"></div>
             <div
               v-for="index in 7"
+              :key="`skeleton-1-${index}`"
               :style="`width: ${100 - Math.random() * 20}%`"
               class="loader-el h-2 mb-4"
             ></div>
@@ -51,7 +52,7 @@
               <div class="loader-el w-48 h-3"></div>
             </div>
             <div class="loader-el h-12 mb-10"></div>
-            <div v-for="index in 3" class="flex items-center mb-2">
+            <div v-for="index in 3" :key="`skeleton-2-${index}`" class="flex items-center mb-2">
               <div class="loader-el w-5 h-5 mr-2 rounded-full"></div>
               <div :style="`width: ${80 - Math.random() * 30}%`" class="loader-el h-2"></div>
             </div>
@@ -72,7 +73,7 @@
                 v-if="variation.origPrice"
                 class="inline-block ml-3 rounded bg-error-faded -mt-2px px-2 h-6 leading-loose text-error uppercase text-xs"
               >
-                Save
+                {{ $t('products.slug.save') }}
                 {{ formatMoney(variation.origPrice - variation.price, currency) }}
               </span>
             </div>
@@ -85,7 +86,7 @@
                 v-if="visibleOptionIds.includes(input.option.id)"
                 :option="input.option"
                 :current-value="optionState[input.option.name]"
-                :activeDropdownUID="activeDropdownUID"
+                :active-dropdown-u-i-d="activeDropdownUID"
                 @value-changed="setOptionValue"
                 @dropdown-active="setActiveDropdownUID($event)"
               />
@@ -108,7 +109,7 @@
                 @click.prevent="addToCart"
               >
                 <div v-show="!cartIsUpdating">
-                  <span>Add to cart</span>
+                  <span>{{ $t('products.slug.addToCart') }}</span>
                   <span class="inline-block w-5 mx-1 mb-1 border-b border-primary-lightest"></span>
                   <span>{{ formatMoney(variation.price, currency) }}</span>
                   <span v-if="billingInterval">{{ billingInterval }}</span>
@@ -118,7 +119,7 @@
                 </div>
                 <div v-show="cartIsUpdating" class>
                   <div class="spinner absolute inset-0 mt-3"></div>
-                  <span class="absolute inset-0 mt-5">Updating</span>
+                  <span class="absolute inset-0 mt-5">{{ $t('products.slug.updating') }}</span>
                 </div>
               </button>
             </div>
@@ -176,7 +177,9 @@
 
             <!-- Share product -->
             <div v-if="enableSocialSharing" class="py-3 flex flex-no-wrap">
-              <strong class="w-1/4 text-primary-darkest pr-6">Share it</strong>
+              <strong class="w-1/4 text-primary-darkest pr-6">{{
+                $t('products.slug.share')
+              }}</strong>
               <div class="w-3/4 flex justify-end">
                 <SocialShare
                   class="mr-2 cursor-pointer"
@@ -245,7 +248,7 @@ export default {
 
     // Show 404 if product isn't found
     if (!product) {
-      return this.$nuxt.error({ statusCode: 404, message: 'Product not found' })
+      return this.$nuxt.error({ statusCode: 404, message: this.$t('errors.productNotFound') })
     }
 
     // Compute initial values for options

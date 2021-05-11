@@ -18,7 +18,9 @@
                   class="flex flex-row whitespace-no-wrap items-center mt-2 cursor-pointer"
                   @click="editProfilePopupIsActive = true"
                 >
-                  <BaseIcon icon="uil:edit" size="sm" /><span class="ml-2">Edit profile</span>
+                  <BaseIcon icon="uil:edit" size="sm" /><span class="ml-2">{{
+                    $t('account.edit')
+                  }}</span>
                 </button>
 
                 <!-- Log out (Desktop) -->
@@ -26,16 +28,18 @@
                   class="flex flex-row md:hidden whitespace-no-wrap items-center mt-2 cursor-pointer"
                   @click="logoutPopupIsActive = true"
                 >
-                  <BaseIcon icon="uil:signout" size="sm" /><span class="ml-2">Log out</span>
+                  <BaseIcon icon="uil:signout" size="sm" /><span class="ml-2">{{
+                    $t('account.logout.label')
+                  }}</span>
                 </button>
               </div>
 
               <!-- Views (Desktop) -->
               <ul class="hidden md:block border-t border-primary-light text-base">
-                <li v-for="view in views" :key="view.value" class="last:mb-0">
+                <li v-for="view in localizedViews" :key="view.value" class="last:mb-0">
                   <NuxtLink
                     class="view-link pl-3 py-4 block hover:bg-primary-light rounded-none"
-                    :to="`/account/${view.value}/`"
+                    :to="localePath(`/account/${view.value}/`)"
                     >{{ view.label }}</NuxtLink
                   >
                 </li>
@@ -47,7 +51,9 @@
                   class="flex flex-row whitespace-no-wrap items-center mt-2 cursor-pointer"
                   @click="logoutPopupIsActive = true"
                 >
-                  <BaseIcon icon="uil:signout" size="sm" /><span class="ml-2">Log out</span>
+                  <BaseIcon icon="uil:signout" size="sm" /><span class="ml-2">{{
+                    $t('account.logout.label')
+                  }}</span>
                 </button>
               </div>
             </div>
@@ -62,9 +68,9 @@
           <div class="block md:hidden py-6">
             <div class="container">
               <InputDropdown
-                :options="views"
+                :options="localizedViews"
                 :value="currentRouteValue"
-                @change="$router.push(`/account/${$event}/`)"
+                @change="$router.push(localePath(`/account/${$event}/`))"
               />
             </div>
           </div>
@@ -94,10 +100,10 @@
 
     <AccountConfirmationPopup
       v-if="logoutPopupIsActive"
-      heading="Logout"
-      promptMessage="Are you sure you want to logout?"
-      acceptLabel="Yes"
-      refuseLabel="No"
+      :heading="$t('account.logout.label')"
+      :prompt-message="$t('account.logout.confirm')"
+      :accept-label="$t('account.logout.confirmYes')"
+      :refuse-label="$t('account.logout.confirmNo')"
       @accept="logout"
       @click-close="logoutPopupIsActive = false"
     />
@@ -109,33 +115,19 @@
 import { mapState } from 'vuex'
 
 export default {
-  head() {
-    return {
-      script: [
-        // Iconify API script for loading SVG icons on demand
-        {
-          type: 'text/javascript',
-          src: 'https://code.iconify.design/1/1.0.1/iconify.min.js',
-          async: true,
-          body: true
-        }
-      ]
-    }
-  },
-
   data() {
     return {
       views: [
         {
-          label: 'Orders & Returns',
+          label: 'account.orders.title',
           value: 'orders'
         },
         {
-          label: 'Addresses',
+          label: 'account.addresses.title',
           value: 'addresses'
         },
         {
-          label: 'Payment methods',
+          label: 'account.payments.title',
           value: 'payments'
         }
       ],
@@ -158,6 +150,12 @@ export default {
       if (currentRoot.length) {
         return currentRoot[0].value
       }
+
+      return ''
+    },
+    localizedViews() {
+      const { views } = this
+      return views.map(({ label, value }) => ({ label: this.$t(label), value }))
     }
   },
 
@@ -171,6 +169,22 @@ export default {
     }
   },
 
+  async mounted() {
+    // Initialize customer (if logged in, set customer state)
+    const customer = await this.$swell.account.get()
+
+    // Persistent middleware workaround
+    if (customer) {
+      this.$store.dispatch('initializeCustomer')
+    } else {
+      this.$store.dispatch('showNotification', {
+        message: this.$t('account.login.notLoggedIn'),
+        type: 'error'
+      })
+      this.$router.push(this.localePath('/account/login/'))
+    }
+  },
+
   methods: {
     async logout() {
       try {
@@ -179,7 +193,7 @@ export default {
 
         // Close Popup
         this.$emit('click-close')
-        this.$store.dispatch('showNotification', { message: 'You’ve succesfully logged out.' })
+        this.$store.dispatch('showNotification', { message: this.$t('account.logout.success') })
 
         // Re-route if still in accounts
         if (this.$route.path.includes('/account/')) {
@@ -191,19 +205,17 @@ export default {
     }
   },
 
-  async mounted() {
-    // Initialize customer (if logged in, set customer state)
-    const customer = await this.$swell.account.get()
-
-    // Persistent middleware workaround
-    if (customer) {
-      this.$store.dispatch('initializeCustomer')
-    } else {
-      this.$store.dispatch('showNotification', {
-        message: 'You are currently not logged in. Please log in to continue.',
-        type: 'error'
-      })
-      this.$router.push('/account/login/')
+  head() {
+    return {
+      script: [
+        // Iconify API script for loading SVG icons on demand
+        {
+          type: 'text/javascript',
+          src: 'https://code.iconify.design/1/1.0.1/iconify.min.js',
+          async: true,
+          body: true
+        }
+      ]
     }
   }
 }

@@ -1,70 +1,70 @@
 <template>
-  <div class="relative container pt-6 pb-24 md:max-w-112 md:pt-24" v-enter-key="login">
-    <h2 class="pb-6">Log in</h2>
+  <div v-enter-key="login" class="relative container pt-6 pb-24 md:max-w-112 md:pt-24">
+    <h2 class="pb-6">{{ $t('account.login.title') }}</h2>
 
     <div class="mb-6">
       <InputText
+        v-model="email"
         class="mb-2"
-        label="Email"
-        placeholder="Your email address"
+        :label="$t('account.login.email.label')"
+        :placeholder="$t('account.login.email.placeholder')"
         name="email"
         autocomplete="email"
-        v-model="email"
       />
 
       <template v-if="$v.email.$dirty">
-        <span class="label-sm text-error" v-if="!$v.email.email"
-          >Please enter a valid email address.</span
-        >
+        <span v-if="!$v.email.email" class="label-sm text-error">{{
+          $t('account.login.email.format')
+        }}</span>
 
-        <span class="label-sm text-error" v-else-if="!$v.email.required"
-          >Please enter your email address.</span
-        >
+        <span v-else-if="!$v.email.required" class="label-sm text-error">{{
+          $t('account.login.email.required')
+        }}</span>
       </template>
     </div>
 
     <div class="mb-6">
       <InputText
+        v-model="password"
         class="mb-2"
-        label="Password"
+        :label="$t('account.login.password.label')"
         type="password"
-        placeholder="Your password"
+        :placeholder="$t('account.login.password.placeholder')"
         name="currentPassword"
         autocomplete="current-password"
-        v-model="password"
       />
 
       <template v-if="$v.password.$dirty">
-        <span class="label-sm text-error" v-if="!$v.password.required"
-          >Please enter your password.</span
-        >
+        <span v-if="!$v.password.required" class="label-sm text-error">{{
+          $t('account.login.password.required')
+        }}</span>
       </template>
     </div>
 
     <NuxtLink
       class="text-xs font-semibold leading-tight text-primary-dark"
-      to="/account/forgot-password/"
+      :to="localePath('/account/forgot-password/')"
     >
-      Did you forget your password?
+      {{ $t('account.login.forgotPassword') }}
     </NuxtLink>
 
     <ButtonLoading
       class="dark w-full mt-6 mb-4"
-      @click.native="login()"
       label="Log in"
-      loadingLabel="Logging in"
-      :isLoading="isProcessing"
+      loading-label="Logging in"
+      :is-loading="isProcessing"
+      @click.native="login()"
     />
 
-    <NuxtLink class="btn light w-full" to="/account/create-account/">
-      Create account
+    <NuxtLink class="btn light w-full" :to="localePath('/account/create-account/')">
+      {{ $t('account.login.createAccount') }}
     </NuxtLink>
   </div>
 </template>
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, email, minLength, maxLength } from 'vuelidate/lib/validators'
+import { required, email } from 'vuelidate/lib/validators'
 
 export default {
   mixins: [validationMixin],
@@ -75,6 +75,10 @@ export default {
       password: '',
       isProcessing: false
     }
+  },
+
+  activated() {
+    this.$v.$reset()
   },
 
   methods: {
@@ -92,22 +96,18 @@ export default {
         this.isProcessing = false
 
         if (!res || res === null) {
-          throw Error('Error')
+          throw new Error('Error')
         }
 
-        this.$store.dispatch('showNotification', { message: 'You’ve succesfully logged in.' })
-        this.$router.push('/account/orders/')
+        this.$store.dispatch('showNotification', { message: this.$t('account.login.success') })
+        this.$router.push(this.localePath('/account/orders/'))
       } catch (err) {
         this.$store.dispatch('showNotification', {
-          message: 'Your email or password was entered incorrectly.',
+          message: this.$t('account.login.error'),
           type: 'error'
         })
       }
     }
-  },
-
-  activated() {
-    this.$v.$reset()
   },
 
   validations: {

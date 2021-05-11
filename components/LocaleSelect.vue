@@ -1,5 +1,5 @@
 <template>
-  <div v-if="options && locale" class="relative transition-all duration-300 ease-in-out">
+  <div class="relative transition-all duration-300 ease-in-out">
     <div
       class="w-full flex p-2 items-center text-center font-medium cursor-pointer focus:outline-none focus:shadow-outline hover:text-accent"
       :class="{
@@ -8,17 +8,17 @@
       }"
       @click="toggleDropdown()"
     >
-      <div v-if="selected && selected.value" class="mx-auto transition-all duration-200 ease-out">
+      <div class="mx-auto transition-all duration-200 ease-out">
         <img
           class="w-6"
-          :src="`/flags/${getCountryCodeFromLocale(selected.value)}.svg`"
-          :alt="`${getCountryCodeFromLocale(selected.value)}`"
+          :src="`/flags/${getCountryCodeFromLocale($i18n.locale)}.svg`"
+          :alt="`${getCountryCodeFromLocale($i18n.locale)}`"
         />
         <span
           v-if="appearance === 'popup'"
           class="font-medium"
           :class="{ 'ml-2 font-semibold': appearance === 'popup' }"
-          >{{ selected.label }}</span
+          >{{ $i18n.localeProperties.name }}</span
         >
       </div>
     </div>
@@ -43,38 +43,42 @@
       overflow-scroll"
       role="listbox"
     >
-      <li
-        v-for="(option, index) in options"
-        :key="`option-${index}`"
-        :class="{ 'pointer-events-none': option.value === selected.value || option === selected }"
-        class="mb-0 px-2 flex items-center cursor-pointer hover:bg-primary-lighter border-b border-primary-light last:border-b-0"
-        role="option"
-        @click="selectOption(option)"
+      <NuxtLink
+        v-for="availableLocale in $i18n.locales"
+        :key="availableLocale.code"
+        v-slot="{ href, navigate }"
+        :to="switchLocalePath(availableLocale.code)"
+        custom
       >
-        <div
-          class="m-2"
-          :class="{
-            'opacity-25': option.label === selected || option === selected,
-            'my-2 mx-auto': appearance === 'popup'
-          }"
+        <li
+          :class="{ 'pointer-events-none': availableLocale.code === $i18n.locale }"
+          class="mb-0 px-2 flex items-center cursor-pointer hover:bg-primary-lighter border-b border-primary-light last:border-b-0"
+          role="option"
+          @click="toggleDropdown"
         >
-          <img
-            class="inline-block w-6 mr-1"
-            :src="`/flags/${getCountryCodeFromLocale(option.value)}.svg`"
-            :alt="`${getCountryCodeFromLocale(option.value)}`"
-          />
-          {{ option.label }}
-        </div>
-      </li>
+          <a
+            :href="href"
+            class="m-2"
+            :class="{
+              'opacity-25': availableLocale.code === $i18n.locale,
+              'my-2 mx-auto': appearance === 'popup'
+            }"
+            @click="navigate"
+          >
+            <img
+              class="inline-block w-6 mr-1"
+              :src="`/flags/${getCountryCodeFromLocale(availableLocale.code)}.svg`"
+              :alt="`${getCountryCodeFromLocale(availableLocale.code)}`"
+            />
+            {{ availableLocale.name }}
+          </a>
+        </li>
+      </NuxtLink>
     </ul>
   </div>
 </template>
 
 <script>
-// Helpers
-import find from 'lodash/find'
-import { mapState } from 'vuex'
-
 export default {
   name: 'LocaleSelect',
 
@@ -82,46 +86,13 @@ export default {
     appearance: {
       type: String,
       default: 'float'
-    },
-    locale: {
-      type: String,
-      default: null
     }
-  },
-
-  fetch() {
-    // Set component data
-    this.options = this.getLocaleOptions()
   },
 
   data() {
     return {
-      value: null,
-      options: [],
-      dropdownIsActive: false,
-      selected: ''
+      dropdownIsActive: false
     }
-  },
-
-  watch: {
-    locale() {
-      const { locale } = this
-      // Set initial value when locale has been fetched
-      if (locale === null) return
-      this.value = locale
-    },
-
-    value() {
-      this.setDefaultValue()
-    }
-  },
-
-  created() {
-    if (this.locale) {
-      this.value = this.locale
-    }
-
-    this.setDefaultValue()
   },
 
   mounted() {
@@ -135,42 +106,8 @@ export default {
   },
 
   methods: {
-    getLocaleOptions() {
-      const { $swell } = this
-
-      const options = $swell.locale.list().map(locale => ({
-        value: locale.code,
-        label: locale.name,
-        icon: locale.icon
-      }))
-      return options.length ? options : null
-    },
-
-    setDefaultValue() {
-      const { value, options } = this
-
-      if (!value) return
-
-      // Fallback
-      this.selected = value
-
-      if (!options || !options.length) return
-
-      const selected = find(options, { value })
-
-      if (!selected) return
-
-      this.selected = selected
-    },
-
     toggleDropdown() {
       this.dropdownIsActive = !this.dropdownIsActive
-    },
-
-    selectOption(option) {
-      this.selected = option
-      this.dropdownIsActive = false
-      this.$store.dispatch('selectLocale', { code: option.value })
     },
 
     clickOutside(e) {

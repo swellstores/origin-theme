@@ -28,21 +28,6 @@ export const actions = {
     }
   },
 
-  async selectLocale({ commit, dispatch, state }, { code } = {}) {
-    try {
-      if (code) {
-        await this.$swell.locale.select(code)
-        // TODO: better way to refetch all the data
-        window && window.location.reload()
-      } else {
-        const selected = this.$swell.locale.selected()
-        commit('setState', { key: 'locale', value: selected })
-      }
-    } catch (err) {
-      dispatch('handleError', err)
-    }
-  },
-
   /**
    * Product to be added to cart
    * @type {Object} Product
@@ -83,7 +68,11 @@ export const actions = {
         }, 200)
       } else {
         // Trigger success confirmation
-        dispatch('showNotification', { message: `Added ${item.quantity} item(s) to cart`, type: 'product', isSticky: true })
+        dispatch('showNotification', {
+          message: `Added ${item.quantity} item(s) to cart`,
+          type: 'product',
+          isSticky: true
+        })
       }
     } catch (err) {
       dispatch('handleError', err)
@@ -200,7 +189,7 @@ export const actions = {
 
   async initializeCustomer({ commit, dispatch }) {
     try {
-      let loggedInCustomer = await this.$swell.account.get()
+      const loggedInCustomer = await this.$swell.account.get()
 
       // Check if customer exists
       if (loggedInCustomer) {

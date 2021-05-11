@@ -49,7 +49,7 @@
             <!-- Name + options -->
             <div class="pt-1">
               <NuxtLink
-                :to="resolveUrl({ type: 'product', value: product.slug })"
+                :to="localePath(resolveUrl({ type: 'product', value: product.slug }))"
                 class="inline-block"
               >
                 <h4>{{ product.name }}</h4>
@@ -74,11 +74,11 @@
               :class="{ loading: cartIsUpdating }"
               class="w-full btn dark mr-2"
             >
-              Checkout
+              {{ $t('notifications.checkout') }}
             </a>
 
             <button class="w-full relative btn light" type="button" @click="openCart">
-              View cart
+              {{ $t('notifications.cart') }}
               <div
                 v-if="cart && cart.itemQuantity"
                 class="fade-in absolute right-0 top-0 bg-accent rounded-full w-6 h-6 flex justify-center items-center text-primary-lighter transform translate-x-1 -translate-y-1"

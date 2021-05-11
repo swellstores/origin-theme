@@ -14,14 +14,19 @@
           <div class="relative container py-5 border-b">
             <div class="flex justify-between items-center">
               <h3>
-                Cart <span v-if="cart && cart.itemQuantity">({{ cart.itemQuantity }})</span>
+                {{ $t('cart.title') }}
+                <span v-if="cart && cart.itemQuantity">({{ cart.itemQuantity }})</span>
               </h3>
               <button @click.prevent="$emit('click-close')">
                 <BaseIcon icon="uil:multiply" size="lg" />
               </button>
             </div>
 
-            <div v-if="infoText" class="mt-4 text-sm" v-html="infoText"></div>
+            <div
+              v-if="$te('cart.infoText')"
+              class="mt-4 text-sm"
+              v-html="$t('cart.infoText')"
+            ></div>
           </div>
 
           <!-- Items -->
@@ -34,8 +39,10 @@
             />
           </div>
           <div v-else class="container py-10">
-            <span class="block mb-4">Your cart is empty.</span>
-            <NuxtLink :to="resolveUrl({ type: 'product' })" class="btn">Shop now</NuxtLink>
+            <span class="block mb-4">{{ $t('cart.empty') }}</span>
+            <NuxtLink :to="localePath(resolveUrl({ type: 'product' }))" class="btn">{{
+              $t('cart.backToProducts')
+            }}</NuxtLink>
           </div>
 
           <!-- Footer -->
@@ -56,7 +63,7 @@
                   class="btn flex-shrink-0"
                   @click="applyDiscount"
                 >
-                  Apply
+                  {{ $t('cart.applyCoupon') }}
                 </button>
               </div>
 
@@ -71,7 +78,9 @@
                     <span>**** **** **** {{ giftcard.last4 }}</span>
                     <ButtonCross class="ml-3" @click="removeDiscount(giftcard.id, currency)" />
                   </p>
-                  <p class="text-sm">{{ formatMoney(giftcard.amount, currency) }} gift card</p>
+                  <p class="text-sm">
+                    {{ $t('cart.giftCard', { amount: formatMoney(giftcard.amount, currency) }) }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -79,30 +88,30 @@
             <!-- Summary -->
             <div class="container py-6 border-b">
               <div class="cart-line-total">
-                <span>Subtotal</span>
+                <span>{{ $t('cart.subtotal') }}</span>
                 <span>{{ formatMoney(cart.subTotal, currency) }}</span>
               </div>
               <div class="cart-line-total">
-                <span>Shipping</span>
+                <span>{{ $t('cart.shipping') }}</span>
                 <span>{{ formatMoney(cart.shipmentTotal, currency) }}</span>
               </div>
               <div v-show="cart.discountTotal" class="cart-line-total">
-                <span>Discounts</span>
+                <span>{{ $t('cart.discounts') }}</span>
                 <span>–{{ formatMoney(cart.discountTotal, currency) }}</span>
               </div>
               <div v-show="cart.taxTotal" class="cart-line-total">
-                <span>Taxes</span>
+                <span>{{ $t('cart.taxes') }}</span>
                 <span>{{ formatMoney(cart.taxTotal, currency) }}</span>
               </div>
               <h3 class="mt-3 flex justify-between text-xl font-semibold">
-                <span>Total</span>
+                <span>{{ $t('cart.total') }}</span>
                 <span>{{ formatMoney(cart.grandTotal, currency) }}</span>
               </h3>
               <div
                 v-if="account && account.balance && account.balance > 0"
                 class="cart-line-total border-t mt-4 pt-4"
               >
-                <span>Account balance</span>
+                <span>{{ $t('cart.accountBalance') }}</span>
                 <span>{{ formatMoney(account.balance, currency) }}</span>
               </div>
               <a
@@ -110,10 +119,10 @@
                 :class="{ loading: cartIsUpdating }"
                 class="btn btn--lg relative mt-4 mb-1"
               >
-                <span v-show="!cartIsUpdating">Checkout</span>
+                <span v-show="!cartIsUpdating">{{ $t('cart.checkout') }}</span>
                 <div v-show="cartIsUpdating" class>
                   <div class="spinner absolute inset-0 mt-3"></div>
-                  <span class="absolute inset-0 mt-5">Updating</span>
+                  <span class="absolute inset-0 mt-5">{{ $t('cart.updating') }}</span>
                 </div>
               </a>
             </div>
@@ -131,17 +140,9 @@ import { mapState } from 'vuex'
 export default {
   name: 'TheCart',
 
-  fetch() {
-    const { $swell } = this
-
-    // Set component data
-    this.infoText = $swell.settings.get('cart.infoText')
-  },
-
   data() {
     return {
-      couponCode: null,
-      infoText: null
+      couponCode: null
     }
   },
 

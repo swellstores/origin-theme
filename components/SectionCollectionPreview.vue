@@ -10,7 +10,7 @@
     <div class="container">
       <template v-if="showTitle">
         <div v-if="!loaded && $fetchState.pending" class="loader-el w-64 h-8 mb-2 md:h-10"></div>
-        <NuxtLink v-else :to="resolveUrl({ type: 'category', value: slug })">
+        <NuxtLink v-else :to="localePath(resolveUrl({ type: 'category', value: slug }))">
           <h1 v-if="titleSize === 'lg'" class="mb-2">{{ name }}</h1>
           <h2 v-if="titleSize === 'md'" class="mb-2">{{ name }}</h2>
           <h3 v-if="titleSize === 'sm'" class="mb-2">{{ name }}</h3>

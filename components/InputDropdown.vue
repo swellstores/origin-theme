@@ -70,6 +70,8 @@ export default {
       if (this.selected !== undefined) {
         return this.selected.label || this.selected
       }
+
+      return ''
     }
   },
 

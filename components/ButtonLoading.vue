@@ -1,9 +1,5 @@
 <template>
-  <button
-    class="btn"
-    :class="[{ loading: isLoading, disabled: disabled }]"
-    type="button"
-  >
+  <button class="btn" :class="[{ loading: isLoading, disabled: disabled }]" type="button">
     <div class="absolute center-xy">
       <div v-show="isLoading" class="spinner"></div>
     </div>

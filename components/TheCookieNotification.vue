@@ -13,9 +13,9 @@
     >
       <div v-if="type === 'compact'" class="flex justify-between items-center">
         <p class="text-sm">
-          We use cookies to improve your shopping experience.
-          <NuxtLink :to="resolveUrl({ type: 'page', value: 'privacy-policy' })">
-            Learn more
+          {{ $t('notifications.cookies.message') }}
+          <NuxtLink :to="localePath(resolveUrl({ type: 'page', value: 'privacy-policy' }))">
+            {{ $t('notifications.cookies.privacy') }}
           </NuxtLink>
         </p>
         <button

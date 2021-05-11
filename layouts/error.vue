@@ -5,29 +5,26 @@
         v-if="error.statusCode"
         class="mx-auto text-center uppercase label-xs-bold-faded leading-none max-w-128"
       >
-        {{ error.statusCode }} error
+        {{ $t('errors.errorCode', { code: error.statusCode }) }}
       </span>
       <template v-if="error.statusCode < 500">
         <h1 class="text-6xl text-primary-lightest">
-          {{ error.heading ? error.heading : error.message }}
+          {{ error.heading || $t('errors.pageNotFound.title') }}
         </h1>
-        <p v-if="error.heading && error.message" class="mt-4 text-primary-lightest ">
-          {{ error.message }}
+        <p class="mt-4 text-primary-lightest ">
+          {{ error.message || $t('errors.pageNotFound.message') }}
         </p>
         <div class="inline-block">
-          <NuxtLink
-            to="/"
-            title="Home"
-            class="btn lighter mt-6 px-6 py-3"
-            >Return Home</NuxtLink
-          >
+          <NuxtLink :to="localePath('/')" title="Home" class="btn lighter mt-6 px-6 py-3">{{
+            $t('errors.returnHome')
+          }}</NuxtLink>
         </div>
       </template>
 
       <template v-else>
-        <h1 class="text-6xl px-10 leading-none">Internal server error</h1>
+        <h1 class="text-6xl px-10 leading-none">{{ $t('errors.internal.title') }}</h1>
         <p class="mt-4 mx-auto max-w-80 text-primary-lightest">
-          Something went wrong, but the issue has been logged and we’ll look into it.
+          {{ $t('errors.internal.message') }}
         </p>
 
         <div class="inline-block">
@@ -36,7 +33,7 @@
             title="Reload"
             class="w-full inline-block mt-6 px-6 py-3 uppercase tracking-wide bg-primary-lighter"
             @click.prevent="reload()"
-            >Reload page</a
+            >{{ $t('errors.internal.reload') }}</a
           >
         </div>
       </template>
@@ -51,8 +48,8 @@ export default {
       type: Object,
       default: () => ({
         statusCode: null,
-        heading: 'Page not found',
-        message: 'The link you clicked may have changed or the URL is incorrect. Try searching?'
+        heading: '',
+        message: ''
       })
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <transition name="popup" :duration="700" appear>
-    <div class="z-40 fixed inset-0" v-enter-key="handleEnterKey">
+    <div v-enter-key="handleEnterKey" class="z-40 fixed inset-0">
       <!-- Overlay -->
       <div
         class="overlay opacity-50 absolute w-full h-full bg-primary-darker"
@@ -14,8 +14,8 @@
       >
         <div class="container relative py-2">
           <div class="flex py-4">
-            <h3 v-if="type === 'new'">Add new payment method</h3>
-            <h3 v-else>Edit payment method</h3>
+            <h3 v-if="type === 'new'">{{ $t('account.payments.popup.new.title') }}</h3>
+            <h3 v-else>{{ $t('account.payments.popup.edit.title') }}</h3>
             <button class="ml-auto" @click.prevent="$emit('click-close')">
               <BaseIcon icon="uil:multiply" size="sm" />
             </button>
@@ -25,67 +25,67 @@
           <div class="pt-6">
             <div class="mb-6">
               <InputText
+                v-model="cardNumber"
+                v-cardformat:formatCardNumber
                 class="mb-2"
                 :class="{ 'tracking-large': type === 'update' }"
-                label="Card number"
+                :label="$t('account.payments.popup.cardNumber.label')"
                 name="ccNumber"
                 autocomplete="cc-number"
                 :disabled="type === 'update'"
-                v-model="cardNumber"
-                v-cardformat:formatCardNumber
               />
 
               <template v-if="$v.cardNumber.$dirty">
-                <span class="label-sm text-error" v-if="!$v.cardNumber.required"
-                  >Please enter your card number.</span
-                >
+                <span v-if="!$v.cardNumber.required" class="label-sm text-error">{{
+                  $t('account.payments.popup.cardNumber.required')
+                }}</span>
 
-                <span class="label-sm text-error" v-else-if="!$v.cardNumber.maxLength"
-                  >Please enter a valid card number.</span
-                >
+                <span v-else-if="!$v.cardNumber.maxLength" class="label-sm text-error">{{
+                  $t('account.payments.popup.cardNumber.maxLength', { n: 19 })
+                }}</span>
               </template>
             </div>
 
             <div class="flex flex-no-wrap mb-6">
               <div :class="type === 'update' ? 'w-full' : 'w-1/2 mr-3'">
                 <InputText
-                  label="Card Expiry"
                   v-model="cardExpiry"
+                  v-cardformat:formatCardExpiry
+                  :label="$t('account.payments.popup.cardExpiry.label')"
                   :disabled="type === 'update'"
                   name="ccExpiry"
                   autocomplete="cc-exp"
-                  v-cardformat:formatCardExpiry
                 />
 
                 <template v-if="$v.cardExpiry.$dirty">
-                  <span class="label-sm text-error" v-if="!$v.cardExpiry.required"
-                    >Enter your card expiry date.</span
-                  >
+                  <span v-if="!$v.cardExpiry.required" class="label-sm text-error">{{
+                    $t('account.payments.popup.cardExpiry.required')
+                  }}</span>
 
-                  <span class="label-sm text-error" v-else-if="!$v.cardExpiry.validDate"
-                    >Enter a valid expiry date.</span
-                  >
+                  <span v-else-if="!$v.cardExpiry.validDate" class="label-sm text-error">{{
+                    $t('account.payments.popup.cardExpiry.date')
+                  }}</span>
                 </template>
               </div>
 
               <div v-if="type === 'new'" class="w-1/2 ml-3">
                 <InputText
-                  label="CVC"
                   v-model="cardCVC"
+                  v-cardformat:formatCardCVC
+                  :label="$t('account.payments.popup.cvc.label')"
                   name="ccCVC"
                   autocomplete="cc-csc"
-                  v-cardformat:formatCardCVC
                 />
 
                 <template v-if="$v.cardCVC.$dirty">
-                  <span class="label-sm text-error" v-if="!$v.cardCVC.required"
-                    >Enter your card security code.</span
-                  >
+                  <span v-if="!$v.cardCVC.required" class="label-sm text-error">{{
+                    $t('account.payments.popup.cvc.required')
+                  }}</span>
 
                   <span
-                    class="label-sm text-error"
                     v-else-if="!$v.cardCVC.integer || !$v.cardCVC.maxLength"
-                    >Enter a valid card security code.</span
+                    class="label-sm text-error"
+                    >{{ $t('account.payments.popup.cvc.format') }}</span
                   >
                 </template>
               </div>
@@ -93,14 +93,14 @@
 
             <div class="checkbox mb-4">
               <input
-                type="checkbox"
                 id="set-default"
                 v-model="setDefault"
+                type="checkbox"
                 :disabled="disableDefaultOption"
               />
 
               <label class="w-full" for="set-default">
-                <p class="text-sm">Use as default card</p>
+                <p class="text-sm">{{ $t('account.payments.popup.card.setAsDefault') }}</p>
                 <div class="indicator ml-auto text-primary-lighter">
                   <BaseIcon icon="uil:check" size="sm" />
                 </div>
@@ -111,25 +111,27 @@
 
         <div class="py-6 border-t border-primary-med">
           <div class="container ">
-            <span class="block text-md font-semibold mb-2">Billing address</span>
+            <span class="block text-md font-semibold mb-2">{{
+              $t('account.payments.popup.billingAddress')
+            }}</span>
 
             <InputDropdown
               v-if="addresses && addresses.length"
+              id="address-dropdown"
               :compact="true"
               :options="formattedAddressOptions"
               :value="
                 formattedDefaultAddress ? formattedDefaultAddress : 'Select an existing address'
               "
-              id="address-dropdown"
               class="text-sm max-h-48"
               @change="billingAddress = $event"
             />
-            <span class="block text-sm text-primary-dark" v-else
-              >You have no existing addresses. Create one below.</span
-            >
+            <span v-else class="block text-sm text-primary-dark">{{
+              $t('account.payments.popup.noBillingAddress')
+            }}</span>
 
             <button class="label-sm-bold mt-6" @click="$emit('new-address')">
-              + Add a new address
+              + {{ $t('account.payments.popup.newBillingAddress') }}
             </button>
           </div>
         </div>
@@ -139,31 +141,31 @@
             <ButtonLoading
               v-if="type === 'new'"
               class="w-full dark my-4"
-              @click.native="createCard()"
-              label="Add new payment method"
-              loadingLabel="Adding"
-              :isLoading="isCreating"
+              :label="$t('account.payments.popup.create.button.label')"
+              :loading-label="$t('account.payments.popup.create.button.loadingLabel')"
+              :is-loading="isCreating"
               :disabled="isUpdating || isDeleting"
+              @click.native="createCard()"
             />
 
             <ButtonLoading
               v-if="type === 'update'"
               class="w-full dark my-4"
-              @click.native="updateCard()"
-              label="Save card"
-              loadingLabel="Saving"
-              :isLoading="isUpdating"
+              :label="$t('account.payments.popup.save.button.label')"
+              :loading-label="$t('account.payments.save.button.label')"
+              :is-loading="isUpdating"
               :disabled="isCreating || isDeleting"
+              @click.native="updateCard()"
             />
 
             <ButtonLoading
               v-if="type === 'update'"
               class="w-full light-error"
-              @click.native="deleteCard()"
-              label="Delete card"
-              loadingLabel="Deleting"
-              :isLoading="isDeleting"
+              :label="$t('account.payments.delete.button.label')"
+              :loading-label="$t('account.payments.delete.button.label')"
+              :is-loading="isDeleting"
               :disabled="isCreating || isUpdating"
+              @click.native="deleteCard()"
             />
           </div>
         </div>
@@ -175,17 +177,16 @@
 <script>
 // Helpers
 import values from 'lodash/values'
-import every from 'lodash/every'
 import isEmpty from 'lodash/isEmpty'
 
 // Validation helper
 import { validationMixin } from 'vuelidate'
-import { required, maxLength, integer, helpers } from 'vuelidate/lib/validators'
+import { required, maxLength, integer } from 'vuelidate/lib/validators'
 
 const validDate = date => {
   if (!date.includes('/')) return false
 
-  let month = date.split('/')[0].trim()
+  const month = date.split('/')[0].trim()
   let year = date.split('/')[1].trim()
 
   if (!month || !year || (!year.length === 2 && !year.length === 4)) return false
@@ -206,7 +207,7 @@ const validDate = date => {
 
   if (month < 0 || month > 12) return false
 
-  if (expYear > currYear || (expYear === currYear && month >= currMonth)) {
+  if (expYear > currYear || (expYear === currYear && expMonth >= currMonth)) {
     return true
   } else {
     return false
@@ -215,12 +216,6 @@ const validDate = date => {
 
 export default {
   mixins: [validationMixin],
-
-  async fetch() {
-    // Set component data
-    const { results: addresses } = await this.$swell.account.listAddresses()
-    this.addresses = addresses
-  },
 
   props: {
     card: {
@@ -246,6 +241,12 @@ export default {
       type: Object,
       default: null
     }
+  },
+
+  async fetch() {
+    // Set component data
+    const { results: addresses } = await this.$swell.account.listAddresses()
+    this.addresses = addresses
   },
 
   data() {
@@ -328,156 +329,6 @@ export default {
     }
   },
 
-  methods: {
-    async updateCard() {
-      try {
-        this.isUpdating = true
-
-        if (this.billingAddress) {
-          const { name, address1, address2, city, state, zip, country } = this.billingAddress
-
-          const res = await this.$swell.account.updateCard(this.card.id, {
-            billing: {
-              name,
-              address1,
-              address2,
-              city,
-              state,
-              zip,
-              country
-            }
-          })
-        }
-
-        if (this.setDefault) {
-          // Set current card as default
-          await this.$swell.account.update({
-            billing: {
-              accountCardId: this.card.id
-            }
-          })
-        }
-
-        // Close panel and fetch updated data
-        this.isUpdating = false
-        this.$emit('click-close')
-        this.$store.dispatch('initializeCustomer')
-        this.$store.dispatch('showNotification', { message: 'Payment method updated.' })
-        this.$emit('refresh')
-      } catch (err) {
-        this.$store.dispatch('showNotification', {
-          message: 'There was an issue updating your payment method.',
-          type: 'error'
-        })
-      }
-    },
-
-    async createCard() {
-      try {
-        // Validate fields
-        this.$v.$touch()
-        if (this.$v.$invalid) return
-
-        this.isCreating = true
-
-        const { token } = await this.$swell.card.createToken({
-          number: this.cardNumber,
-          exp_month: this.expMonth,
-          exp_year: this.expYear,
-          cvc: this.cardCVC
-        })
-
-        if (token) {
-          const card = await this.$swell.account.createCard({ token })
-
-          if (!card) throw Error('There was an error creating your Payment method.')
-
-          if (this.billingAddress) {
-            const { name, address1, address2, city, state, zip, country } = this.billingAddress
-
-            const res = await this.$swell.account.updateCard(card.id, {
-              billing: {
-                name,
-                address1,
-                address2,
-                city,
-                state,
-                zip,
-                country
-              }
-            })
-          }
-
-          if (this.setDefault) {
-            // Set current address as default
-            await this.$swell.account.update({
-              billing: {
-                accountCardId: card.id
-              }
-            })
-          }
-
-          // Close panel and fetch updated data
-          this.isCreating = false
-          this.$emit('click-close')
-          this.$store.dispatch('initializeCustomer')
-          this.$store.dispatch('showNotification', { message: 'Payment method created.' })
-          this.$emit('refresh')
-        }
-      } catch (err) {
-        this.isCreating = false
-        console.log(err)
-        this.$store.dispatch('showNotification', {
-          message: 'There was an issue adding your payment method.',
-          type: 'error'
-        })
-      }
-    },
-
-    async deleteCard() {
-      try {
-        this.isDeleting = true
-
-        await this.$swell.account.deleteCard(this.card.id)
-
-        // If set as default, reset account's default card ID.
-        if (this.defaultCardId === this.card.id) {
-          await this.$swell.account.update({
-            billing: {
-              accountCardId: null
-            }
-          })
-        }
-
-        this.isDeleting = false
-
-        // Close panel and fetch updated data
-        this.$emit('click-close')
-        this.$store.dispatch('initializeCustomer')
-        this.$store.dispatch('showNotification', { message: 'Payment method deleted.' })
-        this.$emit('refresh')
-      } catch (err) {
-        this.$store.dispatch('showNotification', {
-          message: 'There was an issue deleting your payment method.',
-          type: 'error'
-        })
-      }
-    },
-
-    async handleEnterKey() {
-      switch (this.type) {
-        case 'update':
-          await this.updateCard()
-          break
-        case 'new':
-          await this.createCard()
-          break
-        default:
-          return
-      }
-    }
-  },
-
   created() {
     // Prefill form data for updating existing data
     if (this.card) {
@@ -516,6 +367,161 @@ export default {
     // If there's no default card, force set default
     if (!this.defaultCardId && !this.cardsLength && this.type === 'new') {
       this.setDefault = true
+    }
+  },
+
+  methods: {
+    async updateCard() {
+      try {
+        this.isUpdating = true
+
+        if (this.billingAddress) {
+          const { name, address1, address2, city, state, zip, country } = this.billingAddress
+
+          await this.$swell.account.updateCard(this.card.id, {
+            billing: {
+              name,
+              address1,
+              address2,
+              city,
+              state,
+              zip,
+              country
+            }
+          })
+        }
+
+        if (this.setDefault) {
+          // Set current card as default
+          await this.$swell.account.update({
+            billing: {
+              accountCardId: this.card.id
+            }
+          })
+        }
+
+        // Close panel and fetch updated data
+        this.isUpdating = false
+        this.$emit('click-close')
+        this.$store.dispatch('initializeCustomer')
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.payments.popup.save.success')
+        })
+        this.$emit('refresh')
+      } catch (err) {
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.payments.popup.save.error'),
+          type: 'error'
+        })
+      }
+    },
+
+    async createCard() {
+      try {
+        // Validate fields
+        this.$v.$touch()
+        if (this.$v.$invalid) return
+
+        this.isCreating = true
+
+        const { token } = await this.$swell.card.createToken({
+          number: this.cardNumber,
+          exp_month: this.expMonth,
+          exp_year: this.expYear,
+          cvc: this.cardCVC
+        })
+
+        if (token) {
+          const card = await this.$swell.account.createCard({ token })
+
+          if (!card) throw new Error(this.$t('account.payments.popup.create.error'))
+
+          if (this.billingAddress) {
+            const { name, address1, address2, city, state, zip, country } = this.billingAddress
+
+            await this.$swell.account.updateCard(card.id, {
+              billing: {
+                name,
+                address1,
+                address2,
+                city,
+                state,
+                zip,
+                country
+              }
+            })
+          }
+
+          if (this.setDefault) {
+            // Set current address as default
+            await this.$swell.account.update({
+              billing: {
+                accountCardId: card.id
+              }
+            })
+          }
+
+          // Close panel and fetch updated data
+          this.isCreating = false
+          this.$emit('click-close')
+          this.$store.dispatch('initializeCustomer')
+          this.$store.dispatch('showNotification', {
+            message: this.$t('account.payments.popup.create.success')
+          })
+          this.$emit('refresh')
+        }
+      } catch (err) {
+        this.isCreating = false
+        console.log(err)
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.payments.popup.create.error'),
+          type: 'error'
+        })
+      }
+    },
+
+    async deleteCard() {
+      try {
+        this.isDeleting = true
+
+        await this.$swell.account.deleteCard(this.card.id)
+
+        // If set as default, reset account's default card ID.
+        if (this.defaultCardId === this.card.id) {
+          await this.$swell.account.update({
+            billing: {
+              accountCardId: null
+            }
+          })
+        }
+
+        this.isDeleting = false
+
+        // Close panel and fetch updated data
+        this.$emit('click-close')
+        this.$store.dispatch('initializeCustomer')
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.payments.popup.delete.success')
+        })
+        this.$emit('refresh')
+      } catch (err) {
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.payments.popup.delete.error'),
+          type: 'error'
+        })
+      }
+    },
+
+    async handleEnterKey() {
+      switch (this.type) {
+        case 'update':
+          await this.updateCard()
+          break
+        case 'new':
+          await this.createCard()
+          break
+        default:
+      }
     }
   },
 

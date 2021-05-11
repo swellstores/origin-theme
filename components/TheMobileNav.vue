@@ -18,7 +18,9 @@
               :key="'mobileNavItem' + index"
               :style="{ '--i': index }"
             >
-              <NuxtLink :to="resolveUrl(item)" class="sw-nav-link">{{ item.name }}</NuxtLink>
+              <NuxtLink :to="localePath(resolveUrl(item))" class="sw-nav-link">{{
+                item.name
+              }}</NuxtLink>
             </li>
           </transition-group>
         </div>
@@ -30,13 +32,17 @@
           class="bottom-0 w-full flex flex-wrap border-b border-primary-light md:px-10 md:pb-6 md:border-b-0 md:justify-center"
         >
           <button class="sw-nav-button" @click.prevent="$emit('click-search')">
-            <BaseIcon icon="uil:search" size="sm" /><span class="ml-3">Search</span>
+            <BaseIcon icon="uil:search" size="sm" /><span class="ml-3">{{
+              $t('navigation.search')
+            }}</span>
           </button>
           <NuxtLink
             class="sw-nav-button"
-            :to="customerLoggedIn ? '/account/orders/' : '/account/login/'"
+            :to="localePath(customerLoggedIn ? '/account/orders/' : '/account/login/')"
           >
-            <BaseIcon icon="uil:user" size="sm" /><span class="ml-3">Account</span>
+            <BaseIcon icon="uil:user" size="sm" /><span class="ml-3">{{
+              $t('navigation.account')
+            }}</span>
           </NuxtLink>
           <LocaleSelect class="sw-nav-button" appearance="popup" />
           <CurrencySelect class="sw-nav-button z-10" appearance="popup" />
@@ -67,7 +73,7 @@ export default {
     checkIfLoggedIn() {
       if (this.customerLoggedIn) {
         this.$emit('click-close')
-        this.$router.push('/account/')
+        this.$router.push(this.localePath('/account/'))
       }
     }
   }

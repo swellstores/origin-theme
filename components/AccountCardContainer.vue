@@ -5,7 +5,7 @@
         <BrandCardIcon :brand="card.brand" />
 
         <div v-if="isDefault" class="ml-auto label-xs-bold bg-primary-light rounded p-2">
-          Default
+          {{ $t('account.payments.card.default') }}
         </div>
       </div>
 
@@ -26,7 +26,9 @@
     <div class="border-t border-primary-med mt-4 pt-4">
       <div class="w-full flex px-4 text-sm">
         <div>
-          <span class="block label-sm-bold mb-2">Billing address</span>
+          <span class="block label-sm-bold mb-2">{{
+            $t('account.payments.card.billingAddress')
+          }}</span>
           <template v-if="card.billing">
             <p v-if="card.billing.name">{{ card.billing.name }}</p>
             <p v-if="card.billing.address1">
@@ -47,11 +49,13 @@
             </p>
           </template>
 
-          <p v-else>No address assigned.</p>
+          <p v-else>{{ $t('account.payments.card.noBillingAddress') }}</p>
         </div>
 
         <div class="ml-auto mt-auto">
-          <button class="px-2" @click="$emit('click-open')">Edit</button>
+          <button class="px-2" @click="$emit('click-open')">
+            {{ $t('account.payments.card.edit') }}
+          </button>
         </div>
       </div>
     </div>

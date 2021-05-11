@@ -77,10 +77,12 @@ export default {
   computed: {
     errorMessage() {
       if (this.status === 'READY' && this.$v.email.$error) {
-        return "That doesn't look like an email... 🤔"
+        return this.$t('emailSignup.email.error')
       } else if (this.errors.length) {
         return get(this, 'errors[0].message')
       }
+
+      return ''
     }
   },
 
@@ -104,7 +106,7 @@ export default {
           } else {
             this.status = 'COMPLETE'
             this.errors = []
-            this.email = "You're on the list!"
+            this.email = this.$t('emailSignup.success')
           }
         } catch (err) {
           if (this.isDev) {

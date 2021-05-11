@@ -22,18 +22,20 @@
 
     <div class="flex flex-col items-end ml-auto">
       <div v-if="isDefault" class="label-xs-bold bg-primary-light rounded p-2">
-        Default
+        {{ $t('account.addresses.default') }}
       </div>
 
       <button v-else class="normal-case label-sm-bold" @click="$emit('set-default', address.id)">
-        Use as default
+        {{ $t('account.addresses.useAsDefault') }}
       </button>
 
       <div class="mt-auto label-sm">
         <button v-if="!isDefault" class="px-2 mr-2" @click="$emit('delete-address', address.id)">
-          Remove
+          {{ $t('account.addresses.remove') }}
         </button>
-        <button class="px-2" @click="$emit('click-open')">Edit</button>
+        <button class="px-2" @click="$emit('click-open')">
+          {{ $t('account.addresses.edit') }}
+        </button>
       </div>
     </div>
   </div>

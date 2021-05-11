@@ -1,6 +1,6 @@
 <template>
   <div class="container md:pr-0">
-    <h1 class="text-4xl hidden md:block mb-8">Addresses</h1>
+    <h1 class="text-4xl hidden md:block mb-8">{{ $t('account.addresses.title') }}</h1>
 
     <div v-if="$fetchState.pending">
       <div class="loader-el w-1/3 h-7 mb-6 m-auto"></div>
@@ -14,14 +14,14 @@
           <AccountAddressContainer
             v-if="defaultAddress"
             :address="defaultAddress"
-            :isDefault="true"
+            :is-default="true"
             @click-open="openEditPopup('update', defaultAddress)"
           />
 
           <template v-if="otherAddresses && otherAddresses.length">
-            <span v-if="defaultAddress" class="block md:hidden label-xs-bold-faded"
-              >Other addresses</span
-            >
+            <span v-if="defaultAddress" class="block md:hidden label-xs-bold-faded">{{
+              $t('account.addresses.otherAddresses')
+            }}</span>
 
             <AccountAddressContainer
               v-for="(address, index) in otherAddresses"
@@ -46,7 +46,7 @@
             v-for="(address, index) in sortedAddresses"
             :key="`address-${index}`"
             :address="address"
-            :isDefault="defaultAddressId === address.id"
+            :is-default="defaultAddressId === address.id"
             :class="{ 'mb-6 md:mb-0': index < otherAddresses.length - 1 }"
             @click-open="openEditPopup('update', address)"
             @delete-address="
@@ -62,43 +62,43 @@
       </template>
 
       <p v-else class="text-sm text-primary-dark">
-        There are no addresses associated with this account.
+        {{ $t('account.addresses.noAddresses') }}
       </p>
 
       <button class="btn w-full md:w-auto light mt-10" type="button" @click="openEditPopup('new')">
-        Add new address
+        {{ $t('account.addresses.addAddress') }}
       </button>
 
       <AccountAddressPopup
         v-if="editAddressPopupIsActive"
         :type="editAddressType"
         :address="addressToEdit"
-        :addressesLength="addresses.length"
-        :defaultAddressId="defaultAddressId"
+        :addresses-length="addresses.length"
+        :default-address-id="defaultAddressId"
         @click-close="editAddressPopupIsActive = false"
         @refresh="$fetch"
       />
 
       <AccountConfirmationPopup
         v-if="deletePopupIsActive"
-        heading="Delete address"
-        promptMessage="Are you sure you want to remove this address?"
-        acceptLabel="Yes, remove it"
-        refuseLabel="No, keep it"
-        :isLoading="isDeleting"
-        loadingLabel="Removing"
+        :heading="$t('account.addresses.deleteAddress.title')"
+        :prompt-message="$t('account.addresses.deleteAddress.text')"
+        :accept-label="$t('account.addresses.deleteAddress.yes')"
+        :refuse-label="$t('account.addresses.deleteAddress.no')"
+        :is-loading="isDeleting"
+        :loading-label="$t('account.addresses.deleteAddress.loading')"
         @accept="deleteAddress(addressToDelete)"
         @click-close="deletePopupIsActive = false"
       />
 
       <AccountConfirmationPopup
         v-if="defaultPopupIsActive"
-        heading="Set default address"
-        promptMessage="Are you sure you want to make this your default address?"
-        acceptLabel="Yes"
-        refuseLabel="No"
-        :isLoading="isUpdating"
-        loadingLabel="Setting as default"
+        :heading="$t('account.addresses.setDefaultAddress.title')"
+        :prompt-message="$t('account.addresses.setDefaultAddress.text')"
+        :accept-label="$t('account.addresses.setDefaultAddress.yes')"
+        :refuse-label="$t('account.addresses.setDefaultAddress.no')"
+        :is-loading="isUpdating"
+        :loading-label="$t('account.addresses.setDefaultAddress.loading')"
         @accept="setDefaultAddress(addressToSetDefault)"
         @click-close="defaultPopupIsActive = false"
       />
@@ -141,18 +141,19 @@ export default {
     ...mapState(['customer']),
 
     defaultAddress() {
-      if (!this.defaultAddressId || !this.addresses) return
-      return this.addresses.find(address => address.id === this.defaultAddressId)
+      const { addresses, defaultAddressId } = this
+      if (!defaultAddressId || !addresses) return
+      return addresses.find(address => address.id === defaultAddressId)
     },
     otherAddresses() {
-      if (!this.defaultAddressId || !this.addresses) {
-        return this.addresses
-      }
-      return this.addresses.filter(address => address.id !== this.defaultAddressId)
+      const { addresses, defaultAddressId } = this
+      if (!defaultAddressId || !addresses) return addresses
+      return addresses.filter(address => address.id !== defaultAddressId)
     },
     sortedAddresses() {
-      if (!this.addresses) return
-      return this.addresses.sort((a, b) => new Date(a.dateCreated) - new Date(b.dateCreated))
+      const { addresses } = this
+      if (!addresses) return
+      return addresses.sort((a, b) => new Date(a.dateCreated) - new Date(b.dateCreated))
     }
   },
 
@@ -170,7 +171,6 @@ export default {
           this.addressToEdit = null
           break
         default:
-          return
       }
     },
 
@@ -183,7 +183,10 @@ export default {
         this.isDeleting = false
         this.deletePopupIsActive = false
         this.$fetch()
-        this.$store.dispatch('showNotification', { message: 'Address deleted.', type: 'error' })
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.deleteAddress.success'),
+          type: 'error'
+        })
       } catch (err) {
         console.log(err)
       }
@@ -201,7 +204,9 @@ export default {
         // Close Popup and fetch updated data
         this.isUpdating = false
         this.defaultPopupIsActive = false
-        this.$store.dispatch('showNotification', { message: 'New address set as default.' })
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.setDefaultAddress.success')
+        })
         this.$store.dispatch('initializeCustomer')
         this.$fetch()
       } catch (err) {
@@ -213,4 +218,3 @@ export default {
   layout: 'account'
 }
 </script>
-
