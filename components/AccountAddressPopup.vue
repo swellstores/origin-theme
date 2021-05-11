@@ -131,7 +131,7 @@
                 <InputText
                   v-model="zip"
                   class="mb-2"
-                  :label="$t('account.addresses.popup.zipCode.required')"
+                  :label="$t('account.addresses.popup.zipCode.label')"
                   name="zipCode"
                   autocomplete="postal-code"
                 />
@@ -168,7 +168,7 @@
               </template>
             </div>
 
-            <div v-if="flow === 'default'" class="checkbox mb-6">
+            <div v-if="flow === 'default' || defaultable" class="checkbox mb-6">
               <input
                 id="set-default"
                 v-model="setDefault"
@@ -194,7 +194,7 @@
               :loading-label="$t('account.addresses.popup.create.button.loadingLabel')"
               :is-loading="isCreating"
               :disabled="isUpdating || isDeleting"
-              @click.native="createAddress()"
+              @click.native="create()"
             />
 
             <ButtonLoading
@@ -204,17 +204,17 @@
               :loading-label="$t('account.addresses.popup.save.button.loadingLabel')"
               :is-loading="isUpdating"
               :disabled="isCreating || isDeleting"
-              @click.native="updateAddress()"
+              @click.native="update()"
             />
 
             <ButtonLoading
-              v-if="type === 'update'"
+              v-if="type === 'update' && deletable"
               class="w-full light-error"
               :label="$t('account.addresses.popup.delete.button.label')"
               :loading-label="$t('account.addresses.popup.delete.button.loadingLabel')"
               :is-loading="isDeleting"
               :disabled="isCreating || isUpdating"
-              @click.native="deleteAddress()"
+              @click.native="remove()"
             />
           </div>
         </div>
@@ -250,6 +250,26 @@ export default {
     addressesLength: {
       type: Number,
       default: 0
+    },
+    deletable: {
+      type: Boolean,
+      default: false
+    },
+    defaultable: {
+      type: Boolean,
+      default: false
+    },
+    isCreating: {
+      type: Boolean,
+      default: false
+    },
+    isUpdating: {
+      type: Boolean,
+      default: false
+    },
+    isDeleting: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -263,10 +283,7 @@ export default {
       city: '',
       zip: '',
       country: '',
-      setDefault: false,
-      isCreating: false,
-      isUpdating: false,
-      isDeleting: false
+      setDefault: false
     }
   },
 
@@ -279,6 +296,11 @@ export default {
         if (this.defaultAddressId === this.address.id && this.addressesLength === 1) return true
       }
       return false
+    },
+
+    addressBody() {
+      const { firstName, lastName, address1, address2, city, state, zip, country } = this
+      return { firstName, lastName, address1, address2, city, state, zip, country }
     }
   },
 
@@ -307,151 +329,37 @@ export default {
   },
 
   methods: {
-    async updateAddress() {
-      try {
-        // Validate fields
-        this.$v.$touch()
-        if (this.$v.$invalid) return
+    create() {
+      // Validate fields
+      this.$v.$touch()
+      if (this.$v.$invalid) return
 
-        this.isUpdating = true
-
-        await this.$swell.account.updateAddress(this.address.id, {
-          name: `${this.firstName.trim()} ${this.lastName.trim()}`,
-          address1: this.address1,
-          address2: this.address2,
-          city: this.city,
-          state: this.state,
-          zip: this.zip,
-          country: this.country
-        })
-
-        if (this.setDefault) {
-          // Set current address as default
-          await this.$swell.account.update({
-            shipping: {
-              accountAddressId: this.address.id
-            }
-          })
-        } else if (this.defaultAddressId === this.address.id) {
-          // If is default, unset it.
-          // Set current address as default
-          await this.$swell.account.update({
-            shipping: {
-              accountAddressId: null
-            }
-          })
-        }
-
-        // Close panel and fetch updated data
-        this.isUpdating = true
-        this.$emit('click-close')
-        this.$store.dispatch('initializeCustomer')
-        this.$store.dispatch('showNotification', {
-          message: this.$t('account.addresses.popup.save.success')
-        })
-        this.$emit('refresh')
-      } catch (err) {
-        this.$store.dispatch('showNotification', {
-          message: this.$t('account.addresses.popup.save.error'),
-          type: 'error'
-        })
+      if (this.flow === 'payment') {
+        this.$emit('new-billing-address', { ...this.addressBody, isDefault: this.setDefault })
+        return
       }
+
+      this.$emit('new', { ...this.addressBody, isDefault: this.setDefault })
     },
-    async createAddress() {
-      try {
-        // Validate fields
-        this.$v.$touch()
-        if (this.$v.$invalid) return
 
-        this.isCreating = true
+    update() {
+      this.$v.$touch()
+      if (this.$v.$invalid) return
 
-        const { firstName, lastName, address1, address2, city, state, zip, country } = this
-
-        const address = await this.$swell.account.createAddress({
-          name: `${firstName.trim()} ${lastName.trim()}`,
-          address1,
-          address2,
-          city,
-          state,
-          zip,
-          country
-        })
-
-        if (this.setDefault && address.id) {
-          // Set address as default
-          await this.$swell.account.update({
-            shipping: {
-              accountAddressId: address.id
-            }
-          })
-        }
-
-        if (this.flow === 'payment') {
-          this.$emit('new-billing-address', address)
-        }
-
-        // Close panel and fetch updated data
-        this.isCreating = false
-        this.$emit('click-close')
-        this.$store.dispatch('initializeCustomer')
-        this.$store.dispatch('showNotification', {
-          message: this.$t('account.addresses.popup.create.success')
-        })
-        this.$emit('refresh')
-      } catch (err) {
-        this.$store.dispatch('showNotification', {
-          message: this.$t('account.addresses.popup.create.error'),
-          type: 'error'
-        })
-      }
+      this.$emit('update', { ...this.addressBody, isDefault: this.setDefault })
     },
-    async deleteAddress() {
-      try {
-        this.isDeleting = true
-        await this.$swell.account.deleteAddress(this.address.id)
 
-        // If deleted address is default, detach it from account model.
-        if (this.defaultAddressId === this.address.id) {
-          await this.$swell.account.update({
-            shipping: {
-              accountAddressId: null,
-              firstName: null,
-              lastName: null,
-              name: null,
-              address1: null,
-              address2: null,
-              city: null,
-              state: null,
-              zip: null,
-              country: null
-            }
-          })
-        }
-
-        // Close panel and fetch updated data
-        this.isDeleting = false
-        this.$emit('click-close')
-        this.$store.dispatch('initializeCustomer')
-        this.$store.dispatch('showNotification', {
-          message: this.$t('account.addresses.popup.delete.success'),
-          type: 'error'
-        })
-        this.$emit('refresh')
-      } catch (err) {
-        this.$store.dispatch('showNotification', {
-          message: this.$t('account.addresses.popup.delete.error'),
-          type: 'error'
-        })
-      }
+    remove() {
+      this.$emit('delete', this.address.id)
     },
 
     async handleEnterKey() {
       switch (this.type) {
         case 'update':
-          await this.updateAddress()
+          await this.update()
           break
         case 'new':
-          await this.createAddress()
+          await this.create()
           break
         default:
       }

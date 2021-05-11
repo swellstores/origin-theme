@@ -10,6 +10,7 @@ Vue.use({
     Vue.mixin({
       methods: {
         formatMoney,
+        formatDate,
         resolveUrl,
         getCountryCodeFromLocale
       }
@@ -25,6 +26,13 @@ function settings(self, id, def = undefined) {
 
 function formatMoney(amount, code) {
   return this.$nuxt.$store.$swell.currency.format(amount, { code })
+}
+
+function formatDate(date, options = { month: 'long', day: '2-digit', year: 'numeric' }) {
+  const d = new Date(date)
+  const locale = this.$nuxt.$store.$swell.locale.code || 'default'
+
+  return new Intl.DateTimeFormat(locale, options).format(d)
 }
 
 function resolveUrl(item) {

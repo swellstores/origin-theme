@@ -65,7 +65,6 @@ export default {
   methods: {
     accept() {
       this.$emit('accept')
-      this.$emit('click-close')
     },
 
     refuse() {

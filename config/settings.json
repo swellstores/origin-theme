@@ -100,7 +100,7 @@
   },
   "lang": {
     "cart": {
-      "item": { "remove": "Remove", "closeEdit": "Close", "edit": "Edit" },
+      "item": { "remove": "Remove", "close_edit": "Close", "edit": "Edit" },
       "updating": "Updating",
       "checkout": "Checkout",
       "account_balance": "Account balance",
@@ -109,7 +109,7 @@
       "discounts": "Discounts",
       "shipping": "Shipping",
       "subtotal": "Subtotal",
-      "giftCard": "{amount} gift card",
+      "gift_card": "{amount} gift card",
       "apply_coupon": "Apply coupon",
       "back_to_products": "Shop now",
       "empty": "Your cart is empty.",
@@ -388,6 +388,64 @@
         "no_addresses": "There are no addresses associated with this account.",
         "other_addresses": "Other addresses",
         "title": "Addresses"
+      },
+      "subscriptions": {
+        "subscription": {
+          "summary": "{interval} at {amount}",
+          "status": {
+            "trial_message": "You can edit your plan or order items until this time. We’ll ship your order the next day.",
+            "trial": "Trial ends",
+            "canceled_message": "You’re subscription has been cancellled and is unable to be reactivated.",
+            "canceled": "Canceled on",
+            "active_message": "You can edit your plan or order items until this time. We’ll ship your order the next day.",
+            "active": "Renews"
+          },
+          "view": "View subscription"
+        },
+        "_id": {
+          "edit": {
+            "contact": "Contact us",
+            "back_to_subscription": "Back to",
+            "title": "Edit plan"
+          },
+          "popup": {
+            "cancel": {
+              "success": "Subscription cancelled successfully.",
+              "loading": "Canceling",
+              "no": "No",
+              "yes": "Yes",
+              "text": "Are you sure you want to cancel this subscription? This can’t be undone.",
+              "title": "Cancel subscription."
+            },
+            "update": {
+              "billing_address": { "success": "Billing address updated." },
+              "shipping_address": { "success": "Shipping address updated." }
+            }
+          },
+          "cancel_subscription": "Cancel subscription",
+          "renewal": "{date} at {time}",
+          "orders": "Orders",
+          "edit_billing_address": "Edit",
+          "billing_address": "Billing address",
+          "payment_method": "Payment method",
+          "delivery_method": "Delivery method",
+          "phone_number": "Phone number",
+          "delivery_address": "Delivery address",
+          "delivery_details": "Delivery details",
+          "edit_plan": "Edit plan",
+          "plan_renews": "Plan renews",
+          "next_order": "Next order",
+          "trial_ends": "Trial ends",
+          "free_shipping": "Free",
+          "total": "Total",
+          "shipping": "Shipping",
+          "plan": "Plan",
+          "plan_items": "Plan items",
+          "back_to_subscriptions": "Back to all subscriptions"
+        },
+        "back_to_products": "Start shopping",
+        "no_subscriptions": "You currently have no subscriptions.",
+        "title": "Subscriptions"
       },
       "orders": {
         "returns": {

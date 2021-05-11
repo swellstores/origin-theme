@@ -161,8 +161,8 @@
             <ButtonLoading
               v-if="type === 'update'"
               class="w-full light-error"
-              :label="$t('account.payments.delete.button.label')"
-              :loading-label="$t('account.payments.delete.button.label')"
+              :label="$t('account.payments.popup.delete.button.label')"
+              :loading-label="$t('account.payments.popup.delete.button.loadingLabel')"
               :is-loading="isDeleting"
               :disabled="isCreating || isUpdating"
               @click.native="deleteCard()"
@@ -307,25 +307,20 @@ export default {
   },
 
   watch: {
-    // Watch for refresh request to get newly generated address
-    refresh(bool) {
-      if (bool) {
-        this.$fetch()
+    newBillingAddress(address) {
+      if (!address) return
 
-        if (this.newBillingAddress) {
-          this.billingAddress = this.newBillingAddress
+      this.billingAddress = address
 
-          const { name, address1, address2, state, city, zip, country } = this.newBillingAddress
+      const { name, address1, address2, state, city, zip, country } = address
 
-          this.formattedDefaultAddress = `
-            ${name}, 
+      this.formattedDefaultAddress = `
+            ${name},
             ${address2 || ''} ${address1},
-            ${state}, 
+            ${state},
             ${city} ${zip},
             ${country}
           `
-        }
-      }
     }
   },
 
@@ -355,9 +350,9 @@ export default {
         const { name, address1, address2, state, city, zip, country } = this.card.billing
 
         this.formattedDefaultAddress = `
-          ${name}, 
+          ${name},
           ${address2 || ''} ${address1},
-          ${state}, 
+          ${state},
           ${city} ${zip},
           ${country}
         `

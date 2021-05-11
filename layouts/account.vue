@@ -3,12 +3,21 @@
     <div :class="{ 'overflow-y-hidden': searchIsActive || cartIsActive }">
       <TheHeader @click-cart="cartIsActive = true" @click-search="searchIsActive = true" />
 
+      <transition name="fade-up-out">
+        <TheToastNotification
+          v-if="notification"
+          :message="notification.message"
+          :type="notification.type"
+          @open-cart="cartIsActive = true"
+        />
+      </transition>
+
       <div class="min-h-screen bg-primary-lighter">
         <div v-if="customer" class="w-full md:container md:flex relative md:pt-12 pt-6 pb-24">
           <!-- Header -->
           <div>
             <div
-              class="min-w-56 container border-b md:border-b-0 md:border-r border-primary-light md:px-0"
+              class="min-w-56 container border-b md:border-b-0 md:border-r border-primary-light md:px-0 mb-6"
             >
               <div class="md:pr-10 pb-6">
                 <h3>{{ customer.firstName }} {{ customer.lastName }}</h3>
@@ -65,7 +74,7 @@
           />
 
           <!-- Views (Mobile) -->
-          <div class="block md:hidden py-6">
+          <div v-if="!hideOnRouteRoot" class="block md:hidden pb-6">
             <div class="container">
               <InputDropdown
                 :options="localizedViews"
@@ -80,17 +89,9 @@
           </div>
         </div>
       </div>
-
-      <TheFooter />
     </div>
 
-    <transition name="fade-up">
-      <TheToastNotification
-        v-if="notification"
-        :message="notification.message"
-        :type="notification.type"
-      />
-    </transition>
+    <TheFooter />
 
     <TheCart v-show="cartIsActive" @click-close="cartIsActive = false" />
 
@@ -123,6 +124,10 @@ export default {
           value: 'orders'
         },
         {
+          label: 'account.subscriptions.title',
+          value: 'subscriptions'
+        },
+        {
           label: 'account.addresses.title',
           value: 'addresses'
         },
@@ -152,6 +157,11 @@ export default {
       }
 
       return ''
+    },
+    hideOnRouteRoot() {
+      const matchedPath = this.$route.matched[0].path
+      const pathsToHideOn = ['/account/orders/:id/', '/account/subscriptions/:id/']
+      return pathsToHideOn.some(path => matchedPath.includes(path))
     },
     localizedViews() {
       const { views } = this
@@ -192,6 +202,7 @@ export default {
         this.$store.commit('setState', { key: 'customerLoggedIn', value: false })
 
         // Close Popup
+        this.logoutPopupIsActive = false
         this.$emit('click-close')
         this.$store.dispatch('showNotification', { message: this.$t('account.logout.success') })
 

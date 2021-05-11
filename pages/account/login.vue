@@ -50,8 +50,8 @@
 
     <ButtonLoading
       class="dark w-full mt-6 mb-4"
-      label="Log in"
-      loading-label="Logging in"
+      :label="$t('account.login.button.label')"
+      :loading-label="$t('account.login.button.loadingLabel')"
       :is-loading="isProcessing"
       @click.native="login()"
     />

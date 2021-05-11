@@ -55,6 +55,12 @@ export const actions = {
       // Set item to be displayed in the notification
       commit('setState', { key: 'addedItem', value: item })
 
+      if (cart.errors) {
+        dispatch('handleError', cart.errors.items)
+        commit('setState', { key: 'cartIsUpdating', value: false })
+        return
+      }
+
       if (state.notification !== null) {
         // If notification is already visible, close it to show new notification
         commit('setState', { key: 'notification', value: null })
