@@ -57,7 +57,12 @@
             </div>
           </div>
 
-          <NuxtLink :to="localePath('/account/orders/returns/')" append class="btn light">
+          <NuxtLink
+            v-if="order.status === 'complete'"
+            :to="localePath('/account/orders/returns/')"
+            append
+            class="btn light"
+          >
             {{ $t('account.orders.id.createReturn') }}
           </NuxtLink>
 
@@ -161,7 +166,9 @@
               <p class="font-semibold pb-2">{{ $t('account.orders.id.fulfilledDeliveries') }}</p>
               <div v-for="shipment in shipments" :key="shipment.id" class="mb-4">
                 <div class="grid grid-cols-2-max">
-                  <strong class="pr-4 capitalize">{{ $tc('account.orders.id.items', 2) }}</strong>
+                  <strong class="pr-4 capitalize">{{
+                    $tc('account.orders.id.items', shipment.items.length)
+                  }}</strong>
                   <div>
                     <p v-for="item in shipment.items" :key="item.id">
                       {{ item.quantity }} × {{ item.product.name }}
@@ -213,7 +220,7 @@
                       <span>&nbsp;{{ billing.card.last4 }}</span>
                     </div>
 
-                    <span class="ml-auto">{{ expDate }}</span>
+                    <span class="ml-auto">{{ cardExpDate }}</span>
                   </div>
 
                   <span class="text-sm">{{ billing.name }}</span>
@@ -304,6 +311,7 @@
 </template>
 
 <script>
+// Helpers
 import padStart from 'lodash/padStart'
 
 export default {
@@ -335,7 +343,7 @@ export default {
       return this.order.shipments.results
     },
 
-    expDate() {
+    cardExpDate() {
       const mm = padStart(this.billing.card.expMonth, 2, '0')
       const yy = this.billing.card.expYear.toString().slice(-2)
       return `${mm} / ${yy}`
@@ -360,18 +368,6 @@ export default {
         default:
           return ''
       }
-    }
-  },
-
-  methods: {
-    formatDate(iso) {
-      const date = new Date(iso)
-
-      return new Intl.DateTimeFormat('default', {
-        month: 'long',
-        day: '2-digit',
-        year: 'numeric'
-      }).format(date)
     }
   },
 

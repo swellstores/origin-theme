@@ -1126,6 +1126,334 @@
       ]
     },
     {
+      "id": "account.subscriptions",
+      "label": "Subscriptions",
+      "icon": "users",
+      "url": "/account/subscriptions",
+      "fields": [
+        {
+          "id": "lang.account.subscriptions.title",
+          "label": "Subscriptions title",
+          "default": "Subscriptions",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions.no_subscriptions",
+          "label": "No subscriptions message",
+          "default": "You currently have no subscriptions.",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions.back_to_products",
+          "label": "Back to products",
+          "default": "Start shopping",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions.subscription.view",
+          "label": "View subscription link label",
+          "default": "View subscription",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "label": "Status",
+          "type": "heading"
+        },
+        {
+          "id": "lang.account.subscriptions.subscription.status.active",
+          "label": "Active status",
+          "default": "Renews",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions.subscription.status.active_message",
+          "label": "Active status message",
+          "default": "You can edit your plan or order items until this time. We’ll ship your order the next day.",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions.subscription.status.canceled",
+          "label": "Canceled status",
+          "default": "Canceled on",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions.subscription.status.canceled_message",
+          "label": "Canceled status message",
+          "default": "You’re subscription has been cancellled and is unable to be reactivated.",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions.subscription.status.trial",
+          "label": "Trial status",
+          "default": "Trial ends",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions.subscription.status.trial_message",
+          "label": "Trial status message",
+          "default": "You can edit your plan or order items until this time. We’ll ship your order the next day.",
+          "type": "short_text",
+          "localized": true
+        }
+      ]
+    },
+    {
+      "id": "account.subscriptions.details",
+      "label": "Subscription details",
+      "icon": "users",
+      "url": "/account/subscriptions/:id",
+      "fields": [
+        {
+          "id": "lang.account.subscriptions._id.back_to_subscriptions",
+          "label": "Back to all subscriptions",
+          "default": "Back to all subscriptions",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.plan_items",
+          "label": "Plan items",
+          "default": "Plan items",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.plan",
+          "label": "Plan",
+          "default": "Plan",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.shipping",
+          "label": "Shipping",
+          "default": "Shipping",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.total",
+          "label": "Total",
+          "default": "Total",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.free_shipping",
+          "label": "Free shipping label",
+          "default": "Free",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.trial_ends",
+          "label": "Trial ends",
+          "default": "Trial ends",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.next_order",
+          "label": "Next order",
+          "default": "Next order",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.plan_renews",
+          "label": "Plan renews",
+          "default": "Plan renews",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit_plan",
+          "label": "Edit plan link label",
+          "default": "Edit plan",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "label": "Delivery details",
+          "type": "heading"
+        },
+        {
+          "id": "lang.account.subscriptions._id.delivery_details",
+          "label": "Delivery details title",
+          "default": "Delivery details",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.delivery_address",
+          "label": "Delivery address",
+          "default": "Delivery address",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.phone_number",
+          "label": "Phone number",
+          "default": "Phone number",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.delivery_method",
+          "label": "Delivery method",
+          "default": "Delivery method",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.payment_method",
+          "label": "Payment method title",
+          "default": "Payment method",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.billing_address",
+          "label": "Billing address",
+          "default": "Billing address",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit_billing_address",
+          "label": "Edit billing address label",
+          "default": "Edit",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.orders",
+          "label": "Orders",
+          "default": "Orders",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.renewal",
+          "label": "Renewal date/time info",
+          "default": "{date} at {time}",
+          "hint": "Supports {date} and {time} placeholders.",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.update.shipping_address.success",
+          "label": "Update shipping address success",
+          "default": "Shipping address updated.",
+          "type": "long_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.update.billing_address.success",
+          "label": "Update billing address success",
+          "default": "Billing address updated.",
+          "type": "long_text",
+          "localized": true
+        },
+        {
+          "label": "Cancel subscription",
+          "type": "heading"
+        },
+        {
+          "id": "lang.account.subscriptions._id.cancel_subscription",
+          "label": "Cancel subscription link label",
+          "default": "Cancel subscription",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.cancel.title",
+          "label": "Cancel subscription popup title",
+          "default": "Cancel subscription.",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.cancel.text",
+          "label": "Cancel subscription popup text",
+          "default": "Are you sure you want to cancel this subscription? This can’t be undone.",
+          "type": "long_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.cancel.yes",
+          "label": "Accept subscription cancelation",
+          "default": "Yes",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.cancel.no",
+          "label": "Cancel subscription cancelation",
+          "default": "No",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.cancel.loading",
+          "label": "Canceling subscription",
+          "default": "Canceling",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.cancel.success",
+          "label": "Cancel subscription success",
+          "default": "Subscription cancelled successfully.",
+          "type": "long_text",
+          "localized": true
+        },
+        {
+          "label": "Edit subscription",
+          "type": "heading"
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.title",
+          "label": "Edit plan title",
+          "default": "Edit plan",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.back_to_subscription",
+          "label": "Back to subscription title",
+          "default": "Back to",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.contact",
+          "label": "Contact link label",
+          "default": "Contact us",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions.subscription.summary",
+          "label": "Interval and amount summary",
+          "default": "{interval} at {amount}",
+          "hint": "Supports {interval} and {amount} placeholders.",
+          "type": "short_text",
+          "localized": true
+        }
+      ]
+    },
+    {
       "id": "account.addresses",
       "label": "Addresses",
       "url": "/account/addresses",
@@ -2735,7 +3063,7 @@
           "localized": true
         },
         {
-          "id": "lang.cart.giftCard",
+          "id": "lang.cart.gift_card",
           "label": "Gift card discount",
           "default": "{amount} gift card",
           "hint": "Supports {amount} placeholder",
@@ -2807,7 +3135,7 @@
           "localized": true
         },
         {
-          "id": "lang.cart.item.closeEdit",
+          "id": "lang.cart.item.close_edit",
           "label": "Close edit",
           "default": "Close",
           "type": "short_text",

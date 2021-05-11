@@ -12,7 +12,8 @@
         :class="{
           'md:min-w-96': product,
           'bg-primary-med': type !== 'error',
-          'bg-error-faded text-error': type === 'error'
+          'bg-error-faded text-error': type === 'error',
+          'bg-ok-faded text-lightest': type === 'success'
         }"
       >
         <div

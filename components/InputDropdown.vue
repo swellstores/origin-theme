@@ -25,7 +25,7 @@
       <li
         v-for="(option, index) in options"
         :key="`option-${index}`"
-        class="mb-0 px-2 inline-flex items-center cursor-pointer hover:bg-primary-lighter"
+        class="mb-0 px-2 py-3 items-center cursor-pointer hover:bg-primary-lighter"
         role="option"
         @click="selectOption(option)"
       >

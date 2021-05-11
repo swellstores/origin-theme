@@ -54,9 +54,9 @@
         v-if="editAddressPopupIsActive"
         type="new"
         flow="payment"
+        :is-creating="isCreating"
         @click-close="editAddressPopupIsActive = false"
-        @refresh="refreshCardPopup = true"
-        @new-billing-address="newBillingAddress = $event"
+        @new-billing-address="createAccountAddress"
       />
     </template>
   </div>
@@ -83,7 +83,8 @@ export default {
       editAddressPopupIsActive: false,
       refreshCardPopup: false,
       defaultCardId: '',
-      newBillingAddress: null
+      newBillingAddress: null,
+      isCreating: false
     }
   },
 
@@ -102,6 +103,58 @@ export default {
   },
 
   methods: {
+    async createAccountAddress(addr) {
+      try {
+        this.isCreating = true
+
+        const {
+          firstName,
+          lastName,
+          address1,
+          address2,
+          city,
+          state,
+          zip,
+          country,
+          isDefault
+        } = addr
+
+        const address = await this.$swell.account.createAddress({
+          name: `${firstName.trim()} ${lastName.trim()}`,
+          address1,
+          address2,
+          city,
+          state,
+          zip,
+          country
+        })
+
+        if (isDefault && address.id) {
+          // Set address as default
+          await this.$swell.account.update({
+            shipping: {
+              accountAddressId: address.id
+            }
+          })
+        }
+
+        this.newBillingAddress = address
+
+        // Close panel and fetch updated data
+        this.isCreating = false
+        this.editAddressPopupIsActive = false
+        this.$store.dispatch('initializeCustomer')
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.popup.create.success')
+        })
+      } catch (err) {
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.popup.create.error'),
+          type: 'error'
+        })
+      }
+    },
+
     openEditPopup(method, existing) {
       switch (method) {
         case 'update':

@@ -1,20 +1,26 @@
 <template>
   <div class="bg-primary-lightest md:py-0 py-4 rounded shadow-md">
     <div class="container md:p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="grid grid-cols-2 gap-4 md:mb-0 mb-4">
+      <div
+        class="md:mb-0 mb-4"
+        :class="{
+          'grid grid-cols-2 gap-4': thumbnails.length <= 2,
+          'grid grid-cols-2 grid-rows-2 gap-4': thumbnails.length > 2
+        }"
+      >
         <div
-          v-for="(media, index) in itemMedia"
+          v-for="(media, index) in thumbnails"
           :key="`product-media-${index}`"
           class="relative rounded overflow-hidden"
         >
           <VisualMedia :source="media" sizes="120px" />
 
           <div
-            v-if="order.items.length > itemMedia.length && index === itemMedia.length - 1"
+            v-if="order.items.length > thumbnails.length && index === thumbnails.length - 1"
             class="overlay text-primary-lightest"
           >
             <span class="absolute center-xy text-lg font-semibold text-primary-lightest">
-              +{{ order.items.length - itemMedia.length }}
+              +{{ order.items.length - thumbnails.length }}
             </span>
           </div>
         </div>
@@ -99,7 +105,7 @@ export default {
   computed: {
     ...mapState(['currency']),
 
-    itemMedia() {
+    thumbnails() {
       // Get max of 4 images per item of order
       if (!this.order.items) return
       return flatMap(this.order.items.slice(0, 4), (item, index) => {

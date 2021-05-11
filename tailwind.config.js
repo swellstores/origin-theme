@@ -21,7 +21,7 @@ module.exports = {
         faded: 'var(--colors-status-ok-faded)'
       },
       warning: {
-        default: 'var(--colors-status-warning)'
+        default: 'var(--colors-status-warn)'
       },
       error: {
         default: 'var(--colors-status-error)',

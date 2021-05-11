@@ -75,8 +75,15 @@
         :address="addressToEdit"
         :addresses-length="addresses.length"
         :default-address-id="defaultAddressId"
+        :is-creating="isCreating"
+        :is-updating="isUpdating"
+        :is-deleting="isDeleting"
+        :deletable="editAddressType === 'update' ? true : false"
         @click-close="editAddressPopupIsActive = false"
         @refresh="$fetch"
+        @new="createAccountAddress"
+        @update="updateAccountAddress"
+        @delete="deleteAccountAddress"
       />
 
       <AccountConfirmationPopup
@@ -87,7 +94,7 @@
         :refuse-label="$t('account.addresses.deleteAddress.no')"
         :is-loading="isDeleting"
         :loading-label="$t('account.addresses.deleteAddress.loading')"
-        @accept="deleteAddress(addressToDelete)"
+        @accept="deleteAccountAddress(addressToDelete)"
         @click-close="deletePopupIsActive = false"
       />
 
@@ -132,6 +139,7 @@ export default {
       defaultAddressId: '',
       deletePopupIsActive: false,
       defaultPopupIsActive: false,
+      isCreating: false,
       isDeleting: false,
       isUpdating: false
     }
@@ -174,21 +182,157 @@ export default {
       }
     },
 
-    async deleteAddress(id) {
+    async createAccountAddress(addr) {
+      try {
+        this.isCreating = true
+
+        const {
+          firstName,
+          lastName,
+          address1,
+          address2,
+          city,
+          state,
+          zip,
+          country,
+          isDefault
+        } = addr
+
+        const address = await this.$swell.account.createAddress({
+          name: `${firstName.trim()} ${lastName.trim()}`,
+          address1,
+          address2,
+          city,
+          state,
+          zip,
+          country
+        })
+
+        if (isDefault && address.id) {
+          // Set address as default
+          await this.$swell.account.update({
+            shipping: {
+              accountAddressId: address.id
+            }
+          })
+        }
+
+        /* if (this.flow === 'payment') {
+          this.$emit('new-billing-address', address)
+        } */
+
+        // Close panel and fetch updated data
+        this.isCreating = false
+        this.editAddressPopupIsActive = false
+        this.$store.dispatch('initializeCustomer')
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.popup.create.success')
+        })
+        this.$fetch()
+      } catch (err) {
+        /* this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.popup.create.error'),
+          type: 'error'
+        }) */
+      }
+    },
+
+    async updateAccountAddress(addr) {
+      try {
+        this.isUpdating = true
+
+        const {
+          firstName,
+          lastName,
+          address1,
+          address2,
+          city,
+          state,
+          zip,
+          country,
+          isDefault
+        } = addr
+
+        await this.$swell.account.updateAddress(this.addressToEdit.id, {
+          name: `${firstName.trim()} ${lastName.trim()}`,
+          address1,
+          address2,
+          city,
+          state,
+          zip,
+          country
+        })
+
+        if (isDefault) {
+          // Set current address as default
+          await this.$swell.account.update({
+            shipping: {
+              accountAddressId: this.addressToEdit.id
+            }
+          })
+        } else if (this.defaultAddressId === this.addressToEdit.id) {
+          // If is default, unset it.
+          // Set current address as default
+          await this.$swell.account.update({
+            shipping: {
+              accountAddressId: null
+            }
+          })
+        }
+
+        // Close panel and fetch updated data
+        this.isUpdating = true
+        this.editAddressPopupIsActive = false
+        this.$store.dispatch('initializeCustomer')
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.popup.save.success')
+        })
+        this.$fetch()
+      } catch (err) {
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.popup.save.error'),
+          type: 'error'
+        })
+      }
+    },
+
+    async deleteAccountAddress(addr) {
       try {
         this.isDeleting = true
-        await this.$swell.account.deleteAddress(id)
+        await this.$swell.account.deleteAddress(addr)
+
+        // If deleted address is default, detach it from account model.
+        if (this.defaultAddressId === this.addr) {
+          await this.$swell.account.update({
+            shipping: {
+              accountAddressId: null,
+              firstName: null,
+              lastName: null,
+              name: null,
+              address1: null,
+              address2: null,
+              city: null,
+              state: null,
+              zip: null,
+              country: null
+            }
+          })
+        }
 
         // Close Popup and fetch updated data
         this.isDeleting = false
         this.deletePopupIsActive = false
-        this.$fetch()
+        this.editAddressPopupIsActive = false
         this.$store.dispatch('showNotification', {
           message: this.$t('account.addresses.deleteAddress.success'),
           type: 'error'
         })
+        this.$fetch()
       } catch (err) {
-        console.log(err)
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.popup.delete.error'),
+          type: 'error'
+        })
       }
     },
 
