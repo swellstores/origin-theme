@@ -1,29 +1,29 @@
 <template>
   <div v-enter-key="sendPasswordReset" class="relative container pt-6 pb-24 md:max-w-112 md:pt-24">
-    <h2 class="pb-6">Forgot your password?</h2>
+    <h2 class="pb-6">{{ $t('account.forgotPassword.title') }}</h2>
 
     <p class="text-sm mb-10">
-      Enter your email address and we’ll send you an email on how to reset your password.
+      {{ $t('account.forgotPassword.infoText') }}
     </p>
 
     <div class="mb-6">
       <InputText
         v-model="email"
         class="mb-2"
-        label="Email"
-        placeholder="Your email address"
+        :label="$t('account.forgotPassword.email.label')"
+        :placeholder="$t('account.forgotPassword.email.placeholder')"
         name="email"
         autocomplete="email"
       />
 
       <template v-if="$v.email.$dirty">
-        <span v-if="!$v.email.email" class="label-sm text-error"
-          >Please enter a valid email address.</span
-        >
+        <span v-if="!$v.email.email" class="label-sm text-error">{{
+          $t('account.forgotPassword.email.format')
+        }}</span>
 
-        <span v-else-if="!$v.email.required" class="label-sm text-error"
-          >Please enter your email address.</span
-        >
+        <span v-else-if="!$v.email.required" class="label-sm text-error">{{
+          $t('account.forgotPassword.email.required')
+        }}</span>
       </template>
     </div>
 
@@ -35,8 +35,8 @@
       @click.native="sendPasswordReset()"
     />
 
-    <NuxtLink class="btn light w-full" to="/account/login/">
-      Back to log in
+    <NuxtLink class="btn light w-full" :to="localePath('/account/login/')">
+      {{ $t('account.forgotPassword.logIn') }}
     </NuxtLink>
   </div>
 </template>
@@ -77,12 +77,12 @@ export default {
         if (res.success) {
           this.flow = 'login'
           this.$store.dispatch('showNotification', {
-            message: 'An email has been sent to reset your password.'
+            message: this.$t('account.forgotPassword.success')
           })
         }
       } catch (err) {
         this.$store.dispatch('showNotification', {
-          message: 'There was an error resetting your password.',
+          message: this.$t('account.forgotPassword.error'),
           type: 'error'
         })
       }

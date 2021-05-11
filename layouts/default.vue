@@ -8,9 +8,9 @@
       <transition name="fade-up-out">
         <TheToastNotification
           v-if="notification"
-          @open-cart="cartIsActive = true"
           :message="notification.message"
           :type="notification.type"
+          @open-cart="cartIsActive = true"
         />
       </transition>
       <div class="flex flex-col flex-grow">

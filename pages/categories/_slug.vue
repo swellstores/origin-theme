@@ -71,13 +71,16 @@
           <div v-show="!activeFilterCount">
             <BaseIcon icon="uil:filter" />
           </div>
-          <span class="ml-1">Filters</span>
+          <span class="ml-1">{{ $t('categories.slug.filters') }}</span>
         </button>
-        <span class="hidden ml-1 sm:inline">{{ productCountLabel }}</span>
+        <span class="hidden ml-1 sm:inline">{{
+          !$fetchState.pending &&
+            $tc('categories.slug.productsCount', productsCount, { count: productsCount })
+        }}</span>
         <!-- Sort -->
         <div class="ml-auto">
           <div class="flex items-center">
-            <span class="pr-2">Sort&nbsp;</span>
+            <span class="pr-2">{{ $t('categories.slug.sort') }}&nbsp;</span>
             <InputDropdown
               class="w-40"
               :options="sortModes"
@@ -95,13 +98,13 @@
         :column-count="settings.productCols"
       />
       <div v-else-if="activeFilterCount > 0" class="py-16 bg-primary-lighter text-center rounded">
-        <p>We couldn't find any products matching your criteria.</p>
+        <p>{{ $t('categories.slug.filterProductsNotFound') }}</p>
         <button type="button" name="button" class="btn mt-4" @click="toggleFilterModal">
-          Edit filters
+          {{ $t('categories.slug.editFilters') }}
         </button>
       </div>
       <div v-else class="py-16 bg-primary-lighter text-center rounded">
-        <p>We couldn't find any products in this category.</p>
+        <p>{{ $t('categories.slug.categoryProductsNotFound') }}</p>
       </div>
 
       <!-- Category pagination controls -->
@@ -144,7 +147,7 @@ export default {
 
     // Show 404 if category isn't found
     if (!category) {
-      this.$nuxt.error({ statusCode: 404, message: 'Category not found' })
+      this.$nuxt.error({ statusCode: 404, message: this.$t('errors.categoryNotFound') })
     }
 
     // Set limit from category settings
@@ -189,20 +192,6 @@ export default {
     },
     activeFilterCount() {
       return Object.keys(this.filterState).length
-    },
-    productCountLabel() {
-      const count = this.productsCount
-      const isLoading = this.$fetchState.pending
-
-      if (isLoading) {
-        return ''
-      } else if (count > 1) {
-        return `${count} products`
-      } else if (count > 0) {
-        return '1 product'
-      } else {
-        return 'No products'
-      }
     }
   },
 
@@ -221,19 +210,19 @@ export default {
     this.sortModes = [
       {
         value: '',
-        label: 'Latest'
+        label: this.$t('categories.slug.sortModes.latest')
       },
       {
         value: 'popularity',
-        label: 'Best selling'
+        label: this.$t('categories.slug.sortModes.popularity')
       },
       {
         value: 'price_asc',
-        label: 'Price, low to high'
+        label: this.$t('categories.slug.sortModes.priceAsc')
       },
       {
         value: 'price_desc',
-        label: 'Price, high to low'
+        label: this.$t('categories.slug.sortModes.priceDesc')
       }
     ]
   },

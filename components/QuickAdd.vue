@@ -31,8 +31,8 @@
     <div v-if="cartIsUpdating" class="relative px-4">
       <ButtonLoading
         class="absolute left-0 bottom-0 w-full dark px-4 py-3"
-        label="Adding..."
-        loadingLabel="Adding..."
+        :label="$t('products.preview.quickAdd.adding.label')"
+        :loading-label="$t('products.preview.quickAdd.adding.loadingLabel')"
       />
     </div>
   </div>
@@ -143,13 +143,13 @@ export default {
       const { optionInputs } = this
 
       if (optionInputs.length > 2) {
-        this.label = 'Quick view'
+        this.label = this.$t('products.preview.quickAdd.quickView')
         this.flow = 'quick-view'
       } else if (optionInputs.length > 0 && optionInputs.length < 3) {
-        this.label = 'Quick add'
+        this.label = this.$t('products.preview.quickAdd.quickAdd')
         this.flow = 'quick-add'
       } else {
-        this.label = 'Add to cart'
+        this.label = this.$t('products.preview.quickAdd.addToCart')
         this.flow = 'add-to-cart'
       }
     },

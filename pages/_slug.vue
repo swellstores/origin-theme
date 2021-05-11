@@ -47,7 +47,7 @@ export default {
 
     // Show 404 if page data isn't found
     if (!page) {
-      return this.$nuxt.error({ statusCode: 404, message: 'Page not found' })
+      return this.$nuxt.error({ statusCode: 404 })
     }
 
     // Set component data

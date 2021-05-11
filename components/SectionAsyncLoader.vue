@@ -11,7 +11,6 @@
 
 <script>
 // Helpers
-import get from 'lodash/get'
 import camelCase from 'lodash/camelCase'
 
 // Components

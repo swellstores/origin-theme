@@ -76,7 +76,7 @@
             v-for="value in option.values"
             :id="`value-${value.name}`"
             :key="value.name"
-            class="inline-block mb-0 px-2 flex items-center cursor-pointer hover:bg-primary-lighter"
+            class="mb-0 px-2 flex items-center cursor-pointer hover:bg-primary-lighter"
             :class="{ 'text-primary-med': value.name === currentValue }"
             role="option"
             @click="selectValue(value)"

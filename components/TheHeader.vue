@@ -10,7 +10,7 @@
     </div>
 
     <!-- Full screen nav for small screens -->
-    <TheMobileNav v-on="$listeners" v-if="mobileNavIsVisible" :menu-items="menu.items" />
+    <TheMobileNav v-if="mobileNavIsVisible" :menu-items="menu.items" v-on="$listeners" />
 
     <!-- Main header -->
     <div class="z-40 fixed top-0 w-full">
@@ -28,10 +28,10 @@
             :text="header.promoText || '[ Promotional text ]'"
             :hidden="header.hideOnScroll && hideHeader"
           />
-          <div class="relative container flex items-stretch justify-between items-stretch z-20">
+          <div class="relative container flex justify-between items-stretch z-20">
             <!-- Logo -->
             <div class="py-3 lg:w-1/4">
-              <NuxtLink :to="resolveUrl({ type: 'home' })">
+              <NuxtLink :to="localePath(resolveUrl({ type: 'home' }))">
                 <img
                   v-if="logoSrc"
                   :src="logoSrc"
@@ -52,7 +52,7 @@
                   class="sw-nav-link-wrapper mb-0"
                 >
                   <NuxtLink
-                    :to="resolveUrl(item)"
+                    :to="localePath(resolveUrl(item))"
                     :title="item.description"
                     class="sw-nav-link relative flex items-center h-full px-5 pt-1 rounded-none border-transparent border-b-4"
                     @click.native="megaNavIsEnabled = false"
@@ -84,8 +84,7 @@
             <div class="flex flex-row items-center justify-end -mr-2 lg:w-1/4">
               <!-- Locale select -->
               <LocaleSelect
-                v-if="locale"
-                :locale="locale"
+                v-if="$i18n.locales.length > 1"
                 class="hidden lg:block"
                 appearance="float"
               />
@@ -103,7 +102,7 @@
               <!-- Account icon -->
               <NuxtLink
                 class="hidden h-10 p-2 lg:inline-block"
-                :to="customerLoggedIn ? '/account/orders/' : '/account/login/'"
+                :to="localePath(customerLoggedIn ? '/account/orders/' : '/account/login/')"
               >
                 <BaseIcon icon="uil:user" />
               </NuxtLink>
@@ -145,7 +144,6 @@
 <script>
 // Helpers
 import { mapState } from 'vuex'
-import get from 'lodash/get'
 import debounce from 'lodash/debounce'
 
 export default {
@@ -203,7 +201,6 @@ export default {
     this.setScrollListener(true)
     this.$store.dispatch('selectCurrency')
     this.$store.commit('setState', { key: 'headerHeight', value: this.$refs.header.offsetHeight })
-    this.$store.dispatch('selectLocale')
   },
 
   beforeDestroy() {

@@ -1,6 +1,6 @@
 <template>
   <div class="container md:pr-0">
-    <h1 class="text-4xl hidden md:block mb-9">Payment methods</h1>
+    <h1 class="text-4xl hidden md:block mb-9">{{ $t('account.payments.title') }}</h1>
 
     <div v-if="$fetchState.pending" class="container">
       <div class="loader-el w-1/3 h-7 mb-6 mx-auto"></div>
@@ -14,7 +14,7 @@
           <AccountCardContainer
             v-if="defaultCard"
             :card="defaultCard"
-            :isDefault="true"
+            :is-default="true"
             :class="{ 'md:mb-0 mb-6': otherCards.length }"
             @click-open="openEditPopup('update', defaultCard)"
           />
@@ -30,21 +30,21 @@
       </template>
 
       <p v-else class="text-sm text-primary-dark">
-        There are no payment methods associated with this account.
+        {{ $t('account.payments.noPaymentMethods') }}
       </p>
 
       <button class="btn w-full md:w-auto light mt-10" type="button" @click="openEditPopup('new')">
-        Add new payment method
+        {{ $t('account.payments.addPaymentMethod') }}
       </button>
 
       <AccountCardPopup
         v-if="editCardPopupIsActive"
         :type="editCardType"
         :card="cardToEdit"
-        :cardsLength="cards.length"
-        :defaultCardId="defaultCardId"
+        :cards-length="cards.length"
+        :default-card-id="defaultCardId"
         :refresh="refreshCardPopup"
-        :newBillingAddress="newBillingAddress"
+        :new-billing-address="newBillingAddress"
         @click-close="editCardPopupIsActive = false"
         @new-address="editAddressPopupIsActive = true"
         @refresh="$fetch"
@@ -115,7 +115,6 @@ export default {
           this.cardToEdit = null
           break
         default:
-          return
       }
     }
   },
@@ -123,4 +122,3 @@ export default {
   layout: 'account'
 }
 </script>
-

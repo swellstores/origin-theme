@@ -3,17 +3,19 @@
     <NuxtLink
       :tabindex="prevPage ? 0 : -1"
       :class="{ disabled: !prevPage }"
-      :to="`?page=${prevPage}`"
+      :to="localePath(`?page=${prevPage}`)"
       class="btn sm:w-32"
-      >Prev<span class="hidden sm:inline">ious</span></NuxtLink
+      >{{ $t('categories._slug.pagination.previous') }}</NuxtLink
     >
-    <div class="text-center">Page {{ currentPage }} of {{ pagesCount }}</div>
+    <div class="text-center">
+      {{ $t('categories._slug.pagination.page', { currentPage, pagesCount }) }}
+    </div>
     <NuxtLink
       :tabindex="nextPage ? 0 : -1"
       :class="{ disabled: !nextPage }"
-      :to="`?page=${nextPage}`"
+      :to="localePath(`?page=${nextPage}`)"
       class="btn sm:w-32"
-      >Next</NuxtLink
+      >{{ $t('categories._slug.pagination.next') }}</NuxtLink
     >
   </aside>
 </template>

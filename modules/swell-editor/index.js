@@ -16,7 +16,7 @@ export default async function(moduleOptions) {
     src: path.resolve(__dirname, './settings-loader.js'),
     fileName: 'swell-editor-settings-loader.js',
     options: {
-      ...options,
+      ...options
     }
   })
 

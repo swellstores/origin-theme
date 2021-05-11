@@ -1,15 +1,15 @@
 <template>
   <div>
-    <label class="label-xs-bold-faded block mb-2" v-if="label">{{ label }}</label>
+    <label v-if="label" class="label-xs-bold-faded block mb-2">{{ label }}</label>
     <input
       class="tracking-inherit"
       :type="type"
       :value="value"
-      v-on:input="$emit('input', $event.target.value)"
       :disabled="disabled"
       :placeholder="placeholder"
       :name="name"
       :autocomplete="autocomplete"
+      @input="$emit('input', $event.target.value)"
     />
 
     <span v-if="hint" class="inline-block text-sm text-primary-dark mt-1">{{ hint }}</span>

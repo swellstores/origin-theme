@@ -16,10 +16,10 @@
           <div class="block md:flex">
             <ButtonLoading
               class="dark mb-4 w-full md:w-1/2 md:mr-2 md:mb-0"
-              @click.native="accept()"
               :label="acceptLabel"
-              :loadingLabel="loadingLabel"
-              :isLoading="isLoading"
+              :loading-label="loadingLabel"
+              :is-loading="isLoading"
+              @click.native="accept()"
             />
 
             <button class="btn light w-full md:w-1/2 md:ml-2" type="button" @click="refuse()">

@@ -13,6 +13,7 @@ import fromPairs from 'lodash/fp/fromPairs'
 
 import mitt from 'mitt'
 import buildUrl from 'build-url'
+import { cloneDeep } from 'lodash/fp'
 
 const settingPaths = {
   headingFont: 'typography.headingFont',
@@ -55,7 +56,7 @@ export const editor = {
   // Handle incoming message from the parent window of the iframe
   async processMessage(event, context) {
     const { type, details } = event.data
-    const { app, $swell } = context
+    const { app, $swell, i18n } = context
 
     if (this.isReceiving) {
       this.messages.push(event)
@@ -88,6 +89,11 @@ export const editor = {
           if (isFontVariable(details.path)) {
             updateGoogleFontsLink(settings)
           }
+        } else if (details.path.includes('lang')) {
+          const locale = details.path.includes(i18n.locale) ? i18n.locale : i18n.defaultLocale
+          const messages = await $swell.settings.get('lang')
+
+          i18n.setLocaleMessage(locale, messages)
         } else {
           // Trigger refetch if component has dynamic data
           this.events.emit('refetch', details)
@@ -237,7 +243,8 @@ export function normalizeKeys(obj, params) {
 }
 
 export function getGoogleFontConfig(settings) {
-  const normalizedSettings = normalizeKeys(settings)
+  // we clone the `settings` object so we do not mutate it
+  const normalizedSettings = normalizeKeys(cloneDeep(settings))
 
   // Extract font config objects
   const fonts = [

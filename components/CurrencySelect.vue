@@ -62,7 +62,6 @@
 <script>
 // Helpers
 import find from 'lodash/find'
-import { mapState } from 'vuex'
 
 export default {
   name: 'CurrencySelect',

@@ -40,9 +40,9 @@
 
               <div class="flex no-wrap overflow-scroll mt-6">
                 <button
-                  class="w-20 h-20 flex-shrink-0 p-2 mr-2 rounded hover:border-primary-med transition duration-300 ease"
                   v-for="(image, index) in product.images"
                   :key="image.id"
+                  class="w-20 h-20 flex-shrink-0 p-2 mr-2 rounded hover:border-primary-med transition duration-300 ease"
                   :class="{
                     'border border-primary-darkest': index === productPreviewIndex,
                     'border border-primary-lighter': index !== productPreviewIndex
@@ -62,7 +62,7 @@
                 <h2 v-balance-text class="mb-4 leading-tight">{{ product.name }}</h2>
                 <NuxtLink
                   class="inline-block underline mb-5"
-                  :to="resolveUrl({ type: 'product', value: product.slug })"
+                  :to="localePath(resolveUrl({ type: 'product', value: product.slug }))"
                   >View full details</NuxtLink
                 >
 
@@ -130,10 +130,16 @@
 <script>
 // Helpers
 import get from 'lodash/get'
-import { listVisibleOptions } from '~/modules/swell'
 import { mapState } from 'vuex'
+import { listVisibleOptions } from '~/modules/swell'
 
 export default {
+  props: {
+    productId: {
+      type: String,
+      default: null
+    }
+  },
   async fetch() {
     const { $swell } = this
 
@@ -152,13 +158,6 @@ export default {
     // Set component data
     this.product = product
     this.optionState = optionState
-  },
-
-  props: {
-    productId: {
-      type: String,
-      default: null
-    }
   },
 
   data() {

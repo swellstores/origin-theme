@@ -4,7 +4,7 @@ import settings from '~/config/settings.json'
 import menus from '~/config/menus.json'
 
 export default async (context, inject) => {
-  const { $swell } = context.app;
+  const { $swell } = context.app
   const useEditorSettings = '<%= options.useEditorSettings %>' !== 'false'
 
   if (process.env.NODE_ENV === 'production' || !useEditorSettings) {

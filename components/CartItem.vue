@@ -2,7 +2,7 @@
   <div class="container overflow-hidden">
     <div :class="{ 'border-t': index !== 0 }" class="py-6 flex">
       <NuxtLink
-        :to="resolveUrl({ type: 'product', value: item.product.slug })"
+        :to="localePath(resolveUrl({ type: 'product', value: item.product.slug }))"
         class="block w-24 flex-shrink-0"
       >
         <VisualMedia
@@ -16,7 +16,7 @@
         <!-- Name + options -->
         <div>
           <NuxtLink
-            :to="resolveUrl({ type: 'product', value: item.product.slug })"
+            :to="localePath(resolveUrl({ type: 'product', value: item.product.slug }))"
             class="inline-block"
           >
             <h4>{{ item.product.name }}</h4>
@@ -38,7 +38,7 @@
             class="float-right p-1 -mr-1 -mb-1"
             @click.prevent="itemEditorIsVisible = !itemEditorIsVisible"
           >
-            {{ itemEditorIsVisible ? 'Close' : 'Edit' }}
+            {{ itemEditorIsVisible ? $t('cart.item.closeEdit') : $t('cart.item.edit') }}
           </button>
         </div>
       </div>
@@ -48,7 +48,7 @@
       <div class="flex items-center pb-4 text-sm">
         <button type="button" class="flex items-center mr-3 pr-1" @click.prevent="removeItem()">
           <BaseIcon icon="uil:trash-alt" class="mr-1" />
-          <span class="-mb-px">Remove</span>
+          <span class="-mb-px">{{ $t('cart.item.remove') }}</span>
         </button>
 
         <!-- TODO (awaiting list support)

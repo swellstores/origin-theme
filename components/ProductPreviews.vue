@@ -27,7 +27,7 @@
           @mouseleave="hideQuickAdd(product.id)"
         >
           <NuxtLink
-            :to="resolveUrl({ type: 'product', value: product.slug })"
+            :to="localePath(resolveUrl({ type: 'product', value: product.slug }))"
             class="relative block rounded overflow-hidden"
           >
             <!-- Main image -->
@@ -54,7 +54,7 @@
             v-if="product.origPrice"
             class="label-tag label-tag--sale absolute -mt-1 mr-2 top-0 right-0"
           >
-            Sale
+            {{ $t('products.preview.sale') }}
           </div>
 
           <template v-if="quickAddIsEnabled">
@@ -82,7 +82,10 @@
         </div>
         <!-- Product summary -->
         <div class="py-3" :class="{ 'text-center': textAlign === 'center' }">
-          <NuxtLink :to="resolveUrl({ type: 'product', value: product.slug })" class="inline-block">
+          <NuxtLink
+            :to="localePath(resolveUrl({ type: 'product', value: product.slug }))"
+            class="inline-block"
+          >
             <h4 v-balance-text>{{ product.name }}</h4>
           </NuxtLink>
           <!-- Sale price -->
@@ -90,7 +93,11 @@
             <div v-if="product.origPrice">
               <span class="text-sm mr-1">{{ formatMoney(product.price, currency) }}</span>
               <span class="uppercase text-xs text-error whitespace-no-wrap">
-                Save {{ formatMoney(product.origPrice - product.price, currency) }}
+                {{
+                  $t('products.preview.save', {
+                    amount: formatMoney(product.origPrice - product.price, currency)
+                  })
+                }}
               </span>
             </div>
             <!-- Regular price -->

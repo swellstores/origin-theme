@@ -1,52 +1,53 @@
 <template>
-  <div class="relative container pt-6 pb-24 md:max-w-112 md:pt-24" v-enter-key="changePassword">
-    <h2 class="pb-6">Change your password</h2>
+  <div v-enter-key="changePassword" class="relative container pt-6 pb-24 md:max-w-112 md:pt-24">
+    <h2 class="pb-6">{{ $t('account.resetPassword.title') }}</h2>
 
-    <p class="text-sm mb-10">Please enter your new password.</p>
+    <p class="text-sm mb-10">{{ $t('account.resetPassword.infoText') }}</p>
 
     <div class="mb-6">
       <InputText
-        class="mb-2"
-        type="password"
-        hint="Must include a minimum of 6 characters."
-        placeholder="Enter your new password"
-        name="new-password"
-        autcomplete="new-password"
         v-model="password"
+        class="mb-2"
+        :label="$t('account.resetPassword.password.label')"
+        type="password"
+        :hint="$t('account.resetPassword.password.hint', { n: 6 })"
+        :placeholder="$t('account.resetPassword.password.placeholder')"
+        name="newPassword"
+        autocomplete="new-password"
       />
 
       <template v-if="$v.password.$dirty">
-        <span class="label-sm text-error" v-if="!$v.password.required"
-          >Please enter your new password.</span
-        >
+        <span v-if="!$v.password.minLength" class="label-sm text-error">{{
+          $t('account.resetPassword.password.minLength', { n: 6 })
+        }}</span>
 
-        <span class="label-sm text-error" v-else-if="!$v.password.minLength"
-          >Your password needs to be at least six characters.</span
-        >
+        <span v-if="!$v.password.required" class="label-sm text-error">{{
+          $t('account.resetPassword.password.required')
+        }}</span>
       </template>
     </div>
 
     <div class="mb-6">
       <InputText
+        v-model="confirmPassword"
         class="mb-2"
         type="password"
-        placeholder="Confirm new password"
-        v-model="confirmPassword"
+        :placeholder="$t('account.resetPassword.confirmPassword.placeholder')"
       />
 
       <template v-if="$v.confirmPassword.$dirty">
-        <span class="label-sm text-error" v-if="!$v.confirmPassword.sameAsPassword"
-          >Passwords do not match.</span
-        >
+        <span v-if="!$v.confirmPassword.sameAsPassword" class="label-sm text-error">{{
+          $t('account.resetPassword.confirmPassword.notMatch')
+        }}</span>
       </template>
     </div>
 
     <ButtonLoading
       class="dark w-full"
+      :label="$t('account.resetPassword.button.label')"
+      :loading-label="$t('account.resetPassword.button.loadingLabel')"
+      :is-loading="isProcessing"
       @click.native="changePassword()"
-      label="Change password"
-      loadingLabel="Processing…"
-      :isLoading="isProcessing"
     />
   </div>
 </template>
@@ -65,6 +66,14 @@ export default {
       confirmPassword: null,
       isProcessing: false
     }
+  },
+
+  created() {
+    // Get password reset key query
+    this.resetKey = this.$route.query.key
+
+    // If no key is set, route to homepage.
+    if (!this.resetKey) this.$router.push(this.localePath('/'))
   },
   methods: {
     async changePassword() {
@@ -86,28 +95,19 @@ export default {
 
         if (res.success) {
           this.$store.dispatch('showNotification', {
-            message: 'You’ve successfully updated your password.'
+            message: this.$t('account.resetPassword.success')
           })
-          this.$router.push('/')
+          this.$router.push(this.localePath('/'))
         }
       } catch (err) {
         this.isProcessing = false
 
         this.$store.dispatch('showNotification', {
-          message:
-            'There was an error updating your password. The reset password key may have expired.',
+          message: this.$t('account.resetPassword.error'),
           type: 'error'
         })
       }
     }
-  },
-
-  created() {
-    // Get password reset key query
-    this.resetKey = this.$route.query['key']
-
-    // If no key is set, route to homepage.
-    if (!this.resetKey) this.$router.push('/')
   },
 
   validations: {

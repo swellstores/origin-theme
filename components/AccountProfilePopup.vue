@@ -1,6 +1,6 @@
 <template>
   <transition name="popup" :duration="700" appear>
-    <div class="z-40 fixed inset-0" v-enter-key.native="updateProfile">
+    <div v-enter-key.native="updateProfile" class="z-40 fixed inset-0">
       <!-- Overlay -->
       <div
         class="overlay opacity-50 absolute w-full h-full bg-primary-darker"
@@ -14,7 +14,7 @@
       >
         <div class="container py-2">
           <div class="flex py-4">
-            <h3>Edit profile</h3>
+            <h3>{{ $t('account.edit') }}</h3>
             <button class="ml-auto" @click.prevent="$emit('click-close')">
               <BaseIcon icon="uil:multiply" size="sm" />
             </button>
@@ -24,102 +24,106 @@
           <div class="pt-6">
             <div class="mb-6">
               <InputText
+                v-model="firstName"
                 class="mb-2"
-                label="First Name"
+                :label="$t('account.popup.firstName.label')"
                 name="fname"
                 autocomplete="given-name"
-                v-model="firstName"
               />
               <template v-if="$v.firstName.$dirty">
-                <span class="label-sm text-error" v-if="!$v.firstName.required"
-                  >Please enter your first name.</span
-                >
+                <span v-if="!$v.firstName.required" class="label-sm text-error">{{
+                  $t('account.popup.firstName.required')
+                }}</span>
 
-                <span class="label-sm text-error" v-if="!$v.firstName.maxLength"
-                  >First name cannot exceed 40 characters.</span
-                >
+                <span v-if="!$v.firstName.maxLength" class="label-sm text-error">{{
+                  $t('account.popup.firstName.maxLength', { n: 40 })
+                }}</span>
               </template>
             </div>
 
             <div class="mb-6">
               <InputText
-                class="mb-2"
-                label="First Name"
-                name="surname"
-                autocomplete="email"
                 v-model="lastName"
+                class="mb-2"
+                :label="$t('account.popup.lastName.label')"
+                name="lastName"
+                autocomplete="family-name"
               />
               <template v-if="$v.lastName.$dirty">
-                <span class="label-sm text-error" v-if="!$v.lastName.required"
-                  >Please enter your last name.</span
-                >
+                <span v-if="!$v.lastName.required" class="label-sm text-error">{{
+                  $t('account.popup.lastName.required')
+                }}</span>
 
-                <span class="label-sm text-error" v-if="!$v.lastName.maxLength"
-                  >Last name cannot exceed 40 characters.</span
-                >
+                <span v-if="!$v.lastName.maxLength" class="label-sm text-error">{{
+                  $t('account.popup.lastName.maxLength', { n: 40 })
+                }}</span>
               </template>
             </div>
 
             <div class="mb-6">
               <InputText
-                class="mb-2"
-                label="Email"
-                placeholder="Your email address"
-                name="email"
-                autocomplete="given-name"
                 v-model="email"
+                class="mb-2"
+                :label="$t('account.popup.email.label')"
+                :placeholder="$t('account.popup.email.placeholder')"
+                name="email"
+                autocomplete="email"
               />
 
               <template v-if="$v.email.$dirty">
-                <span class="label-sm text-error" v-if="!$v.email.email"
-                  >Please enter a valid email address.</span
-                >
+                <span v-if="!$v.email.email" class="label-sm text-error">{{
+                  $t('account.popup.email.format')
+                }}</span>
 
-                <span class="label-sm text-error" v-else-if="!$v.email.required"
-                  >Please enter your email address.</span
-                >
+                <span v-else-if="!$v.email.required" class="label-sm text-error">{{
+                  $t('account.popup.email.required')
+                }}</span>
               </template>
             </div>
 
             <div class="mb-6">
               <InputText
-                class="mb-2"
-                label="Change password"
-                type="password"
-                hint="Must include a minimum of 6 characters."
-                placeholder="Enter your new password"
-                name="new-password"
-                autcomplete="new-password"
                 v-model="password"
+                class="mb-2"
+                :label="$t('account.popup.password.label')"
+                type="password"
+                :hint="$t('account.popup.password.hint', { n: 6 })"
+                :placeholder="$t('account.popup.password.placeholder')"
+                name="newPassword"
+                autocomplete="new-password"
               />
 
               <template v-if="$v.password.$dirty">
-                <span class="label-sm text-error" v-if="!$v.password.minLength"
-                  >Your password needs to be at least six characters.</span
-                >
+                <span v-if="!$v.password.minLength" class="label-sm text-error">{{
+                  $t('account.popup.password.minLength', { n: 6 })
+                }}</span>
+
+                <span v-if="!$v.password.required" class="label-sm text-error">{{
+                  $t('account.popup.password.required')
+                }}</span>
               </template>
             </div>
 
             <div class="mb-6">
               <InputText
+                v-model="confirmPassword"
                 class="mb-2"
                 type="password"
-                placeholder="Confirm new password"
-                v-model="confirmPassword"
+                :placeholder="$t('account.popup.confirmPassword.placeholder')"
               />
 
               <template v-if="$v.confirmPassword.$dirty">
-                <span class="label-sm text-error" v-if="!$v.confirmPassword.sameAsPassword"
-                  >Passwords do not match.</span
-                >
+                <span v-if="!$v.confirmPassword.sameAsPassword" class="label-sm text-error">{{
+                  $t('account.popup.confirmPassword.notMatch')
+                }}</span>
               </template>
             </div>
 
             <div class="checkbox mb-6">
-              <input type="checkbox" id="set-default" v-model="emailOptin" />
+              <input id="set-default" v-model="emailOptin" type="checkbox" />
 
               <label class="w-full" for="set-default">
-                <p>Subscribe to newsletter</p>
+                <p>{{ $t('account.popup.subscribe.label') }}</p>
                 <div class="indicator ml-auto text-primary-lighter">
                   <BaseIcon icon="uil:check" size="sm" />
                 </div>
@@ -130,10 +134,10 @@
           <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4">
             <ButtonLoading
               class="w-full dark"
+              :label="$t('account.popup.save.label')"
+              :loading-label="$t('account.popup.save.loadingLabel')"
+              :is-loading="isUpdating"
               @click.native="updateProfile()"
-              label="Save changes"
-              loadingLabel="Saving"
-              :isLoading="isUpdating"
             />
           </div>
         </div>
@@ -166,6 +170,16 @@ export default {
     ...mapState(['customer'])
   },
 
+  created() {
+    // Prefill form data for updating existing data
+    if (!this.customer) return
+
+    this.firstName = this.customer.firstName
+    this.lastName = this.customer.lastName
+    this.email = this.customer.email
+    this.emailOptin = this.customer.emailOptin
+  },
+
   methods: {
     async updateProfile() {
       try {
@@ -189,26 +203,18 @@ export default {
           // Re-initialize the customer to reflect updated data
           this.isUpdating = false
           this.$store.dispatch('initializeCustomer')
-          this.$store.dispatch('showNotification', { message: 'Profile updated.' })
+          this.$store.dispatch('showNotification', {
+            message: this.$t('account.popup.save.success')
+          })
           this.$emit('click-close')
         }
       } catch (err) {
         this.$store.dispatch('showNotification', {
-          message: 'There was an error updating your profile.',
+          message: this.$t('account.popup.save.error'),
           type: 'error'
         })
       }
     }
-  },
-
-  created() {
-    // Prefill form data for updating existing data
-    if (!this.customer) return
-
-    this.firstName = this.customer.firstName
-    this.lastName = this.customer.lastName
-    this.email = this.customer.email
-    this.emailOptin = this.customer.emailOptin
   },
 
   validations: {

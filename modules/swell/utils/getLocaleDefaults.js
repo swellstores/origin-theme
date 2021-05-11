@@ -1,4 +1,4 @@
-export let getLocaleDefaults =  {
+export const getLocaleDefaults = {
   aa: 'ET',
   ab: 'GE',
   abr: 'GH',

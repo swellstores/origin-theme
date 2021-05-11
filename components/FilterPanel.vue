@@ -12,7 +12,7 @@
         class="panel absolute w-full h-full left-0 bg-primary-lightest overflow-scroll md:max-w-112"
       >
         <div class="flex items-center p-6 border-b border-primary-light">
-          <h3>Refine results</h3>
+          <h3>{{ $t('categories.slug.refine') }}</h3>
           <button class="ml-auto" @click="$emit('click-close')">
             <BaseIcon icon="uil:times" size="lg" />
           </button>
@@ -25,7 +25,9 @@
         >
           <div class="flex items-center justify-between">
             <span class="text-primary-dark">{{ activeFilterCountLabel }}</span>
-            <button class="font-semibold" @click="resetFilters">Clear all</button>
+            <button class="font-semibold" @click="resetFilters">
+              {{ $t('categories.slug.clear') }}
+            </button>
           </div>
 
           <ul class="w-full flex flex-wrap pt-3">
@@ -112,7 +114,7 @@
           -->
 
           <button class="btn btn--lg w-full" type="button" @click="applyFilters">
-            Apply filters
+            {{ $t('categories.slug.apply') }}
           </button>
         </div>
       </div>

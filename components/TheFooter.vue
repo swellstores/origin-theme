@@ -1,8 +1,7 @@
 <template>
   <footer
     :class="{
-      'bg-primary-darkest text-primary-lightest border-primary-darker':
-        background === 'dark',
+      'bg-primary-darkest text-primary-lightest border-primary-darker': background === 'dark',
       'bg-primary-lighter border-primary-med': background === 'light'
     }"
     class="border-t"
@@ -57,7 +56,7 @@
               <!-- Standard link -->
               <NuxtLink
                 v-else
-                :to="resolveUrl(item)"
+                :to="localePath(resolveUrl(item))"
                 class="inline-block py-1 leading-tight text-xl"
                 >{{ item.name }}</NuxtLink
               >
@@ -104,7 +103,7 @@
         <!-- Secondary nav menu -->
         <ul v-if="footer.showSecondaryMenu && secondaryMenu" class="my-3">
           <li v-for="item in secondaryMenu.items" :key="item.name" class="inline-block mx-3 mb-0">
-            <NuxtLink :to="resolveUrl(item)">{{ item.name }}</NuxtLink>
+            <NuxtLink :to="localePath(resolveUrl(item))">{{ item.name }}</NuxtLink>
           </li>
         </ul>
 

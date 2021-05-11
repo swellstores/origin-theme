@@ -12,7 +12,7 @@
             <!-- Product preview -->
             <NuxtLink
               v-if="item.type === 'product' && typeof item.value === 'object'"
-              :to="resolveUrl(item)"
+              :to="localePath(resolveUrl(item))"
               class="block mt-1"
               @click.native="$emit('click')"
             >
@@ -44,7 +44,7 @@
             <!-- Standard link -->
             <NuxtLink
               v-else
-              :to="resolveUrl(item)"
+              :to="localePath(resolveUrl(item))"
               class="block -mx-1 p-1 leading-tight"
               @click.native="$emit('click')"
               >{{ item.name }}</NuxtLink
