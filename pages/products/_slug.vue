@@ -306,9 +306,17 @@ export default {
   methods: {
     // Select attribute component based on type
     getAttributeComponent(type) {
-      if (type === 'textarea') return 'AttributeLongText'
-      if (type === 'file') return 'AttributeFile'
-      return 'AttributeShortText'
+      switch (type) {
+        case 'long_text':
+        case 'textarea':
+          return 'AttributeLongText'
+        case 'file':
+          return 'AttributeFile'
+    
+        // TODO: add components for other supported attribute types
+        default:
+          return 'AttributeShortText'
+      }
     },
 
     // Set which dropdown is active by UID, so that only one dropdown is active at any time.
