@@ -141,38 +141,9 @@
 
             <!-- Details & attributes -->
             <div v-for="attribute in product.attributes" :key="attribute.id">
-              <AccordionItem
-                v-if="
-                  attribute.visible &&
-                    typeof attribute.value === 'string' &&
-                    attribute.value.length > 50
-                "
-                :heading="attribute.name"
-              >
-                <div class="pb-3" v-html="attribute.value" />
-              </AccordionItem>
-              <div
-                v-else-if="attribute.visible && typeof attribute.value === 'string'"
-                class="py-3 flex flex-no-wrap border-b"
-              >
-                <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
-                <span v-if="Array.isArray(attribute.value)" class="w-3/4">
-                  {{ attribute.value }}
-                </span>
-                <span v-else class="w-3/4">{{ attribute.value }}</span>
-              </div>
-              <div
-                v-else-if="
-                  attribute.visible && Array.isArray(attribute.value) && attribute.value.length > 0
-                "
-                class="py-3 flex flex-no-wrap border-b"
-              >
-                <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
-                <span v-if="Array.isArray(attribute.value)" class="w-3/4">
-                  {{ attribute.value.join(', ') }}
-                </span>
-                <span v-else class="w-3/4">{{ attribute.value }}</span>
-              </div>
+              <template v-if="attribute.visible">
+                <component :is="getAttributeComponent(attribute.type)" :attribute="attribute" />
+              </template>
             </div>
 
             <!-- Share product -->
@@ -336,6 +307,21 @@ export default {
   },
 
   methods: {
+    // Select attribute component based on type
+    getAttributeComponent(type) {
+      switch (type) {
+        case 'long_text':
+        case 'textarea':
+          return 'AttributeLongText'
+        case 'file':
+          return 'AttributeFile'
+    
+        // TODO: add components for other supported attribute types
+        default:
+          return 'AttributeShortText'
+      }
+    },
+
     // Set which dropdown is active by UID, so that only one dropdown is active at any time.
     setActiveDropdownUID(uid) {
       this.activeDropdownUID = uid
