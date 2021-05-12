@@ -140,71 +140,8 @@
 
             <!-- Details & attributes -->
             <div v-for="attribute in product.attributes" :key="attribute.id">
-              <!-- Long text -->
               <template v-if="attribute.visible">
-                <AccordionItem
-                  v-if="typeof attribute.value === 'string' && attribute.value.length > 50"
-                  :heading="attribute.name"
-                >
-                  <div class="pb-3" v-html="attribute.value" />
-                </AccordionItem>
-                <!-- Short text -->
-                <div
-                  v-else-if="typeof attribute.value === 'string'"
-                  class="py-3 flex flex-no-wrap border-b"
-                >
-                  <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
-                  <span v-if="Array.isArray(attribute.value)" class="w-3/4">
-                    {{ attribute.value.join(', ') }}
-                  </span>
-                  <span v-else class="w-3/4">{{ attribute.value }}</span>
-                </div>
-
-                <!-- File -->
-                <div
-                  v-else-if="attribute.type === 'file' && attribute.value.length"
-                  class="py-3 flex flex-no-wrap border-b"
-                >
-                  <template v-if="Array.isArray(attribute.value)">
-                    <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
-                    <div>
-                      <a
-                        v-for="{ file } in attribute.value"
-                        :key="file.id"
-                        :href="file.url"
-                        class="flex items-center font-normal mb-2 last:mb-0"
-                        target="_blank"
-                      >
-                        <BaseIcon icon="uil:file-download" size="sm" class="mr-2 inline-block" />
-                        {{ file.filename }}
-                      </a>
-                    </div>
-                  </template>
-
-                  <template v-else>
-                    <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
-                    <a
-                      :href="attribute.value.file.url"
-                      class="flex items-center font-normal"
-                      target="_blank"
-                    >
-                      <BaseIcon icon="uil:file-download" size="sm" class="mr-2 inline-block" />
-                      {{ attribute.value.file.filename }}
-                    </a>
-                  </template>
-                </div>
-
-                <!-- Array -->
-                <div
-                  v-else-if="Array.isArray(attribute.value) && attribute.value.length > 0"
-                  class="py-3 flex flex-no-wrap border-b"
-                >
-                  <strong class="w-1/4 text-primary-darkest pr-6">{{ attribute.name }}</strong>
-                  <span v-if="Array.isArray(attribute.value)" class="w-3/4">
-                    {{ attribute.value.join(', ') }}
-                  </span>
-                  <span v-else class="w-3/4">{{ attribute.value }}</span>
-                </div>
+                <component :is="getAttributeComponent(attribute.type)" :attribute="attribute" />
               </template>
             </div>
 
@@ -367,6 +304,13 @@ export default {
   },
 
   methods: {
+    // Select attribute component based on type
+    getAttributeComponent(type) {
+      if (type === 'textarea') return 'AttributeLongText'
+      if (type === 'file') return 'AttributeFile'
+      return 'AttributeShortText'
+    },
+
     // Set which dropdown is active by UID, so that only one dropdown is active at any time.
     setActiveDropdownUID(uid) {
       this.activeDropdownUID = uid
