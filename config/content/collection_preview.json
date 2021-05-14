@@ -12,10 +12,6 @@
           "type": "category_lookup"
         },
         {
-          "label": "Title",
-          "type": "heading"
-        },
-        {
           "id": "show_title",
           "label": "Show title",
           "type": "toggle",
@@ -34,11 +30,6 @@
       "label": "Styling",
       "type": "field_group",
       "fields": [
-        {
-          "label": "Title",
-          "type": "heading",
-          "conditions": { "show_title": true }
-        },
         {
           "id": "title_size",
           "label": "Title size",
@@ -61,10 +52,6 @@
           "conditions": { "show_title": true }
         },
         {
-          "label": "Layout",
-          "type": "heading"
-        },
-        {
           "id": "product_cols",
           "label": "Number of products per row",
           "type": "select",
@@ -77,10 +64,6 @@
           "type": "select",
           "options": [1, 2],
           "default": 1
-        },
-        {
-          "label": "Products",
-          "type": "heading"
         },
         {
           "id": "text_align",
