@@ -134,6 +134,9 @@ export default {
     inputType() {
       // Determine what input UI is most suitable
       const { values } = this.option
+
+      if (!values) return 'menu'
+
       const valueNamesLength = values.reduce((acc, val) => {
         // Don't count color value names because they're displayed as a swatch,
         // and ignore periods and commas because they're visually small
@@ -161,7 +164,9 @@ export default {
     },
 
     valueDescription() {
-      const matchedValue = this.option.values.find(value => value.name === this.currentValue)
+      const matchedValue = (this.option.values || []).find(
+        value => value.name === this.currentValue
+      )
       if (!matchedValue) return
       return matchedValue.description || ''
     },
