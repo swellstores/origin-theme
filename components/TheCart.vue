@@ -30,7 +30,7 @@
           </div>
 
           <!-- Items -->
-          <div v-if="cart && cart.items">
+          <div v-if="cart && cart.items.length">
             <CartItem
               v-for="(item, index) in cart.items"
               :key="`cartItem_${item.id}`"
@@ -46,7 +46,7 @@
           </div>
 
           <!-- Footer -->
-          <div v-if="cart && cart.items" class="bg-primary-lighter border-t">
+          <div v-if="cart && cart.items.length" class="bg-primary-lighter border-t">
             <div class="container pt-6 pb-2">
               <div class="flex">
                 <input
