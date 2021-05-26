@@ -159,7 +159,6 @@ export default {
     // Pass a checkout ID as a query string param to recover a specific cart
     const { checkout: checkoutId } = this.$route.query
     this.$store.dispatch('initializeCart', { checkoutId })
-    console.log(this.cart)
   },
 
   methods: {
