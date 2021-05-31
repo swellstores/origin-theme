@@ -120,7 +120,7 @@ export default {
     formatTooltip(value) {
       if (this.isPrice) {
         const { rate } = this.currencyObj
-        const price = value * rate
+        const price = rate ? value * rate : value
 
         return new Intl.NumberFormat('default', {
           style: 'currency',
