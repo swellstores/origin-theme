@@ -191,14 +191,17 @@ export default {
       let upperLabel = upper.label
 
       if (filter.id === 'price') {
+        if (!this.currency) return lowerLabel + ' – ' + upperLabel
+
         const { rate } = this.currencyObj
-        const lowerPrice = lower.value * rate
-        const upperPrice = upper.value * rate
+        const lowerPrice = rate ? lower.value * rate : lower.value
+        const upperPrice = rate ? upper.value * rate : upper.value
 
         lowerLabel = new Intl.NumberFormat('default', {
           style: 'currency',
           currency: this.currency,
           currencyDisplay: 'narrowSymbol',
+          minimumFractionDigits: 0,
           maximumFractionDigits: 0
         }).format(lowerPrice)
 
