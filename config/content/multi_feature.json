@@ -1,5 +1,6 @@
 {
   "name": "Multiple features",
+  "slug": "multi_feature",
   "description": "Multiple features with an icon and label",
   "fields": [
     {
@@ -57,5 +58,7 @@
         }
       ]
     }
-  ]
+  ],
+  "source_type": "theme",
+  "source_id": "origin"
 }

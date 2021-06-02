@@ -1,5 +1,6 @@
 {
   "name": "Customer reviews",
+  "slug": "customer_reviews",
   "description": "Selection of customer reviews or quotes",
   "fields": [
     {
@@ -47,5 +48,7 @@
         }
       ]
     }
-  ]
+  ],
+  "source_type": "theme",
+  "source_id": "origin"
 }

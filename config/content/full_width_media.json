@@ -1,5 +1,6 @@
 {
   "name": "Full width media",
+  "slug": "full_width_media",
   "description": "Large background image with text overlay",
   "fields": [
     {
@@ -207,5 +208,7 @@
         }
       ]
     }
-  ]
+  ],
+  "source_type": "theme",
+  "source_id": "origin"
 }

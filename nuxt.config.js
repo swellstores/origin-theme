@@ -5,9 +5,9 @@ import { getLangSettings } from './modules/swell-editor/lang/utils'
 
 export default async () => {
   const i18n = await getLangSettings(settings, {
-    storeId: process.env.SWELL_STORE_ID,
-    publicKey: process.env.SWELL_PUBLIC_KEY,
-    storeUrl: process.env.SWELL_STORE_URL,
+    storeId: process.env.SWELL_STORE_ID || settings.store.id,
+    publicKey: process.env.SWELL_PUBLIC_KEY || settings.store.public_key,
+    storeUrl: process.env.SWELL_STORE_URL || settings.store.url,
     editorMode: !!process.env.SWELL_EDITOR
   })
 

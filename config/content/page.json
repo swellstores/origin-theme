@@ -1,5 +1,6 @@
 {
   "name": "Page",
+  "slug": "page",
   "model": "content/pages",
   "fields": [
     {
@@ -17,5 +18,7 @@
         "heading_with_text"
       ]
     }
-  ]
+  ],
+  "source_type": "theme",
+  "source_id": "origin"
 }

@@ -564,5 +564,13 @@
         "success": "You’ve succesfully logged out."
       }
     }
+  },
+  "store": {
+    "id": "test",
+    "name": "Origin",
+    "country": "US",
+    "locale": "en",
+    "public_key": "pk_mUpfI6UJNBvXaRlDxbRyzgIY6I5PQ9gL",
+    "url": "http://test.swellstores.com"
   }
 }

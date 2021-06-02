@@ -1,5 +1,6 @@
 {
   "name": "Multiple panels",
+  "slug": "multi_panel",
   "description": "Multiple panels with an image or text",
   "fields": [
     {
@@ -132,5 +133,7 @@
         }
       ]
     }
-  ]
+  ],
+  "source_type": "theme",
+  "source_id": "origin"
 }

@@ -1,5 +1,6 @@
 {
   "name": "Email signup",
+  "slug": "email_signup",
   "description": "Email signup form with background image",
   "fields": [
     {
@@ -140,5 +141,7 @@
         }
       ]
     }
-  ]
+  ],
+  "source_type": "theme",
+  "source_id": "origin"
 }

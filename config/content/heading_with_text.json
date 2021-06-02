@@ -1,5 +1,6 @@
 {
   "name": "Heading with text",
+  "slug": "heading_with_text",
   "description": "Large heading with single or multi-column text",
   "fields": [
     {
@@ -104,5 +105,7 @@
         }
       ]
     }
-  ]
+  ],
+  "source_type": "theme",
+  "source_id": "origin"
 }

@@ -1,5 +1,6 @@
 {
   "name": "Collection preview",
+  "slug": "collection_preview",
   "description": "Previews of several items from a collection with call-to-action",
   "fields": [
     {
@@ -89,5 +90,7 @@
         }
       ]
     }
-  ]
+  ],
+  "source_type": "theme",
+  "source_id": "origin"
 }

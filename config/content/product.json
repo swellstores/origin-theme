@@ -1,5 +1,6 @@
 {
   "name": "Product detail page",
+  "slug": "product",
   "description": "Page displaying a single product",
   "model": "products",
   "fields": [
@@ -42,5 +43,7 @@
       "label": "Enable social sharing",
       "type": "toggle"
     }
-  ]
+  ],
+  "source_type": "theme",
+  "source_id": "origin"
 }

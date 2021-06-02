@@ -1,5 +1,6 @@
 {
   "name": "Large media",
+  "slug": "large_media",
   "description": "Large media with heading and optional subheading",
   "fields": [
     {
@@ -59,5 +60,7 @@
         }
       ]
     }
-  ]
+  ],
+  "source_type": "theme",
+  "source_id": "origin"
 }

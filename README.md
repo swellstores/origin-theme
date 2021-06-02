@@ -65,13 +65,12 @@ Clone this project repository to your local machine and navigate to the project 
 
 ### Connecting to Swell
 
-Add your Swell store ID and public key to `nuxt.config.js`.
+Add your Swell store ID, public key and url to `.env`.
 
-```js
-swell: {
-  storeId: 'your-store-id',
-  publicKey: 'your-public-key',
-}
+```
+SWELL_STORE_ID=your_store
+SWELL_PUBLIC_KEY=GET_YOUR_PK_FROM_THE_ADMIN_DASHBOARD
+SWELL_STORE_URL=https://your_store.swell.store
 ```
 
 ### Installation

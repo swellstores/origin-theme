@@ -1,5 +1,6 @@
 {
   "name": "Press mentions",
+  "slug": "press_mentions",
   "description": "Logos of publications with quotes",
   "fields": [
     {
@@ -43,5 +44,7 @@
         }
       ]
     }
-  ]
+  ],
+  "source_type": "theme",
+  "source_id": "origin"
 }
