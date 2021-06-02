@@ -197,13 +197,7 @@ export default {
 
   watch: {
     // Call the update method when the URL query changes
-    '$route.query': 'updateProductsFiltered',
-
-    // Grab new filter value ranges when currency is chanegd
-    currency() {
-      if (!this.currency) return
-      this.filters = this.$swell.products.filters(this.products, { currency: this.currency })
-    }
+    '$route.query': 'updateProductsFiltered'
   },
 
   created() {
