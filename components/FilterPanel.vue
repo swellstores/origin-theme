@@ -206,7 +206,10 @@ export default {
         }).format(lowerPrice)
 
         upperLabel = new Intl.NumberFormat('default', {
-          style: 'decimal',
+          style: 'currency',
+          currency: this.currency,
+          currencyDisplay: 'narrowSymbol',
+          minimumFractionDigits: 0,
           maximumFractionDigits: 0
         }).format(upperPrice)
       }
