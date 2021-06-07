@@ -81,7 +81,7 @@
 
             <!-- Product options -->
             <div
-              v-for="(input, i) in optionInputs"
+              v-for="input in optionInputs"
               :key="input.name"
               :set="(v = $v.optionState[input.option.name]) || null"
               class="my-8"

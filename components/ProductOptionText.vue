@@ -1,19 +1,21 @@
 <template>
-  <div>
+  <div v-enter-key="emitValueOnEnter">
     <ProductOptionLabel v-bind="option" />
     <!-- Text -->
     <input
       v-if="option.inputType === 'short_text'"
+      v-model="value"
       :placeholder="option.placeholder"
       class="text-input h-12 mt-3"
-      @input="$emit('value-changed', { option: option.name, value: $event.target.value })"
+      @input="emitValue"
     />
     <!-- Text area -->
     <textarea
       v-else
+      v-model="value"
       :placeholder="option.placeholder"
       class="text-input mt-3"
-      @input="$emit('value-changed', { option: option.name, value: $event.target.value })"
+      @input="emitValue"
     ></textarea>
   </div>
 </template>
@@ -26,6 +28,26 @@ export default {
     option: {
       type: Object,
       default: () => ({})
+    },
+    emitOnEnter: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  data() {
+    return {
+      value: null
+    }
+  },
+
+  methods: {
+    emitValue() {
+      if (this.emitOnEnter) return
+      this.$emit('value-changed', { option: this.option.name, value: this.value })
+    },
+    emitValueOnEnter() {
+      this.$emit('value-changed', { option: this.option.name, value: this.value })
     }
   }
 }

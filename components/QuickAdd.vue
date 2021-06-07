@@ -15,14 +15,29 @@
         class="w-full bottom-0 px-4 py-3 bg-primary-lighter shadow-md rounded z-10"
       >
         <!-- Product options -->
-        <div v-for="(input, index) in optionInputs" :key="input.name">
+        <div
+          v-for="(input, index) in optionInputs"
+          :key="input.name"
+          :set="(v = $v.optionState[input.option.name]) || null"
+        >
           <component
             :is="input.component"
-            v-if="visibleOptionIds.includes(input.option.id)"
             v-show="index === quickAddIndex"
+            v-if="visibleOptionIds.includes(input.option.id)"
             :option="input.option"
+            :current-value="optionState[input.option.name]"
+            :emit-on-enter="input.option.inputType.includes('text')"
+            :show-value-description="false"
             @value-changed="setOptionValue"
           />
+
+          <template v-if="v">
+            <div v-if="v.$dirty && v.$error" class="text-error mt-2">
+              <span v-if="!v.required" class="label-sm text-error">{{
+                $t('products.slug.options.required')
+              }}</span>
+            </div>
+          </template>
         </div>
       </div>
     </transition>
@@ -42,9 +57,13 @@
 // Helpers
 import get from 'lodash/get'
 import { mapState } from 'vuex'
+import { validationMixin } from 'vuelidate'
+import { required } from 'vuelidate/lib/validators'
 import { listVisibleOptions } from '~/modules/swell'
 
 export default {
+  mixins: [validationMixin],
+
   props: {
     product: {
       type: Object,
@@ -163,6 +182,10 @@ export default {
       this.$set(optionState, option, value)
       this.$emit('keep-alive', true)
 
+      // Validate current field
+      this.$v.optionState[option].$touch()
+      if (this.$v.optionState[option].$invalid) return
+
       // Add to cart if only one option was available
       if (optionInputs.length === 1 || quickAddIndex + 1 >= optionInputs.length) {
         this.addToCart()
@@ -205,6 +228,20 @@ export default {
         quantity: 1,
         options: this.optionState
       })
+    }
+  },
+
+  validations() {
+    const options = get(this, 'product.options', [])
+    const fields = options.reduce((obj, option) => {
+      if (option.required) {
+        obj[option.name] = { required }
+      }
+      return obj
+    }, {})
+
+    return {
+      optionState: fields
     }
   }
 }

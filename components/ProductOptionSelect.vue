@@ -93,7 +93,7 @@
     </div>
 
     <span
-      v-if="valueDescription"
+      v-if="valueDescription && showValueDescription"
       class="inline-block text-xs font-semibold text-primary-dark mt-4"
       >{{ valueDescription }}</span
     >
@@ -118,6 +118,10 @@ export default {
     activeDropdownUID: {
       type: Number,
       default: null
+    },
+    showValueDescription: {
+      type: Boolean,
+      default: true
     }
   },
 
