@@ -80,7 +80,12 @@
             <div v-html="product.description" />
 
             <!-- Product options -->
-            <div v-for="input in optionInputs" :key="input.name" class="my-8">
+            <div
+              v-for="(input, i) in optionInputs"
+              :key="input.name"
+              :set="(v = $v.optionState[input.option.name]) || null"
+              class="my-8"
+            >
               <component
                 :is="input.component"
                 v-if="visibleOptionIds.includes(input.option.id)"
@@ -90,6 +95,14 @@
                 @value-changed="setOptionValue"
                 @dropdown-active="setActiveDropdownUID($event)"
               />
+
+              <template v-if="v">
+                <div v-if="v.$dirty && v.$error" class="text-error mt-2">
+                  <span v-if="!v.required" class="label-sm text-error">{{
+                    $t('products.slug.options.required')
+                  }}</span>
+                </div>
+              </template>
             </div>
 
             <!-- Cart button & stock info -->
@@ -204,12 +217,14 @@
 // Helpers
 import { mapState } from 'vuex'
 import get from 'lodash/get'
+import { validationMixin } from 'vuelidate'
+import { required } from 'vuelidate/lib/validators'
 import pageMeta from '~/mixins/pageMeta'
 import { listVisibleOptions } from '~/modules/swell'
 
 export default {
   name: 'ProductDetailPage',
-  mixins: [pageMeta],
+  mixins: [pageMeta, validationMixin],
 
   async fetch() {
     const { $swell, $route } = this
@@ -315,7 +330,6 @@ export default {
           return 'AttributeLongText'
         case 'file':
           return 'AttributeFile'
-    
         // TODO: add components for other supported attribute types
         default:
           return 'AttributeShortText'
@@ -338,6 +352,9 @@ export default {
 
     // Add product to cart with selected options
     addToCart() {
+      // Touch and validate all fields
+      this.$v.$touch()
+      if (this.$v.$invalid) return // return if invalid
       this.$store.dispatch('addCartItem', {
         productId: this.variation.id,
         quantity: 1,
@@ -356,6 +373,20 @@ export default {
     // Go back to previous page
     navigateBack() {
       this.$router.back()
+    }
+  },
+
+  validations() {
+    const options = get(this, 'product.options', [])
+    const fields = options.reduce((obj, option) => {
+      if (option.required) {
+        obj[option.name] = { required }
+      }
+      return obj
+    }, {})
+
+    return {
+      optionState: fields
     }
   }
 }
