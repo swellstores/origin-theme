@@ -29,7 +29,8 @@ export default {
       }
 
       if (faviconUrl) {
-        meta.link.push({ rel: 'icon', type: 'image/x-icon', href: faviconUrl })
+        const transformation = '?width=64&height=64'
+        meta.link.push({ rel: 'icon', type: 'image/x-icon', href: faviconUrl + transformation })
       }
 
       if (get(this, '$fetchState.pending')) {
