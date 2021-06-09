@@ -217,7 +217,7 @@
           "type": "image",
           "max_width": 32,
           "max_height": 32,
-          "description": "32 x 32px recommended"
+          "description": "32 x 32px .png recommended"
         },
         {
           "type": "heading",
