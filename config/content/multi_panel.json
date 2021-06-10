@@ -4,19 +4,19 @@
   "description": "Multiple panels with an image or text",
   "fields": [
     {
-      "label": "Content",
-      "type": "field_group",
-      "fields": [
+      "id": "panels",
+      "label": "Panels",
+      "type": "collection",
+      "min": 2,
+      "max": 4,
+      "item_types": [
         {
-          "id": "panels",
-          "label": "Panels",
-          "type": "collection",
-          "min": 2,
-          "max": 4,
-          "item_types": [
+          "id": "text",
+          "label": "Text",
+          "fields": [
             {
-              "id": "text",
-              "label": "Text",
+              "label": "Content",
+              "type": "field_group",
               "fields": [
                 {
                   "id": "heading",
@@ -67,7 +67,13 @@
                       "required": true
                     }
                   ]
-                },
+                }
+              ]
+            },
+            {
+              "label": "Styling",
+              "type": "field_group",
+              "fields": [
                 {
                   "id": "bg_color",
                   "label": "Background color",
@@ -83,51 +89,46 @@
                       "label": "Background (secondary)"
                     }
                   ]
-                }
-              ]
-            },
-            {
-              "id": "image",
-              "label": "Image",
-              "fields": [
-                {
-                  "id": "image",
-                  "label": "Background image",
-                  "type": "image",
-                  "required": true
                 },
                 {
-                  "id": "url",
-                  "label": "Image URL",
-                  "type": "url"
+                  "id": "text_align",
+                  "label": "Text alignment",
+                  "type": "select",
+                  "default": "left",
+                  "options": [
+                    {
+                      "value": "left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "center",
+                      "label": "Center"
+                    },
+                    {
+                      "value": "right",
+                      "label": "Right"
+                    }
+                  ]
                 }
               ]
             }
           ]
-        }
-      ]
-    },
-    {
-      "label": "Styling",
-      "type": "field_group",
-      "fields": [
+        },
         {
-          "id": "text_align",
-          "label": "Text alignment",
-          "type": "select",
-          "default": "left",
-          "options": [
+          "id": "image",
+          "label": "Image",
+          "type": "field_group",
+          "fields": [
             {
-              "value": "left",
-              "label": "Left"
+              "id": "image",
+              "label": "Background image",
+              "type": "image",
+              "required": true
             },
             {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "right",
-              "label": "Right"
+              "id": "url",
+              "label": "Image URL",
+              "type": "url"
             }
           ]
         }

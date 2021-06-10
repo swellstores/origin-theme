@@ -11,9 +11,9 @@
         `bg-${panel.bgColor}`,
         {
           'px-6 py-20 md:px-12 md:py-16 lg:px-26 lg:py-32': panel.type === 'text' && panel.heading,
-          'text-left': textAlign === 'left',
-          'text-right': textAlign === 'right',
-          'text-center': textAlign === 'center'
+          'text-left': panel.textAlign === 'left',
+          'text-right': panel.textAlign === 'right',
+          'text-center': panel.textAlign === 'center'
         }
       ]"
     >
@@ -50,7 +50,7 @@
       <template v-else-if="panel.type === 'text'">
         <h2>{{ panel.heading }}</h2>
         <p v-balance-text.children class="whitespace-pre-line mt-4" v-html="panel.description"></p>
-        <div :class="{ '-ml-3': textAlign !== 'center' }">
+        <div :class="{ '-ml-3': panel.textAlign !== 'center' }">
           <div
             v-for="(link, i) in panel.links"
             :key="`link-${i}`"
@@ -89,10 +89,6 @@ export default {
     panels: {
       type: Array,
       default: () => []
-    },
-    textAlign: {
-      type: String,
-      default: null
     }
   }
 }
