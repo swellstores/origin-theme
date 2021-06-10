@@ -38,7 +38,7 @@
                 </div>
               </template>
 
-              <div class="flex no-wrap overflow-scroll mt-6">
+              <div class="flex no-wrap overflow-scroll mt-6 hide-scroll">
                 <button
                   v-for="(image, index) in product.images"
                   :key="image.id"
