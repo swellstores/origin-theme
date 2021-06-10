@@ -37,7 +37,6 @@ export default async () => {
       { src: '~/plugins/vue-slider-component', mode: 'client' },
       { src: '~/plugins/vue-country-region-select', mode: 'client' },
       { src: '~/plugins/vue-credit-card-validation', mode: 'client' },
-      { src: '~/plugins/directives', mode: 'client' },
       { src: '~/plugins/swell-lang.js' }
     ],
 

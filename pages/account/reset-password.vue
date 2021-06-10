@@ -1,5 +1,5 @@
 <template>
-  <div v-enter-key="changePassword" class="relative container pt-6 pb-24 md:max-w-112 md:pt-24">
+  <div class="relative container pt-6 pb-24 md:max-w-112 md:pt-24" @keyup.enter="changePassword">
     <h2 class="pb-6">{{ $t('account.resetPassword.title') }}</h2>
 
     <p class="text-sm mb-10">{{ $t('account.resetPassword.infoText') }}</p>

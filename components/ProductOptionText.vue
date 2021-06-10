@@ -1,5 +1,5 @@
 <template>
-  <div v-enter-key="emitValueOnEnter">
+  <div @keyup.enter="emitValueOnEnter">
     <ProductOptionLabel v-bind="option" />
     <!-- Text -->
     <input
