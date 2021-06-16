@@ -9138,10 +9138,9 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-swell-js@3.8.9:
-  version "3.8.9"
-  resolved "https://registry.yarnpkg.com/swell-js/-/swell-js-3.8.9.tgz#c83c0704850192ed74b548437d88dc0bce947674"
-  integrity sha512-yNoZ7fzdbH+k7rDssvmYSTujHt0aqhCjdkjtn07j8TV5pFxXhP9Y50+vwTg8NRSWKmEetoCL6ZavsLYnRm/rgQ==
+swell-js@swellstores/swell-js#fix/find-variant-option:
+  version "3.9.1"
+  resolved "https://codeload.github.com/swellstores/swell-js/tar.gz/84862f8da7fba1a16e7879c0f566d4feb9395ed0"
   dependencies:
     "@babel/runtime" "7.4.5"
     deepmerge "4.2.2"

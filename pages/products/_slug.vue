@@ -225,9 +225,9 @@ export default {
     // Compute initial values for options
     const optionState =
       this.optionState ||
-      (product.options || []).reduce((options, { name, values }) => {
-        // Set first available value for current option
-        options[name] = get(values, '0.name')
+      (product.options || []).reduce((options, { name, values, inputType }) => {
+        // Set first available value for select current option
+        if (inputType === 'select') options[name] = get(values, '0.name')
         return options
       }, {})
 
@@ -315,7 +315,6 @@ export default {
           return 'AttributeLongText'
         case 'file':
           return 'AttributeFile'
-    
         // TODO: add components for other supported attribute types
         default:
           return 'AttributeShortText'
