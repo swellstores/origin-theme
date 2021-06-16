@@ -142,7 +142,10 @@ export default {
     setFlow() {
       const { optionInputs } = this
 
-      if (optionInputs.length > 2) {
+      if (
+        optionInputs.length > 2 ||
+        optionInputs.some(option => !option.option.inputType.includes('select'))
+      ) {
         this.label = this.$t('products.preview.quickAdd.quickView')
         this.flow = 'quick-view'
       } else if (optionInputs.length > 0 && optionInputs.length < 3) {
