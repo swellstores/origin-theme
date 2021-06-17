@@ -9,7 +9,7 @@
       @click="toggleDropdown()"
     >
       <div v-if="selected" class="mx-auto transition-all duration-200 ease-out">
-        <span class="font-medium" :class="{ 'ml-2 font-semibold': appearance === 'popup' }">{{
+        <span class="font-medium" :class="{ 'font-semibold': appearance === 'popup' }">{{
           selected.value
         }}</span>
         <span class="font-semibold">{{ selected.symbol }}</span>

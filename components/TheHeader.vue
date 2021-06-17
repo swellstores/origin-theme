@@ -124,11 +124,11 @@
               <!-- Mobile nav toggle -->
               <button
                 :class="{ 'is-active': mobileNavIsVisible }"
-                class="hamburger hamburger--squeeze h-8 p-1 ml-2 rounded lg:hidden"
+                class="hamburger hamburger--squeeze relative w-10 h-10 p-1 ml-2 rounded lg:hidden"
                 type="button"
                 @click="setMobileNavVisibility"
               >
-                <span class="hamburger-box">
+                <span class="absolute center-xy w-6 h-6">
                   <span class="hamburger-inner"></span>
                 </span>
               </button>
@@ -317,10 +317,6 @@ export default {
 
 .hamburger {
   @apply cursor-pointer;
-}
-
-.hamburger-box {
-  @apply relative inline-block w-6 h-6;
 }
 
 .hamburger-inner {

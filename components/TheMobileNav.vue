@@ -26,7 +26,6 @@
         </div>
 
         <!-- Misc. Links -->
-
         <div
           ref="miscLinks"
           class="bottom-0 w-full flex flex-wrap border-b border-primary-light md:px-10 md:pb-6 md:border-b-0 md:justify-center"
@@ -44,8 +43,13 @@
               $t('navigation.account')
             }}</span>
           </NuxtLink>
-          <LocaleSelect class="sw-nav-button" appearance="popup" />
-          <CurrencySelect class="sw-nav-button z-10" appearance="popup" />
+          <LocaleSelect v-if="$i18n.locales.length > 1" class="sw-nav-button" appearance="popup" />
+          <CurrencySelect
+            v-if="currency"
+            :currency="currency"
+            class="sw-nav-button z-10"
+            appearance="popup"
+          />
         </div>
       </div>
     </div>
@@ -82,7 +86,7 @@ export default {
 
 <style lang="postcss" scoped>
 .sw-nav-button {
-  @apply w-1/2 h-14 flex flex-row justify-center items-center border-primary-light rounded-none;
+  @apply w-1/2 h-14 flex flex-row flex-grow justify-center items-center border-primary-light rounded-none;
 
   &:nth-child(odd) {
     @apply border-r border-t;
@@ -93,7 +97,7 @@ export default {
   }
 
   @screen md {
-    @apply w-40 border rounded m-1;
+    @apply w-40 border flex-grow-0 rounded m-1;
   }
 }
 

@@ -8,7 +8,7 @@
       }"
       @click="toggleDropdown()"
     >
-      <div class="mx-auto transition-all duration-200 ease-out">
+      <div class="flex mx-auto transition-all duration-200 ease-out">
         <img
           class="w-6"
           :src="`/flags/${getCountryCodeFromLocale($i18n.locale)}.svg`"
