@@ -208,7 +208,7 @@
 
       <div class="container pt-4">
         <!-- Delievry details -->
-        <template v-if="subscriptionOrder.subscriptionDelivery && shipping">
+        <template v-if="shipping">
           <p class="text-base font-semibold pb-4">
             {{ $t('account.subscriptions.id.deliveryDetails') }}
           </p>
@@ -296,7 +296,7 @@
               </div>
             </div>
 
-            <div class="flex md:text-sm p-4">
+            <div v-if="billing" class="flex md:text-sm p-4">
               <div>
                 <p class="font-semibold pb-2">
                   {{ $t('account.subscriptions.id.billingAddress') }}
@@ -383,6 +383,7 @@
 // Helpers
 import { mapState } from 'vuex'
 import padStart from 'lodash/padStart'
+import isEmpty from 'lodash/isEmpty'
 
 export default {
   name: 'Subscription',
@@ -440,17 +441,17 @@ export default {
     },
 
     orders() {
-      if (!this.subscription.orders) return
+      if (isEmpty(this.subscription.orders)) return
       return this.subscription.orders.results
     },
 
     shipping() {
-      if (!this.subscription.shipping) return
-      return this.subscription.shipping
+      if (isEmpty(this.subscriptionOrder.shipping)) return
+      return this.subscriptionOrder.shipping
     },
 
     billing() {
-      if (!this.subscription.billing) return
+      if (isEmpty(this.subscription.billing)) return
       return this.subscription.billing
     },
 
@@ -478,7 +479,6 @@ export default {
     },
 
     selectThumbnail(item) {
-      console.log(item)
       if (item.variant && item.variant.images && item.variant.images.length) {
         return item.variant.images[0].file
       }
