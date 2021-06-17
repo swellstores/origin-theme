@@ -144,7 +144,9 @@ export default {
 
       if (
         optionInputs.length > 2 ||
-        optionInputs.some(option => !option.option.inputType.includes('select'))
+        optionInputs.some(({ option }) =>
+          option.inputType ? !option.inputType.includes('select') : false
+        )
       ) {
         this.label = this.$t('products.preview.quickAdd.quickView')
         this.flow = 'quick-view'
