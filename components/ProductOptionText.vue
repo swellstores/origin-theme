@@ -17,6 +17,14 @@
       class="text-input mt-3"
       @input="emitValue"
     ></textarea>
+
+    <template v-if="validation">
+      <div v-if="validation.$dirty && validation.$error" class="text-error mt-2">
+        <span v-if="!validation.required" class="label-sm text-error">{{
+          $t('products.slug.options.required')
+        }}</span>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -32,6 +40,10 @@ export default {
     emitOnEnter: {
       type: Boolean,
       default: false
+    },
+    validation: {
+      type: Object,
+      default: () => {}
     }
   },
 
