@@ -67,29 +67,17 @@
                 >
 
                 <!-- Product options -->
-                <div
-                  v-for="input in optionInputs"
-                  :key="input.name"
-                  :set="(v = $v.optionState[input.option.name]) || null"
-                  class="my-8"
-                >
+                <div v-for="input in optionInputs" :key="input.name" class="my-8">
                   <component
                     :is="input.component"
                     v-if="visibleOptionIds.includes(input.option.id)"
                     :option="input.option"
                     :current-value="optionState[input.option.name]"
                     :active-dropdown-u-i-d="activeDropdownUID"
+                    :validation="$v.optionState[input.option.name]"
                     @value-changed="setOptionValue"
                     @dropdown-active="setActiveDropdownUID($event)"
                   />
-
-                  <template v-if="v">
-                    <div v-if="v.$dirty && v.$error" class="text-error mt-2">
-                      <span v-if="!v.required" class="label-sm text-error">{{
-                        $t('products.slug.options.required')
-                      }}</span>
-                    </div>
-                  </template>
                 </div>
 
                 <!-- Duplicate button element to match fixed button height -->

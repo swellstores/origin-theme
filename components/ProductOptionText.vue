@@ -43,7 +43,7 @@ export default {
     },
     validation: {
       type: Object,
-      default: () => {}
+      default: null
     }
   },
 
