@@ -165,13 +165,14 @@ export default {
     this.onScroll()
     window.addEventListener('scroll', this.onScroll)
   },
+
   beforeDestroy() {
     window.removeEventListener('scroll', this.onScroll)
   },
 
   methods: {
     onScroll() {
-      this.scrollY = window.top.scrollY
+      this.scrollY = window.scrollY
     },
 
     openCart() {
