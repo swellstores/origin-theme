@@ -1,25 +1,30 @@
 <template>
-  <div class="relative flex">
-    <ProductOptionLabel v-bind="option" />
-    <div class="checkbox-wrapper ml-auto">
+  <div>
+    <div
+      v-for="value in option.values"
+      :key="value.name"
+      class="w-full checkbox relative flex cursor-pointer"
+    >
       <input
-        :id="option.name"
+        :id="value.name"
         type="checkbox"
-        class="absolute right-0 opacity-0"
         @input="
           $emit('value-changed', {
-            option: option.name,
-            value: $event.target.checked ? option.name : ''
+            option: value.name,
+            value: $event.target.checked ? value.name : ''
           })
         "
       />
-      <label :for="option.name" class="label-sm py-1 pr-6 cursor-pointer">
-        <div class="absolute right-0 top-0 text-primary-lightest">
-          <BaseIcon icon="uil:check" />
+
+      <label class="w-full label-xs-bold text-primary-dark" :for="value.name">
+        <p>{{ value.name }}</p>
+
+        <div class="flex items-center ml-auto">
+          <span v-if="value.price" class="mr-2">+{{ formatMoney(value.price, currency) }}</span>
+          <div class="indicator ml-auto">
+            <BaseIcon icon="uil:check" size="sm" class="text-primary-lighter" />
+          </div>
         </div>
-        <span v-if="option.price" class="inline-block mr-1"
-          >+{{ formatMoney(option.price, currency) }}</span
-        >
       </label>
     </div>
   </div>

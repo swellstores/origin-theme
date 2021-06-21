@@ -23,7 +23,7 @@
 
       <template v-else>
         <label :for="`${option.value || option}-${i}`">
-          <div class="indicator text-primary-lightest">
+          <div class="indicator mr-2 text-primary-lightest">
             <BaseIcon icon="uil:check" size="sm" />
           </div>
           <p>{{ option.label || option }}</p>

@@ -22,7 +22,7 @@
     "nuxt": "2.15.2",
     "nuxt-i18n": "6.22.3",
     "object-scan": "14.0.0",
-    "swell-js": "3.8.9",
+    "swell-js": "3.9.2",
     "vue-balance-text": "1.2.3",
     "vue-country-region-select": "2.0.14",
     "vue-credit-card-validation": "0.1.10",

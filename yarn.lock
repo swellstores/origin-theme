@@ -9138,10 +9138,10 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-swell-js@3.8.9:
-  version "3.8.9"
-  resolved "https://registry.yarnpkg.com/swell-js/-/swell-js-3.8.9.tgz#c83c0704850192ed74b548437d88dc0bce947674"
-  integrity sha512-yNoZ7fzdbH+k7rDssvmYSTujHt0aqhCjdkjtn07j8TV5pFxXhP9Y50+vwTg8NRSWKmEetoCL6ZavsLYnRm/rgQ==
+swell-js@3.9.2:
+  version "3.9.2"
+  resolved "https://registry.yarnpkg.com/swell-js/-/swell-js-3.9.2.tgz#7d4dd2bf197d4f1c50c0ae262057f4792dbdd3a1"
+  integrity sha512-KSRxGiql6/Kvxaf6yxccZxRUfFGEGavljZq9IB+mUdtsw7ItmlDuUzr6hbP1oefwZLX1HAuilI4CBFbiI9mMPw==
   dependencies:
     "@babel/runtime" "7.4.5"
     deepmerge "4.2.2"
