@@ -93,10 +93,18 @@
     </div>
 
     <span
-      v-if="valueDescription"
+      v-if="valueDescription && showValueDescription"
       class="inline-block text-xs font-semibold text-primary-dark mt-4"
       >{{ valueDescription }}</span
     >
+
+    <template v-if="validation">
+      <div v-if="validation.$dirty && validation.$error" class="text-error mt-2">
+        <span v-if="!validation.required" class="label-sm text-error">{{
+          $t('products.slug.options.required')
+        }}</span>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -117,6 +125,14 @@ export default {
     },
     activeDropdownUID: {
       type: Number,
+      default: null
+    },
+    showValueDescription: {
+      type: Boolean,
+      default: true
+    },
+    validation: {
+      type: Object,
       default: null
     }
   },

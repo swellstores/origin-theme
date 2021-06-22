@@ -163,6 +163,9 @@
         "updating": "Updating",
         "save": "Save",
         "add_to_cart": "Add to cart",
+        "options": {
+          "required": "Please enter a value."
+        },
         "stock_status": {
           "out_of_stock": { "message": "", "label": "Out of stock" },
           "limited_availability": { "message": "Ships in 1–2 days", "label": "Low stock" },

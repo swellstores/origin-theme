@@ -1,6 +1,6 @@
 <template>
   <transition name="popup" :duration="700" appear>
-    <div v-enter-key="handleEnterKey" class="z-40 fixed inset-0">
+    <div class="z-40 fixed inset-0" @keyup.enter="handleEnterKey">
       <!-- Overlay -->
       <div
         class="overlay opacity-50 absolute w-full h-full bg-primary-darker"

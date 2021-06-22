@@ -38,7 +38,7 @@
                 </div>
               </template>
 
-              <div class="flex no-wrap overflow-scroll mt-6">
+              <div class="flex no-wrap overflow-scroll mt-6 hide-scroll">
                 <button
                   v-for="(image, index) in product.images"
                   :key="image.id"
@@ -67,13 +67,16 @@
                 >
 
                 <!-- Product options -->
-                <div v-for="input in optionInputs" :key="input.name" class="mb-8">
+                <div v-for="input in optionInputs" :key="input.name" class="my-8">
                   <component
                     :is="input.component"
                     v-if="visibleOptionIds.includes(input.option.id)"
                     :option="input.option"
                     :current-value="optionState[input.option.name]"
+                    :active-dropdown-u-i-d="activeDropdownUID"
+                    :validation="$v.optionState[input.option.name]"
                     @value-changed="setOptionValue"
+                    @dropdown-active="setActiveDropdownUID($event)"
                   />
                 </div>
 
@@ -130,10 +133,14 @@
 <script>
 // Helpers
 import get from 'lodash/get'
+import { validationMixin } from 'vuelidate'
+import { required } from 'vuelidate/lib/validators'
 import { mapState } from 'vuex'
 import { listVisibleOptions } from '~/modules/swell'
 
 export default {
+  mixins: [validationMixin],
+
   props: {
     productId: {
       type: String,
@@ -165,7 +172,8 @@ export default {
       product: null,
       pendingState: false,
       optionState: null,
-      productPreviewIndex: 0
+      productPreviewIndex: 0,
+      activeDropdownUID: null
     }
   },
 
@@ -238,6 +246,9 @@ export default {
 
     // Add product to cart with selected options
     async addToCart() {
+      // Touch and validate all fields
+      this.$v.$touch()
+      if (this.$v.$invalid) return // return if invalid
       this.$store.commit('setState', { key: 'addedItem', value: this.variation })
       await this.$store.dispatch('addCartItem', {
         productId: this.variation.id,
@@ -247,6 +258,20 @@ export default {
 
       // Close popup when product has been added to cart
       this.$emit('click-close')
+    }
+  },
+
+  validations() {
+    const options = get(this, 'product.options', [])
+    const fields = options.reduce((obj, option) => {
+      if (option.required) {
+        obj[option.name] = { required }
+      }
+      return obj
+    }, {})
+
+    return {
+      optionState: fields
     }
   }
 }

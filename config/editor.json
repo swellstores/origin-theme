@@ -2633,6 +2633,13 @@
           "localized": true
         },
         {
+          "id": "lang.products._slug.options.required",
+          "label": "Options field required message",
+          "default": "Please enter a value.",
+          "type": "short_text",
+          "localized": true
+        },
+        {
           "id": "lang.products._slug.add_to_cart",
           "label": "Add to cart",
           "default": "Add to cart",

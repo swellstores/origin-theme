@@ -87,6 +87,7 @@
                 :option="input.option"
                 :current-value="optionState[input.option.name]"
                 :active-dropdown-u-i-d="activeDropdownUID"
+                :validation="$v.optionState[input.option.name]"
                 @value-changed="setOptionValue"
                 @dropdown-active="setActiveDropdownUID($event)"
               />
@@ -204,12 +205,14 @@
 // Helpers
 import { mapState } from 'vuex'
 import get from 'lodash/get'
+import { validationMixin } from 'vuelidate'
+import { required } from 'vuelidate/lib/validators'
 import pageMeta from '~/mixins/pageMeta'
 import { listVisibleOptions } from '~/modules/swell'
 
 export default {
   name: 'ProductDetailPage',
-  mixins: [pageMeta],
+  mixins: [pageMeta, validationMixin],
 
   async fetch() {
     const { $swell, $route } = this
@@ -337,6 +340,9 @@ export default {
 
     // Add product to cart with selected options
     addToCart() {
+      // Touch and validate all fields
+      this.$v.$touch()
+      if (this.$v.$invalid) return // return if invalid
       this.$store.dispatch('addCartItem', {
         productId: this.variation.id,
         quantity: 1,
@@ -355,6 +361,20 @@ export default {
     // Go back to previous page
     navigateBack() {
       this.$router.back()
+    }
+  },
+
+  validations() {
+    const options = get(this, 'product.options', [])
+    const fields = options.reduce((obj, option) => {
+      if (option.required) {
+        obj[option.name] = { required }
+      }
+      return obj
+    }, {})
+
+    return {
+      optionState: fields
     }
   }
 }
