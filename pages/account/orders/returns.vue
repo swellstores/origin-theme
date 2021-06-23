@@ -17,23 +17,24 @@
       <p v-balance-text.children class="text-sm" v-html="$t('account.orders.returns.infoText')"></p>
     </div>
 
-    <div class="flex">
-      <NuxtLink
-        v-if="previousOrderRoute"
-        :to="localePath('/account/orders/')"
-        class="w-full md:w-auto btn light mb-6 md:mr-6"
-      >
-        {{ $tc('account.orders.returns.backToOrders', 2) }}
-      </NuxtLink>
+    <BaseButton
+      v-if="previousOrderRoute"
+      class="w-full block mb-6"
+      fit="auto"
+      appearance="light"
+      :label="$tc('account.orders.returns.backToOrders', 2)"
+      :link="localePath('/account/orders/')"
+    />
 
-      <NuxtLink
-        :to="localePath('/products/')"
-        class="w-full md:w-auto inline-flex justify-center items-center btn dark"
-      >
-        <BaseIcon icon="uil:shopping-bag" size="sm" class="mr-2" />
-        {{ $t('account.orders.backToProducts') }}
-      </NuxtLink>
-    </div>
+    <BaseButton
+      v-if="!previousOrderRoute"
+      class="w-full block"
+      fit="auto"
+      appearance="dark"
+      icon="shopping-bag"
+      :label="$t('account.orders.backToProducts')"
+      :link="localePath('/products/')"
+    />
   </div>
 </template>
 

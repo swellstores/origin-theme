@@ -25,7 +25,7 @@
             />
           </div>
 
-          <ButtonLoading
+          <BaseButton
             class="w-full dark mt-6"
             label="Save"
             loading-label="Saving..."

@@ -57,14 +57,13 @@
             </div>
           </div>
 
-          <NuxtLink
+          <BaseButton
             v-if="order.status === 'complete'"
-            :to="localePath('/account/orders/returns/')"
-            append
-            class="btn light"
-          >
-            {{ $t('account.orders.id.createReturn') }}
-          </NuxtLink>
+            fit="auto"
+            appearance="light"
+            :label="$t('account.orders.id.createReturn')"
+            :link="{ url: localePath('/account/orders/returns/'), title: 'Create return' }"
+          />
 
           <!-- Order summary -->
           <div class="flex font-semibold py-6 border-b border-primary-med">

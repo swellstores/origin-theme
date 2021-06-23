@@ -70,23 +70,31 @@
           </div>
 
           <div class="flex no-wrap p-3">
-            <a
-              :href="cart.checkoutUrl"
-              :class="{ loading: cartIsUpdating }"
-              class="w-full btn dark mr-2"
-            >
-              {{ $t('notifications.checkout') }}
-            </a>
+            <BaseButton
+              class="w-1/2 mr-2"
+              fit="full"
+              :link="cart.checkoutUrl"
+              appearance="dark"
+              :label="$t('notifications.checkout')"
+            />
 
-            <button class="w-full relative btn light" type="button" @click="openCart">
-              {{ $t('notifications.cart') }}
+            <div class="relative w-1/2">
+              <BaseButton
+                class="w-full"
+                fit="full"
+                :link="cart.checkoutUrl"
+                appearance="lught"
+                :label="$t('notifications.cart')"
+                @click.native="openCart"
+              />
+
               <div
                 v-if="cart && cart.itemQuantity"
                 class="fade-in absolute right-0 top-0 bg-accent rounded-full w-6 h-6 flex justify-center items-center text-primary-lighter transform translate-x-1 -translate-y-1"
               >
                 <span class="block mt-px text-2xs leading-none">{{ cart.itemQuantity }}</span>
               </div>
-            </button>
+            </div>
           </div>
         </template>
       </div>

@@ -48,17 +48,21 @@
       {{ $t('account.login.forgotPassword') }}
     </NuxtLink>
 
-    <ButtonLoading
-      class="dark w-full mt-6 mb-4"
+    <BaseButton
+      class="mt-6 mb-4"
+      appearance="dark"
       :label="$t('account.login.button.label')"
       :loading-label="$t('account.login.button.loadingLabel')"
       :is-loading="isProcessing"
       @click.native="login()"
     />
 
-    <NuxtLink class="btn light w-full" :to="localePath('/account/create-account/')">
-      {{ $t('account.login.createAccount') }}
-    </NuxtLink>
+    <BaseButton
+      class="mt-6 mb-4"
+      appearance="light"
+      :label="$t('account.login.createAccount')"
+      :link="{ url: localePath('/account/create-account/'), title: 'Create Account' }"
+    />
   </div>
 </template>
 

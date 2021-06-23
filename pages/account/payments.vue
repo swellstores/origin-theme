@@ -33,9 +33,13 @@
         {{ $t('account.payments.noPaymentMethods') }}
       </p>
 
-      <button class="btn w-full md:w-auto light mt-10" type="button" @click="openEditPopup('new')">
-        {{ $t('account.payments.addPaymentMethod') }}
-      </button>
+      <BaseButton
+        class="block mt-10"
+        fit="auto"
+        appearance="light"
+        :label="$t('account.payments.addPaymentMethod')"
+        @click.native="openEditPopup('new')"
+      />
 
       <AccountCardPopup
         v-if="editCardPopupIsActive"

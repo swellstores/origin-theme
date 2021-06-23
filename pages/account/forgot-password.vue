@@ -27,17 +27,20 @@
       </template>
     </div>
 
-    <ButtonLoading
-      class="dark w-full mt-6 mb-4"
-      label="Send Email"
-      loading-label="Processing"
+    <BaseButton
+      class="mt-6 mb-4"
+      appearance="dark"
+      :label="$t('account.forgotPassword.button.label')"
+      :loading-label="$t('account.forgotPassword.button.loadingLabel')"
       :is-loading="isProcessing"
       @click.native="sendPasswordReset()"
     />
 
-    <NuxtLink class="btn light w-full" :to="localePath('/account/login/')">
-      {{ $t('account.forgotPassword.logIn') }}
-    </NuxtLink>
+    <BaseButton
+      appearance="light"
+      :label="$t('account.forgotPassword.logIn')"
+      :link="{ url: localePath('/account/login/'), title: 'Log in' }"
+    />
   </div>
 </template>
 

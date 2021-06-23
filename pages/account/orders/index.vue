@@ -23,13 +23,14 @@
           {{ $t('account.orders.noOrders') }}
         </p>
 
-        <NuxtLink
-          :to="localePath('/products/')"
-          class="inline-flex justify-center items-center btn btn dark mt-10"
-        >
-          <BaseIcon icon="uil:shopping-bag" size="sm" class="mr-2" />
-          {{ $t('account.orders.backToProducts') }}
-        </NuxtLink>
+        <BaseButton
+          class="block mt-10"
+          fit="auto"
+          appearance="dark"
+          icon="shopping-bag"
+          :label="$t('account.orders.backToProducts')"
+          :link="localePath('/products/')"
+        />
       </template>
     </div>
   </div>

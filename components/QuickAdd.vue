@@ -1,12 +1,10 @@
 <template>
   <div>
-    <button
+    <BaseButton
       v-if="!quickAddIsActive && !cartIsUpdating"
-      class="btn w-full shadow-md"
-      @click="interact"
-    >
-      {{ label }}
-    </button>
+      :label="label"
+      @click.native="interact"
+    />
 
     <!-- Quick Add -->
     <transition name="fade" :duration="200">
@@ -29,8 +27,8 @@
 
     <!-- Adding in progress -->
     <div v-if="cartIsUpdating" class="relative px-4">
-      <ButtonLoading
-        class="absolute left-0 bottom-0 w-full dark px-4 py-3"
+      <BaseButton
+        class="absolute left-0 bottom-0 w-full"
         :label="$t('products.preview.quickAdd.adding.label')"
         :loading-label="$t('products.preview.quickAdd.adding.loadingLabel')"
       />

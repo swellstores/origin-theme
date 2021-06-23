@@ -77,13 +77,12 @@
           <span class="text-sm">{{ statusMessage[0] }}</span>
         </div>
 
-        <NuxtLink
-          :to="localePath(`/account/orders/${order.id}/`)"
-          append
-          class="btn light w-full mt-auto"
-        >
-          {{ $t('account.orders.order.view') }}
-        </NuxtLink>
+        <BaseButton
+          class="mt-auto"
+          :link="localePath(`/account/orders/${order.id}/`)"
+          appearance="light"
+          :label="$t('account.orders.order.view')"
+        />
       </div>
     </div>
   </div>

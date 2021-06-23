@@ -99,9 +99,13 @@
       />
       <div v-else-if="activeFilterCount > 0" class="py-16 bg-primary-lighter text-center rounded">
         <p>{{ $t('categories.slug.filterProductsNotFound') }}</p>
-        <button type="button" name="button" class="btn mt-4" @click="toggleFilterModal">
-          {{ $t('categories.slug.editFilters') }}
-        </button>
+        <BaseButton
+          class="mt-4"
+          appearance="light"
+          fit="static"
+          :label="$t('categories.slug.editFilters')"
+          @click.native="toggleFilterModal"
+        />
       </div>
       <div v-else class="py-16 bg-primary-lighter text-center rounded">
         <p>{{ $t('categories.slug.categoryProductsNotFound') }}</p>
