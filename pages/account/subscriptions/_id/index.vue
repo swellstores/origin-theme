@@ -196,7 +196,7 @@
             </div>
 
             <BaseButton
-              v-if="status === 'trial'"
+              v-if="status !== 'canceled'"
               class="w-full block mt-6"
               fit="auto"
               appearance="dark"
