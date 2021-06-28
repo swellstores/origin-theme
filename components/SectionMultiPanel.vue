@@ -56,16 +56,13 @@
             :key="`link-${i}`"
             :class="{ 'inline-block': panel.links.length < 3 }"
           >
-            <BaseLink
-              :link="link"
-              class="inline-block"
-              :class="{
-                'cta-link mt-5 mb-1 mx-3': link.style === 'text',
-                'btn mt-6 mx-3': link.style === 'button_primary'
-              }"
-            >
-              {{ link.label }}
-            </BaseLink>
+            <BaseButton
+              class="inline-block mt-6 mx-3"
+              :type="link.style"
+              :link="link.url"
+              :label="link.label"
+              fit="auto"
+            />
           </div>
         </div>
       </template>

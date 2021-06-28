@@ -42,8 +42,8 @@
       </template>
     </div>
 
-    <ButtonLoading
-      class="dark w-full"
+    <BaseButton
+      appearance="dark"
       :label="$t('account.resetPassword.button.label')"
       :loading-label="$t('account.resetPassword.button.loadingLabel')"
       :is-loading="isProcessing"

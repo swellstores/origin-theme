@@ -9,15 +9,18 @@
       </span>
       <template v-if="error.statusCode < 500">
         <h1 class="text-6xl text-primary-lightest">
-          {{ error.heading || $t('errors.pageNotFound.title') }}
+          {{ $t('errors.pageNotFound.title') || error.heading }}
         </h1>
         <p class="mt-4 text-primary-lightest ">
-          {{ error.message || $t('errors.pageNotFound.message') }}
+          {{ $t('errors.pageNotFound.message') || error.message }}
         </p>
         <div class="inline-block">
-          <NuxtLink :to="localePath('/')" title="Home" class="btn lighter mt-6 px-6 py-3">{{
-            $t('errors.returnHome')
-          }}</NuxtLink>
+          <BaseButton
+            class="block mt-6"
+            fit="auto"
+            :label="$t('errors.returnHome')"
+            :link="{ url: localePath('/'), title: 'Home' }"
+          />
         </div>
       </template>
 
@@ -56,26 +59,8 @@ export default {
 
   methods: {
     reload() {
-      window.location.reload(true)
+      window.location.reload()
     }
   }
 }
 </script>
-
-<style lang="postcss" scoped>
-.text-input {
-  @apply rounded pl-4 pr-8 py-2 border border-primary-dark bg-transparent shadow-none;
-
-  &::placeholder {
-    @apply text-primary-med;
-  }
-
-  &:focus {
-    @apply border-primary-lightest;
-
-    & + div {
-      @apply text-primary-lightest;
-    }
-  }
-}
-</style>

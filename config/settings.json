@@ -290,6 +290,7 @@
         "error": "There was an error resetting your password.",
         "success": "An email has been sent to reset your password.",
         "log_in": "Back to log in",
+        "button": { "loading_label": "Sending...", "label": "Send email" },
         "email": {
           "format": "Please enter a valid e-mail address.",
           "required": "Please enter your e-mail address.",

@@ -85,7 +85,6 @@
                   :class="{ loading: cartIsUpdating }"
                   type="submit"
                   class="btn btn--lg relative w-full opacity-0 pointer-events-none"
-                  @click.prevent="addToCart"
                 >
                   |
                 </button>

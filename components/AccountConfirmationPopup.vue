@@ -13,18 +13,22 @@
           <h3 v-if="heading">{{ heading }}</h3>
           <p class="pb-10">{{ promptMessage }}</p>
 
-          <div class="block md:flex">
-            <ButtonLoading
-              class="dark mb-4 w-full md:w-1/2 md:mr-2 md:mb-0"
+          <div class="block mb-4 md:mb-0 md:flex">
+            <BaseButton
+              class="w-full md:w-1/2 md:mr-2 md:mb-0"
+              appearance="dark"
               :label="acceptLabel"
               :loading-label="loadingLabel"
               :is-loading="isLoading"
               @click.native="accept()"
             />
 
-            <button class="btn light w-full md:w-1/2 md:ml-2" type="button" @click="refuse()">
-              {{ refuseLabel }}
-            </button>
+            <BaseButton
+              class="w-full md:w-1/2 md:mr-2 md:mb-0"
+              appearance="light"
+              :label="refuseLabel"
+              @click.native="refuse()"
+            />
           </div>
         </div>
       </div>

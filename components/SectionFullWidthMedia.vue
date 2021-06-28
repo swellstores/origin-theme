@@ -76,19 +76,17 @@
             v-html="description"
           >
           </p>
-          <div :class="{ '-ml-3': alignX !== 'center' }">
-            <BaseLink
+          <div class="mt-6 mx-3" :class="{ '-ml-3': alignX !== 'center' }">
+            <BaseButton
               v-for="(link, index) in links"
               :key="id + 'link' + index"
+              class="mt-6 mx-3"
+              :type="link.style"
+              fit="static"
+              :text-color="textColor"
               :link="link"
-              :class="{
-                'cta-link mt-5 mb-1 mx-3': link.style === 'text',
-                'btn mt-6 mx-3': link.style === 'button_primary',
-                lighter: textColor === 'light'
-              }"
-            >
-              {{ link.label }}
-            </BaseLink>
+              :label="link.label"
+            />
           </div>
         </div>
         <!-- END Text content -->

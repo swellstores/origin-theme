@@ -113,9 +113,12 @@
           />
           -->
 
-          <button class="btn btn--lg w-full" type="button" @click="applyFilters">
-            {{ $t('categories.slug.apply') }}
-          </button>
+          <BaseButton
+            appearance="dark"
+            size="lg"
+            :label="$t('categories.slug.apply')"
+            @click.native="applyFilters"
+          />
         </div>
       </div>
     </div>

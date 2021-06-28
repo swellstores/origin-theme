@@ -195,13 +195,14 @@
               </p>
             </div>
 
-            <NuxtLink
+            <BaseButton
               v-if="status !== 'canceled'"
-              :to="`/account/subscriptions/${subscription.id}/edit/`"
-              class="btn dark w-full md:w-auto mt-6"
-            >
-              {{ $t('account.subscriptions.id.editPlan') }}
-            </NuxtLink>
+              class="w-full block mt-6"
+              fit="auto"
+              appearance="dark"
+              :label="$t('account.subscriptions.id.editPlan')"
+              :link="localePath(`/account/subscriptions/${subscription.id}/edit/`)"
+            />
           </div>
         </div>
       </div>
@@ -337,13 +338,13 @@
           </NuxtLink>
         </div>
 
-        <button
+        <BaseButton
           v-if="status !== 'canceled'"
-          class="btn w-full md:w-auto light light-error"
-          @click="cancelPopupIsActive = true"
-        >
-          {{ $t('account.subscriptions.id.cancelSubscription') }}
-        </button>
+          appearance="light-error"
+          fit="auto"
+          :label="$t('account.subscriptions.id.cancelSubscription')"
+          @click.native="cancelPopupIsActive = true"
+        />
       </div>
     </div>
 

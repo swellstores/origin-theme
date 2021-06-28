@@ -138,9 +138,10 @@
 
         <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4 z-30">
           <div class="container">
-            <ButtonLoading
+            <BaseButton
               v-if="type === 'new'"
-              class="w-full dark my-4"
+              class="my-4"
+              appearance="dark"
               :label="$t('account.payments.popup.create.button.label')"
               :loading-label="$t('account.payments.popup.create.button.loadingLabel')"
               :is-loading="isCreating"
@@ -148,9 +149,10 @@
               @click.native="createCard()"
             />
 
-            <ButtonLoading
+            <BaseButton
               v-if="type === 'update'"
-              class="w-full dark my-4"
+              class="my-4"
+              appearance="dark"
               :label="$t('account.payments.popup.save.button.label')"
               :loading-label="$t('account.payments.save.button.label')"
               :is-loading="isUpdating"
@@ -158,9 +160,9 @@
               @click.native="updateCard()"
             />
 
-            <ButtonLoading
+            <BaseButton
               v-if="type === 'update'"
-              class="w-full light-error"
+              appearance="light-error"
               :label="$t('account.payments.popup.delete.button.label')"
               :loading-label="$t('account.payments.popup.delete.button.loadingLabel')"
               :is-loading="isDeleting"

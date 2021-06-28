@@ -1,5 +1,5 @@
 <template>
-  <component :is="null" v-bind="attributes" :title="link.title">
+  <component :is="null" v-bind="attributes" :title="link.title || ''">
     <slot />
   </component>
 </template>

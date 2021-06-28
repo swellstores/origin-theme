@@ -99,13 +99,14 @@
           {{ $t('account.subscriptions.id.edit.changeFrequency') }}
         </button> -->
 
-        <button
+        <BaseButton
           v-if="status === 'trial'"
-          class="btn light w-full md:w-auto mb-6"
-          @click="cancelPopupIsActive = true"
-        >
-          {{ $t('account.subscriptions.id.cancelSubscription') }}
-        </button>
+          class="w-full block mb-6 md:mr-4 md:mb-0"
+          fit="auto"
+          appearance="light-error"
+          :label="$t('account.subscriptions.id.cancelSubscription')"
+          @click.native="cancelPopupIsActive = true"
+        />
 
         <a
           v-else-if="status === 'active'"
@@ -176,12 +177,12 @@
 
       <AccountConfirmationPopup
         v-if="cancelPopupIsActive"
-        :heading="$t('account.subscriptions.id.cancel.title')"
-        :prompt-message="$t('account.subscriptions.id.cancel.text')"
-        :accept-label="$t('account.subscriptions.id.cancel.yes')"
-        :refuse-label="$t('account.subscriptions.id.cancel.no')"
+        :heading="$t('account.subscriptions.id.popup.cancel.title')"
+        :prompt-message="$t('account.subscriptions.id.popup.cancel.text')"
+        :accept-label="$t('account.subscriptions.id.popup.cancel.yes')"
+        :refuse-label="$t('account.subscriptions.id.popup.cancel.no')"
         :is-loading="isCanceling"
-        :loading-label="$t('account.subscriptions.id.cancel.loading')"
+        :loading-label="$t('account.subscriptions.id.popup.cancel.loading')"
         @accept="cancelSubscription"
         @click-close="cancelPopupIsActive = false"
       />

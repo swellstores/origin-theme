@@ -132,8 +132,8 @@
           </div>
 
           <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4">
-            <ButtonLoading
-              class="w-full dark"
+            <BaseButton
+              appearance="dark"
               :label="$t('account.popup.save.label')"
               :loading-label="$t('account.popup.save.loadingLabel')"
               :is-loading="isUpdating"

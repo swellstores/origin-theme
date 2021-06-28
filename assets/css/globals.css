@@ -143,7 +143,7 @@ img {
 }
 
 .cta-link {
-  @apply inline-block pb-1 border-b rounded-none border-primary-darkest;
+  @apply inline-block mb-3 pb-1 border-b rounded-none border-primary-darkest;
 
   &.light {
     @apply text-primary-lightest border-primary-lightest;

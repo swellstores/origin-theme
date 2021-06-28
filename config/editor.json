@@ -2040,6 +2040,20 @@
           "localized": true
         },
         {
+          "id": "lang.account.forgot_password.button.label",
+          "label": "Send email button label",
+          "default": "Send email",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.forgot_password.button.loading_label",
+          "label": "Send email button loading label",
+          "default": "Sending...",
+          "type": "short_text",
+          "localized": true
+        },
+        {
           "id": "lang.account.forgot_password.log_in",
           "label": "Log in",
           "default": "Back to log in",
@@ -3018,7 +3032,7 @@
         {
           "id": "lang.errors.page_not_found.message",
           "label": "Page not found message",
-          "default": "The link you clicked may have changed or the URL is incorrect. Try searching?",
+          "default": "The link you clicked may have changed or the URL is incorrect.",
           "type": "long_text",
           "localized": true
         },

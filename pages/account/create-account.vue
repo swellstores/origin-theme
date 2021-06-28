@@ -84,21 +84,25 @@
       </template>
     </div>
 
-    <ButtonLoading
-      class="dark w-full mt-6 mb-4"
+    <BaseButton
+      class="mt-6 mb-4"
+      appearance="dark"
       :label="$t('account.createAccount.button.label')"
       :loading-label="$t('account.createAccount.button.loadingLabel')"
       :is-loading="isProcessing"
       @click.native="createAccount()"
     />
 
-    <NuxtLink class="btn light w-full" :to="localePath('/account/login/')">
-      {{ $t('account.createAccount.logIn') }}
-    </NuxtLink>
+    <BaseButton
+      appearance="light"
+      :label="$t('account.createAccount.logIn')"
+      :link="localePath('/account/login')"
+    />
   </div>
 </template>
 
 <script>
+// Helpers
 import { validationMixin } from 'vuelidate'
 import { required, email, minLength, maxLength } from 'vuelidate/lib/validators'
 
@@ -154,9 +158,6 @@ export default {
           })
         }
       } catch (err) {
-        console.log(err.error)
-        console.log(err.code)
-
         this.$store.dispatch('showNotification', {
           message: err.message || this.$t('account.createAccount.error'),
           type: 'error'

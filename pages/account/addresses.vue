@@ -65,9 +65,13 @@
         {{ $t('account.addresses.noAddresses') }}
       </p>
 
-      <button class="btn w-full md:w-auto light mt-10" type="button" @click="openEditPopup('new')">
-        {{ $t('account.addresses.addAddress') }}
-      </button>
+      <BaseButton
+        class="block mt-10"
+        fit="auto"
+        appearance="light"
+        :label="$t('account.addresses.addAddress')"
+        @click.native="openEditPopup('new')"
+      />
 
       <AccountAddressPopup
         v-if="editAddressPopupIsActive"

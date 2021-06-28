@@ -91,13 +91,12 @@
           >
         </div>
 
-        <NuxtLink
-          :to="localePath(`/account/subscriptions/${subscription.id}/`)"
-          append
-          class="btn light w-full mt-5 md:mt-auto"
-        >
-          {{ $t('account.subscriptions.subscription.view') }}
-        </NuxtLink>
+        <BaseButton
+          class="mt-5 md:mt-auto"
+          appearance="light"
+          :label="$t('account.subscriptions.subscription.view')"
+          :link="localePath(`/account/subscriptions/${subscription.id}/`)"
+        />
       </div>
     </div>
   </div>

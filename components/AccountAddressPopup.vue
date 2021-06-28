@@ -187,9 +187,10 @@
 
           <!-- Action Buttons -->
           <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4">
-            <ButtonLoading
+            <BaseButton
               v-if="type === 'new'"
-              class="w-full dark mt-4"
+              class="mt-4"
+              appearance="dark"
               :label="$t('account.addresses.popup.create.button.label')"
               :loading-label="$t('account.addresses.popup.create.button.loadingLabel')"
               :is-loading="isCreating"
@@ -197,9 +198,10 @@
               @click.native="create()"
             />
 
-            <ButtonLoading
+            <BaseButton
               v-if="type === 'update'"
-              class="w-full dark my-4"
+              class="mt-4"
+              appearance="dark"
               :label="$t('account.addresses.popup.save.button.label')"
               :loading-label="$t('account.addresses.popup.save.button.loadingLabel')"
               :is-loading="isUpdating"
@@ -207,9 +209,10 @@
               @click.native="update()"
             />
 
-            <ButtonLoading
+            <BaseButton
               v-if="type === 'update' && deletable"
-              class="w-full light-error"
+              class="mt-4"
+              appearance="light-error"
               :label="$t('account.addresses.popup.delete.button.label')"
               :loading-label="$t('account.addresses.popup.delete.button.loadingLabel')"
               :is-loading="isDeleting"
