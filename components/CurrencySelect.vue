@@ -45,7 +45,7 @@
         @click="selectOption(option)"
       >
         <div
-          class="m-2"
+          class="w-full m-2"
           :class="{
             'opacity-25': option.label === selected || option === selected,
             'my-2 mx-auto': appearance === 'popup'
