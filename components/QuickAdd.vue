@@ -13,10 +13,11 @@
         class="w-full bottom-0 px-4 py-3 bg-primary-lighter shadow-md rounded z-10"
       >
         <!-- Product options -->
-        <div v-for="input in optionInputs" :key="input.name">
+        <div v-for="(input, index) in optionInputs" :key="input.name">
           <component
             :is="input.component"
             v-if="visibleOptionIds.includes(input.option.id)"
+            v-show="index === quickAddIndex"
             :option="input.option"
             :current-value="optionState[input.option.name]"
             :validation="$v.optionState[input.option.name]"

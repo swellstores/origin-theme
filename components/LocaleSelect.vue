@@ -58,7 +58,7 @@
         >
           <a
             :href="href"
-            class="m-2"
+            class="w-full m-2"
             :class="{
               'opacity-25': availableLocale.code === $i18n.locale,
               'my-2 mx-auto': appearance === 'popup'
