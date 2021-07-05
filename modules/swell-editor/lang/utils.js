@@ -43,7 +43,7 @@ export function getLangMessages(defaultLocale, settings) {
         ...basePath.filter(segment => !['$locale', messageLocale].includes(segment)).map(camelCase)
       ]
 
-      return set(messagePath, message)(acc)
+      return message ? set(messagePath, message)(acc) : acc
     }, {})
   )(lang)
 
@@ -107,6 +107,9 @@ export async function getLangSettings(settings, { storeId, publicKey, storeUrl, 
       }
     : {
         ...defaultSettings,
-        vueI18n: { ...defaultSettings.vueI18n, messages: getLangMessages(defaultLocale, settings) }
+        vueI18n: {
+          ...defaultSettings.vueI18n,
+          messages: getLangMessages(defaultLocale, settings)
+        }
       }
 }
