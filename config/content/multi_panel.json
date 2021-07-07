@@ -4,19 +4,19 @@
   "description": "Multiple panels with an image or text",
   "fields": [
     {
-      "id": "panels",
-      "label": "Panels",
-      "type": "collection",
-      "min": 2,
-      "max": 4,
-      "item_types": [
+      "label": "Content",
+      "type": "field_group",
+      "fields": [
         {
-          "id": "text",
-          "label": "Text",
-          "fields": [
+          "id": "panels",
+          "label": "Panels",
+          "type": "collection",
+          "min": 2,
+          "max": 4,
+          "item_types": [
             {
-              "label": "Content",
-              "type": "field_group",
+              "id": "text",
+              "label": "Text",
               "fields": [
                 {
                   "id": "heading",
@@ -28,7 +28,7 @@
                 {
                   "id": "description",
                   "label": "Description text",
-                  "type": "basic_html",
+                  "type": "textarea",
                   "localized": true
                 },
                 {
@@ -71,64 +71,68 @@
               ]
             },
             {
-              "label": "Styling",
-              "type": "field_group",
+              "id": "image",
+              "label": "Image",
               "fields": [
                 {
-                  "id": "bg_color",
-                  "label": "Background color",
-                  "type": "select",
-                  "default": "primary-lightest",
-                  "options": [
-                    {
-                      "value": "primary-lightest",
-                      "label": "Background (primary)"
-                    },
-                    {
-                      "value": "primary-lighter",
-                      "label": "Background (secondary)"
-                    }
-                  ]
+                  "id": "image",
+                  "label": "Background image",
+                  "type": "image",
+                  "required": true
                 },
                 {
-                  "id": "text_align",
-                  "label": "Text alignment",
-                  "type": "select",
-                  "default": "left",
-                  "options": [
-                    {
-                      "value": "left",
-                      "label": "Left"
-                    },
-                    {
-                      "value": "center",
-                      "label": "Center"
-                    },
-                    {
-                      "value": "right",
-                      "label": "Right"
-                    }
-                  ]
+                  "id": "url",
+                  "label": "Image URL",
+                  "type": "url"
+                },
+                {
+                  "id": "image_alt",
+                  "label": "Image Alt Text",
+                  "type": "text"
                 }
               ]
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "label": "Styling",
+      "type": "field_group",
+      "fields": [
         {
-          "id": "image",
-          "label": "Image",
-          "type": "field_group",
-          "fields": [
+          "id": "text_align",
+          "label": "Text alignment",
+          "type": "select",
+          "default": "left",
+          "options": [
             {
-              "id": "image",
-              "label": "Background image",
-              "type": "image",
-              "required": true
+              "value": "left",
+              "label": "Left"
             },
             {
-              "id": "url",
-              "label": "Image URL",
-              "type": "url"
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "id": "bg_color",
+          "label": "Background color",
+          "type": "select",
+          "default": "primary-lightest",
+          "options": [
+            {
+              "value": "primary-lightest",
+              "label": "Background (primary)"
+            },
+            {
+              "value": "primary-lighter",
+              "label": "Background (secondary)"
             }
           ]
         }

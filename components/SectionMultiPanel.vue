@@ -8,12 +8,12 @@
       :key="id + 'multiPanel' + index"
       class="relative w-full min-h-72 md:w-1/2 lg:min-h-96"
       :class="[
-        `bg-${panel.bgColor}`,
+        `bg-${bgColor}`,
         {
           'px-6 py-20 md:px-12 md:py-16 lg:px-26 lg:py-32': panel.type === 'text' && panel.heading,
-          'text-left': panel.textAlign === 'left',
-          'text-right': panel.textAlign === 'right',
-          'text-center': panel.textAlign === 'center'
+          'text-left': textAlign === 'left',
+          'text-right': textAlign === 'right',
+          'text-center': textAlign === 'center'
         }
       ]"
     >
@@ -86,6 +86,14 @@ export default {
     panels: {
       type: Array,
       default: () => []
+    },
+    textAlign: {
+      type: String,
+      default: null
+    },
+    bgColor: {
+      type: String,
+      default: 'primary-lightest'
     }
   }
 }
