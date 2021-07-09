@@ -2,9 +2,9 @@
   <div>
     <!-- Fetch loader -->
     <div v-if="$fetchState.pending" class="container">
-      <div class="loader-el w-1/3 h-7 mb-6"></div>
-      <div class="loader-el w-3/5 h-2 mb-4"></div>
-      <div class="loader-el w-2/5 h-2 mb-8"></div>
+      <div class="loader-el w-1/3 h-7 mb-6" />
+      <div class="loader-el w-3/5 h-2 mb-4" />
+      <div class="loader-el w-2/5 h-2 mb-8" />
     </div>
 
     <div v-else>
@@ -15,23 +15,39 @@
           class="flex items-center cursor-pointer mb-6"
         >
           <BaseIcon icon="uil:angle-left" size="sm" /><span class="ml-1">
-            {{ $t('account.subscriptions.id.edit.backToSubscription') }} {{ subscriptionName }}
-          </span></NuxtLink
-        >
+            {{ $t('account.subscriptions.id.edit.backToSubscription') }}
+            {{ subscriptionName }}
+          </span>
+        </NuxtLink>
 
         <div class="mb-6">
-          <h2 class="text-2xl mb-2">{{ $t('account.subscriptions.id.edit.title') }}</h2>
+          <h2 class="text-2xl mb-2">
+            {{ $t('account.subscriptions.id.edit.title') }}
+          </h2>
 
           <div class="mb-6">
-            <span class="text-lg font-semibold ">
-              {{ formatMoney(subscription.recurringTotal, subscription.currency) }} /
+            <span class="text-lg font-semibold">
+              {{
+                formatMoney(subscription.recurringTotal, subscription.currency)
+              }}
+              /
               {{ subscription.interval }}
             </span>
           </div>
 
           <!-- Active -->
           <div v-if="status === 'active'" class="flex">
-            <div class="relative flex-shrink-0 w-6 h-6 mr-2 bg-ok rounded-full">
+            <div
+              class="
+                relative
+                flex-shrink-0
+                w-6
+                h-6
+                mr-2
+                bg-ok-default
+                rounded-full
+              "
+            >
               <BaseIcon
                 class="absolute text-primary-lightest center-xy"
                 icon="uil:sync"
@@ -39,16 +55,31 @@
               />
             </div>
             <div>
-              <p>{{ $t('account.subscriptions.subscription.status.active') }} {{ renewalDate }}</p>
+              <p>
+                {{ $t('account.subscriptions.subscription.status.active') }}
+                {{ renewalDate }}
+              </p>
               <p class="text-sm text-primary-dark">
-                {{ $t('account.subscriptions.subscription.status.activeMessage') }}
+                {{
+                  $t('account.subscriptions.subscription.status.activeMessage')
+                }}
               </p>
             </div>
           </div>
 
           <!-- Canceled -->
           <div v-else-if="status === 'canceled'" class="flex">
-            <div class="relative flex-shrink-0 w-6 h-6 mr-2 bg-primary-dark rounded-full">
+            <div
+              class="
+                relative
+                flex-shrink-0
+                w-6
+                h-6
+                mr-2
+                bg-primary-dark
+                rounded-full
+              "
+            >
               <BaseIcon
                 class="absolute text-primary-lightest center-xy"
                 icon="uil:sync-slash"
@@ -61,14 +92,28 @@
                 {{ formatDate(subscription.dateCanceled) }}
               </p>
               <p class="text-sm text-primary-dark">
-                {{ $t('account.subscriptions.subscription.status.canceledMessage') }}
+                {{
+                  $t(
+                    'account.subscriptions.subscription.status.canceledMessage'
+                  )
+                }}
               </p>
             </div>
           </div>
 
           <!-- Trial -->
           <div v-else-if="status === 'trial'" class="flex">
-            <div class="relative flex-shrink-0 w-6 h-6 mr-2 bg-warning rounded-full">
+            <div
+              class="
+                relative
+                flex-shrink-0
+                w-6
+                h-6
+                mr-2
+                bg-warning-default
+                rounded-full
+              "
+            >
               <BaseIcon
                 class="absolute text-primary-lightest center-xy"
                 icon="uil:calender"
@@ -81,12 +126,14 @@
                 {{ formatDate(subscription.dateTrialEnd) }}
               </p>
               <p class="text-sm text-primary-dark">
-                {{ $t('account.subscriptions.subscription.status.trialMessage') }}
+                {{
+                  $t('account.subscriptions.subscription.status.trialMessage')
+                }}
 
                 {{
                   $t('account.subscriptions.subscription.summary', {
                     interval: subscription.interval,
-                    amount: formatMoney(subscription.recurringTotal)
+                    amount: formatMoney(subscription.recurringTotal),
                   })
                 }}
               </p>
@@ -197,15 +244,7 @@ import filter from 'lodash/filter'
 
 export default {
   name: 'Subscription',
-
-  async fetch() {
-    const subscription = await this.$swell.subscriptions.get(this.$route.params.id, {
-      expand: ['product', 'variant']
-    })
-    this.subscription = subscription
-
-    this.store = this.$swell.settings.get('store', {})
-  },
+  layout: 'account',
 
   data() {
     return {
@@ -216,8 +255,20 @@ export default {
       // changeOptionsPopupisActive: false,
       cancelPopupIsActive: false,
       isCanceling: false,
-      isUpdating: false
+      isUpdating: false,
     }
+  },
+
+  async fetch() {
+    const subscription = await this.$swell.subscriptions.get(
+      this.$route.params.id,
+      {
+        expand: ['product', 'variant'],
+      }
+    )
+    this.subscription = subscription
+
+    this.store = this.$swell.settings.get('store', {})
   },
 
   computed: {
@@ -234,7 +285,10 @@ export default {
     },
 
     planOptions() {
-      const options = filter(this.subscription.product.options, option => !option.subscription)
+      const options = filter(
+        this.subscription.product.options,
+        (option) => !option.subscription
+      )
       return options
     },
 
@@ -248,13 +302,13 @@ export default {
       const date = this.formatDate(d, {
         weekday: 'short',
         month: 'long',
-        day: 'numeric'
+        day: 'numeric',
       })
 
       const time = d.toLocaleString('en', {
         hour: 'numeric',
         minute: 'numeric',
-        hour12: true
+        hour12: true,
       })
 
       return this.$t('account.subscriptions.id.renewal', { date, time })
@@ -263,7 +317,7 @@ export default {
     planItems() {
       if (this.subscription.product.bundle) return
       return this.subscription.product.bundleItems
-    }
+    },
   },
 
   methods: {
@@ -273,7 +327,7 @@ export default {
       return new Intl.DateTimeFormat('default', {
         month: 'long',
         day: '2-digit',
-        year: 'numeric'
+        year: 'numeric',
       }).format(date)
     },
 
@@ -282,7 +336,7 @@ export default {
         this.isCanceling = true
 
         await this.$swell.subscriptions.update(this.subscription.id, {
-          canceled: true
+          canceled: true,
         })
 
         this.isCanceling = false
@@ -290,14 +344,14 @@ export default {
 
         this.$store.dispatch('showNotification', {
           message: this.$t('account.subscriptions.id.popup.cancel.success'),
-          type: 'success'
+          type: 'success',
         })
         this.$fetch()
       } catch (err) {
         this.isCanceling = false
         this.$store.dispatch('handleError', err)
       }
-    }
+    },
 
     // TODO: Add ability to change frequency and plan item options.
     /* async updateSubscriptionFrequency(freq) {
@@ -365,7 +419,5 @@ export default {
       this.$fetch()
     } */
   },
-
-  layout: 'account'
 }
 </script>

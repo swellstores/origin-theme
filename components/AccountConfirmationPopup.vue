@@ -5,13 +5,17 @@
       <div
         class="overlay absolute w-full h-full bg-primary-darker z-10"
         @click="$emit('click-close')"
-      ></div>
+      />
 
       <!-- Panel -->
       <div class="panel z-20">
         <div class="container">
-          <h3 v-if="heading">{{ heading }}</h3>
-          <p class="pb-10">{{ promptMessage }}</p>
+          <h3 v-if="heading">
+            {{ heading }}
+          </h3>
+          <p class="pb-10">
+            {{ promptMessage }}
+          </p>
 
           <div class="block mb-4 md:mb-0 md:flex">
             <BaseButton
@@ -41,29 +45,29 @@ export default {
   props: {
     heading: {
       type: String,
-      default: ''
+      default: '',
     },
     promptMessage: {
       type: String,
       default: '',
-      required: true
+      required: true,
     },
     acceptLabel: {
       type: String,
-      default: ''
+      default: '',
     },
     refuseLabel: {
       type: String,
-      default: ''
+      default: '',
     },
     loadingLabel: {
       type: String,
-      default: ''
+      default: '',
     },
     isLoading: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   methods: {
@@ -73,8 +77,8 @@ export default {
 
     refuse() {
       this.$emit('click-close')
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -84,11 +88,9 @@ export default {
 }
 
 .panel {
-  @apply w-full mx-6 py-6 rounded bg-primary-lighter;
-
-  @screen md {
-    @apply absolute w-128 h-auto rounded left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
-  }
+  @apply w-full mx-6 py-6 rounded bg-primary-lighter
+         md:absolute md:w-128 md:h-auto md:rounded md:left-1/2 md:top-1/2 
+         md:transform md:-translate-x-1/2 md:-translate-y-1/2;
 }
 
 .confirmPanel-enter-active .overlay,

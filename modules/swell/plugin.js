@@ -1,14 +1,13 @@
-import get from 'lodash/get'
-import consola from 'consola'
+import { get } from 'lodash'
 import swell from 'swell-js'
-import settingsJSON from '~/config/settings'
+import settingsJson from '~/config/settings.json'
+import menusJson from '~/config/menus.json'
 
-const logger = consola.withScope('swell')
-
-export default async (context, inject) => {
-  const settings = settingsJSON || {}
+export default (context, inject) => {
+  const settings = settingsJson || {}
   const storeId = '<%= options.storeId || "" %>' || get(settings, 'store.id')
-  const publicKey = '<%= options.publicKey || "" %>' || get(settings, 'store.public_key')
+  const publicKey =
+    '<%= options.publicKey || "" %>' || get(settings, 'store.public_key')
 
   // Bail if options aren't provided
   if (!storeId) {
@@ -28,11 +27,14 @@ export default async (context, inject) => {
     url: '<%= options.storeUrl %>',
     session: cookies['swell-session'],
     locale: cookies['swell-locale'],
-    currency: cookies['swell-currency']
+    currency: cookies['swell-currency'],
   })
 
   // Inject client into nuxt context as $swell
   context.$swell = swell
+  context.$swell.settings.state = settingsJson
+  context.$swell.settings.menuState = menusJson
+
   inject('swell', swell)
 }
 
@@ -42,9 +44,12 @@ function parseCookies(req) {
   }
   return req.headers.cookie
     .split(/;\s*/)
-    .map(line => line.split('='))
+    .map((line) => line.split('='))
     .reduce(
-      (acc, parts) => ({ ...acc, [parts[0].toLowerCase()]: decodeURIComponent(parts[1]) }),
+      (acc, parts) => ({
+        ...acc,
+        [parts[0].toLowerCase()]: decodeURIComponent(parts[1]),
+      }),
       {}
     )
 }

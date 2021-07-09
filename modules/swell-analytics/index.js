@@ -1,17 +1,17 @@
 import path from 'path'
 
-export default function(moduleOptions) {
+export default function (moduleOptions) {
   const options = {
     dev: true,
     ...this.options.swellAnalytics,
-    ...moduleOptions
+    ...moduleOptions,
   }
 
   this.addPlugin({
     src: path.resolve(__dirname, './plugin.js'),
     ssr: false,
     fileName: 'swell-analytics-plugin.js',
-    options
+    options,
   })
 
   if (options.googleAnalytics) {
@@ -19,7 +19,7 @@ export default function(moduleOptions) {
       src: path.resolve(__dirname, './scripts/ga.js'),
       ssr: false,
       fileName: 'swell-analytics-ga.js',
-      options
+      options,
     })
   }
 
@@ -28,7 +28,7 @@ export default function(moduleOptions) {
       src: path.resolve(__dirname, './scripts/pixel.js'),
       ssr: false,
       fileName: 'swell-analytics-pixel.js',
-      options
+      options,
     })
   }
 
@@ -37,7 +37,7 @@ export default function(moduleOptions) {
       src: path.resolve(__dirname, './scripts/segment.js'),
       ssr: false,
       fileName: 'swell-analytics-segment.js',
-      options
+      options,
     })
   }
 }

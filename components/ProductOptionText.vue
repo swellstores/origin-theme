@@ -19,7 +19,10 @@
     ></textarea>
 
     <template v-if="validation">
-      <div v-if="validation.$dirty && validation.$error" class="text-error mt-2">
+      <div
+        v-if="validation.$dirty && validation.$error"
+        class="text-error mt-2"
+      >
         <span v-if="!validation.required" class="label-sm text-error">{{
           $t('products.slug.options.required')
         }}</span>
@@ -35,33 +38,39 @@ export default {
   props: {
     option: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     emitOnEnter: {
       type: Boolean,
-      default: false
+      default: false,
     },
     validation: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
 
   data() {
     return {
-      value: null
+      value: null,
     }
   },
 
   methods: {
     emitValue() {
       if (this.emitOnEnter) return
-      this.$emit('value-changed', { option: this.option.name, value: this.value })
+      this.$emit('value-changed', {
+        option: this.option.name,
+        value: this.value,
+      })
     },
     emitValueOnEnter() {
-      this.$emit('value-changed', { option: this.option.name, value: this.value })
-    }
-  }
+      this.$emit('value-changed', {
+        option: this.option.name,
+        value: this.value,
+      })
+    },
+  },
 }
 </script>
 

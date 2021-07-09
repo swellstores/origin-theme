@@ -5,7 +5,7 @@
         class="md:mb-0 mb-4"
         :class="{
           'grid grid-cols-2 gap-4': thumbnails.length <= 2,
-          'grid grid-cols-2 grid-rows-2 gap-4': thumbnails.length > 2
+          'grid grid-cols-2 grid-rows-2 gap-4': thumbnails.length > 2,
         }"
       >
         <div
@@ -16,10 +16,21 @@
           <VisualMedia :source="media" sizes="120px" />
 
           <div
-            v-if="order.items.length > thumbnails.length && index === thumbnails.length - 1"
+            v-if="
+              order.items.length > thumbnails.length &&
+              index === thumbnails.length - 1
+            "
             class="overlay text-primary-lightest"
           >
-            <span class="absolute center-xy text-lg font-semibold text-primary-lightest">
+            <span
+              class="
+                absolute
+                center-xy
+                text-lg
+                font-semibold
+                text-primary-lightest
+              "
+            >
               +{{ order.items.length - thumbnails.length }}
             </span>
           </div>
@@ -28,13 +39,16 @@
 
       <div class="flex flex-col">
         <div class="hidden md:flex md:items-center mb-3">
-          <h2 class="inline-block mb-0 text-xl">{{ statusMessage[1] }}</h2>
+          <h2 class="inline-block mb-0 text-xl">
+            {{ statusMessage[1] }}
+          </h2>
           <svg
             class="w-3 h-3 fill-current inline-block ml-2"
             :class="{
-              'text-ok': order.status === 'complete',
-              'text-error': order.status === 'canceled',
-              'text-primary-dark': order.status !== 'complete' || order.status !== 'canceled'
+              'text-ok-default': order.status === 'complete',
+              'text-error-default': order.status === 'canceled',
+              'text-primary-dark':
+                order.status !== 'complete' || order.status !== 'canceled',
             }"
             fill="none"
             viewBox="0 0 10 10"
@@ -43,7 +57,9 @@
           </svg>
         </div>
 
-        <h2 class="md:hidden">{{ $t('account.orders.order.title') }} #{{ order.number }}</h2>
+        <h2 class="md:hidden">
+          {{ $t('account.orders.order.title') }} #{{ order.number }}
+        </h2>
 
         <p class="text-sm mb-2">
           <span class="pr-2">{{ $t('account.orders.order.date') }}</span>
@@ -57,16 +73,19 @@
 
         <p class="text-sm mb-2">
           <span class="pr-2">{{ $t('account.orders.order.total') }}</span>
-          <span class="font-semibold">{{ formatMoney(order.grandTotal, order.currency) }}</span>
+          <span class="font-semibold">{{
+            formatMoney(order.grandTotal, order.currency)
+          }}</span>
         </p>
 
         <div class="md:hidden mb-10">
           <svg
             class="w-2 h-2 fill-current inline-block mr-1"
             :class="{
-              'text-ok': order.status === 'complete',
-              'text-error': order.status === 'canceled',
-              'text-primary-dark': order.status !== 'complete' || order.status !== 'canceled'
+              'text-ok-default': order.status === 'complete',
+              'text-error-default': order.status === 'canceled',
+              'text-primary-dark':
+                order.status !== 'complete' || order.status !== 'canceled',
             }"
             fill="none"
             viewBox="0 0 10 10"
@@ -97,8 +116,8 @@ export default {
   props: {
     order: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
 
   computed: {
@@ -119,7 +138,7 @@ export default {
       return new Intl.DateTimeFormat('default', {
         month: 'long',
         day: '2-digit',
-        year: 'numeric'
+        year: 'numeric',
       }).format(date)
     },
 
@@ -128,43 +147,43 @@ export default {
         case 'pending':
           return [
             this.$t('account.orders.order.status.pendingMessage'),
-            this.$t('account.orders.order.status.pending')
+            this.$t('account.orders.order.status.pending'),
           ]
         case 'draft':
           return [
             this.$t('account.orders.order.status.draftMessage'),
-            this.$t('account.orders.order.status.draft')
+            this.$t('account.orders.order.status.draft'),
           ]
         case 'payment_pending':
           return [
             this.$t('account.orders.order.status.pendingPaymentMessage'),
-            this.$t('account.orders.order.status.pendingPayment')
+            this.$t('account.orders.order.status.pendingPayment'),
           ]
         case 'delivery_pending':
           return [
             this.$t('account.orders.order.status.pendingDeliveryMessage'),
-            this.$t('account.orders.order.status.pendingDelivery')
+            this.$t('account.orders.order.status.pendingDelivery'),
           ]
         case 'hold':
           return [
             this.$t('account.orders.order.status.holdMessage'),
-            this.$t('account.orders.order.status.hold')
+            this.$t('account.orders.order.status.hold'),
           ]
         case 'complete':
           return [
             this.$t('account.orders.order.status.completeMessage'),
-            this.$t('account.orders.order.status.complete')
+            this.$t('account.orders.order.status.complete'),
           ]
         case 'canceled':
           return [
             this.$t('account.orders.order.status.canceledMessage'),
-            this.$t('account.orders.order.status.canceled')
+            this.$t('account.orders.order.status.canceled'),
           ]
         default:
           return ['', '']
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

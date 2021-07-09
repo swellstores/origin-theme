@@ -3,13 +3,31 @@
     <div class="z-50 fixed inset-0">
       <!-- Overlay -->
       <div
-        class="overlay absolute w-full h-full bg-primary-darker opacity-50 hidden md:block"
+        class="
+          overlay
+          absolute
+          w-full
+          h-full
+          bg-primary-darker
+          opacity-50
+          hidden
+          md:block
+        "
         @click="$emit('click-close')"
-      ></div>
+      />
 
       <!-- Filter Panel -->
       <div
-        class="panel absolute w-full h-full left-0 bg-primary-lightest overflow-scroll md:max-w-112"
+        class="
+          panel
+          absolute
+          w-full
+          h-full
+          left-0
+          bg-primary-lightest
+          overflow-scroll
+          md:max-w-112
+        "
       >
         <div class="flex items-center p-6 border-b border-primary-light">
           <h3>{{ $t('categories.slug.refine') }}</h3>
@@ -21,7 +39,14 @@
         <!-- Active Filters -->
         <div
           v-show="activeFilters.length"
-          class="py-4 px-6 bg-primary-lighter border-b border-primary-light text-sm overflow-hidden"
+          class="
+            py-4
+            px-6
+            bg-primary-lighter
+            border-b border-primary-light
+            text-sm
+            overflow-hidden
+          "
         >
           <div class="flex items-center justify-between">
             <span class="text-primary-dark">{{ activeFilterCountLabel }}</span>
@@ -31,21 +56,46 @@
           </div>
 
           <ul class="w-full flex flex-wrap pt-3">
-            <li v-for="filter in activeFilters" :key="'activefilter' + filter.id">
+            <li
+              v-for="filter in activeFilters"
+              :key="'activefilter' + filter.id"
+            >
               <template v-if="filter.type === 'select'">
                 <div
                   v-for="option in filter.options"
                   :key="'activeFilterOption' + option.label"
-                  class="inline-flex items-center bg-primary-light px-1 py-1 mb-2 mr-2 rounded"
+                  class="
+                    inline-flex
+                    items-center
+                    bg-primary-light
+                    px-1
+                    py-1
+                    mb-2
+                    mr-2
+                    rounded
+                  "
                 >
                   <span class="mx-1">{{ option.label }}</span>
-                  <button @click="updateFilter({ filter, optionValue: option.value })">
+                  <button
+                    @click="updateFilter({ filter, optionValue: option.value })"
+                  >
                     <BaseIcon icon="uil:times" size="sm" />
                   </button>
                 </div>
               </template>
               <template v-else-if="filter.type === 'range'">
-                <div class="inline-flex items-center bg-primary-light px-1 py-1 mb-2 mr-2 rounded">
+                <div
+                  class="
+                    inline-flex
+                    items-center
+                    bg-primary-light
+                    px-1
+                    py-1
+                    mb-2
+                    mr-2
+                    rounded
+                  "
+                >
                   <span class="mx-1">{{ activeRangeLabel(filter) }}</span>
                   <button @click="updateFilter({ filter })">
                     <BaseIcon icon="uil:times" size="sm" />
@@ -75,10 +125,13 @@
         <div class="p-6">
           <div v-for="filter in filters" :key="filter.id">
             <!-- Label -->
-            <span class="label-xs-bold-faded uppercase">{{ filter.label }}</span>
+            <span class="label-xs-bold-faded uppercase">{{
+              filter.label
+            }}</span>
             <!-- Price range slider input -->
             <div v-if="filter.type === 'range'" class="w-full pt-4 pb-10">
               <RangeSlider
+                :show="show"
                 :filter="filter"
                 :filter-state="localFilterState"
                 :is-price="filter.id === 'price'"
@@ -136,17 +189,18 @@ export default {
   props: {
     filters: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     filterState: {
       type: Object,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
+    show: Boolean,
   },
 
   data() {
     return {
-      localFilterState: {}
+      localFilterState: {},
     }
   },
 
@@ -164,7 +218,7 @@ export default {
     activeFilterCountLabel() {
       const count = this.activeFilters.length
       return `${count} filter${count === 1 ? '' : 's'} active`
-    }
+    },
   },
 
   created() {
@@ -175,7 +229,11 @@ export default {
 
   methods: {
     updateFilter({ filter, optionValue }) {
-      this.localFilterState = mergeFilterState(this.localFilterState, filter, optionValue)
+      this.localFilterState = mergeFilterState(
+        this.localFilterState,
+        filter,
+        optionValue
+      )
     },
 
     applyFilters() {
@@ -200,26 +258,13 @@ export default {
         const lowerPrice = rate ? lower.value * rate : lower.value
         const upperPrice = rate ? upper.value * rate : upper.value
 
-        lowerLabel = new Intl.NumberFormat('default', {
-          style: 'currency',
-          currency: this.currency,
-          currencyDisplay: 'narrowSymbol',
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0
-        }).format(lowerPrice)
-
-        upperLabel = new Intl.NumberFormat('default', {
-          style: 'currency',
-          currency: this.currency,
-          currencyDisplay: 'narrowSymbol',
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0
-        }).format(upperPrice)
+        lowerLabel = this.formatMoney(lowerPrice, this.currency)
+        upperLabel = this.formatMoney(upperPrice, this.currency)
       }
 
       return lowerLabel + ' – ' + upperLabel
-    }
-  }
+    },
+  },
 }
 </script>
 

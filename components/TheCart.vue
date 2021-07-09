@@ -3,9 +3,18 @@
     <div class="z-40 fixed inset-0">
       <!-- Overlay -->
       <div
-        class="overlay opacity-50 absolute w-full h-full bg-primary-darker hidden md:block"
+        class="
+          overlay
+          opacity-50
+          absolute
+          w-full
+          h-full
+          bg-primary-darker
+          hidden
+          md:block
+        "
         @click="$emit('click-close')"
-      ></div>
+      />
 
       <!-- Panel -->
       <div class="panel absolute w-full h-full right-0 max-w-112">
@@ -15,7 +24,9 @@
             <div class="flex justify-between items-center">
               <h3>
                 {{ $t('cart.title') }}
-                <span v-if="cart && cart.itemQuantity">({{ cart.itemQuantity }})</span>
+                <span v-if="cart && cart.itemQuantity"
+                  >({{ cart.itemQuantity }})</span
+                >
               </h3>
               <button @click.prevent="$emit('click-close')">
                 <BaseIcon icon="uil:multiply" size="lg" />
@@ -26,7 +37,7 @@
               v-if="$te('cart.infoText')"
               class="mt-4 text-sm"
               v-html="$t('cart.infoText')"
-            ></div>
+            />
           </div>
 
           <!-- Items -->
@@ -48,14 +59,27 @@
           </div>
 
           <!-- Footer -->
-          <div v-if="cart && cart.items && cart.items.length" class="bg-primary-lighter border-t">
+          <div
+            v-if="cart && cart.items && cart.items.length"
+            class="bg-primary-lighter border-t"
+          >
             <div class="container pt-6 pb-2">
               <div class="flex">
                 <input
                   v-model="couponCode"
                   type="text"
                   placeholder="Add coupon or gift card code"
-                  class="w-full border rounded font-medium bg-primary-lightest px-4 py-2 text-sm mr-2"
+                  class="
+                    w-full
+                    border
+                    rounded
+                    font-medium
+                    bg-primary-lightest
+                    px-4
+                    py-2
+                    text-sm
+                    mr-2
+                  "
                 />
 
                 <BaseButton
@@ -77,21 +101,44 @@
                     class="w-7 h-7 relative rounded-full bg-primary-light ml-3"
                     @click="removeDiscount()"
                   >
-                    <BaseIcon class="absolute center-xy" icon="uil:multiply" size="sm" />
+                    <BaseIcon
+                      class="absolute center-xy"
+                      icon="uil:multiply"
+                      size="sm"
+                    />
                   </button>
                 </div>
-                <div v-for="giftcard in cart.giftcards" :key="giftcard.id" class="mt-4">
+                <div
+                  v-for="giftcard in cart.giftcards"
+                  :key="giftcard.id"
+                  class="mt-4"
+                >
                   <p class="label-xs-bold flex items-center">
                     <span>**** **** **** {{ giftcard.last4 }}</span>
                     <button
-                      class="w-7 h-7 relative rounded-full bg-primary-light ml-3"
+                      class="
+                        w-7
+                        h-7
+                        relative
+                        rounded-full
+                        bg-primary-light
+                        ml-3
+                      "
                       @click="removeDiscount(giftcard.id, currency)"
                     >
-                      <BaseIcon class="absolute center-xy" icon="uil:multiply" size="sm" />
+                      <BaseIcon
+                        class="absolute center-xy"
+                        icon="uil:multiply"
+                        size="sm"
+                      />
                     </button>
                   </p>
                   <p class="text-sm">
-                    {{ $t('cart.giftCard', { amount: formatMoney(giftcard.amount, currency) }) }}
+                    {{
+                      $t('cart.giftCard', {
+                        amount: formatMoney(giftcard.amount, currency),
+                      })
+                    }}
                   </p>
                 </div>
               </div>
@@ -107,7 +154,10 @@
                 <span>{{ $t('cart.shipping') }}</span>
                 <span>{{ formatMoney(cart.shipmentTotal, currency) }}</span>
               </div>
-              <div v-show="cart.discountTotal" class="flex justify-between mb-1">
+              <div
+                v-show="cart.discountTotal"
+                class="flex justify-between mb-1"
+              >
                 <span>{{ $t('cart.discounts') }}</span>
                 <span>–{{ formatMoney(cart.discountTotal, currency) }}</span>
               </div>
@@ -152,7 +202,7 @@ export default {
 
   data() {
     return {
-      couponCode: null
+      couponCode: null,
     }
   },
 
@@ -162,7 +212,7 @@ export default {
     account() {
       if (!this.cart.account) return
       return this.cart.account
-    }
+    },
   },
 
   mounted() {
@@ -181,7 +231,7 @@ export default {
 
     removeDiscount(id) {
       this.$store.dispatch('removeDiscount', id)
-    }
-  }
+    },
+  },
 }
 </script>

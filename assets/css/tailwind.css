@@ -1,4 +1,5 @@
 /* Base */
+@import './variables.css';
 @import 'tailwindcss/base';
 @import './typography.css';
 @import './transitions.css';

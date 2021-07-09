@@ -3,7 +3,9 @@
     <!-- Breadcrumb -->
     <NuxtLink
       v-if="previousOrderRoute"
-      :to="localePath(previousOrderRoute ? previousOrderRoute : '/account/orders/')"
+      :to="
+        localePath(previousOrderRoute ? previousOrderRoute : '/account/orders/')
+      "
       class="flex items-center cursor-pointer mb-6"
     >
       <BaseIcon icon="uil:angle-left" size="sm" />
@@ -13,8 +15,10 @@
     </NuxtLink>
 
     <div class="mb-16">
-      <h1 class="text-2xl">{{ $t('account.orders.returns.title') }}</h1>
-      <p v-balance-text.children class="text-sm" v-html="$t('account.orders.returns.infoText')"></p>
+      <h1 class="text-2xl">
+        {{ $t('account.orders.returns.title') }}
+      </h1>
+      <p class="text-sm" v-html="$t('account.orders.returns.infoText')" />
     </div>
 
     <BaseButton
@@ -40,9 +44,10 @@
 
 <script>
 export default {
+  layout: 'account',
   data() {
     return {
-      previousOrderRoute: ''
+      previousOrderRoute: '',
     }
   },
 
@@ -50,14 +55,14 @@ export default {
     // If routing from order, set breadcrumb.
     $route(_to, from) {
       if (from.params.id) this.previousOrderRoute = from.path
-    }
+    },
   },
 
   mounted() {
     const {
       $nuxt: {
-        context: { from }
-      }
+        context: { from },
+      },
     } = this
 
     // If routing from order, set breadcrumb.
@@ -65,7 +70,5 @@ export default {
       this.previousOrderRoute = from.path
     }
   },
-
-  layout: 'account'
 }
 </script>

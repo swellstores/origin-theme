@@ -10,7 +10,16 @@
     <transition name="fade" :duration="200">
       <div
         v-if="quickAddIsActive"
-        class="w-full bottom-0 px-4 py-3 bg-primary-lighter shadow-md rounded z-10"
+        class="
+          w-full
+          bottom-0
+          px-4
+          py-3
+          bg-primary-lighter
+          shadow-md
+          rounded
+          z-10
+        "
       >
         <!-- Product options -->
         <div v-for="(input, index) in optionInputs" :key="input.name">
@@ -53,7 +62,17 @@ export default {
   props: {
     product: {
       type: Object,
-      default: () => {}
+      default: () => {},
+    },
+  },
+
+  data() {
+    return {
+      label: null,
+      flow: null,
+      optionState: null,
+      quickAddIsActive: false,
+      quickAddIndex: 0,
     }
   },
 
@@ -69,16 +88,6 @@ export default {
 
     // Set component data
     this.optionState = optionState
-  },
-
-  data() {
-    return {
-      label: null,
-      flow: null,
-      optionState: null,
-      quickAddIsActive: false,
-      quickAddIndex: 0
-    }
   },
 
   computed: {
@@ -104,26 +113,24 @@ export default {
 
         switch (option.inputType) {
           case 'short_text':
-            componentName = 'ProductOptionText'
+            componentName = 'Text'
             break
           case 'long_text':
-            componentName = 'ProductOptionText'
+            componentName = 'Text'
             break
           case 'toggle':
-            componentName = 'ProductOptionCheckbox'
+            componentName = 'Checkbox'
             break
           default:
-            componentName = 'ProductOptionSelect'
+            componentName = 'Select'
         }
 
         // Don't include subscription plan if there's only one option value available
-        if (option.subscription && option.values.length < 2) {
-          return optionInputs
-        }
+        if (option.subscription && option.values.length < 2) return optionInputs
 
         optionInputs.push({
           option,
-          component: () => import(`~/components/${componentName}`)
+          component: () => import(`./ProductOption${componentName}.vue`),
         })
 
         return optionInputs
@@ -135,7 +142,7 @@ export default {
       const optionState = this.optionState
 
       return listVisibleOptions(options, optionState).map(({ id }) => id)
-    }
+    },
   },
 
   created() {
@@ -178,7 +185,10 @@ export default {
       if (this.$v.optionState[option].$invalid) return
 
       // Add to cart if only one option was available
-      if (optionInputs.length === 1 || quickAddIndex + 1 >= optionInputs.length) {
+      if (
+        optionInputs.length === 1 ||
+        quickAddIndex + 1 >= optionInputs.length
+      ) {
         this.addToCart()
 
         // Hide options when adding to cart
@@ -217,9 +227,9 @@ export default {
       this.$store.dispatch('addCartItem', {
         productId: this.variation.id,
         quantity: 1,
-        options: this.optionState
+        options: this.optionState,
       })
-    }
+    },
   },
 
   validations() {
@@ -232,8 +242,8 @@ export default {
     }, {})
 
     return {
-      optionState: fields
+      optionState: fields,
     }
-  }
+  },
 }
 </script>

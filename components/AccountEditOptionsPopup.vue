@@ -5,16 +5,33 @@
       <div
         class="overlay opacity-50 absolute w-full h-full bg-primary-darker"
         @click="$emit('click-close')"
-      ></div>
+      />
 
       <!-- Panel -->
       <div
-        class="panel w-full md:w-128 h-auto md:max-h-80vh absolute md:relative bottom-0 
-        rounded-t md:rounded bg-primary-lighter overflow-scroll md:center-xy"
+        class="
+          panel
+          w-full
+          md:w-128
+          h-auto
+          md:max-h-80vh
+          absolute
+          md:relative
+          bottom-0
+          rounded-t
+          md:rounded
+          bg-primary-lighter
+          overflow-scroll
+          md:center-xy
+        "
       >
         <div class="container py-6">
-          <h3 v-if="heading" class="pb-2">{{ heading }}</h3>
-          <p v-if="text" class="pb-6">{{ text }}</p>
+          <h3 v-if="heading" class="pb-2">
+            {{ heading }}
+          </h3>
+          <p v-if="text" class="pb-6">
+            {{ text }}
+          </p>
           <!-- Product options -->
           <div v-for="input in optionInputs" :key="input.name">
             <component
@@ -41,25 +58,30 @@
 <script>
 // Helpers
 import get from 'lodash/get'
-import { listVisibleOptions } from '~/modules/swell'
 
 export default {
   props: {
     heading: {
       type: String,
-      default: ''
+      default: '',
     },
     text: {
       type: String,
-      default: ''
+      default: '',
     },
     options: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     isUpdating: {
       type: Boolean,
-      default: false
+      default: false,
+    },
+  },
+
+  data() {
+    return {
+      optionState: null,
     }
   },
 
@@ -77,12 +99,6 @@ export default {
     this.optionState = optionState
   },
 
-  data() {
-    return {
-      optionState: null
-    }
-  },
-
   computed: {
     optionInputs() {
       if (!this.options) return {}
@@ -92,31 +108,29 @@ export default {
 
         switch (option.inputType) {
           case 'short_text':
-            componentName = 'ProductOptionText'
+            componentName = 'Text'
             break
           case 'long_text':
-            componentName = 'ProductOptionText'
+            componentName = 'Text'
             break
           case 'toggle':
-            componentName = 'ProductOptionCheckbox'
+            componentName = 'Checkbox'
             break
           default:
-            componentName = 'ProductOptionSelect'
+            componentName = 'Select'
         }
 
         // Don't include subscription plan if there's only one option value available
-        if (option.subscription && option.values.length < 2) {
-          return optionInputs
-        }
+        if (option.subscription && option.values.length < 2) return optionInputs
 
         optionInputs.push({
           option,
-          component: () => import(`~/components/${componentName}`)
+          component: () => import(`./ProductOption${componentName}.vue`),
         })
 
         return optionInputs
       }, [])
-    }
+    },
   },
 
   methods: {
@@ -130,7 +144,7 @@ export default {
 
     update() {
       this.$emit('update', this.optionState)
-    }
-  }
+    },
+  },
 }
 </script>

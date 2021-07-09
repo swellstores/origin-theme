@@ -10,8 +10,8 @@ export default {
   props: {
     link: {
       type: [Object, String],
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     attributes() {
@@ -22,14 +22,14 @@ export default {
           is: 'a',
           href: url,
           target: '_blank',
-          rel: 'noopener'
+          rel: 'noopener',
         }
       }
       return {
         is: 'nuxt-link',
-        to: url
+        to: url,
       }
-    }
-  }
+    },
+  },
 }
 </script>

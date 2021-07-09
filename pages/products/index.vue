@@ -10,6 +10,18 @@
 export default {
   name: 'ProductIndexPage',
 
+  data() {
+    return {
+      products: [],
+      productCount: 0,
+      pages: {},
+      currentPage: 0,
+      settings: {
+        productCols: 3,
+      },
+    }
+  },
+
   async fetch() {
     const { $swell, $route } = this
     const page = parseInt($route.query.page) || 1
@@ -30,20 +42,8 @@ export default {
     }
   },
 
-  data() {
-    return {
-      products: [],
-      productCount: 0,
-      pages: {},
-      currentPage: 0,
-      settings: {
-        productCols: 3
-      }
-    }
-  },
-
   // Watch URL query for pagination changes (triggers fetch method again)
   // https://nuxtjs.org/api/pages-watchquery/
-  watchQuery: ['page']
+  watchQuery: ['page'],
 }
 </script>

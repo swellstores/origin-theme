@@ -5,18 +5,20 @@
       :class="{ disabled: !prevPage }"
       :to="localePath(`?page=${prevPage}`)"
       class="btn sm:w-32"
-      >{{ $t('categories._slug.pagination.previous') }}</NuxtLink
     >
+      {{ $t('categories.slug.pagination.previous') }}
+    </NuxtLink>
     <div class="text-center">
-      {{ $t('categories._slug.pagination.page', { currentPage, pagesCount }) }}
+      {{ $t('categories.slug.pagination.page', { currentPage, pagesCount }) }}
     </div>
     <NuxtLink
       :tabindex="nextPage ? 0 : -1"
       :class="{ disabled: !nextPage }"
       :to="localePath(`?page=${nextPage}`)"
       class="btn sm:w-32"
-      >{{ $t('categories._slug.pagination.next') }}</NuxtLink
     >
+      {{ $t('categories.slug.pagination.next') }}
+    </NuxtLink>
   </aside>
 </template>
 
@@ -27,12 +29,12 @@ export default {
   props: {
     currentPage: {
       type: Number,
-      default: 1
+      default: 1,
     },
     pages: {
       type: Object,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
 
   computed: {
@@ -40,11 +42,11 @@ export default {
       return Object.keys(this.pages).length
     },
     prevPage() {
-      return this.currentPage > 1 ? this.currentPage - 1 : null
+      return this.currentPage > 1 ? this.currentPage - 1 : 0
     },
     nextPage() {
-      return this.currentPage < this.pagesCount ? this.currentPage + 1 : null
-    }
-  }
+      return this.currentPage < this.pagesCount ? this.currentPage + 1 : 0
+    },
+  },
 }
 </script>

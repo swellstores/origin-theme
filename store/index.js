@@ -10,11 +10,11 @@ export const state = () => ({
   cookiesWereAccepted: false,
   headerIsVisible: true,
   headerHeight: 0,
-  addedItem: null
+  addedItem: null,
 })
 
 export const actions = {
-  selectCurrency({ commit, dispatch, state }, { code } = {}) {
+  selectCurrency({ commit, dispatch }, { code } = {}) {
     try {
       if (code) {
         this.$swell.currency.select(code)
@@ -69,7 +69,7 @@ export const actions = {
           dispatch('showNotification', {
             message: `Added ${item.quantity} item(s) to cart`,
             type: 'product',
-            isSticky: true
+            isSticky: true,
           })
         }, 200)
       } else {
@@ -77,7 +77,7 @@ export const actions = {
         dispatch('showNotification', {
           message: `Added ${item.quantity} item(s) to cart`,
           type: 'product',
-          isSticky: true
+          isSticky: true,
         })
       }
     } catch (err) {
@@ -214,7 +214,10 @@ export const actions = {
    * @param {string} type - Type of notification for styling purposes
    * @param {boolean} isSticky - Whether notification requires manually closing
    */
-  showNotification({ commit, state }, { message, type = 'confirmation', isSticky = false } = {}) {
+  showNotification(
+    { commit, state },
+    { message, type = 'confirmation', isSticky = false } = {}
+  ) {
     // If non-product notification, set addedItem as null
     if (type !== 'product') {
       commit('setState', { key: 'addedItem', value: null })
@@ -224,9 +227,10 @@ export const actions = {
 
     // If sticky setting isn't true, remove the notification after a few seconds
     if (!isSticky) {
-      window.setTimeout(() => {
-        commit('setState', { key: 'notification', value: null })
-      }, 4000)
+      process.client &&
+        window.setTimeout(() => {
+          commit('setState', { key: 'notification', value: null })
+        }, 4000)
     }
   },
 
@@ -249,7 +253,7 @@ export const actions = {
       // Otherwise log with reporting tool
       this.$sentry.captureException(error)
     }
-  }
+  },
 }
 
 export const mutations = {
@@ -261,5 +265,5 @@ export const mutations = {
   },
   setState(state, { key, value }) {
     state[key] = value
-  }
+  },
 }

@@ -4,7 +4,7 @@
       v-for="star in stars"
       :key="'reviewStar' + star"
       :class="{ 'mr-2': size === 'base', 'mr-1': size === 'sm' }"
-      class="text-accent last:mr-0"
+      class="text-accent-default last:mr-0"
     >
       <BaseIcon v-if="star === 'half'" icon="mdi:star-half" :size="size" />
       <BaseIcon v-else icon="mdi:star" :size="size" />
@@ -19,12 +19,12 @@ export default {
   props: {
     score: {
       type: Number,
-      default: 0
+      default: 0,
     },
     size: {
       type: String,
-      default: 'sm'
-    }
+      default: 'sm',
+    },
   },
 
   computed: {
@@ -36,7 +36,7 @@ export default {
       }
 
       return stars
-    }
-  }
+    },
+  },
 }
 </script>

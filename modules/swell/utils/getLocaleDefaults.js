@@ -727,5 +727,5 @@ export const getLocaleDefaults = {
   zlm: 'TG',
   zmi: 'MY',
   zu: 'ZA',
-  zza: 'TR'
+  zza: 'TR',
 }

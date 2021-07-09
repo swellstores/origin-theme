@@ -2,7 +2,9 @@
   <section class="container py-10">
     <!-- Heading and controls -->
     <div class="mb-4 flex flex-no-wrap justify-between items-center">
-      <h2 class="">{{ heading }}</h2>
+      <h2 class="">
+        {{ heading }}
+      </h2>
       <div class="ml-4 flex-shrink-0">
         <div class="p-2 inline-block bg-primary-light rounded">
           <BaseIcon icon="uil:angle-left" />
@@ -28,12 +30,12 @@ export default {
   props: {
     heading: {
       type: String,
-      default: 'Other items you may like'
+      default: 'Other items you may like',
     },
     products: {
       type: Array,
-      default: () => []
-    }
-  }
+      default: () => [],
+    },
+  },
 }
 </script>

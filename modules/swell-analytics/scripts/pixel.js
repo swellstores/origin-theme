@@ -2,7 +2,7 @@
  * @class Fb
  */
 export class FBQ {
-  constructor (options) {
+  constructor(options) {
     this.fbq = pixelScript()
     this.options = options
   }
@@ -10,7 +10,7 @@ export class FBQ {
   /**
    * @method enable
    */
-  enable () {
+  enable() {
     this.init()
     this.track()
   }
@@ -18,21 +18,21 @@ export class FBQ {
   /**
    * @method disable
    */
-  disable () {
+  disable() {
     this.query('consent', 'revoke')
   }
 
   /**
    * @method init
    */
-  init () {
+  init() {
     this.query('init', this.options.id)
   }
 
   /**
    * @method track
    */
-  track (event = null, parameters = null) {
+  track(event = null, parameters = null) {
     if (!event) {
       event = 'PageView'
     }
@@ -46,7 +46,7 @@ export class FBQ {
    * @param {object} option
    * @param {object} parameters
    */
-  query (cmd, option, parameters = null) {
+  query(cmd, option, parameters = null) {
     if (!parameters) {
       this.fbq(cmd, option)
     } else {
@@ -60,22 +60,32 @@ const pixelScript = () => {
 
   /* eslint-disable */
   if (typeof window !== 'undefined') {
-    ((f, b, e, v, n, t, s) => {
-      if (f.fbq) return; n = f.fbq = function () {
-        n.callMethod ?
-          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-      };
-      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '<%= options.version %>';
-      n.queue = [];
-      t = b.createElement(e);
-      t.async = true;
-      t.defer = true;
-      t.src = v;
-      s = b.getElementsByTagName('body')[0];
-      s.parentNode.appendChild(t, s);
+    ;((f, b, e, v, n, t, s) => {
+      if (f.fbq) return
+      n = f.fbq = function () {
+        n.callMethod
+          ? n.callMethod.apply(n, arguments)
+          : n.queue.push(arguments)
+      }
+      if (!f._fbq) f._fbq = n
+      n.push = n
+      n.loaded = !0
+      n.version = '<%= options.version %>'
+      n.queue = []
+      t = b.createElement(e)
+      t.async = true
+      t.defer = true
+      t.src = v
+      s = b.getElementsByTagName('body')[0]
+      s.parentNode.appendChild(t, s)
 
-      _fbq = fbq;
-    })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+      _fbq = fbq
+    })(
+      window,
+      document,
+      'script',
+      'https://connect.facebook.net/en_US/fbevents.js'
+    )
   }
 
   return _fbq

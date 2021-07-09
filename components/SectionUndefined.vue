@@ -12,12 +12,12 @@ export default {
   props: {
     heading: {
       type: String,
-      default: 'New section'
+      default: 'New section',
     },
     description: {
       type: String,
-      default: 'No type chosen'
-    }
-  }
+      default: 'No type chosen',
+    },
+  },
 }
 </script>

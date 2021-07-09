@@ -43,11 +43,13 @@ const sgmScript = () => {
   /* eslint-disable */
   if (typeof window !== 'undefined') {
     /* eslint-disable */
-    !(function() {
+    !(function () {
       var analytics = (window.analytics = window.analytics || [])
       if (!analytics.initialize)
         if (analytics.invoked)
-          window.console && console.error && console.error('Segment snippet included twice.')
+          window.console &&
+            console.error &&
+            console.error('Segment snippet included twice.')
         else {
           analytics.invoked = !0
           analytics.methods = [
@@ -70,10 +72,10 @@ const sgmScript = () => {
             'addSourceMiddleware',
             'addIntegrationMiddleware',
             'setAnonymousId',
-            'addDestinationMiddleware'
+            'addDestinationMiddleware',
           ]
-          analytics.factory = function(t) {
-            return function() {
+          analytics.factory = function (t) {
+            return function () {
               var e = Array.prototype.slice.call(arguments)
               e.unshift(t)
               analytics.push(e)
@@ -84,11 +86,14 @@ const sgmScript = () => {
             var e = analytics.methods[t]
             analytics[e] = analytics.factory(e)
           }
-          analytics.load = function(t, e) {
+          analytics.load = function (t, e) {
             var n = document.createElement('script')
             n.type = 'text/javascript'
             n.async = !0
-            n.src = 'https://cdn.segment.com/analytics.js/v1/' + t + '/analytics.min.js'
+            n.src =
+              'https://cdn.segment.com/analytics.js/v1/' +
+              t +
+              '/analytics.min.js'
             var a = document.getElementsByTagName('script')[0]
             a.parentNode.insertBefore(n, a)
             analytics._loadOptions = e

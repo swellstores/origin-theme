@@ -3,7 +3,10 @@
     <div
       v-for="(option, i) in filter.options"
       :key="`${option.value || option}-${i}`"
-      :class="{ checkbox: styling === 'check', 'box-selector': styling === 'box' }"
+      :class="{
+        checkbox: styling === 'check',
+        'box-selector': styling === 'box',
+      }"
     >
       <input
         :id="`${option.value || option}-${i}`"
@@ -40,33 +43,33 @@ export default {
   props: {
     filter: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     filterState: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     type: {
       type: String,
-      default: 'checkbox'
+      default: 'checkbox',
     },
     styling: {
       type: String,
-      default: 'check'
-    }
+      default: 'check',
+    },
   },
 
   computed: {
     selectedValues() {
       return this.filterState[this.filter.id] || []
-    }
+    },
   },
 
   methods: {
     updateValue(optionValue) {
       this.$emit('change', { filter: this.filter, optionValue })
-    }
-  }
+    },
+  },
 }
 </script>
 

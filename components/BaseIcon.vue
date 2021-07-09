@@ -9,7 +9,7 @@
         // Custom sizing classes
         props.size.length > 3 ? props.size : '',
         // Classes set on component
-        data.staticClass
+        data.staticClass,
       ]"
     >
       <span
@@ -19,11 +19,10 @@
           { 'w-6 h-6': props.size === 'base' },
           { 'w-7 h-7': props.size === 'lg' },
           // Custom sizing classes
-          props.size.length > 3 ? props.size : ''
+          props.size.length > 3 ? props.size : '',
         ]"
         aria-hidden="true"
-      >
-      </span>
+      />
     </div>
   </ClientOnly>
 </template>
@@ -35,17 +34,17 @@ export default {
   props: {
     icon: {
       type: String,
-      default: 'uil:check'
+      default: 'uil:check',
     },
     size: {
       type: String,
-      default: 'base'
+      default: 'base',
     },
     customSize: {
       type: String,
-      default: ''
-    }
-  }
+      default: '',
+    },
+  },
 }
 </script>
 
