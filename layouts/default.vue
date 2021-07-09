@@ -4,7 +4,10 @@
       class="flex flex-col min-h-screen"
       :class="{ 'overflow-y-hidden': searchIsActive || cartIsActive }"
     >
-      <TheHeader @click-cart="cartIsActive = true" @click-search="searchIsActive = true" />
+      <TheHeader
+        @click-cart="cartIsActive = true"
+        @click-search="searchIsActive = true"
+      />
       <transition name="fade-up-out">
         <TheToastNotification
           v-if="notification"
@@ -38,12 +41,26 @@ export default {
     return {
       cartIsActive: false,
       searchIsActive: false,
-      cookieNotificationIsActive: false // TODO set true,
+      cookieNotificationIsActive: false, // TODO set true,
+    }
+  },
+
+  head() {
+    return {
+      script: [
+        // Iconify API script for loading SVG icons on demand
+        {
+          type: 'text/javascript',
+          src: 'https://code.iconify.design/1/1.0.1/iconify.min.js',
+          async: true,
+          body: true,
+        },
+      ],
     }
   },
 
   computed: {
-    ...mapState(['notification', 'cookiesWereAccepted'])
+    ...mapState(['notification', 'cookiesWereAccepted']),
   },
 
   watch: {
@@ -64,13 +81,16 @@ export default {
       if (accepted && this.$swellAnalytics) {
         this.$swellAnalytics.enable()
       }
-    }
+    },
   },
 
   mounted() {
     // Check if cookies are accepted
     if (this.getCookie('cookiesAccepted')) {
-      this.$store.commit('setState', { key: 'cookiesWereAccepted', value: true })
+      this.$store.commit('setState', {
+        key: 'cookiesWereAccepted',
+        value: true,
+      })
     }
 
     // Initialize customer (if logged in, set customer state)
@@ -86,21 +106,7 @@ export default {
         return cookie[1]
       }
       return false
-    }
+    },
   },
-
-  head() {
-    return {
-      script: [
-        // Iconify API script for loading SVG icons on demand
-        {
-          type: 'text/javascript',
-          src: 'https://code.iconify.design/1/1.0.1/iconify.min.js',
-          async: true,
-          body: true
-        }
-      ]
-    }
-  }
 }
 </script>

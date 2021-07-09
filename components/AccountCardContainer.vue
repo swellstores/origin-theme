@@ -4,14 +4,19 @@
       <div class="w-full flex pb-6">
         <BrandCardIcon :brand="card.brand" />
 
-        <div v-if="isDefault" class="ml-auto label-xs-bold bg-primary-light rounded p-2">
+        <div
+          v-if="isDefault"
+          class="ml-auto label-xs-bold bg-primary-light rounded p-2"
+        >
           {{ $t('account.payments.card.default') }}
         </div>
       </div>
 
       <div class="w-full flex pb-4">
         <p v-if="card.brand === 'American Express'">
-          <span class="tracking-large">···· ···· ···{{ card.last4.slice(0, 1) }} </span>
+          <span class="tracking-large"
+            >···· ···· ···{{ card.last4.slice(0, 1) }}
+          </span>
           {{ card.last4.slice(1, card.last4.length) }}
         </p>
         <p v-else>
@@ -20,7 +25,9 @@
         </p>
         <span class="ml-auto">{{ expDate }}</span>
       </div>
-      <p v-if="card.billing && card.billing.name">{{ card.billing.name }}</p>
+      <p v-if="card.billing && card.billing.name">
+        {{ card.billing.name }}
+      </p>
     </div>
 
     <div class="border-t border-primary-med mt-4 pt-4">
@@ -30,9 +37,13 @@
             $t('account.payments.card.billingAddress')
           }}</span>
           <template v-if="card.billing">
-            <p v-if="card.billing.name">{{ card.billing.name }}</p>
+            <p v-if="card.billing.name">
+              {{ card.billing.name }}
+            </p>
             <p v-if="card.billing.address1">
-              <template v-if="card.billing.address2">{{ card.billing.address2 }}, </template>
+              <template v-if="card.billing.address2">
+                {{ card.billing.address2 }},
+              </template>
               {{ card.billing.address1 }}
             </p>
             <p v-if="card.billing.city">
@@ -49,7 +60,9 @@
             </p>
           </template>
 
-          <p v-else>{{ $t('account.payments.card.noBillingAddress') }}</p>
+          <p v-else>
+            {{ $t('account.payments.card.noBillingAddress') }}
+          </p>
         </div>
 
         <div class="ml-auto mt-auto">
@@ -69,19 +82,22 @@ export default {
   props: {
     card: {
       type: Object,
-      default: null
+      default: null,
     },
     isDefault: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   computed: {
     formattedCardNumber() {
       const { brand, last4 } = this.card
       if (brand === 'American Express') {
-        return `···· ···· ···${last4.substring(0, 1)} ${last4.substring(1, last4.length)}`
+        return `···· ···· ···${last4.substring(0, 1)} ${last4.substring(
+          1,
+          last4.length
+        )}`
       } else {
         return `···· ···· ···· ${last4}`
       }
@@ -91,7 +107,7 @@ export default {
       const mm = padStart(this.card.expMonth, 2, '0')
       const yy = this.card.expYear.toString().slice(-2)
       return `${mm} / ${yy}`
-    }
-  }
+    },
+  },
 }
 </script>

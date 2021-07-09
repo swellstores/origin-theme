@@ -5,15 +5,26 @@
       <div
         :style="{ height: `${headerHeightOffset}px` }"
         class="relative w-full transition-all ease duration-50"
-      ></div>
+      />
 
       <div
-        class="w-full-px-6 top-0 right-0 mx-auto md:mr-3 md:max-w-max mt-3 bg-primary-lightest shadow-md rounded-md"
+        class="
+          w-full-px-6
+          top-0
+          right-0
+          mx-auto
+          md:mr-3
+          md:max-w-max
+          mt-3
+          bg-primary-lightest
+          shadow-md
+          rounded-md
+        "
         :class="{
           'md:min-w-96': product,
           'bg-primary-med': type !== 'error',
-          'bg-error-faded text-error': type === 'error',
-          'bg-ok-faded text-lightest': type === 'success'
+          'bg-error-faded text-error-default': type === 'error',
+          'bg-ok-faded text-lightest': type === 'success',
         }"
       >
         <div
@@ -27,7 +38,9 @@
             v-if="product"
             type="button"
             class="w-8 h-8 rounded-full bg-primary-light ml-auto p-1"
-            @click="$store.commit('setState', { key: 'notification', value: null })"
+            @click="
+              $store.commit('setState', { key: 'notification', value: null })
+            "
           >
             <BaseIcon icon="uil:times" />
           </button>
@@ -50,7 +63,11 @@
             <!-- Name + options -->
             <div class="pt-1">
               <NuxtLink
-                :to="localePath(resolveUrl({ type: 'product', value: product.slug }))"
+                :to="
+                  localePath(
+                    resolveUrl({ type: 'product', value: product.slug })
+                  )
+                "
                 class="inline-block"
               >
                 <h4>{{ product.name }}</h4>
@@ -63,7 +80,9 @@
               <div class="label-sm-bold leading-none">
                 <div class="inline-block py-1 -mb-1">
                   <span>{{ formatMoney(product.price) }}</span>
-                  <span v-if="product.quantity > 1">&times; {{ product.quantity }}</span>
+                  <span v-if="product.quantity > 1"
+                    >&times; {{ product.quantity }}</span
+                  >
                 </div>
               </div>
             </div>
@@ -90,9 +109,27 @@
 
               <div
                 v-if="cart && cart.itemQuantity"
-                class="fade-in absolute right-0 top-0 bg-accent rounded-full w-6 h-6 flex justify-center items-center text-primary-lighter transform translate-x-1 -translate-y-1"
+                class="
+                  fade-in
+                  absolute
+                  right-0
+                  top-0
+                  bg-accent-default
+                  rounded-full
+                  w-6
+                  h-6
+                  flex
+                  justify-center
+                  items-center
+                  text-primary-lighter
+                  transform
+                  translate-x-1
+                  -translate-y-1
+                "
               >
-                <span class="block mt-px text-2xs leading-none">{{ cart.itemQuantity }}</span>
+                <span class="block mt-px text-2xs leading-none">{{
+                  cart.itemQuantity
+                }}</span>
               </div>
             </div>
           </div>
@@ -110,11 +147,20 @@ export default {
   props: {
     message: {
       type: String,
-      default: ''
+      default: '',
     },
     type: {
       type: String,
-      default: ''
+      default: '',
+    },
+  },
+
+  data() {
+    return {
+      header: null,
+      logoSrc: null,
+      product: null,
+      scrollY: null,
     }
   },
 
@@ -124,7 +170,10 @@ export default {
     // Fetch item that has been recently added to the cart
     if (this.addedItem) {
       const baseProduct = await $swell.products.get(this.addedItem.productId)
-      const product = await $swell.products.variation(baseProduct, this.addedItem.options)
+      const product = await $swell.products.variation(
+        baseProduct,
+        this.addedItem.options
+      )
 
       this.product = product
     }
@@ -134,17 +183,14 @@ export default {
     this.logoSrc = $swell.settings.get('header.logo.file.url')
   },
 
-  data() {
-    return {
-      header: null,
-      logoSrc: null,
-      product: null,
-      scrollY: null
-    }
-  },
-
   computed: {
-    ...mapState(['cart', 'cartIsUpdating', 'addedItem', 'headerIsVisible', 'headerHeight']),
+    ...mapState([
+      'cart',
+      'cartIsUpdating',
+      'addedItem',
+      'headerIsVisible',
+      'headerHeight',
+    ]),
 
     options() {
       if (!this.addedItem) return
@@ -166,7 +212,7 @@ export default {
         return this.headerHeight - (this.headerHeight - this.scrollY)
       }
       return this.headerHeight
-    }
+    },
   },
 
   mounted() {
@@ -187,7 +233,7 @@ export default {
       // Open cart and close notification
       this.$emit('open-cart')
       this.$store.commit('setState', { key: 'notification', value: null })
-    }
-  }
+    },
+  },
 }
 </script>

@@ -7,15 +7,18 @@
         { 'w-1/2': columnCount === 2 },
         { 'w-1/2 md:w-1/3': columnCount === 3 },
         { 'w-1/2 md:w-1/4': columnCount === 4 },
-        { 'w-1/2 md:w-1/5': columnCount === 5 }
+        { 'w-1/2 md:w-1/5': columnCount === 5 },
       ]"
       class="mb-3 px-1 sm:px-2 xl:px-3 xl:mb-4"
     >
       <!-- Skeleton loader -->
       <div v-if="!product.slug" class="pb-5">
-        <div class="loader-el pb-full mb-4" :style="{ paddingBottom: ratioPadding }"></div>
-        <div class="loader-el w-2/3 h-4 mb-2"></div>
-        <div v-if="showPrice" class="loader-el w-24 h-3"></div>
+        <div
+          class="loader-el pb-full mb-4"
+          :style="{ paddingBottom: ratioPadding }"
+        />
+        <div class="loader-el w-2/3 h-4 mb-2" />
+        <div v-if="showPrice" class="loader-el w-24 h-3" />
       </div>
 
       <div v-else class="relative block h-full rounded">
@@ -27,7 +30,9 @@
           @mouseleave="hideQuickAdd(product.id)"
         >
           <NuxtLink
-            :to="localePath(resolveUrl({ type: 'product', value: product.slug }))"
+            :to="
+              localePath(resolveUrl({ type: 'product', value: product.slug }))
+            "
             class="relative block rounded overflow-hidden"
           >
             <!-- Main image -->
@@ -40,7 +45,16 @@
             <!-- Hover image -->
             <div
               v-if="product.images[1]"
-              class="group-hover:opacity-100 absolute w-full h-full inset-0 opacity-0 transition-opacity duration-150"
+              class="
+                group-hover:opacity-100
+                absolute
+                w-full
+                h-full
+                inset-0
+                opacity-0
+                transition-opacity
+                duration-150
+              "
             >
               <VisualMedia
                 :source="product.images[1]"
@@ -62,7 +76,7 @@
               <QuickAdd
                 v-if="
                   (currentProductId === product.id && quickAddIsVisible) ||
-                    (currentProductId === product.id && quickAddKeepAlive)
+                  (currentProductId === product.id && quickAddKeepAlive)
                 "
                 class="hidden lg:block w-full absolute bottom-0 px-6 mb-5"
                 :product="product"
@@ -78,31 +92,46 @@
           class="relative bg-primary-lighter rounded"
           :style="{ paddingBottom: ratioPadding }"
         >
-          <BaseIcon icon="uil:camera-slash" size="lg" class="absolute center-xy text-primary-med" />
+          <BaseIcon
+            icon="uil:camera-slash"
+            size="lg"
+            class="absolute center-xy text-primary-med"
+          />
         </div>
         <!-- Product summary -->
         <div class="py-3" :class="{ 'text-center': textAlign === 'center' }">
           <NuxtLink
-            :to="localePath(resolveUrl({ type: 'product', value: product.slug }))"
+            :to="
+              localePath(resolveUrl({ type: 'product', value: product.slug }))
+            "
             class="inline-block"
           >
-            <h4 v-balance-text>{{ product.name }}</h4>
+            <h4>{{ product.name }}</h4>
           </NuxtLink>
           <!-- Sale price -->
           <template v-if="showPrice">
             <div v-if="product.origPrice">
-              <span class="text-sm mr-1">{{ formatMoney(product.price, currency) }}</span>
-              <span class="uppercase text-xs text-error whitespace-no-wrap">
+              <span class="text-sm mr-1">{{
+                formatMoney(product.price, currency)
+              }}</span>
+              <span
+                class="uppercase text-xs text-error-default whitespace-no-wrap"
+              >
                 {{
                   $t('products.preview.save', {
-                    amount: formatMoney(product.origPrice - product.price, currency)
+                    amount: formatMoney(
+                      product.origPrice - product.price,
+                      currency
+                    ),
                   })
                 }}
               </span>
             </div>
             <!-- Regular price -->
             <div v-else>
-              <span class="text-sm">{{ formatMoney(product.price, currency) }}</span>
+              <span class="text-sm">{{
+                formatMoney(product.price, currency)
+              }}</span>
             </div>
           </template>
         </div>
@@ -125,25 +154,46 @@ export default {
   props: {
     products: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     columnCount: {
       type: Number,
-      default: 4
+      default: 4,
     },
     textAlign: {
       type: String,
-      default: 'left'
+      default: 'left',
     },
     showPrice: {
       type: Boolean,
-      default: true
+      default: true,
+    },
+  },
+
+  data() {
+    return {
+      aspectRatio: '1:1',
+      ratioPadding: null,
+      sizes: null,
+      widths: null,
+      quickAddIsEnabled: false,
+      quickAddKeepAlive: false,
+      quickAddIsVisible: false,
+      currentProductId: null,
+      quickViewIsVisible: false,
+      quickViewProduct: null,
+      productBeingAdded: null,
     }
   },
 
   fetch() {
-    this.aspectRatio = this.$swell.settings.get('productPreviews.aspectRatio', '1:1')
-    this.quickAddIsEnabled = this.$swell.settings.get('productList.enableQuickAdd')
+    this.aspectRatio = this.$swell.settings.get(
+      'productPreviews.aspectRatio',
+      '1:1'
+    )
+    this.quickAddIsEnabled = this.$swell.settings.get(
+      'productList.enableQuickAdd'
+    )
 
     // Set ratio padding
     const [x, y] = this.aspectRatio.split(':')
@@ -166,24 +216,8 @@ export default {
     }
   },
 
-  data() {
-    return {
-      aspectRatio: '1:1',
-      ratioPadding: null,
-      sizes: null,
-      widths: null,
-      quickAddIsEnabled: false,
-      quickAddKeepAlive: false,
-      quickAddIsVisible: false,
-      currentProductId: null,
-      quickViewIsVisible: false,
-      quickViewProduct: null,
-      productBeingAdded: null
-    }
-  },
-
   computed: {
-    ...mapState(['currency', 'cartIsUpdating'])
+    ...mapState(['currency', 'cartIsUpdating']),
   },
 
   methods: {
@@ -212,7 +246,7 @@ export default {
 
     keepQuickAddAlive(bool) {
       this.quickAddKeepAlive = bool
-    }
-  }
+    },
+  },
 }
 </script>

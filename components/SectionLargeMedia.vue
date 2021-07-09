@@ -6,10 +6,16 @@
     description="No heading or description added"
   />
 
-  <section v-else :class="[`bg-${bgColor}`]" class="text-center py-16 lg:py-24 xl:py-28">
+  <section
+    v-else
+    :class="[`bg-${bgColor}`]"
+    class="text-center py-16 lg:py-24 xl:py-28"
+  >
     <div class="container">
-      <h2 v-balance-text class="mx-auto px-4 max-w-160">{{ heading }}</h2>
-      <p v-balance-text>
+      <h2 class="mx-auto px-4 max-w-160">
+        {{ heading }}
+      </h2>
+      <p>
         {{ description }}
       </p>
       <div v-if="image" class="relative xl:mx-12">
@@ -32,7 +38,9 @@
           :class="{ 'mt-10 lg:mt-12': description || heading }"
         />
       </div>
-      <span v-if="caption" class="inline-block label-sm mt-3">{{ caption }}</span>
+      <span v-if="caption" class="inline-block label-sm mt-3">{{
+        caption
+      }}</span>
     </div>
   </section>
 </template>
@@ -44,28 +52,28 @@ export default {
   props: {
     heading: {
       type: String,
-      default: null
+      default: null,
     },
     description: {
       type: String,
-      default: null
+      default: null,
     },
     image: {
       type: [Object, String],
-      default: () => ({})
+      default: () => ({}),
     },
     bgColor: {
       type: String,
-      default: 'primary-lighter'
+      default: 'primary-lighter',
     },
     url: {
       type: String,
-      default: null
+      default: null,
     },
     caption: {
       type: String,
-      default: null
-    }
-  }
+      default: null,
+    },
+  },
 }
 </script>

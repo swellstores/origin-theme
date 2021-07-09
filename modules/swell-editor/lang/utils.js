@@ -1,6 +1,5 @@
 import objectScan from 'object-scan'
 import { pipe, get, set, camelCase, reduce } from 'lodash/fp'
-import swell from 'swell-js'
 import ruPluralizationRule from './pluralization/ru'
 
 export function getDefaultsFromEditor(editorSettings) {
@@ -13,7 +12,10 @@ export function getDefaultsFromEditor(editorSettings) {
     }
   })
 
-  return defaultValues.reduce((acc, { defaultValue, id }) => set(id, defaultValue)(acc), {})
+  return defaultValues.reduce(
+    (acc, { defaultValue, id }) => set(id, defaultValue)(acc),
+    {}
+  )
 }
 
 export function getLangMessages(defaultLocale, settings) {
@@ -40,7 +42,9 @@ export function getLangMessages(defaultLocale, settings) {
       const messageLocale = basePath.slice(-2, -1)[0]
       const messagePath = [
         messageLocale,
-        ...basePath.filter(segment => !['$locale', messageLocale].includes(segment)).map(camelCase)
+        ...basePath
+          .filter(segment => !['$locale', messageLocale].includes(segment))
+          .map(camelCase)
       ]
 
       return message ? set(messagePath, message)(acc) : acc
@@ -50,16 +54,9 @@ export function getLangMessages(defaultLocale, settings) {
   return { ...defaultMessages, ...localeMessages }
 }
 
-export async function getLangSettings(settings, { storeId, publicKey, storeUrl, editorMode }) {
-  swell.init(storeId, publicKey, {
-    useCamelCase: true,
-    url: storeUrl
-  })
-
-  await swell.settings.load()
-
-  const defaultLocale = swell.settings.getStoreLocale()
-  const localesSettings = swell.settings.getStoreLocales()
+export function getLangSettings(settings, editorMode) {
+  const defaultLocale = settings.store.locale
+  const localesSettings = settings.store.locales
   const isMultiLocale = localesSettings?.length > 0
 
   const locales = isMultiLocale

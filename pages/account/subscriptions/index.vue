@@ -5,9 +5,9 @@
     </h1>
 
     <div v-if="$fetchState.pending">
-      <div class="loader-el w-1/3 h-7 mb-6 m-auto"></div>
-      <div class="loader-el w-3/5 h-2 mb-4 m-auto"></div>
-      <div class="loader-el w-2/5 h-2 mb-8 m-auto"></div>
+      <div class="loader-el w-1/3 h-7 mb-6 m-auto" />
+      <div class="loader-el w-3/5 h-2 mb-4 m-auto" />
+      <div class="loader-el w-2/5 h-2 mb-8 m-auto" />
     </div>
 
     <div v-else>
@@ -40,21 +40,20 @@
 
 <script>
 export default {
+  layout: 'account',
+
+  data() {
+    return {
+      subscriptions: null,
+    }
+  },
   async fetch() {
     // Set page data
     const { results: subscriptions } = await this.$swell.subscriptions.get({
-      expand: ['product', 'variant']
+      expand: ['product', 'variant'],
     })
 
     this.subscriptions = subscriptions
   },
-
-  data() {
-    return {
-      subscriptions: null
-    }
-  },
-
-  layout: 'account'
 }
 </script>

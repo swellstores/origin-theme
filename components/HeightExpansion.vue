@@ -1,22 +1,24 @@
 <script>
 const beforeEnterTransition = {
   opacity: 0,
-  transition: 'all 0.4s cubic-bezier(0.6, 0.2, 0, 1)'
+  transition: 'all 0.4s cubic-bezier(0.6, 0.2, 0, 1)',
 }
 
 const enterTransition = {
-  transition: 'height 0.4s cubic-bezier(0.6, 0.2, 0, 1), opacity 0.4s 0.2s linear',
+  transition:
+    'height 0.4s cubic-bezier(0.6, 0.2, 0, 1), opacity 0.4s 0.2s linear',
   position: 'absolute',
-  visibility: 'hidden'
+  visibility: 'hidden',
 }
 
 const afterEnterTransition = {
-  height: 'auto'
+  height: 'auto',
 }
 
 const leaveTransition = {
-  transition: 'height 0.4s 0.1s cubic-bezier(0.6, 0.2, 0, 1), opacity 0.1s linear',
-  opacity: 0
+  transition:
+    'height 0.4s 0.1s cubic-bezier(0.6, 0.2, 0, 1), opacity 0.1s linear',
+  opacity: 0,
 }
 
 export default {
@@ -26,7 +28,7 @@ export default {
   render(createElement, context) {
     const data = {
       props: {
-        name: 'expand'
+        name: 'expand',
       },
       on: {
         beforeEnter(element) {
@@ -47,6 +49,7 @@ export default {
 
           // Force repaint to make sure the
           // animation is triggered correctly.
+          // eslint-disable-next-line
           getComputedStyle(element).height
 
           setTimeout(() => {
@@ -70,15 +73,16 @@ export default {
 
           // Force repaint to make sure the
           // animation is triggered correctly.
+          // eslint-disable-next-line
           getComputedStyle(element).height
 
           setTimeout(() => {
             element.style.height = 0
           })
-        }
-      }
+        },
+      },
     }
     return createElement('transition', data, context.children)
-  }
+  },
 }
 </script>

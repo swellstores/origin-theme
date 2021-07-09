@@ -1,11 +1,18 @@
 <template>
   <div class="mb-3 flex flex-wrap justify-between">
     <div class="mr-2">
-      <span :class="`bg-${status.color}`" class="inline-block rounded-full w-2 h-2 mr-1" />
-      <span class="label-xs-bold text-primary-dark">{{ $t(status.label) }}</span>
+      <span
+        :class="`bg-${status.color}`"
+        class="inline-block rounded-full w-2 h-2 mr-1"
+      />
+      <span class="label-xs-bold text-primary-dark">{{
+        $t(status.label)
+      }}</span>
     </div>
     <div class>
-      <a v-if="status.link" href="#" class="label-sm-bold">{{ $t(status.message) }}</a>
+      <a v-if="status.link" href="#" class="label-sm-bold">{{
+        $t(status.message)
+      }}</a>
       <span v-else class="label-sm-faded">{{ $t(status.message) }}</span>
     </div>
   </div>
@@ -20,23 +27,23 @@ const statuses = {
   custom: {
     color: 'warning',
     label: 'products.slug.stockStatus.custom.label',
-    message: 'products.slug.stockStatus.custom.message'
+    message: 'products.slug.stockStatus.custom.message',
   },
   in_stock: {
     color: 'ok',
     label: 'products.slug.stockStatus.inStock.label',
-    message: 'products.slug.stockStatus.inStock.message'
+    message: 'products.slug.stockStatus.inStock.message',
   },
   limited_availability: {
     color: 'warning',
     label: 'products.slug.stockStatus.limitedAvailability.label',
-    message: 'products.slug.stockStatus.limitedAvailability.message'
+    message: 'products.slug.stockStatus.limitedAvailability.message',
   },
   out_of_stock: {
     color: 'error',
     label: 'products.slug.stockStatus.outOfStock.label',
-    message: 'products.slug.stockStatus.outOfStock.message'
-  }
+    message: 'products.slug.stockStatus.outOfStock.message',
+  },
 }
 
 export default {
@@ -45,14 +52,14 @@ export default {
   props: {
     statusValue: {
       type: String,
-      default: 'out_of_stock'
-    }
+      default: 'out_of_stock',
+    },
   },
 
   computed: {
     status() {
       return get(statuses, this.statusValue || 'out_of_stock', {})
-    }
-  }
+    },
+  },
 }
 </script>

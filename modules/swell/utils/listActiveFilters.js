@@ -23,7 +23,7 @@ export function listActiveFilters(filters, filterState) {
       case 'range':
         options = [
           { value: stateValue[0], label: stateValue[0] },
-          { value: stateValue[1], label: stateValue[1] }
+          { value: stateValue[1], label: stateValue[1] },
         ]
         break
       default:
@@ -31,7 +31,7 @@ export function listActiveFilters(filters, filterState) {
 
     activeFilters.push({
       ...filter,
-      options
+      options,
     })
 
     return activeFilters

@@ -1,11 +1,19 @@
 <template>
   <div>
     <div v-if="brandName === 'american-express'" class="w-auto h-6">
-      <img class="h-full" src="~/assets/icons/american-express.svg" alt="American Express" />
+      <img
+        class="h-full"
+        src="~/assets/icons/american-express.svg"
+        alt="American Express"
+      />
     </div>
 
     <div v-else-if="brandName === 'diners-club'" class="w-auto h-6">
-      <img class="h-full" src="~/assets/icons/diners-club.svg" alt="Diners Club" />
+      <img
+        class="h-full"
+        src="~/assets/icons/diners-club.svg"
+        alt="Diners Club"
+      />
     </div>
 
     <div v-else-if="brandName === 'discover'" class="w-auto h-3">
@@ -17,7 +25,11 @@
     </div>
 
     <div v-else-if="brandName === 'mastercard'" class="w-auto h-6">
-      <img class="h-full" src="~/assets/icons/mastercard.svg" alt="MasterCard" />
+      <img
+        class="h-full"
+        src="~/assets/icons/mastercard.svg"
+        alt="MasterCard"
+      />
     </div>
 
     <div v-else-if="brandName === 'visa'" class="w-auto h-4">
@@ -35,14 +47,14 @@ export default {
   props: {
     brand: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
 
   computed: {
     brandName() {
       return kebabCase(this.brand)
-    }
-  }
+    },
+  },
 }
 </script>

@@ -1,22 +1,28 @@
+import consola from 'consola'
 import get from 'lodash/get'
 import settings from './config/settings.json'
 import { getGoogleFontConfig } from './modules/swell-editor/utils'
 import { getLangSettings } from './modules/swell-editor/lang/utils'
+import { mergeSettings } from './modules/swell/utils/mergeSettings'
+
+const logger = consola.withScope('swell-editor')
+
+const isProduction = process.env.NODE_ENV === 'production'
+const editorMode = process.env.SWELL_EDITOR === 'true'
+
+if (editorMode) {
+  logger.info('Swell Editor enabled')
+}
 
 export default async () => {
-  const i18n = await getLangSettings(settings, {
-    storeId: process.env.SWELL_STORE_ID || settings.store.id,
-    publicKey: process.env.SWELL_PUBLIC_KEY || settings.store.public_key,
-    storeUrl: process.env.SWELL_STORE_URL || settings.store.url,
-    editorMode: !!process.env.SWELL_EDITOR
-  })
+  const allSettings = await mergeSettings(settings)
 
   return {
     vue: {
       config: {
-        devtools: true,
-        productionTip: false
-      }
+        devtools: !isProduction,
+        productionTip: false,
+      },
     },
 
     /*
@@ -28,16 +34,16 @@ export default async () => {
     /*
      ** Set the progress-bar color
      */
-    loading: { color: get(settings, 'colors.accent'), continuous: true },
+    loading: { color: get(allSettings, 'colors.accent'), continuous: true },
 
     /*
      ** Vue plugins to load before mounting the App
      */
     plugins: [
-      { src: '~/plugins/vue-slider-component', mode: 'client' },
       { src: '~/plugins/vue-country-region-select', mode: 'client' },
       { src: '~/plugins/vue-credit-card-validation', mode: 'client' },
-      { src: '~/plugins/swell-lang.js' }
+      { src: '~/plugins/directives', mode: 'client' },
+      { src: '~/plugins/swell-lang.js' },
     ],
 
     /*
@@ -56,32 +62,12 @@ export default async () => {
         {
           // dsn: '', // or SENTRY_DSN in .env
           // config: {}
-        }
+        },
       ],
-
-      [
-        '@nuxtjs/pwa',
-        /*
-         ** Provides PWA (Progressive Web App) functionality including app icons,
-         *  SEO metadata, manifest.json file, and offline caching.
-         *
-         *  Use the object below to set config options.
-         *  See https://pwa.nuxtjs.org/ for all available options and defaults.
-         */
-        {
-          // icon: {},
-          meta: {
-            name: get(settings, 'store.name')
-          }
-          // manifest: {},
-          // workbox: {}
-        }
-      ]
     ],
 
     buildModules: [
       ['nuxt-i18n'],
-      // '@nuxtjs/eslint-module',
 
       [
         '@nuxtjs/tailwindcss',
@@ -92,7 +78,7 @@ export default async () => {
          */
         {
           // Put your config overrides here
-        }
+        },
       ],
 
       [
@@ -104,7 +90,7 @@ export default async () => {
          *  See https://github.com/nuxt-community/google-fonts-module if you want
          *  to eject or provide your own config options.
          */
-        getGoogleFontConfig(settings)
+        getGoogleFontConfig(settings),
       ],
 
       [
@@ -117,8 +103,8 @@ export default async () => {
          * If you aren't using the storefront editor, this module can be safely removed.
          */
         {
-          useEditorSettings: !!process.env.SWELL_EDITOR
-        }
+          useEditorSettings: editorMode,
+        },
       ],
 
       [
@@ -135,45 +121,41 @@ export default async () => {
         {
           storeId: process.env.SWELL_STORE_ID,
           publicKey: process.env.SWELL_PUBLIC_KEY,
-          previewContent: !!process.env.SWELL_EDITOR,
-          storeUrl: process.env.SWELL_STORE_URL
-        }
+          previewContent: editorMode,
+          storeUrl: process.env.SWELL_STORE_URL,
+        },
       ],
 
-      'vue-balance-text/nuxt/module'
-      /*
-       ** Balances wrapping lines of text to improve typography aesthetics.
-       *
-       *  Add the v-balance-text directive on HTML elements to balance their content.
-       *  Add the v-balance-text.children directive if using v-html to render content.
-       */
+      [
+        '@nuxtjs/pwa',
+        /*
+         ** Provides PWA (Progressive Web App) functionality including app icons,
+         *  SEO metadata, manifest.json file, and offline caching.
+         *
+         *  Use the object below to set config options.
+         *  See https://pwa.nuxtjs.org/ for all available options and defaults.
+         */
+      ],
     ],
 
-    i18n,
-
-    /*
-     ** Build configuration
-     */
-    build: {
-      /*
-       ** PostCSS setup
-       */
-      postcss: {
-        // Add plugin names as key and arguments as value
-        // Disable a plugin by passing false as value
+    pwa: {
+      manifest: false,
+      meta: {
+        name: get(allSettings, 'store.name'),
       },
-      /*
-       ** You can extend webpack config here
-       */
-      extend(config) {
-        // Fix for eslint error due to swell-js being linked
-        // https://github.com/vuejs/vue-cli/issues/2948
-        config.resolve.symlinks = false // TODO remove
-      }
+      workbox: {
+        runtimeCaching: [
+          {
+            urlPattern: 'https://cdn.schema.io/*',
+          },
+        ],
+      },
     },
 
+    i18n: await getLangSettings(allSettings, editorMode),
+
     generate: {
-      fallback: true // Fallback to the generated 404.html
+      fallback: true, // Fallback to the generated 404.html
     },
 
     /*
@@ -188,9 +170,9 @@ export default async () => {
         routes.push({
           name: 'index',
           path: '/',
-          component: resolve(__dirname, 'pages/_slug.vue')
+          component: resolve(__dirname, 'pages/_slug.vue'),
         })
-      }
+      },
     },
 
     /*
@@ -198,7 +180,7 @@ export default async () => {
      */
     server: {
       host: process.env.HOST || 'localhost',
-      port: process.env.PORT || 3333
-    }
+      port: process.env.PORT || 3333,
+    },
   }
 }

@@ -1,10 +1,12 @@
 import get from 'lodash/get'
 
-const generateMetaImage = media => {
-  const src = Array.isArray(media) ? get(media, '0.file.url') : get(media, 'file.url')
+const generateMetaImage = (media) => {
+  const src = Array.isArray(media)
+    ? get(media, '0.file.url')
+    : get(media, 'file.url')
   const size = {
     width: 1200,
-    height: 630
+    height: 630,
   }
 
   return src ? `${src}?w=${size.width}&h=${size.height}&q=100&fit=fill` : ''
@@ -13,11 +15,12 @@ const generateMetaImage = media => {
 export default {
   computed: {
     pageMeta() {
-      const { $swell, $route, category, categories, product, products, page } = this
+      const { $swell, $route, category, categories, product, products, page } =
+        this
       const storeName = $swell.settings.get('store.name')
       const storeUrl = $swell.settings.get('store.url')
       const faviconUrl = $swell.settings.get('header.favicon.file.url')
-      const formatTitle = itemTitle => itemTitle + ' - ' + storeName
+      const formatTitle = (itemTitle) => itemTitle + ' - ' + storeName
 
       const meta = {
         storeName,
@@ -25,12 +28,16 @@ export default {
         title: storeName,
         description: '',
         image: {}, // TODO global fallback image,
-        link: []
+        link: [],
       }
 
       if (faviconUrl) {
         const transformation = '?width=64&height=64'
-        meta.link.push({ rel: 'icon', type: 'image/x-icon', href: faviconUrl + transformation })
+        meta.link.push({
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: faviconUrl + transformation,
+        })
       }
 
       if (get(this, '$fetchState.pending')) {
@@ -78,7 +85,7 @@ export default {
           limitedAvailability: 'LimitedAvailability',
           preorder: 'PreOrder',
           outOfStock: 'OutOfStock',
-          soldOut: 'SoldOut'
+          soldOut: 'SoldOut',
         }
 
         return {
@@ -91,11 +98,11 @@ export default {
             '@type': 'Offer',
             price: product.price,
             priceCurrency: product.currency,
-            availability: `http://schema.org/${availabilityDefs[stockStatus]}`
-          }
+            availability: `http://schema.org/${availabilityDefs[stockStatus]}`,
+          },
         }
       }
-    }
+    },
   },
 
   head() {
@@ -105,7 +112,7 @@ export default {
     if (this.structuredData) {
       script.push({
         innerHTML: JSON.stringify(this.structuredData),
-        type: 'application/ld+json'
+        type: 'application/ld+json',
       })
     }
 
@@ -118,52 +125,52 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: description
+          content: description,
         },
         // Open Graph
         {
           hid: 'og:site_name',
           property: 'og:site_name',
-          content: storeName
+          content: storeName,
         },
         {
           hid: 'og:title',
           property: 'og:title',
-          content: title
+          content: title,
         },
         {
           hid: 'og:description',
           property: 'og:description',
-          content: description
+          content: description,
         },
         {
           hid: 'og:url',
           property: 'og:url',
-          content: url
+          content: url,
         },
         {
           hid: 'og:image',
           property: 'og:image',
-          content: image
+          content: image,
         },
         // Twitter Card
         {
           property: 'twitter:card',
-          content: 'summary_large_image'
+          content: 'summary_large_image',
         },
         {
           property: 'twitter:title',
-          content: title
+          content: title,
         },
         {
           property: 'twitter:description',
-          content: description
+          content: description,
         },
         {
           property: 'twitter:image',
-          content: image
-        }
-      ]
+          content: image,
+        },
+      ],
     }
-  }
+  },
 }

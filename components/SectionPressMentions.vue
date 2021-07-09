@@ -11,11 +11,29 @@
       <div
         v-for="(mention, index) in mentions"
         :key="`${id}mention${index}`"
-        class="group relative w-1/2 md:w-1/4 py-6 md:py-24 px-4 flex justify-center items-center cursor-default"
+        class="
+          group
+          relative
+          w-1/2
+          md:w-1/4
+          py-6
+          md:py-24
+          px-4
+          flex
+          justify-center
+          items-center
+          cursor-default
+        "
       >
         <!-- Logo -->
         <div
-          class="transform transition-all duration-300 ease-in-out group-hover:opacity-0 group-hover:-translate-y-4"
+          class="
+            transform
+            transition-all
+            duration-300
+            ease-in-out
+            group-hover:opacity-0 group-hover:-translate-y-4
+          "
         >
           <img
             v-if="mention.logo && mention.logo.file"
@@ -29,12 +47,14 @@
         <div
           :class="{
             'absolute opacity-0 translate-y-4 transform transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:translate-y-0':
-              mention.logo
+              mention.logo,
           }"
           class="w-full md:px-4"
         >
-          <p v-balance-text class="">&ldquo;{{ mention.quote }}&rdquo;</p>
-          <span v-if="mention.name" class="block mt-2 font-semibold">— {{ mention.name }}</span>
+          <p class="">&ldquo;{{ mention.quote }}&rdquo;</p>
+          <span v-if="mention.name" class="block mt-2 font-semibold"
+            >— {{ mention.name }}</span
+          >
         </div>
       </div>
     </div>
@@ -48,16 +68,16 @@ export default {
   props: {
     type: {
       type: String,
-      default: null
+      default: null,
     },
     id: {
       type: String,
-      default: null
+      default: null,
     },
     mentions: {
       type: Array,
-      default: () => []
-    }
-  }
+      default: () => [],
+    },
+  },
 }
 </script>

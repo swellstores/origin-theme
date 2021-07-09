@@ -1,12 +1,13 @@
-export default function ({ app, $swell, $swellEditor, i18n }) {
+export default function({ app, $swell, $swellEditor, i18n }) {
   // beforeLanguageSwitch called right before setting a new locale
   app.i18n.beforeLanguageSwitch = async (_oldLocale, newLocale) => {
     await $swell.locale.select(newLocale)
+
     $swellEditor?.sendMessage({
       type: 'locale.changed',
       details: {
-        locale: newLocale,
-      },
+        locale: newLocale
+      }
     })
   }
 

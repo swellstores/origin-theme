@@ -26,7 +26,7 @@ export class GA {
    * @method init
    */
   init() {
-    if (typeof window.ga === 'undefined') return 
+    if (typeof window.ga === 'undefined') return
     this.ga = window.ga
     this.ga('create', this.options.id, 'auto')
   }
@@ -37,7 +37,6 @@ export class GA {
   track(event = null, parameters = null) {
     if (!event) event = 'pageview'
     if (!parameters) parameters = '/'
-    
 
     this.query('send', event, parameters)
   }
@@ -67,7 +66,7 @@ const gaScript = () => {
       i['GoogleAnalyticsObject'] = r
       ;(i[r] =
         i[r] ||
-        function() {
+        function () {
           ;(i[r].q = i[r].q || []).push(arguments)
         }),
         (i[r].l = 1 * new Date())
@@ -76,7 +75,13 @@ const gaScript = () => {
       a.src = g
       m.parentNode.insertBefore(a, m)
       _ga = ga
-    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga')
+    })(
+      window,
+      document,
+      'script',
+      'https://www.google-analytics.com/analytics.js',
+      'ga'
+    )
   }
 
   return _ga

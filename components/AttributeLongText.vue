@@ -9,8 +9,8 @@ export default {
   props: {
     attribute: {
       type: Object,
-      default: () => {}
-    }
-  }
+      default: () => {},
+    },
+  },
 }
 </script>

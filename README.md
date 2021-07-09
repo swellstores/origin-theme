@@ -162,7 +162,7 @@ export default {
     [
       '~/modules/swell-editor',
       {
-        useEditorSettings: !!process.env.SWELL_EDITOR,
+        useEditorSettings: editorMode,
         cssVariableGroups: ['trogdor']
       }
     ],

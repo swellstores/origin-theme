@@ -2,7 +2,7 @@
   <div
     :class="[
       'bg-primary-darkest text-primary-lighter text-sm leading-snug font-semibold text-center',
-      { hidden: props.hidden }
+      { hidden: props.hidden },
     ]"
   >
     <NuxtLink
@@ -12,7 +12,9 @@
     >
       <span>{{ props.text }}</span>
     </NuxtLink>
-    <p v-else class="p-2">{{ props.text }}</p>
+    <p v-else class="p-2">
+      {{ props.text }}
+    </p>
   </div>
 </template>
 
@@ -23,16 +25,16 @@ export default {
   props: {
     url: {
       type: String,
-      default: null
+      default: null,
     },
     text: {
       type: String,
-      default: null
+      default: null,
     },
     hidden: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 }
 </script>

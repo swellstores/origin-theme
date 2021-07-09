@@ -1,10 +1,21 @@
 <template>
   <div class="relative transition-all duration-300 ease-in-out">
     <div
-      class="w-full flex p-2 items-center text-center font-medium cursor-pointer focus:outline-none focus:shadow-outline hover:text-accent"
+      class="
+        w-full
+        flex
+        p-2
+        items-center
+        text-center
+        font-medium
+        cursor-pointer
+        focus:outline-none
+        focus:shadow-outline
+        hover:text-accent-default
+      "
       :class="{
         'font-semibold h-full': appearance === 'popup',
-        'rounded bg-primary-lightest': appearance === 'float'
+        'rounded bg-primary-lightest': appearance === 'float',
       }"
       @click="toggleDropdown()"
     >
@@ -27,9 +38,19 @@
     <transition name="popup" appear :duration="500">
       <div v-if="appearance === 'popup' && dropdownIsActive">
         <div
-          class="overlay fixed w-full h-full opacity-50 top-0 left-0 bg-primary-darker z-30"
+          class="
+            overlay
+            fixed
+            w-full
+            h-full
+            opacity-50
+            top-0
+            left-0
+            bg-primary-darker
+            z-30
+          "
           @click="dropdownIsActive = false"
-        ></div>
+        />
       </div>
     </transition>
 
@@ -37,10 +58,9 @@
       v-show="dropdownIsActive"
       :class="{
         'w-max shadow-md absolute border center-x': appearance === 'float',
-        'w-full max-w-80 mx-auto center-xy fixed': appearance === 'popup'
+        'w-full max-w-80 mx-auto center-xy fixed': appearance === 'popup',
       }"
-      class="block -mt-px bg-primary-lightest rounded z-40
-      overflow-scroll"
+      class="block -mt-px bg-primary-lightest rounded z-40 overflow-scroll"
       role="listbox"
     >
       <NuxtLink
@@ -51,8 +71,19 @@
         custom
       >
         <li
-          :class="{ 'pointer-events-none': availableLocale.code === $i18n.locale }"
-          class="mb-0 px-2 flex items-center cursor-pointer hover:bg-primary-lighter border-b border-primary-light last:border-b-0"
+          :class="{
+            'pointer-events-none': availableLocale.code === $i18n.locale,
+          }"
+          class="
+            mb-0
+            px-2
+            flex
+            items-center
+            cursor-pointer
+            hover:bg-primary-lighter
+            border-b border-primary-light
+            last:border-b-0
+          "
           role="option"
           @click="toggleDropdown"
         >
@@ -61,13 +92,15 @@
             class="w-full m-2"
             :class="{
               'opacity-25': availableLocale.code === $i18n.locale,
-              'my-2 mx-auto': appearance === 'popup'
+              'my-2 mx-auto': appearance === 'popup',
             }"
             @click="navigate"
           >
             <img
               class="inline-block w-6 mr-1"
-              :src="`/flags/${getCountryCodeFromLocale(availableLocale.code)}.svg`"
+              :src="`/flags/${getCountryCodeFromLocale(
+                availableLocale.code
+              )}.svg`"
               :alt="`${getCountryCodeFromLocale(availableLocale.code)}`"
             />
             {{ availableLocale.name }}
@@ -85,13 +118,13 @@ export default {
   props: {
     appearance: {
       type: String,
-      default: 'float'
-    }
+      default: 'float',
+    },
   },
 
   data() {
     return {
-      dropdownIsActive: false
+      dropdownIsActive: false,
     }
   },
 
@@ -114,7 +147,7 @@ export default {
       if (!this.$el.contains(e.target)) {
         this.dropdownIsActive = false
       }
-    }
-  }
+    },
+  },
 }
 </script>

@@ -1,36 +1,34 @@
 import Vue from 'vue'
 
 export default async (ctx, inject) => {
-  const options = <%= serialize(options) %>
-
   let ga
   let fbq
   let sgm
 
   // Google Analytics module
-  if (options.googleAnalytics && options.googleAnalytics.id) {
+  if (ctx.googleAnalytics && ctx.googleAnalytics.id) {
     const { GA } = await import('./swell-analytics-ga')
-    ga = new GA(options.googleAnalytics)
+    ga = new GA(ctx.googleAnalytics)
   }
 
   // Facebook Pixel module
-  if (options.facebookPixel && options.facebookPixel.id) {
+  if (ctx.facebookPixel && ctx.facebookPixel.id) {
     const { FBQ } = await import('./swell-analytics-pixel')
-    fbq = new FBQ(options.facebookPixel)
+    fbq = new FBQ(ctx.facebookPixel)
   }
 
   // Segment module
-  if (options.segment && options.segment.id) {
+  if (ctx.segment && ctx.segment.id) {
     const { SGM } = await import('./swell-analytics-segment')
-    sgm = new SGM(options.segment)
+    sgm = new SGM(ctx.segment)
   }
 
   const swellAnalytics = new Vue({
     data() {
       return {
-        ga: ga,
-        fbq: fbq,
-        sgm: sgm
+        ga,
+        fbq,
+        sgm,
       }
     },
     methods: {
@@ -48,8 +46,8 @@ export default async (ctx, inject) => {
         if (this.ga) this.ga.disable()
         if (this.fbq) this.fbq.disable()
         if (this.sgm) this.sgm.disable()
-      }
-    }
+      },
+    },
   })
 
   ctx.$swellAnalytics = swellAnalytics

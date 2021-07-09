@@ -4,7 +4,11 @@
 
     <!-- Radio input -->
     <!-- The fieldset element doesn't like flexbox, so we're using a div instead https://stackoverflow.com/questions/28078681/why-cant-fieldset-be-flex-containers -->
-    <div v-if="inputType === 'radio'" role="group" class="-ml-1 mt-3 flex flex-wrap">
+    <div
+      v-if="inputType === 'radio'"
+      role="group"
+      class="-ml-1 mt-3 flex flex-wrap"
+    >
       <div
         v-for="value in option.values"
         :key="value.name"
@@ -18,21 +22,37 @@
           :disabled="value.disabled"
           type="radio"
           class="absolute inset-0 opacity-0"
-          @input="$emit('value-changed', { option: option.name, value: $event.target.value })"
+          @input="
+            $emit('value-changed', {
+              option: option.name,
+              value: $event.target.value,
+            })
+          "
         />
         <label
           :for="value.id"
           :class="{
             'border-primary-darkest': value.name === currentValue,
-            'text-primary-med': value.disabled
+            'text-primary-med': value.disabled,
           }"
-          class="relative block w-full rounded text-sm border font-semibold cursor-pointer hover:border-primary-darkest focus:shadow-outline"
+          class="
+            relative
+            block
+            w-full
+            rounded
+            text-sm
+            border
+            font-semibold
+            cursor-pointer
+            hover:border-primary-darkest
+            focus:shadow-outline
+          "
         >
           <span
             v-if="value.color"
             :style="`background: ${value.color}`"
             class="block w-8 h-8 m-1 rounded-sm"
-          ></span>
+          />
           <span v-else class="block p-3 min-w-12">{{ value.name }}</span>
         </label>
       </div>
@@ -40,13 +60,32 @@
 
     <!-- Select menu input -->
     <div v-else class="mt-3">
-      <div class="relative text-sm bg-primary-lightest hover:border-primary-darkest">
+      <div
+        class="
+          relative
+          text-sm
+          bg-primary-lightest
+          hover:border-primary-darkest
+        "
+      >
         <!-- Value/Toggle -->
         <button
           :id="`option-${option.id}-button`"
           :class="{ 'rounded-b-none': dropdownIsActive }"
           :aria-labelledby="`option-${option.id}-label option-${option.id}-button`"
-          class="relative w-full flex p-2 items-center border font-semibold cursor-pointer rounded focus:outline-none focus:shadow-outline"
+          class="
+            relative
+            w-full
+            flex
+            p-2
+            items-center
+            border
+            font-semibold
+            cursor-pointer
+            rounded
+            focus:outline-none
+            focus:shadow-outline
+          "
           aria-haspopup="listbox"
           @click="toggleDropdown"
         >
@@ -54,7 +93,7 @@
             v-if="swatchColor"
             :style="`background: ${swatchColor}`"
             class="inline-block w-7 h-7 mr-1 rounded-sm"
-          ></span>
+          />
           <span class="ml-2 my-1">{{ currentValue || initialValue }}</span>
           <div v-show="dropdownIsActive" class="absolute right-3 mt-px">
             <BaseIcon icon="uil:angle-up" />
@@ -69,14 +108,33 @@
           :id="`option-${option.id}-menu`"
           :class="{ 'rounded-t-none': dropdownIsActive }"
           :aria-labelledby="`option-${option.id}-label`"
-          class="max-h-25vh overflow-scroll absolute block -mt-px w-full bg-primary-lightest py-2 border rounded z-10"
+          class="
+            max-h-25vh
+            overflow-scroll
+            absolute
+            block
+            -mt-px
+            w-full
+            bg-primary-lightest
+            py-2
+            border
+            rounded
+            z-10
+          "
           role="listbox"
         >
           <li
             v-for="value in option.values"
             :id="`value-${value.name}`"
             :key="value.name"
-            class="mb-0 px-2 flex items-center cursor-pointer hover:bg-primary-lighter"
+            class="
+              mb-0
+              px-2
+              flex
+              items-center
+              cursor-pointer
+              hover:bg-primary-lighter
+            "
             :class="{ 'text-primary-med': value.name === currentValue }"
             role="option"
             @click="selectValue(value)"
@@ -85,7 +143,7 @@
               v-if="value.color"
               :style="`background: ${swatchColor}`"
               class="inline-block w-7 h-7 mr-1 rounded-sm"
-            ></span>
+            />
             <span class="m-2 font-semibold">{{ value.name }}</span>
           </li>
         </ul>
@@ -99,7 +157,10 @@
     >
 
     <template v-if="validation">
-      <div v-if="validation.$dirty && validation.$error" class="text-error mt-2">
+      <div
+        v-if="validation.$dirty && validation.$error"
+        class="text-error mt-2"
+      >
         <span v-if="!validation.required" class="label-sm text-error">{{
           $t('products.slug.options.required')
         }}</span>
@@ -116,33 +177,33 @@ export default {
     option: {
       type: Object,
       default: () => ({
-        values: []
-      })
+        values: [],
+      }),
     },
     currentValue: {
       type: String,
-      default: ''
+      default: '',
     },
     activeDropdownUID: {
       type: Number,
-      default: null
+      default: null,
     },
     showValueDescription: {
       type: Boolean,
-      default: true
+      default: true,
     },
     validation: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
 
   data() {
     return {
       active: {
-        uid: null
+        uid: null,
       },
-      dropdownIsActive: false
+      dropdownIsActive: false,
     }
   },
 
@@ -181,7 +242,7 @@ export default {
 
     valueDescription() {
       const matchedValue = (this.option.values || []).find(
-        value => value.name === this.currentValue
+        (value) => value.name === this.currentValue
       )
       if (!matchedValue) return
       return matchedValue.description || ''
@@ -189,16 +250,18 @@ export default {
 
     swatchColor() {
       if (!this.currentValue) return
-      const currentValue = this.option.values.find(value => value.name === this.currentValue)
+      const currentValue = this.option.values.find(
+        (value) => value.name === this.currentValue
+      )
       return currentValue.color
-    }
+    },
   },
 
   watch: {
     // If the active dropdown UID doesn't match current, toggle off.
     activeDropdownUID(activeUID) {
       if (activeUID !== this._uid) this.dropdownIsActive = false
-    }
+    },
   },
 
   mounted() {
@@ -218,7 +281,10 @@ export default {
     },
 
     selectValue(value) {
-      this.$emit('value-changed', { option: this.option.name, value: value.name })
+      this.$emit('value-changed', {
+        option: this.option.name,
+        value: value.name,
+      })
       this.dropdownIsActive = false
     },
 
@@ -226,8 +292,8 @@ export default {
       if (!this.$el.contains(e.target)) {
         this.dropdownIsActive = false
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

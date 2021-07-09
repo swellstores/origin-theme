@@ -12,25 +12,33 @@ Vue.use({
         formatMoney,
         formatDate,
         resolveUrl,
-        getCountryCodeFromLocale
-      }
+        getCountryCodeFromLocale,
+      },
     })
 
     Vue.component('VisualMedia', VisualMedia)
-  }
+  },
 })
 
-function settings(self, id, def = undefined) {
-  return get(self, `$store.$swell.settings.state.${id}`, def)
-}
-
 function formatMoney(amount, code) {
-  return this.$nuxt.$store.$swell.currency.format(amount, { code })
+  return new Intl.NumberFormat(
+    this.$nuxt.$store.$swell.locale.selected().code,
+    {
+      style: 'currency',
+      currency: code,
+      currencyDisplay: 'narrowSymbol',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }
+  ).format(amount)
 }
 
-function formatDate(date, options = { month: 'long', day: '2-digit', year: 'numeric' }) {
+function formatDate(
+  date,
+  options = { month: 'long', day: '2-digit', year: 'numeric' }
+) {
   const d = new Date(date)
-  const locale = this.$nuxt.$store.$swell.locale.code || 'default'
+  const locale = this.$nuxt.$store.$swell.locale.selected().code || 'default'
 
   return new Intl.DateTimeFormat(locale, options).format(d)
 }

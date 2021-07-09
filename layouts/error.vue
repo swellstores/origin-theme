@@ -3,7 +3,14 @@
     <div class="container mx-auto md:px-40 my-16 content-center">
       <span
         v-if="error.statusCode"
-        class="mx-auto text-center uppercase label-xs-bold-faded leading-none max-w-128"
+        class="
+          mx-auto
+          text-center
+          uppercase
+          label-xs-bold-faded
+          leading-none
+          max-w-128
+        "
       >
         {{ $t('errors.errorCode', { code: error.statusCode }) }}
       </span>
@@ -11,7 +18,7 @@
         <h1 class="text-6xl text-primary-lightest">
           {{ $t('errors.pageNotFound.title') || error.heading }}
         </h1>
-        <p class="mt-4 text-primary-lightest ">
+        <p class="mt-4 text-primary-lightest">
           {{ $t('errors.pageNotFound.message') || error.message }}
         </p>
         <div class="inline-block">
@@ -25,7 +32,9 @@
       </template>
 
       <template v-else>
-        <h1 class="text-6xl px-10 leading-none">{{ $t('errors.internal.title') }}</h1>
+        <h1 class="text-6xl px-10 leading-none">
+          {{ $t('errors.internal.title') }}
+        </h1>
         <p class="mt-4 mx-auto max-w-80 text-primary-lightest">
           {{ $t('errors.internal.message') }}
         </p>
@@ -34,7 +43,16 @@
           <a
             href="#"
             title="Reload"
-            class="w-full inline-block mt-6 px-6 py-3 uppercase tracking-wide bg-primary-lighter"
+            class="
+              w-full
+              inline-block
+              mt-6
+              px-6
+              py-3
+              uppercase
+              tracking-wide
+              bg-primary-lighter
+            "
             @click.prevent="reload()"
             >{{ $t('errors.internal.reload') }}</a
           >
@@ -52,15 +70,15 @@ export default {
       default: () => ({
         statusCode: null,
         heading: '',
-        message: ''
-      })
-    }
+        message: '',
+      }),
+    },
   },
 
   methods: {
     reload() {
       window.location.reload()
-    }
-  }
+    },
+  },
 }
 </script>
