@@ -49,8 +49,7 @@
             top-0
             pt-10
             max-w-160
-            md:sticky
-            md:pt-12
+            md:sticky md:pt-12
             transition-all
             duration-300
             ease-in-out

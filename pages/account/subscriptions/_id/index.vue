@@ -284,7 +284,9 @@
               fit="auto"
               appearance="dark"
               :label="$t('account.subscriptions.id.editPlan')"
-              :link="localePath(`/account/subscriptions/${subscription.id}/edit/`)"
+              :link="
+                localePath(`/account/subscriptions/${subscription.id}/edit/`)
+              "
             />
           </div>
         </div>

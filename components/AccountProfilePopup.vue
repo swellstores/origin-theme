@@ -14,8 +14,7 @@
           w-full
           md:w-128
           h-vh-gap
-          md:h-auto
-          md:max-h-80vh
+          md:h-auto md:max-h-80vh
           absolute
           md:relative
           bottom-0

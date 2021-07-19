@@ -13,8 +13,7 @@
           top-0
           right-0
           mx-auto
-          md:mr-3
-          md:max-w-max
+          md:mr-3 md:max-w-max
           mt-3
           bg-primary-lightest
           shadow-md

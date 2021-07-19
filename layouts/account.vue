@@ -279,9 +279,7 @@ export default {
         if (this.$route.path.includes('/account/')) {
           this.$router.replace('/')
         }
-      } catch (err) {
-        console.log(err)
-      }
+      } catch (err) {}
     },
   },
 }

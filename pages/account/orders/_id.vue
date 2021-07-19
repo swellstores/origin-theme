@@ -47,8 +47,7 @@
           <div
             class="
               block
-              md:flex
-              md:justify-between
+              md:flex md:justify-between
               text-sm
               rounded
               border border-primary-med
@@ -81,7 +80,10 @@
             fit="auto"
             appearance="light"
             :label="$t('account.orders.id.createReturn')"
-            :link="{ url: localePath('/account/orders/returns/'), title: 'Create return' }"
+            :link="{
+              url: localePath('/account/orders/returns/'),
+              title: 'Create return',
+            }"
           />
 
           <!-- Order summary -->
@@ -326,8 +328,7 @@
                 <div
                   v-else-if="billing.method === 'giftcard' && order.giftcards"
                   class="
-                    md:border-b-0
-                    md:
+                    md:border-b-0 md:
                     border-r border-b border-primary-med
                     p-4
                   "
@@ -379,8 +380,7 @@
                 <div
                   v-else-if="billing.method === 'cash_on_delivery'"
                   class="
-                    md:border-b-0
-                    md:
+                    md:border-b-0 md:
                     border-r border-b border-primary-med
                     p-4
                   "

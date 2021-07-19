@@ -15,8 +15,8 @@
           light: appearance === 'light',
           'light-error': appearance === 'light-error',
           'btn--lg': size === 'lg',
-          'flex items-center justify-center': icon
-        }
+          'flex items-center justify-center': icon,
+        },
       ]"
       :type="buttonType"
     >
@@ -28,10 +28,18 @@
       <!-- Button label -->
       <span
         v-if="label"
-        :class="{ 'absolute center-xy': fit === 'full', 'flex items-center justify-center': icon }"
+        :class="{
+          'absolute center-xy': fit === 'full',
+          'flex items-center justify-center': icon,
+        }"
       >
         <!-- Icon, if applicable -->
-        <BaseIcon v-if="icon" :icon="`uil:${icon}`" size="sm" class="inline-block mr-2" />
+        <BaseIcon
+          v-if="icon"
+          :icon="`uil:${icon}`"
+          size="sm"
+          class="inline-block mr-2"
+        />
 
         <template v-if="isLoading">
           {{ loadingLabel }}
@@ -52,58 +60,58 @@ export default {
     type: {
       type: String,
       default: 'button_primary',
-      validator: function(value) {
+      validator(value) {
         return ['text', 'button_primary'].includes(value)
-      }
+      },
     },
     link: {
       type: [Object, String],
-      default: ''
+      default: '',
     },
     appearance: {
       type: String,
-      default: ''
+      default: '',
     },
     size: {
       type: String,
-      default: 'md'
+      default: 'md',
     },
     fit: {
       // Full for full-width, auto for responsive, static for same auto width
       type: String,
       default: 'full',
-      validator: function(value) {
+      validator(value) {
         return ['full', 'auto', 'static'].includes(value)
-      }
+      },
     },
     buttonType: {
       type: String,
-      default: 'button'
+      default: 'button',
     },
     textColor: {
       type: String,
-      default: 'dark'
+      default: 'dark',
     },
     isLoading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     icon: {
       type: String,
-      default: ''
+      default: '',
     },
     label: {
       type: String,
-      default: ''
+      default: '',
     },
     loadingLabel: {
       type: String,
-      default: ''
+      default: '',
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 }
 </script>

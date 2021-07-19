@@ -14,8 +14,7 @@
         font-semibold
         cursor-pointer
         rounded
-        focus:outline-none
-        focus:shadow-outline
+        focus:outline-none focus:shadow-outline
       "
       :class="{ 'rounded-b-none': dropdownIsActive }"
       @click="toggleDropdown()"

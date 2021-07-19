@@ -83,8 +83,7 @@
             font-semibold
             cursor-pointer
             rounded
-            focus:outline-none
-            focus:shadow-outline
+            focus:outline-none focus:shadow-outline
           "
           aria-haspopup="listbox"
           @click="toggleDropdown"

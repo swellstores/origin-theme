@@ -28,11 +28,8 @@
         w-full
         px-6
         py-20
-        md:w-1/2
-        md:px-12
-        md:py-16
-        lg:px-26
-        lg:py-32
+        md:w-1/2 md:px-12 md:py-16
+        lg:px-26 lg:py-32
       "
     >
       <h2 class="mb-3 text-3xl md:text-4xl lg:text-6xl">

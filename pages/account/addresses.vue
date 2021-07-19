@@ -363,9 +363,7 @@ export default {
         })
         this.$store.dispatch('initializeCustomer')
         this.$fetch()
-      } catch (err) {
-        console.log(err)
-      }
+      } catch (err) {}
     },
   },
 }

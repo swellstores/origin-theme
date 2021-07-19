@@ -9,8 +9,7 @@
         text-center
         font-medium
         cursor-pointer
-        focus:outline-none
-        focus:shadow-outline
+        focus:outline-none focus:shadow-outline
         hover:text-accent-default
       "
       :class="{

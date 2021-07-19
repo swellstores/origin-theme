@@ -20,8 +20,7 @@
         border border-primary-light
         rounded
         shadow-md
-        sm:left-auto
-        sm:max-w-80
+        sm:left-auto sm:max-w-80
       "
     >
       <div v-if="type === 'compact'" class="flex justify-between items-center">

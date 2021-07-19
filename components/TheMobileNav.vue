@@ -41,10 +41,7 @@
             w-full
             flex flex-wrap
             border-b border-primary-light
-            md:px-10
-            md:pb-6
-            md:border-b-0
-            md:justify-center
+            md:px-10 md:pb-6 md:border-b-0 md:justify-center
           "
         >
           <button class="sw-nav-button" @click.prevent="$emit('click-search')">

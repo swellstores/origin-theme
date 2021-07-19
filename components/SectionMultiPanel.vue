@@ -18,8 +18,8 @@
             panel.type === 'text' && panel.heading,
           'text-left': textAlign === 'left',
           'text-right': textAlign === 'right',
-          'text-center': textAlign === 'center'
-        }
+          'text-center': textAlign === 'center',
+        },
       ]"
     >
       <!-- Empty states -->
@@ -89,24 +89,24 @@ export default {
   props: {
     type: {
       type: String,
-      default: null
+      default: null,
     },
     id: {
       type: String,
-      default: null
+      default: null,
     },
     panels: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     textAlign: {
       type: String,
-      default: null
+      default: null,
     },
     bgColor: {
       type: String,
-      default: 'primary-lightest'
-    }
-  }
+      default: 'primary-lightest',
+    },
+  },
 }
 </script>

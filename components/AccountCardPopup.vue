@@ -14,8 +14,7 @@
           w-full
           md:w-128
           h-vh-gap
-          md:h-auto
-          md:max-h-80vh
+          md:h-auto md:max-h-80vh
           absolute
           md:relative
           bottom-0
@@ -509,7 +508,6 @@ export default {
         }
       } catch (err) {
         this.isCreating = false
-        console.log(err)
         this.$store.dispatch('showNotification', {
           message: this.$t('account.payments.popup.create.error'),
           type: 'error',

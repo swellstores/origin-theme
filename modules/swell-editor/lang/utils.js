@@ -5,10 +5,10 @@ import ruPluralizationRule from './pluralization/ru'
 export function getDefaultsFromEditor(editorSettings) {
   const defaultsPaths = objectScan(['lang.**.default'])(editorSettings)
 
-  const defaultValues = defaultsPaths.map(path => {
+  const defaultValues = defaultsPaths.map((path) => {
     return {
       defaultValue: get(path)(editorSettings),
-      id: get(path.slice(0, -1).concat('id'))(editorSettings)
+      id: get(path.slice(0, -1).concat('id'))(editorSettings),
     }
   })
 
@@ -23,7 +23,7 @@ export function getLangMessages(defaultLocale, settings) {
 
   const defaultMessages = pipe(
     objectScan(['**,!**.$locale.**'], {
-      filterFn: ({ value }) => typeof value === 'string'
+      filterFn: ({ value }) => typeof value === 'string',
     }),
     reduce((acc, basePath) => {
       const defaultText = get(basePath)(lang)
@@ -35,7 +35,7 @@ export function getLangMessages(defaultLocale, settings) {
 
   const localeMessages = pipe(
     objectScan(['**.$locale.**'], {
-      filterFn: ({ value }) => typeof value === 'string'
+      filterFn: ({ value }) => typeof value === 'string',
     }),
     reduce((acc, basePath) => {
       const message = get(basePath)(lang)
@@ -43,8 +43,8 @@ export function getLangMessages(defaultLocale, settings) {
       const messagePath = [
         messageLocale,
         ...basePath
-          .filter(segment => !['$locale', messageLocale].includes(segment))
-          .map(camelCase)
+          .filter((segment) => !['$locale', messageLocale].includes(segment))
+          .map(camelCase),
       ]
 
       return message ? set(messagePath, message)(acc) : acc
@@ -80,33 +80,33 @@ export function getLangSettings(settings, editorMode) {
       fallbackLocale,
       pluralizationRules: {
         // example custom pluralization rule
-        ru: ruPluralizationRule
-      }
+        ru: ruPluralizationRule,
+      },
     },
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'swell-locale',
       onlyOnRoot: true, // recommended,
-      alwaysRedirect: true
+      alwaysRedirect: true,
     },
-    skipSettingLocaleOnNavigate: true
+    skipSettingLocaleOnNavigate: true,
   }
 
   return editorMode
     ? {
         ...defaultSettings,
-        locales: defaultSettings.locales.map(localeOptions => ({
+        locales: defaultSettings.locales.map((localeOptions) => ({
           ...localeOptions,
-          file: 'index.js'
+          file: 'index.js',
         })),
         langDir: '~/modules/swell-editor/lang',
-        lazy: true
+        lazy: true,
       }
     : {
         ...defaultSettings,
         vueI18n: {
           ...defaultSettings.vueI18n,
-          messages: getLangMessages(defaultLocale, settings)
-        }
+          messages: getLangMessages(defaultLocale, settings),
+        },
       }
 }

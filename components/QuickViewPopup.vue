@@ -14,8 +14,7 @@
           w-full
           md:w-max
           h-vh-gap
-          md:h-auto
-          md:max-h-80vh
+          md:h-auto md:max-h-80vh
           absolute
           md:relative
           bottom-0
@@ -35,8 +34,7 @@
             float-right
             md:float-none
             right-0
-            md:mr-6
-            md:mt-6
+            md:mr-6 md:mt-6
             z-10
           "
           @click.prevent="$emit('click-close')"
@@ -47,8 +45,7 @@
         <div
           class="
             container
-            md:max-w-auto
-            md:overflow-hidden
+            md:max-w-auto md:overflow-hidden
             grid grid-cols-1
             md:grid-cols-2
             pt-3
@@ -168,9 +165,7 @@
                 container
                 center-x
                 fixed
-                md:px-0
-                md:w-full
-                md:absolute
+                md:px-0 md:w-full md:absolute
                 bottom-0
               "
             >
