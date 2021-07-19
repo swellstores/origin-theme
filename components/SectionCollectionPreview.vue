@@ -17,15 +17,13 @@
           v-else
           :to="localePath(resolveUrl({ type: 'category', value: slug }))"
         >
-          <h1 v-if="titleSize === 'lg'" class="mb-2">
+          <component
+            :is="titleSize === 'lg' ? 'h1' : titleSize === 'md' ? 'h2' : 'h3'"
+            :class="{ 'text-center': titleAlign === 'center' }"
+            class="mb-2"
+          >
             {{ name }}
-          </h1>
-          <h2 v-if="titleSize === 'md'" class="mb-2">
-            {{ name }}
-          </h2>
-          <h3 v-if="titleSize === 'sm'" class="mb-2">
-            {{ name }}
-          </h3>
+          </component>
         </NuxtLink>
       </template>
 
@@ -33,7 +31,7 @@
       <ProductPreviews
         :products="products"
         :column-count="productCols"
-        :text-align="textAlign"
+        :text-align="productTextAlign"
         :show-price="showPrice"
       />
     </div>
@@ -72,6 +70,10 @@ export default {
       type: String,
       default: 'md',
     },
+    titleAlign: {
+      type: String,
+      default: 'left',
+    },
     productCols: {
       type: Number,
       default: 3,
@@ -84,7 +86,7 @@ export default {
       type: Boolean,
       default: true,
     },
-    textAlign: {
+    productTextAlign: {
       type: String,
       default: 'left',
     },
