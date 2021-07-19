@@ -1,6 +1,8 @@
 import swell from 'swell-js'
 import merge from 'deepmerge'
 
+const overwriteArrayOnMerge = (_destinationArray, sourceArray) => sourceArray
+
 export async function mergeSettings(localSettings) {
   const storeId = process.env.SWELL_STORE_ID || localSettings.store.id
   const publicKey =
@@ -14,5 +16,7 @@ export async function mergeSettings(localSettings) {
 
   await swell.settings.load()
 
-  return merge(swell.settings.state, localSettings)
+  return merge(swell.settings.state, localSettings, {
+    arrayMerge: overwriteArrayOnMerge,
+  })
 }
