@@ -27,7 +27,7 @@ export default {
       }
       return {
         is: 'nuxt-link',
-        to: url,
+        to: this.localePath(url),
       }
     },
   },

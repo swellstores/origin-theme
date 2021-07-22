@@ -21,9 +21,9 @@
     <template v-if="validation">
       <div
         v-if="validation.$dirty && validation.$error"
-        class="text-error mt-2"
+        class="text-error-default mt-2"
       >
-        <span v-if="!validation.required" class="label-sm text-error">{{
+        <span v-if="!validation.required" class="label-sm text-error-default">{{
           $t('products.slug.options.required')
         }}</span>
       </div>
@@ -76,7 +76,7 @@ export default {
 
 <style lang="postcss" scoped>
 .text-input {
-  @apply w-full p-4 text-sm border rounded;
+  @apply w-full p-4 text-sm border border-primary-med rounded;
 
   &:focus {
     @apply shadow-outline;

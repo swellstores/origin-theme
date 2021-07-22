@@ -20,7 +20,7 @@
       <div class="panel absolute w-full h-full right-0 max-w-112">
         <div class="w-full h-full bg-primary-lightest overflow-y-scroll">
           <!-- Header -->
-          <div class="relative container py-5 border-b">
+          <div class="relative container py-5 border-b border-primary-med">
             <div class="flex justify-between items-center">
               <h3>
                 {{ $t('cart.title') }}
@@ -52,7 +52,7 @@
           <div v-else class="container py-10">
             <span class="block mb-4">{{ $t('cart.empty') }}</span>
             <BaseButton
-              :link="localePath(resolveUrl({ type: 'product' }))"
+              :link="shopLink"
               :label="$t('cart.backToProducts')"
               fit="auto"
             />
@@ -61,7 +61,7 @@
           <!-- Footer -->
           <div
             v-if="cart && cart.items && cart.items.length"
-            class="bg-primary-lighter border-t"
+            class="bg-primary-lighter border-t border-primary-med"
           >
             <div class="container pt-6 pb-2">
               <div class="flex">
@@ -71,7 +71,7 @@
                   placeholder="Add coupon or gift card code"
                   class="
                     w-full
-                    border
+                    border border-primary-med
                     rounded
                     font-medium
                     bg-primary-lightest
@@ -145,7 +145,7 @@
             </div>
 
             <!-- Summary -->
-            <div class="container py-6 border-b">
+            <div class="container py-6 border-b border-primary-med">
               <div class="flex justify-between mb-1">
                 <span>{{ $t('cart.subtotal') }}</span>
                 <span>{{ formatMoney(cart.subTotal, currency) }}</span>
@@ -171,7 +171,14 @@
               </h3>
               <div
                 v-if="account && account.balance && account.balance > 0"
-                class="flex justify-between mb-1 border-t mt-4 pt-4"
+                class="
+                  flex
+                  justify-between
+                  mb-1
+                  border-t border-primary-med
+                  mt-4
+                  pt-4
+                "
               >
                 <span>{{ $t('cart.accountBalance') }}</span>
                 <span>{{ formatMoney(account.balance, currency) }}</span>
@@ -203,7 +210,14 @@ export default {
   data() {
     return {
       couponCode: null,
+      shopLink: null,
     }
+  },
+
+  fetch() {
+    // Set component data
+    const { $swell } = this
+    this.shopLink = $swell.settings.get('cart.shopLink', '/categories/')
   },
 
   computed: {

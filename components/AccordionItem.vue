@@ -1,5 +1,5 @@
 <template>
-  <div class="border-b">
+  <div class="border-b border-primary-med">
     <div :class="{ container: useContainer }">
       <div
         class="flex flex-row items-center z-10 cursor-pointer"

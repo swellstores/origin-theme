@@ -56,7 +56,8 @@
     <ul
       v-show="dropdownIsActive"
       :class="{
-        'w-max shadow-md absolute border center-x': appearance === 'float',
+        'w-max shadow-md absolute border  border-primary-med  center-x':
+          appearance === 'float',
         'w-full max-w-80 mx-auto center-xy fixed': appearance === 'popup',
       }"
       class="block -mt-px bg-primary-lightest rounded z-40 overflow-scroll"

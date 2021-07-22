@@ -73,6 +73,9 @@
   "product_list": {
     "enable_quick_add": true
   },
+  "cart": {
+    "shop_link": "/categories/"
+  },
   "typography": {
     "heading_font": {
       "provider": "Google",

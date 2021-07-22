@@ -37,7 +37,7 @@
       appearance="dark"
       icon="shopping-bag"
       :label="$t('account.orders.backToProducts')"
-      :link="localePath('/products/')"
+      :link="shopLink"
     />
   </div>
 </template>
@@ -45,10 +45,19 @@
 <script>
 export default {
   layout: 'account',
+
   data() {
     return {
       previousOrderRoute: '',
+      shopLink: null,
     }
+  },
+
+  fetch() {
+    // Set page data
+    const { $swell } = this
+
+    this.shopLink = $swell.settings.get('cart.shopLink', '/categories/')
   },
 
   watch: {
