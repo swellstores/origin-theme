@@ -21,16 +21,15 @@ Vue.use({
 })
 
 function formatMoney(amount, code) {
-  return new Intl.NumberFormat(
-    this.$nuxt.$store.$swell.locale.selected().code,
-    {
-      style: 'currency',
-      currency: code,
-      currencyDisplay: 'narrowSymbol',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }
-  ).format(amount)
+  const selectedLocale = this.$nuxt.$store.$swell.locale.selected()
+
+  return new Intl.NumberFormat(selectedLocale, {
+    style: 'currency',
+    currency: code,
+    currencyDisplay: 'narrowSymbol',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount)
 }
 
 function formatDate(
@@ -38,7 +37,7 @@ function formatDate(
   options = { month: 'long', day: '2-digit', year: 'numeric' }
 ) {
   const d = new Date(date)
-  const locale = this.$nuxt.$store.$swell.locale.selected().code || 'default'
+  const locale = this.$nuxt.$store.$swell.locale.selected() || 'default'
 
   return new Intl.DateTimeFormat(locale, options).format(d)
 }

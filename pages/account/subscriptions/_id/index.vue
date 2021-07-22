@@ -121,7 +121,7 @@
                   $t('account.subscriptions.subscription.status.trialMessage')
                 }}
                 {{ subscription.interval }} at
-                {{ formatMoney(subscription.recurringTotal) }}
+                {{ formatMoney(subscription.recurringTotal, currency) }}
               </p>
             </div>
           </div>

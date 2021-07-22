@@ -133,7 +133,7 @@
                 {{
                   $t('account.subscriptions.subscription.summary', {
                     interval: subscription.interval,
-                    amount: formatMoney(subscription.recurringTotal),
+                    amount: formatMoney(subscription.recurringTotal, currency),
                   })
                 }}
               </p>

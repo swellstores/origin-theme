@@ -78,7 +78,7 @@
               <!-- Price/quantity + item editor toggle -->
               <div class="label-sm-bold leading-none">
                 <div class="inline-block py-1 -mb-1">
-                  <span>{{ formatMoney(product.price) }}</span>
+                  <span>{{ formatMoney(product.price, currency) }}</span>
                   <span v-if="product.quantity > 1"
                     >&times; {{ product.quantity }}</span
                   >
@@ -189,6 +189,7 @@ export default {
       'addedItem',
       'headerIsVisible',
       'headerHeight',
+      'currency',
     ]),
 
     options() {
