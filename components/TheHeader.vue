@@ -124,7 +124,7 @@
               />
               <!-- Currency select -->
               <CurrencySelect
-                v-if="currency"
+                v-if="currencyList.length > 1"
                 :currency="currency"
                 class="hidden lg:block"
                 appearance="float"
@@ -225,6 +225,7 @@ export default {
       lastScrollPos: 0,
       isScrolled: false,
       scrollRAF: null,
+      currencyList: [],
     }
   },
 
@@ -239,6 +240,7 @@ export default {
     this.menu = $swell.settings.menus(menuId)
     this.storeName = $swell.settings.get('store.name', 'ORIGIN')
     this.logoSrc = $swell.settings.get('header.logo.file.url')
+    this.currencyList = $swell.currency.list()
   },
 
   computed: {

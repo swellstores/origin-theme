@@ -79,6 +79,7 @@
                     py-2
                     text-sm
                     mr-2
+                    focus:outline-none focus:shadow-outline
                   "
                 />
 

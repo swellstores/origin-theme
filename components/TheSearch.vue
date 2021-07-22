@@ -29,6 +29,7 @@
           rounded
           bg-primary-lighter
           text-primary-darkest text-3xl
+          focus:outline-none focus:shadow-outline
         "
         @keydown.enter="$fetch"
       />

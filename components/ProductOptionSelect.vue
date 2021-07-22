@@ -32,7 +32,8 @@
         <label
           :for="value.id"
           :class="{
-            'border-primary-darkest': value.name === currentValue,
+            'bg-primary-darkest text-primary-lightest':
+              value.name === currentValue,
             'text-primary-med': value.disabled,
           }"
           class="
