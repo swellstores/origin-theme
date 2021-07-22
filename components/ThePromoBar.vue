@@ -1,19 +1,19 @@
-<template functional>
+<template>
   <div
     :class="[
       'bg-primary-darkest text-primary-lighter text-sm leading-snug font-semibold text-center',
-      { hidden: props.hidden },
+      { hidden: hidden },
     ]"
   >
     <NuxtLink
-      v-if="props.url"
-      :to="localePath(props.url)"
+      v-if="url"
+      :to="localePath(url)"
       class="block rounded-none p-2 text-primary-lighter"
     >
-      <span>{{ props.text }}</span>
+      <span>{{ text }}</span>
     </NuxtLink>
     <p v-else class="p-2">
-      {{ props.text }}
+      {{ text }}
     </p>
   </div>
 </template>
