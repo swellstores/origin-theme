@@ -42,7 +42,7 @@
             w-full
             rounded
             text-sm
-            border
+            border border-primary-med
             font-semibold
             cursor-pointer
             hover:border-primary-darkest
@@ -80,7 +80,7 @@
             flex
             p-2
             items-center
-            border
+            border border-primary-med
             font-semibold
             cursor-pointer
             rounded
@@ -117,7 +117,7 @@
             w-full
             bg-primary-lightest
             py-2
-            border
+            border border-primary-med
             rounded
             z-10
           "
@@ -159,9 +159,9 @@
     <template v-if="validation">
       <div
         v-if="validation.$dirty && validation.$error"
-        class="text-error mt-2"
+        class="text-error-default mt-2"
       >
-        <span v-if="!validation.required" class="label-sm text-error">{{
+        <span v-if="!validation.required" class="label-sm text-error-default">{{
           $t('products.slug.options.required')
         }}</span>
       </div>

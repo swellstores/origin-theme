@@ -10,7 +10,7 @@
         pr-10
         items-center
         bg-primary-lightest
-        border
+        border border-primary-med
         font-semibold
         cursor-pointer
         rounded
@@ -38,7 +38,7 @@
         w-full
         bg-primary-lightest
         py-2
-        border
+        border border-primary-med
         rounded
         z-40
         overflow-scroll

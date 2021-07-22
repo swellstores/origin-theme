@@ -40,7 +40,7 @@
           mt-1
           -ml-2
           bg-primary-lightest
-          border
+          border border-primary-med
           rounded
           px-3
           py-2

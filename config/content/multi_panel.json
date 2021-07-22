@@ -63,6 +63,7 @@
                     {
                       "id": "url",
                       "label": "Link URL",
+                      "hint": "For external URLs, include the protocol (http:// or https://)",
                       "type": "url",
                       "required": true
                     }

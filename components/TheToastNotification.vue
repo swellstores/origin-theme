@@ -21,7 +21,6 @@
         "
         :class="{
           'md:min-w-96': product,
-          'bg-primary-med': type !== 'error',
           'bg-error-faded text-error-default': type === 'error',
           'bg-ok-faded text-lightest': type === 'success',
         }"
@@ -186,6 +185,7 @@ export default {
     ...mapState([
       'cart',
       'cartIsUpdating',
+      'currency',
       'addedItem',
       'headerIsVisible',
       'headerHeight',
