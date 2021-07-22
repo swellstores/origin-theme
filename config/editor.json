@@ -443,6 +443,19 @@
           "type": "toggle"
         }
       ]
+    },
+    {
+      "id": "cart",
+      "label": "Cart",
+      "fields": [
+        {
+          "id": "cart.shop_link",
+          "label": "Start shopping link",
+          "type": "short_text",
+          "format": "url",
+          "placeholder": "/categories/"
+        }
+      ]
     }
   ],
   "page_route": "/:slug/",

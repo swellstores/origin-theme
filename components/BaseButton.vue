@@ -60,9 +60,7 @@ export default {
     type: {
       type: String,
       default: 'button_primary',
-      validator(value) {
-        return ['text', 'button_primary'].includes(value)
-      },
+      validator: (value) => ['text', 'button_primary'].includes(value),
     },
     link: {
       type: [Object, String],
@@ -80,9 +78,7 @@ export default {
       // Full for full-width, auto for responsive, static for same auto width
       type: String,
       default: 'full',
-      validator(value) {
-        return ['full', 'auto', 'static'].includes(value)
-      },
+      validator: (value) => ['full', 'auto', 'static'].includes(value),
     },
     buttonType: {
       type: String,

@@ -1,14 +1,25 @@
 <template>
-  <transition name="confirmPanel" :duration="700" appear>
+  <transition name="float" :duration="700" appear>
     <div class="z-40 fixed flex items-center justify-center inset-0">
       <!-- Overlay -->
       <div
-        class="overlay absolute w-full h-full bg-primary-darker z-10"
+        class="overlay opacity-50 absolute w-full h-full bg-primary-darker z-10"
         @click="$emit('click-close')"
       />
 
       <!-- Panel -->
-      <div class="panel z-20">
+      <div
+        class="
+          panel
+          z-20
+          w-full
+          py-6
+          mx-6
+          rounded
+          bg-primary-lighter
+          md:absolute md:center-xy md:w-128 md:h-auto
+        "
+      >
         <div class="container">
           <h3 v-if="heading">
             {{ heading }}
@@ -19,7 +30,7 @@
 
           <div class="block mb-4 md:mb-0 md:flex">
             <BaseButton
-              class="w-full md:w-1/2 md:mr-2 md:mb-0"
+              class="w-full mb-4 md:w-1/2 md:mr-2 md:mb-0"
               appearance="dark"
               :label="acceptLabel"
               :loading-label="loadingLabel"
@@ -81,54 +92,3 @@ export default {
   },
 }
 </script>
-
-<style lang="postcss" scoped>
-.overlay {
-  @apply opacity-50 absolute w-full h-full bg-primary-darker;
-}
-
-.panel {
-  @apply w-full mx-6 py-6 rounded bg-primary-lighter
-         md:absolute md:w-128 md:h-auto md:rounded md:left-1/2 md:top-1/2 
-         md:transform md:-translate-x-1/2 md:-translate-y-1/2;
-}
-
-.confirmPanel-enter-active .overlay,
-.confirmPanel-leave-active .overlay {
-  @apply transition-all duration-500 ease-in-out;
-}
-
-.confirmPanel-enter .overlay,
-.confirmPanel-leave-to .overlay {
-  @apply opacity-0;
-}
-
-.confirmPanel-enter-to .overlay,
-.confirmPanel-leave .overlay {
-  @apply opacity-50;
-}
-
-.confirmPanel-enter-active .panel,
-.confirmPanel-leave-active .panel {
-  @apply transition-all duration-500;
-  transition-timing-function: cubic-bezier(0.6, 0.2, 0, 1);
-}
-
-.confirmPanel-enter .panel,
-.confirmPanel-leave-to .panel {
-  @apply transform translate-y-1/4 opacity-0;
-
-  @screen md {
-    transform: translate(-50%, calc(-50% + 5rem));
-  }
-}
-
-.confirmPanel-enter-to .panel,
-.confirmPanel-leave .overlay {
-  @apply transform translate-y-0 opacity-100;
-
-  @screen md {
-    transform: translate(-50%, -50%);
-  }
-}
-</style>

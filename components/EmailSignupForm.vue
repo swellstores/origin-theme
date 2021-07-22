@@ -15,7 +15,7 @@
           pl-4
           pr-14
           py-2
-          border
+          border border-primary-med
           outline-none
           transition
           focus:shadow-outline

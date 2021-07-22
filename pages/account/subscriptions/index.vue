@@ -31,7 +31,7 @@
           appearance="dark"
           icon="shopping-bag"
           :label="$t('account.subscriptions.backToProducts')"
-          :link="localePath('/products/')"
+          :link="shopLink"
         />
       </template>
     </div>
@@ -45,15 +45,19 @@ export default {
   data() {
     return {
       subscriptions: null,
+      shopLink: null,
     }
   },
+
   async fetch() {
     // Set page data
+    const { $swell } = this
     const { results: subscriptions } = await this.$swell.subscriptions.get({
       expand: ['product', 'variant'],
     })
 
     this.subscriptions = subscriptions
+    this.shopLink = $swell.settings.get('cart.shopLink', '/categories/')
   },
 }
 </script>

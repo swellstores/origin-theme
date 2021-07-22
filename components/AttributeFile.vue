@@ -1,5 +1,8 @@
 <template>
-  <div v-if="attribute" class="py-3 flex flex-no-wrap border-b">
+  <div
+    v-if="attribute"
+    class="py-3 flex flex-no-wrap border-b border-primary-med"
+  >
     <!-- Multiple files -->
     <template v-if="Array.isArray(attribute.value)">
       <strong class="w-1/4 text-primary-darkest pr-6">{{

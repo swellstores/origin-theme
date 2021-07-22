@@ -36,7 +36,9 @@ export default {
   name: 'RangeSlider',
 
   components: {
-    VueSlider: () => import('vue-slider-component'),
+    VueSlider: () => {
+      if (process.client) return import('vue-slider-component')
+    },
   },
 
   props: {

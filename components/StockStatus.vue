@@ -2,7 +2,7 @@
   <div class="mb-3 flex flex-wrap justify-between">
     <div class="mr-2">
       <span
-        :class="`bg-${status.color}`"
+        :class="`bg-${status.color}-default`"
         class="inline-block rounded-full w-2 h-2 mr-1"
       />
       <span class="label-xs-bold text-primary-dark">{{
