@@ -24,7 +24,7 @@
     "nuxt": "2.15.7",
     "nuxt-i18n": "6.22.3",
     "object-scan": "16.0.2",
-    "swell-js": "3.9.2",
+    "swell-js": "3.9.5",
     "vue": "2.6.14",
     "vue-country-region-select": "2.0.16",
     "vue-credit-card-validation": "wuori/vue-credit-card-validation",
