@@ -21,13 +21,7 @@ Vue.use({
 })
 
 function formatMoney(amount, code) {
-  const selectedLocale = this.$nuxt.$store.$swell.locale.selected()
-
-  return new Intl.NumberFormat(selectedLocale, {
-    style: 'currency',
-    currency: code,
-    currencyDisplay: 'narrowSymbol',
-  }).format(amount)
+  return this.$nuxt.$store.$swell.currency.format(amount, { code })
 }
 
 function formatDate(

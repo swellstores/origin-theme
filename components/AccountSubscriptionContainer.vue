@@ -52,7 +52,9 @@
 
         <p class="label-sm-bold mb-4">
           <span class="pr-2"
-            >{{ formatMoney(subscription.recurringTotal, currency) }}
+            >{{
+              formatMoney(subscription.recurringTotal, subscription.currency)
+            }}
             {{ subscription.interval }}</span
           >
         </p>
@@ -144,7 +146,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import get from 'lodash/get'
 
 export default {
@@ -156,8 +157,6 @@ export default {
   },
 
   computed: {
-    ...mapState(['currency']),
-
     thumbnails() {
       // Determine which images to display
       const { subscription } = this
