@@ -3,9 +3,10 @@ const map = require('lodash/map')
 module.exports = {
   mode: 'jit',
   purge: {
-    options: {
+    /* options: {
       safelist: ['container', /^icon:/, /^bg-/],
-    },
+    }, */
+    content: ['./tailwind-safelist.txt'],
   },
   theme: {
     colors: {
