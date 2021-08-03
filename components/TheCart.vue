@@ -63,7 +63,7 @@
             v-if="cart && cart.items && cart.items.length"
             class="bg-primary-lighter border-t border-primary-med"
           >
-            <div class="container pt-6 pb-2">
+            <div class="container py-6 border-b border-primary-med">
               <div class="flex">
                 <input
                   v-model="couponCode"
@@ -85,7 +85,6 @@
 
                 <BaseButton
                   class="flex-shrink-0"
-                  :link="localePath(resolveUrl({ type: 'product' }))"
                   :label="$t('cart.applyCoupon')"
                   :disabled="!couponCode"
                   fit="auto"
@@ -97,7 +96,6 @@
               <div v-if="cart">
                 <div v-if="cart.couponCode" class="mt-4 flex items-center">
                   <p class="label-xs-bold">{{ cart.couponCode }}</p>
-                  {{ cart.couponCode }}
                   <button
                     class="w-7 h-7 relative rounded-full bg-primary-light ml-3"
                     @click="removeDiscount()"
