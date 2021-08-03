@@ -99,7 +99,6 @@
               <BaseButton
                 class="w-full"
                 fit="full"
-                :link="cart.checkoutUrl"
                 appearance="lught"
                 :label="$t('notifications.cart')"
                 @click.native="openCart"
