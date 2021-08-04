@@ -550,22 +550,22 @@ export default {
     },
 
     status() {
-      if (!this.subscription) return
+      if (!this.subscription) return ''
       return this.subscription.status
     },
 
     orders() {
-      if (isEmpty(this.subscription.orders)) return
+      if (isEmpty(this.subscription.orders)) return []
       return this.subscription.orders.results
     },
 
     shipping() {
-      if (isEmpty(this.subscription.shipping)) return
+      if (isEmpty(this.subscription.shipping)) return null
       return this.subscription.shipping
     },
 
     billing() {
-      if (isEmpty(this.subscription.billing)) return
+      if (isEmpty(this.subscription.billing)) return null
       return this.subscription.billing
     },
 
@@ -576,7 +576,7 @@ export default {
     },
 
     planItems() {
-      if (!this.subscription.product.bundle) return
+      if (!this.subscription.product.bundle) return []
       return this.subscription.product.bundleItems
     },
   },
