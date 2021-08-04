@@ -73,6 +73,9 @@
   "product_list": {
     "enable_quick_add": true
   },
+  "cart": {
+    "shop_link": "/categories/"
+  },
   "typography": {
     "heading_font": {
       "provider": "Google",
@@ -163,6 +166,9 @@
         "updating": "Updating",
         "save": "Save",
         "add_to_cart": "Add to cart",
+        "options": {
+          "required": "Please enter a value."
+        },
         "stock_status": {
           "out_of_stock": { "message": "", "label": "Out of stock" },
           "limited_availability": { "message": "Ships in 1–2 days", "label": "Low stock" },
@@ -287,6 +293,7 @@
         "error": "There was an error resetting your password.",
         "success": "An email has been sent to reset your password.",
         "log_in": "Back to log in",
+        "button": { "loading_label": "Sending...", "label": "Send email" },
         "email": {
           "format": "Please enter a valid e-mail address.",
           "required": "Please enter your e-mail address.",

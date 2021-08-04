@@ -1,7 +1,10 @@
 <template>
-  <div class="border-b">
+  <div class="border-b border-primary-med">
     <div :class="{ container: useContainer }">
-      <div class="flex flex-row items-center z-10 cursor-pointer" @click="toggleExpanded()">
+      <div
+        class="flex flex-row items-center z-10 cursor-pointer"
+        @click="toggleExpanded()"
+      >
         <strong class="py-3 text-md">{{ heading }}</strong>
         <div
           class="ml-auto transition-all transition-fast ease-in-out"
@@ -27,28 +30,28 @@ export default {
   props: {
     index: {
       type: Number,
-      default: 0
+      default: 0,
     },
     heading: {
       type: String,
-      default: 'Heading'
+      default: 'Heading',
     },
     useContainer: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data() {
     return {
-      isExpanded: false
+      isExpanded: false,
     }
   },
 
   methods: {
     toggleExpanded() {
       this.isExpanded = !this.isExpanded
-    }
-  }
+    },
+  },
 }
 </script>

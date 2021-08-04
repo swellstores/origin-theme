@@ -1,18 +1,25 @@
 <template>
   <div>
-    <button
+    <BaseButton
       v-if="!quickAddIsActive && !cartIsUpdating"
-      class="btn w-full shadow-md"
-      @click="interact"
-    >
-      {{ label }}
-    </button>
+      :label="label"
+      @click.native="interact"
+    />
 
     <!-- Quick Add -->
     <transition name="fade" :duration="200">
       <div
         v-if="quickAddIsActive"
-        class="w-full bottom-0 px-4 py-3 bg-primary-lighter shadow-md rounded z-10"
+        class="
+          w-full
+          bottom-0
+          px-4
+          py-3
+          bg-primary-lighter
+          shadow-md
+          rounded
+          z-10
+        "
       >
         <!-- Product options -->
         <div v-for="(input, index) in optionInputs" :key="input.name">
@@ -21,7 +28,10 @@
             v-if="visibleOptionIds.includes(input.option.id)"
             v-show="index === quickAddIndex"
             :option="input.option"
+            :current-value="optionState[input.option.name]"
+            :validation="$v.optionState[input.option.name]"
             @value-changed="setOptionValue"
+            @dropdown-active="setActiveDropdownUID($event)"
           />
         </div>
       </div>
@@ -29,8 +39,8 @@
 
     <!-- Adding in progress -->
     <div v-if="cartIsUpdating" class="relative px-4">
-      <ButtonLoading
-        class="absolute left-0 bottom-0 w-full dark px-4 py-3"
+      <BaseButton
+        class="absolute left-0 bottom-0 w-full"
         :label="$t('products.preview.quickAdd.adding.label')"
         :loading-label="$t('products.preview.quickAdd.adding.loadingLabel')"
       />
@@ -42,13 +52,27 @@
 // Helpers
 import get from 'lodash/get'
 import { mapState } from 'vuex'
+import { validationMixin } from 'vuelidate'
+import { required } from 'vuelidate/lib/validators'
 import { listVisibleOptions } from '~/modules/swell'
 
 export default {
+  mixins: [validationMixin],
+
   props: {
     product: {
       type: Object,
-      default: () => {}
+      default: () => {},
+    },
+  },
+
+  data() {
+    return {
+      label: null,
+      flow: null,
+      optionState: null,
+      quickAddIsActive: false,
+      quickAddIndex: 0,
     }
   },
 
@@ -64,16 +88,6 @@ export default {
 
     // Set component data
     this.optionState = optionState
-  },
-
-  data() {
-    return {
-      label: null,
-      flow: null,
-      optionState: null,
-      quickAddIsActive: false,
-      quickAddIndex: 0
-    }
   },
 
   computed: {
@@ -99,26 +113,24 @@ export default {
 
         switch (option.inputType) {
           case 'short_text':
-            componentName = 'ProductOptionText'
+            componentName = 'Text'
             break
           case 'long_text':
-            componentName = 'ProductOptionText'
+            componentName = 'Text'
             break
           case 'toggle':
-            componentName = 'ProductOptionCheckbox'
+            componentName = 'Checkbox'
             break
           default:
-            componentName = 'ProductOptionSelect'
+            componentName = 'Select'
         }
 
         // Don't include subscription plan if there's only one option value available
-        if (option.subscription && option.values.length < 2) {
-          return optionInputs
-        }
+        if (option.subscription && option.values.length < 2) return optionInputs
 
         optionInputs.push({
           option,
-          component: () => import(`~/components/${componentName}`)
+          component: () => import(`./ProductOption${componentName}.vue`),
         })
 
         return optionInputs
@@ -130,7 +142,7 @@ export default {
       const optionState = this.optionState
 
       return listVisibleOptions(options, optionState).map(({ id }) => id)
-    }
+    },
   },
 
   created() {
@@ -142,7 +154,12 @@ export default {
     setFlow() {
       const { optionInputs } = this
 
-      if (optionInputs.length > 2) {
+      if (
+        optionInputs.length > 2 ||
+        optionInputs.some(({ option }) =>
+          option.inputType ? !option.inputType.includes('select') : false
+        )
+      ) {
         this.label = this.$t('products.preview.quickAdd.quickView')
         this.flow = 'quick-view'
       } else if (optionInputs.length > 0 && optionInputs.length < 3) {
@@ -163,8 +180,15 @@ export default {
       this.$set(optionState, option, value)
       this.$emit('keep-alive', true)
 
+      // Validate current field
+      this.$v.optionState[option].$touch()
+      if (this.$v.optionState[option].$invalid) return
+
       // Add to cart if only one option was available
-      if (optionInputs.length === 1 || quickAddIndex + 1 >= optionInputs.length) {
+      if (
+        optionInputs.length === 1 ||
+        quickAddIndex + 1 >= optionInputs.length
+      ) {
         this.addToCart()
 
         // Hide options when adding to cart
@@ -203,9 +227,23 @@ export default {
       this.$store.dispatch('addCartItem', {
         productId: this.variation.id,
         quantity: 1,
-        options: this.optionState
+        options: this.optionState,
       })
+    },
+  },
+
+  validations() {
+    const options = get(this, 'product.options', [])
+    const fields = options.reduce((obj, option) => {
+      if (option.required) {
+        obj[option.name] = { required }
+      }
+      return obj
+    }, {})
+
+    return {
+      optionState: fields,
     }
-  }
+  },
 }
 </script>

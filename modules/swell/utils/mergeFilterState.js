@@ -46,7 +46,9 @@ export function mergeFilterState(filterState, filter, optionValue) {
     case 'range': {
       // Check the provided option value is an array with two values
       if (!Array.isArray(optionValue) || optionValue.length !== 2) {
-        throw new Error('The value for a range filter must be a tuple as [min, max]')
+        throw new Error(
+          'The value for a range filter must be a tuple as [min, max]'
+        )
       }
 
       // Set state value as range tuple

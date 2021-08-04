@@ -5,29 +5,43 @@
       {
         'flex-row-reverse': alignX === 'right',
         'justify-center': alignX === 'center',
-        'text-center': textAlign === 'center' || alignX === 'center'
+        'text-center': textAlign === 'center' || alignX === 'center',
       },
       {
         'mx-0': outerSpacingX === 'none',
         'mx-2 lg:mx-4': outerSpacingX === 'sm',
         'mx-6 lg:mx-8': outerSpacingX === 'md',
-        'mx-8 lg:mx-12 xl:mx-16': outerSpacingX === 'lg'
+        'mx-8 lg:mx-12 xl:mx-16': outerSpacingX === 'lg',
       },
       {
         'my-0': outerSpacingY === 'none',
         'my-2 lg:my-4': outerSpacingY === 'sm',
         'my-6 lg:my-8': outerSpacingY === 'md',
-        'my-8 lg:my-12 xl:my-16': outerSpacingY === 'lg'
-      }
+        'my-8 lg:my-12 xl:my-16': outerSpacingY === 'lg',
+      },
     ]"
     class="relative flex flex-wrap"
   >
-    <div class="relative w-full px-6 py-20 md:w-1/2 md:px-12 md:py-16 lg:px-26 lg:py-32">
-      <h2 v-balance-text class="mb-3 text-3xl md:text-4xl lg:text-6xl">
+    <div
+      class="
+        relative
+        w-full
+        px-6
+        py-20
+        md:w-1/2 md:px-12 md:py-16
+        lg:px-26 lg:py-32
+      "
+    >
+      <h2 class="mb-3 text-3xl md:text-4xl lg:text-6xl">
         {{ heading }}
       </h2>
-      <p v-balance-text class="mb-6">{{ description }}</p>
-      <EmailSignupForm :class="{ 'mx-auto': textAlign === 'center' }" class="max-w-96" />
+      <p class="mb-6">
+        {{ description }}
+      </p>
+      <EmailSignupForm
+        :class="{ 'mx-auto': textAlign === 'center' }"
+        class="max-w-96"
+      />
     </div>
     <div v-if="alignX !== 'center'" class="relative w-full md:w-1/2">
       <VisualMedia
@@ -47,44 +61,44 @@ export default {
   props: {
     type: {
       type: String,
-      default: null
+      default: null,
     },
     id: {
       type: String,
-      default: null
+      default: null,
     },
     heading: {
       type: String,
-      default: null
+      default: null,
     },
     description: {
       type: String,
-      default: null
+      default: null,
     },
     image: {
       type: [Object, String],
-      default: null
+      default: null,
     },
     bgColor: {
       type: String,
-      default: 'primary-lightest'
+      default: 'primary-lightest',
     },
     outerSpacingX: {
       type: String,
-      default: 'md'
+      default: 'md',
     },
     outerSpacingY: {
       type: String,
-      default: 'lg'
+      default: 'lg',
     },
     alignX: {
       type: String,
-      default: 'left'
+      default: 'left',
     },
     textAlign: {
       type: String,
-      default: 'left'
-    }
-  }
+      default: 'left',
+    },
+  },
 }
 </script>

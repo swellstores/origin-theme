@@ -1,6 +1,10 @@
 <template>
   <!-- Error/empty state -->
-  <SectionUndefined v-if="!panels.length" heading="Multiple panels" description="No panels added" />
+  <SectionUndefined
+    v-if="!panels.length"
+    heading="Multiple panels"
+    description="No panels added"
+  />
 
   <section v-else class="relative flex flex-wrap">
     <div
@@ -8,17 +12,21 @@
       :key="id + 'multiPanel' + index"
       class="relative w-full min-h-72 md:w-1/2 lg:min-h-96"
       :class="[
-        `bg-${panel.bgColor}`,
+        `bg-${bgColor}`,
         {
-          'px-6 py-20 md:px-12 md:py-16 lg:px-26 lg:py-32': panel.type === 'text' && panel.heading,
-          'text-left': panel.textAlign === 'left',
-          'text-right': panel.textAlign === 'right',
-          'text-center': panel.textAlign === 'center'
-        }
+          'px-6 py-20 md:px-12 md:py-16 lg:px-26 lg:py-32':
+            panel.type === 'text' && panel.heading,
+          'text-left': textAlign === 'left',
+          'text-right': textAlign === 'right',
+          'text-center': textAlign === 'center',
+        },
       ]"
     >
       <!-- Empty states -->
-      <div v-if="!panel.type" class="m-6 py-32 border border-dashed text-center">
+      <div
+        v-if="!panel.type"
+        class="m-6 py-32 border border-dashed text-center"
+      >
         <h3>Panel {{ index + 1 }}</h3>
         <p>No type chosen</p>
       </div>
@@ -49,23 +57,24 @@
       <!-- Text panel -->
       <template v-else-if="panel.type === 'text'">
         <h2>{{ panel.heading }}</h2>
-        <p v-balance-text.children class="whitespace-pre-line mt-4" v-html="panel.description"></p>
+        <p
+          v-balance-text.children
+          class="whitespace-pre-line mt-4"
+          v-html="panel.description"
+        />
         <div :class="{ '-ml-3': panel.textAlign !== 'center' }">
           <div
             v-for="(link, i) in panel.links"
             :key="`link-${i}`"
             :class="{ 'inline-block': panel.links.length < 3 }"
           >
-            <BaseLink
-              :link="link"
-              class="inline-block"
-              :class="{
-                'cta-link mt-5 mb-1 mx-3': link.style === 'text',
-                'btn mt-6 mx-3': link.style === 'button_primary'
-              }"
-            >
-              {{ link.label }}
-            </BaseLink>
+            <BaseButton
+              class="inline-block mt-6 mx-3"
+              :type="link.style"
+              :link="link.url"
+              :label="link.label"
+              fit="auto"
+            />
           </div>
         </div>
       </template>
@@ -80,16 +89,24 @@ export default {
   props: {
     type: {
       type: String,
-      default: null
+      default: null,
     },
     id: {
       type: String,
-      default: null
+      default: null,
     },
     panels: {
       type: Array,
-      default: () => []
-    }
-  }
+      default: () => [],
+    },
+    textAlign: {
+      type: String,
+      default: null,
+    },
+    bgColor: {
+      type: String,
+      default: 'primary-lightest',
+    },
+  },
 }
 </script>

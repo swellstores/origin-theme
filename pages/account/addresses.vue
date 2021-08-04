@@ -1,11 +1,13 @@
 <template>
   <div class="container md:pr-0">
-    <h1 class="text-4xl hidden md:block mb-8">{{ $t('account.addresses.title') }}</h1>
+    <h1 class="text-4xl hidden md:block mb-8">
+      {{ $t('account.addresses.title') }}
+    </h1>
 
     <div v-if="$fetchState.pending">
-      <div class="loader-el w-1/3 h-7 mb-6 m-auto"></div>
-      <div class="loader-el w-3/5 h-2 mb-4 m-auto"></div>
-      <div class="loader-el w-2/5 h-2 mb-8 m-auto"></div>
+      <div class="loader-el w-1/3 h-7 mb-6 m-auto" />
+      <div class="loader-el w-3/5 h-2 mb-4 m-auto" />
+      <div class="loader-el w-2/5 h-2 mb-8 m-auto" />
     </div>
 
     <template v-else>
@@ -19,9 +21,11 @@
           />
 
           <template v-if="otherAddresses && otherAddresses.length">
-            <span v-if="defaultAddress" class="block md:hidden label-xs-bold-faded">{{
-              $t('account.addresses.otherAddresses')
-            }}</span>
+            <span
+              v-if="defaultAddress"
+              class="block md:hidden label-xs-bold-faded"
+              >{{ $t('account.addresses.otherAddresses') }}</span
+            >
 
             <AccountAddressContainer
               v-for="(address, index) in otherAddresses"
@@ -65,9 +69,13 @@
         {{ $t('account.addresses.noAddresses') }}
       </p>
 
-      <button class="btn w-full md:w-auto light mt-10" type="button" @click="openEditPopup('new')">
-        {{ $t('account.addresses.addAddress') }}
-      </button>
+      <BaseButton
+        class="block mt-10"
+        fit="auto"
+        appearance="light"
+        :label="$t('account.addresses.addAddress')"
+        @click.native="openEditPopup('new')"
+      />
 
       <AccountAddressPopup
         v-if="editAddressPopupIsActive"
@@ -117,17 +125,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  async fetch() {
-    // Set page data
-    const { results: addresses } = await this.$swell.account.listAddresses()
-
-    if (this.customer.shipping) {
-      this.defaultAddressId = this.customer.shipping.accountAddressId
-    }
-
-    this.addresses = addresses
-  },
-
+  layout: 'account',
   data() {
     return {
       addresses: null,
@@ -141,8 +139,18 @@ export default {
       defaultPopupIsActive: false,
       isCreating: false,
       isDeleting: false,
-      isUpdating: false
+      isUpdating: false,
     }
+  },
+  async fetch() {
+    // Set page data
+    const { results: addresses } = await this.$swell.account.listAddresses()
+
+    if (this.customer.shipping) {
+      this.defaultAddressId = this.customer.shipping.accountAddressId
+    }
+
+    this.addresses = addresses
   },
 
   computed: {
@@ -151,18 +159,20 @@ export default {
     defaultAddress() {
       const { addresses, defaultAddressId } = this
       if (!defaultAddressId || !addresses) return
-      return addresses.find(address => address.id === defaultAddressId)
+      return addresses.find((address) => address.id === defaultAddressId)
     },
     otherAddresses() {
       const { addresses, defaultAddressId } = this
       if (!defaultAddressId || !addresses) return addresses
-      return addresses.filter(address => address.id !== defaultAddressId)
+      return addresses.filter((address) => address.id !== defaultAddressId)
     },
     sortedAddresses() {
       const { addresses } = this
       if (!addresses) return
-      return addresses.sort((a, b) => new Date(a.dateCreated) - new Date(b.dateCreated))
-    }
+      return addresses.sort(
+        (a, b) => new Date(a.dateCreated) - new Date(b.dateCreated)
+      )
+    },
   },
 
   methods: {
@@ -195,7 +205,7 @@ export default {
           state,
           zip,
           country,
-          isDefault
+          isDefault,
         } = addr
 
         const address = await this.$swell.account.createAddress({
@@ -205,15 +215,15 @@ export default {
           city,
           state,
           zip,
-          country
+          country,
         })
 
         if (isDefault && address.id) {
           // Set address as default
           await this.$swell.account.update({
             shipping: {
-              accountAddressId: address.id
-            }
+              accountAddressId: address.id,
+            },
           })
         }
 
@@ -226,7 +236,7 @@ export default {
         this.editAddressPopupIsActive = false
         this.$store.dispatch('initializeCustomer')
         this.$store.dispatch('showNotification', {
-          message: this.$t('account.addresses.popup.create.success')
+          message: this.$t('account.addresses.popup.create.success'),
         })
         this.$fetch()
       } catch (err) {
@@ -250,7 +260,7 @@ export default {
           state,
           zip,
           country,
-          isDefault
+          isDefault,
         } = addr
 
         await this.$swell.account.updateAddress(this.addressToEdit.id, {
@@ -260,23 +270,23 @@ export default {
           city,
           state,
           zip,
-          country
+          country,
         })
 
         if (isDefault) {
           // Set current address as default
           await this.$swell.account.update({
             shipping: {
-              accountAddressId: this.addressToEdit.id
-            }
+              accountAddressId: this.addressToEdit.id,
+            },
           })
         } else if (this.defaultAddressId === this.addressToEdit.id) {
           // If is default, unset it.
           // Set current address as default
           await this.$swell.account.update({
             shipping: {
-              accountAddressId: null
-            }
+              accountAddressId: null,
+            },
           })
         }
 
@@ -285,13 +295,13 @@ export default {
         this.editAddressPopupIsActive = false
         this.$store.dispatch('initializeCustomer')
         this.$store.dispatch('showNotification', {
-          message: this.$t('account.addresses.popup.save.success')
+          message: this.$t('account.addresses.popup.save.success'),
         })
         this.$fetch()
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: this.$t('account.addresses.popup.save.error'),
-          type: 'error'
+          type: 'error',
         })
       }
     },
@@ -314,8 +324,8 @@ export default {
               city: null,
               state: null,
               zip: null,
-              country: null
-            }
+              country: null,
+            },
           })
         }
 
@@ -325,13 +335,13 @@ export default {
         this.editAddressPopupIsActive = false
         this.$store.dispatch('showNotification', {
           message: this.$t('account.addresses.deleteAddress.success'),
-          type: 'error'
+          type: 'error',
         })
         this.$fetch()
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: this.$t('account.addresses.popup.delete.error'),
-          type: 'error'
+          type: 'error',
         })
       }
     },
@@ -341,24 +351,20 @@ export default {
         this.isUpdating = true
         await this.$swell.account.update({
           shipping: {
-            accountAddressId: id
-          }
+            accountAddressId: id,
+          },
         })
 
         // Close Popup and fetch updated data
         this.isUpdating = false
         this.defaultPopupIsActive = false
         this.$store.dispatch('showNotification', {
-          message: this.$t('account.addresses.setDefaultAddress.success')
+          message: this.$t('account.addresses.setDefaultAddress.success'),
         })
         this.$store.dispatch('initializeCustomer')
         this.$fetch()
-      } catch (err) {
-        console.log(err)
-      }
-    }
+      } catch (err) {}
+    },
   },
-
-  layout: 'account'
 }
 </script>

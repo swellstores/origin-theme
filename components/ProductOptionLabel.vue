@@ -11,18 +11,43 @@
         <a
           v-if="description"
           href="#"
-          class="relative w-7 h-7 -mt-1 -mb-1 ml-2 inline-flex items-center justify-center bg-primary-light rounded-full text-center"
+          class="
+            relative
+            w-7
+            h-7
+            -mt-1
+            -mb-1
+            ml-2
+            inline-flex
+            items-center
+            justify-center
+            bg-primary-light
+            rounded-full
+            text-center
+          "
           title="More info"
           @click.prevent="toggleHint"
         >
           <BaseIcon icon="fa-solid:question" size="w-2 h-3" />
-          <div v-show="isHintVisible" class="mini-triangle"></div>
+          <div v-show="isHintVisible" class="mini-triangle" />
         </a>
       </div>
       <div
         v-show="isHintVisible"
-        v-balance-text
-        class="absolute z-20 mt-1 -ml-2 bg-primary-lightest border rounded px-3 py-2 w-64 text-sm shadow-lg"
+        class="
+          absolute
+          z-20
+          mt-1
+          -ml-2
+          bg-primary-lightest
+          border border-primary-med
+          rounded
+          px-3
+          py-2
+          w-64
+          text-sm
+          shadow-lg
+        "
       >
         {{ description }}
       </div>
@@ -37,26 +62,26 @@ export default {
   props: {
     id: {
       type: String,
-      default: ''
+      default: '',
     },
     name: {
       type: String,
-      default: ''
+      default: '',
     },
     description: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   data() {
     return {
-      isHintVisible: false
+      isHintVisible: false,
     }
   },
   methods: {
     toggleHint() {
       this.isHintVisible = !this.isHintVisible
-    }
-  }
+    },
+  },
 }
 </script>

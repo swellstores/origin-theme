@@ -1,21 +1,38 @@
 <template>
   <transition name="popup" :duration="700" appear>
-    <div v-enter-key="handleEnterKey" class="z-40 fixed inset-0">
+    <div class="z-40 fixed inset-0" @keyup.enter="handleEnterKey">
       <!-- Overlay -->
       <div
         class="overlay opacity-50 absolute w-full h-full bg-primary-darker"
         @click="$emit('click-close')"
-      ></div>
+      />
 
       <!-- Panel -->
       <div
-        class="panel w-full md:w-128 h-vh-gap md:h-auto md:max-h-80vh absolute md:relative bottom-0 
-        rounded-t md:rounded bg-primary-lighter overflow-scroll md:center-xy"
+        class="
+          panel
+          w-full
+          md:w-128
+          h-vh-gap
+          md:h-auto md:max-h-80vh
+          absolute
+          md:relative
+          bottom-0
+          rounded-t
+          md:rounded
+          bg-primary-lighter
+          overflow-scroll
+          md:center-xy
+        "
       >
         <div class="container py-2">
           <div class="flex py-4">
-            <h3 v-if="type === 'new'">{{ $t('account.addresses.popup.new.title') }}</h3>
-            <h3 v-else>{{ $t('account.addresses.popup.edit.title') }}</h3>
+            <h3 v-if="type === 'new'">
+              {{ $t('account.addresses.popup.new.title') }}
+            </h3>
+            <h3 v-else>
+              {{ $t('account.addresses.popup.edit.title') }}
+            </h3>
             <button class="ml-auto" @click.prevent="$emit('click-close')">
               <BaseIcon icon="uil:multiply" size="sm" />
             </button>
@@ -32,13 +49,19 @@
                 autocomplete="given-name"
               />
               <template v-if="$v.firstName.$dirty">
-                <span v-if="!$v.firstName.required" class="label-sm text-error">{{
-                  $t('account.addresses.popup.firstName.required')
-                }}</span>
+                <span
+                  v-if="!$v.firstName.required"
+                  class="label-sm text-error-default"
+                  >{{ $t('account.addresses.popup.firstName.required') }}</span
+                >
 
-                <span v-if="!$v.firstName.maxLength" class="label-sm text-error">{{
-                  $t('account.addresses.popup.firstName.maxLength', { n: 40 })
-                }}</span>
+                <span
+                  v-if="!$v.firstName.maxLength"
+                  class="label-sm text-error-default"
+                  >{{
+                    $t('account.addresses.popup.firstName.maxLength', { n: 40 })
+                  }}</span
+                >
               </template>
             </div>
 
@@ -51,13 +74,19 @@
                 autocmplete="family-name"
               />
               <template v-if="$v.lastName.$dirty">
-                <span v-if="!$v.lastName.required" class="label-sm text-error">{{
-                  $t('account.addresses.popup.lastName.required')
-                }}</span>
+                <span
+                  v-if="!$v.lastName.required"
+                  class="label-sm text-error-default"
+                  >{{ $t('account.addresses.popup.lastName.required') }}</span
+                >
 
-                <span v-if="!$v.lastName.maxLength" class="label-sm text-error">{{
-                  $t('account.addresses.popup.lastName.maxLength', { n: 40 })
-                }}</span>
+                <span
+                  v-if="!$v.lastName.maxLength"
+                  class="label-sm text-error-default"
+                  >{{
+                    $t('account.addresses.popup.lastName.maxLength', { n: 40 })
+                  }}</span
+                >
               </template>
             </div>
 
@@ -70,9 +99,11 @@
                 autocomplete="address-line1"
               />
               <template v-if="$v.address1.$dirty">
-                <span v-if="!$v.address1.required" class="label-sm text-error">{{
-                  $t('account.addresses.popup.address1.required')
-                }}</span>
+                <span
+                  v-if="!$v.address1.required"
+                  class="label-sm text-error-default"
+                  >{{ $t('account.addresses.popup.address1.required') }}</span
+                >
               </template>
             </div>
 
@@ -93,37 +124,56 @@
                 autocomplete="address-level2"
               />
               <template v-if="$v.city.$dirty">
-                <span v-if="!$v.city.required" class="label-sm text-error">{{
-                  $t('account.addresses.popup.city.required')
-                }}</span>
+                <span
+                  v-if="!$v.city.required"
+                  class="label-sm text-error-default"
+                  >{{ $t('account.addresses.popup.city.required') }}</span
+                >
               </template>
             </div>
 
             <div class="flex flex-no-wrap mb-6">
               <div class="w-1/2 mr-3">
-                <label class="label-xs-bold-faded block mb-2" for="region-select">{{
-                  $t('account.addresses.popup.region.label')
-                }}</label>
+                <label
+                  class="label-xs-bold-faded block mb-2"
+                  for="region-select"
+                  >{{ $t('account.addresses.popup.region.label') }}</label
+                >
 
                 <div class="relative mb-2">
                   <region-select
                     id="region-select"
                     v-model="state"
-                    class="w-full pl-4 pr-6 py-3 bg-primary-lightest border border-primary-med rounded appearance-none truncate"
+                    class="
+                      w-full
+                      pl-4
+                      pr-6
+                      py-3
+                      bg-primary-lightest
+                      border border-primary-med
+                      rounded
+                      appearance-none
+                      truncate
+                    "
                     :country="country"
                     :region="state"
                     :disable-placeholder="true"
                   />
 
                   <div>
-                    <BaseIcon icon="uil:angle-down" class="absolute mr-2 right-0 center-y" />
+                    <BaseIcon
+                      icon="uil:angle-down"
+                      class="absolute mr-2 right-0 center-y"
+                    />
                   </div>
                 </div>
 
                 <template v-if="$v.state.$dirty">
-                  <span v-if="!$v.state.required" class="label-sm text-error">{{
-                    $t('account.addresses.popup.region.required')
-                  }}</span>
+                  <span
+                    v-if="!$v.state.required"
+                    class="label-sm text-error-default"
+                    >{{ $t('account.addresses.popup.region.required') }}</span
+                  >
                 </template>
               </div>
 
@@ -137,34 +187,51 @@
                 />
 
                 <template v-if="$v.zip.$dirty">
-                  <span v-if="!$v.zip.required" class="label-sm text-error">{{
-                    $t('account.addresses.popup.zipCode.required')
-                  }}</span>
+                  <span
+                    v-if="!$v.zip.required"
+                    class="label-sm text-error-default"
+                    >{{ $t('account.addresses.popup.zipCode.required') }}</span
+                  >
                 </template>
               </div>
             </div>
 
             <div class="mb-6">
-              <label class="label-xs-bold-faded block mb-2" for="country-select">{{
-                $t('account.addresses.popup.country.label')
-              }}</label>
+              <label
+                class="label-xs-bold-faded block mb-2"
+                for="country-select"
+                >{{ $t('account.addresses.popup.country.label') }}</label
+              >
 
               <div class="relative mb-2">
                 <country-select
                   id="country-select"
                   v-model="country"
-                  class="w-full px-4 py-3 bg-primary-lightest border border-primary-med rounded appearance-none"
+                  class="
+                    w-full
+                    px-4
+                    py-3
+                    bg-primary-lightest
+                    border border-primary-med
+                    rounded
+                    appearance-none
+                  "
                   :country="country"
                   :autocomplete="true"
                 />
 
-                <BaseIcon icon="uil:angle-down" class="absolute mr-2 right-0 center-y" />
+                <BaseIcon
+                  icon="uil:angle-down"
+                  class="absolute mr-2 right-0 center-y"
+                />
               </div>
 
               <template v-if="$v.state.$dirty">
-                <span v-if="!$v.country.required" class="label-sm text-error">{{
-                  $t('account.addresses.popup.country.required')
-                }}</span>
+                <span
+                  v-if="!$v.country.required"
+                  class="label-sm text-error-default"
+                  >{{ $t('account.addresses.popup.country.required') }}</span
+                >
               </template>
             </div>
 
@@ -187,31 +254,40 @@
 
           <!-- Action Buttons -->
           <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4">
-            <ButtonLoading
+            <BaseButton
               v-if="type === 'new'"
-              class="w-full dark mt-4"
+              class="mt-4"
+              appearance="dark"
               :label="$t('account.addresses.popup.create.button.label')"
-              :loading-label="$t('account.addresses.popup.create.button.loadingLabel')"
+              :loading-label="
+                $t('account.addresses.popup.create.button.loadingLabel')
+              "
               :is-loading="isCreating"
               :disabled="isUpdating || isDeleting"
               @click.native="create()"
             />
 
-            <ButtonLoading
+            <BaseButton
               v-if="type === 'update'"
-              class="w-full dark my-4"
+              class="mt-4"
+              appearance="dark"
               :label="$t('account.addresses.popup.save.button.label')"
-              :loading-label="$t('account.addresses.popup.save.button.loadingLabel')"
+              :loading-label="
+                $t('account.addresses.popup.save.button.loadingLabel')
+              "
               :is-loading="isUpdating"
               :disabled="isCreating || isDeleting"
               @click.native="update()"
             />
 
-            <ButtonLoading
+            <BaseButton
               v-if="type === 'update' && deletable"
-              class="w-full light-error"
+              class="mt-4"
+              appearance="light-error"
               :label="$t('account.addresses.popup.delete.button.label')"
-              :loading-label="$t('account.addresses.popup.delete.button.loadingLabel')"
+              :loading-label="
+                $t('account.addresses.popup.delete.button.loadingLabel')
+              "
               :is-loading="isDeleting"
               :disabled="isCreating || isUpdating"
               @click.native="remove()"
@@ -233,44 +309,44 @@ export default {
   props: {
     address: {
       type: Object,
-      default: null
+      default: null,
     },
     type: {
       type: String,
-      default: 'update'
+      default: 'update',
     },
     flow: {
       type: String,
-      default: 'default'
+      default: 'default',
     },
     defaultAddressId: {
       type: String,
-      default: null
+      default: null,
     },
     addressesLength: {
       type: Number,
-      default: 0
+      default: 0,
     },
     deletable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     defaultable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isCreating: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isUpdating: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isDeleting: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data() {
@@ -283,7 +359,7 @@ export default {
       city: '',
       zip: '',
       country: '',
-      setDefault: false
+      setDefault: false,
     }
   },
 
@@ -293,15 +369,37 @@ export default {
       if (!this.defaultAddressId && !this.addressesLength) return true
       // Disable if current address is the only one and default
       if (this.address) {
-        if (this.defaultAddressId === this.address.id && this.addressesLength === 1) return true
+        if (
+          this.defaultAddressId === this.address.id &&
+          this.addressesLength === 1
+        )
+          return true
       }
       return false
     },
 
     addressBody() {
-      const { firstName, lastName, address1, address2, city, state, zip, country } = this
-      return { firstName, lastName, address1, address2, city, state, zip, country }
-    }
+      const {
+        firstName,
+        lastName,
+        address1,
+        address2,
+        city,
+        state,
+        zip,
+        country,
+      } = this
+      return {
+        firstName,
+        lastName,
+        address1,
+        address2,
+        city,
+        state,
+        zip,
+        country,
+      }
+    },
   },
 
   created() {
@@ -323,7 +421,11 @@ export default {
     }
 
     // If there's no default card, force set default
-    if (!this.defaultAddressId && !this.addressesLength && this.type === 'new') {
+    if (
+      !this.defaultAddressId &&
+      !this.addressesLength &&
+      this.type === 'new'
+    ) {
       this.setDefault = true
     }
   },
@@ -335,7 +437,10 @@ export default {
       if (this.$v.$invalid) return
 
       if (this.flow === 'payment') {
-        this.$emit('new-billing-address', { ...this.addressBody, isDefault: this.setDefault })
+        this.$emit('new-billing-address', {
+          ...this.addressBody,
+          isDefault: this.setDefault,
+        })
         return
       }
 
@@ -363,7 +468,7 @@ export default {
           break
         default:
       }
-    }
+    },
   },
 
   validations: {
@@ -373,7 +478,7 @@ export default {
     city: { required },
     state: { required },
     zip: { required },
-    country: { required }
-  }
+    country: { required },
+  },
 }
 </script>

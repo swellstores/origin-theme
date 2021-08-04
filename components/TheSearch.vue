@@ -1,5 +1,15 @@
 <template>
-  <div class="z-50 fixed inset-0 w-full h-full bg-primary-lightest overflow-y-scroll">
+  <div
+    class="
+      z-50
+      fixed
+      inset-0
+      w-full
+      h-full
+      bg-primary-lightest
+      overflow-y-scroll
+    "
+  >
     <div class="container py-10">
       <div class="relative flex justify-between items-center mb-5">
         <h3>{{ $t('search.title') }}</h3>
@@ -12,10 +22,20 @@
         v-model="inputValue"
         type="text"
         :placeholder="placeholder || $t('search.placeholder')"
-        class="w-full px-4 py-2 rounded bg-primary-lighter text-primary-darkest text-3xl"
+        class="
+          w-full
+          px-4
+          py-2
+          rounded
+          bg-primary-lighter
+          text-primary-darkest text-3xl
+          focus:outline-none focus:shadow-outline
+        "
         @keydown.enter="$fetch"
       />
-      <p class="mt-2 mb-16 text-sm">{{ $t('search.info') }}</p>
+      <p class="mt-2 mb-16 text-sm">
+        {{ $t('search.info') }}
+      </p>
       <ProductPreviews :products="products" :column-count="4" />
     </div>
   </div>
@@ -28,7 +48,14 @@ export default {
   props: {
     placeholder: {
       type: String,
-      default: ''
+      default: '',
+    },
+  },
+
+  data() {
+    return {
+      inputValue: '',
+      products: [],
     }
   },
 
@@ -42,17 +69,10 @@ export default {
       search: this.inputValue,
       limit,
       sort: 'popularity asc',
-      expand: ['variants']
+      expand: ['variants'],
     })
 
     this.products = products.results
-  },
-
-  data() {
-    return {
-      inputValue: '',
-      products: []
-    }
   },
 
   mounted() {
@@ -62,7 +82,7 @@ export default {
   methods: {
     focusInput() {
       this.$refs.searchInput.focus()
-    }
-  }
+    },
+  },
 }
 </script>

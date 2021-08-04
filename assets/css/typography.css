@@ -11,7 +11,7 @@ button {
   @apply rounded text-primary-darkest font-semibold;
 
   &:hover {
-    @apply text-accent;
+    @apply text-accent-default;
   }
 }
 
@@ -19,7 +19,7 @@ a {
   @apply rounded font-semibold;
 
   &:hover {
-    @apply text-accent;
+    @apply text-accent-default;
   }
 }
 
@@ -32,27 +32,11 @@ h5 {
 }
 
 h1 {
-  @apply text-4xl mb-3;
-
-  @screen lg {
-    @apply text-6xl;
-  }
-
-  @screen xl {
-    @apply text-7xl;
-  }
+  @apply text-4xl lg:text-6xl xl:text-7xl mb-3;
 }
 
 h2 {
-  @apply text-3xl leading-tight mb-3;
-
-  @screen md {
-    @apply text-4xl;
-  }
-
-  @screen lg {
-    @apply text-5xl;
-  }
+  @apply text-3xl md:text-4xl lg:text-5xl leading-tight mb-3;
 }
 
 h3 {

@@ -9,11 +9,21 @@
   <section v-else class="py-16">
     <div class="container">
       <template v-if="showTitle">
-        <div v-if="!loaded && $fetchState.pending" class="loader-el w-64 h-8 mb-2 md:h-10"></div>
-        <NuxtLink v-else :to="localePath(resolveUrl({ type: 'category', value: slug }))">
-          <h1 v-if="titleSize === 'lg'" class="mb-2">{{ name }}</h1>
-          <h2 v-if="titleSize === 'md'" class="mb-2">{{ name }}</h2>
-          <h3 v-if="titleSize === 'sm'" class="mb-2">{{ name }}</h3>
+        <div
+          v-if="!loaded && $fetchState.pending"
+          class="loader-el w-64 h-8 mb-2 md:h-10"
+        />
+        <NuxtLink
+          v-else
+          :to="localePath(resolveUrl({ type: 'category', value: slug }))"
+        >
+          <component
+            :is="titleSize === 'lg' ? 'h1' : titleSize === 'md' ? 'h2' : 'h3'"
+            :class="{ 'text-center': titleAlign === 'center' }"
+            class="mb-2"
+          >
+            {{ name }}
+          </component>
         </NuxtLink>
       </template>
 
@@ -21,7 +31,7 @@
       <ProductPreviews
         :products="products"
         :column-count="productCols"
-        :text-align="textAlign"
+        :text-align="productTextAlign"
         :show-price="showPrice"
       />
     </div>
@@ -38,43 +48,56 @@ export default {
   props: {
     type: {
       type: String,
-      default: null
+      default: null,
     },
     id: {
       type: String,
-      default: null
+      default: null,
     },
     categoryId: {
       type: String,
-      default: null
+      default: null,
     },
     showTitle: {
       type: Boolean,
-      default: true
+      default: true,
     },
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     titleSize: {
       type: String,
-      default: 'md'
+      default: 'md',
+    },
+    titleAlign: {
+      type: String,
+      default: 'left',
     },
     productCols: {
       type: Number,
-      default: 3
+      default: 3,
     },
     productRows: {
       type: Number,
-      default: 1
+      default: 1,
     },
     showPrice: {
       type: Boolean,
-      default: true
+      default: true,
     },
-    textAlign: {
+    productTextAlign: {
       type: String,
-      default: 'left'
+      default: 'left',
+    },
+  },
+
+  data() {
+    return {
+      name: null,
+      slug: null,
+      products: [],
+      loaded: false,
     }
   },
 
@@ -83,7 +106,9 @@ export default {
 
     // Set preload data
     if (!this.loaded) {
-      this.products = [...Array(this.productCols * this.productRows).keys()].map(() => ({}))
+      this.products = [
+        ...Array(this.productCols * this.productRows).keys(),
+      ].map(() => ({}))
     }
 
     if (!this.categoryId) {
@@ -94,7 +119,7 @@ export default {
     const category = await $swell.categories.get(this.categoryId)
     const products = await $swell.products.list({
       $filters: { category: [this.categoryId] },
-      expand: ['variants']
+      expand: ['variants'],
     })
 
     if (!category) {
@@ -104,18 +129,12 @@ export default {
     // Set component data
     this.name = this.title || category.name
     this.slug = category.slug
-    this.products = get(products, 'results', []).slice(0, this.productCols * this.productRows)
+    this.products = get(products, 'results', []).slice(
+      0,
+      this.productCols * this.productRows
+    )
 
     this.loaded = true
-  },
-
-  data() {
-    return {
-      name: null,
-      slug: null,
-      products: [],
-      loaded: false
-    }
   },
 
   activated() {
@@ -123,6 +142,6 @@ export default {
     if (this.$fetchState.timestamp <= Date.now() - 60000) {
       this.$fetch()
     }
-  }
+  },
 }
 </script>

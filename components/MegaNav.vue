@@ -1,5 +1,7 @@
 <template>
-  <div class="w-full bg-primary-lightest shadow-md border-primary-light border-t">
+  <div
+    class="w-full bg-primary-lightest shadow-md border-primary-light border-t"
+  >
     <div class="container">
       <div class="flex flex-wrap items-stretch pt-6 -mx-4">
         <!-- Columns -->
@@ -8,7 +10,11 @@
           :key="'megaNavCol' + index"
           class="flex-initial px-4 mb-6 w-1/4 min-w-48"
         >
-          <li v-for="(item, i) in column.items" :key="'megaNavItem' + i" class="mb-0">
+          <li
+            v-for="(item, i) in column.items"
+            :key="'megaNavItem' + i"
+            class="mb-0"
+          >
             <!-- Product preview -->
             <NuxtLink
               v-if="item.type === 'product' && typeof item.value === 'object'"
@@ -38,7 +44,11 @@
               {{ item.name }}
             </p>
             <!-- Callout -->
-            <p v-else-if="item.type === 'callout'" :class="{ 'mt-4': i > 0 }" class="btn">
+            <p
+              v-else-if="item.type === 'callout'"
+              :class="{ 'mt-4': i > 0 }"
+              class="btn"
+            >
               {{ item.name }}
             </p>
             <!-- Standard link -->
@@ -47,8 +57,9 @@
               :to="localePath(resolveUrl(item))"
               class="block -mx-1 p-1 leading-tight"
               @click.native="$emit('click')"
-              >{{ item.name }}</NuxtLink
             >
+              {{ item.name }}
+            </NuxtLink>
           </li>
         </ul>
       </div>
@@ -63,8 +74,8 @@ export default {
   props: {
     items: {
       type: Array,
-      default: () => []
-    }
-  }
+      default: () => [],
+    },
+  },
 }
 </script>

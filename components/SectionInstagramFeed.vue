@@ -9,28 +9,28 @@ export default {
   props: {
     heading: {
       type: String,
-      default: ''
+      default: '',
     },
     username: {
       type: String,
-      default: ''
+      default: '',
     },
     posts: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     imageFrame: {
       type: String,
-      default: 'md'
+      default: 'md',
     },
     outerSpacingX: {
       type: String,
-      default: 'lg'
+      default: 'lg',
     },
     outerSpacingY: {
       type: String,
-      default: 'lg'
-    }
+      default: 'lg',
+    },
   },
 
   render(h, context) {
@@ -38,7 +38,7 @@ export default {
     const frameSpacing = {
       none: 'p-0',
       sm: 'p-1 lg:p-2',
-      md: 'p-2 lg:p-4'
+      md: 'p-2 lg:p-4',
     }
     const postFrameClass = frameSpacing[imageFrame]
 
@@ -58,7 +58,7 @@ export default {
               </p>
             </a>
           </li>
-          {posts.map(post => (
+          {posts.map((post) => (
             <li class={`w-1/2 m-0 md:w-1/4 ${postFrameClass}`}>
               <VisualMedia source={get(post, 'media.url')} />
             </li>
@@ -66,6 +66,6 @@ export default {
         </ul>
       </section>
     )
-  }
+  },
 }
 </script>

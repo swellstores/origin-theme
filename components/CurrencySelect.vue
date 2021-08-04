@@ -1,17 +1,29 @@
 <template>
   <div class="relative transition-all duration-300 ease-in-out">
     <div
-      class="w-full flex p-2 items-center text-center font-medium cursor-pointer focus:outline-none focus:shadow-outline hover:text-accent"
+      class="
+        w-full
+        flex
+        p-2
+        items-center
+        text-center
+        font-medium
+        cursor-pointer
+        focus:outline-none focus:shadow-outline
+        hover:text-accent-default
+      "
       :class="{
         'font-semibold h-full': appearance === 'popup',
-        'rounded bg-primary-lightest': appearance === 'float'
+        'rounded bg-primary-lightest': appearance === 'float',
       }"
       @click="toggleDropdown()"
     >
       <div v-if="selected" class="mx-auto transition-all duration-200 ease-out">
-        <span class="font-medium" :class="{ 'font-semibold': appearance === 'popup' }">{{
-          selected.value
-        }}</span>
+        <span
+          class="font-medium"
+          :class="{ 'font-semibold': appearance === 'popup' }"
+          >{{ selected.value }}</span
+        >
         <span class="font-semibold">{{ selected.symbol }}</span>
       </div>
     </div>
@@ -20,35 +32,56 @@
     <transition name="popup" appear :duration="500">
       <div v-if="appearance === 'popup' && dropdownIsActive">
         <div
-          class="overlay fixed w-full h-full opacity-50 top-0 left-0 bg-primary-darker z-30"
+          class="
+            overlay
+            fixed
+            w-full
+            h-full
+            opacity-50
+            top-0
+            left-0
+            bg-primary-darker
+            z-30
+          "
           @click="dropdownIsActive = false"
-        ></div>
+        />
       </div>
     </transition>
 
     <ul
       v-show="dropdownIsActive"
       :class="{
-        'w-max shadow-md absolute border center-x': appearance === 'float',
-        'w-full max-w-80 mx-auto center-xy fixed': appearance === 'popup'
+        'w-max shadow-md absolute border border-primary-med center-x':
+          appearance === 'float',
+        'w-full max-w-80 mx-auto center-xy fixed': appearance === 'popup',
       }"
-      class="block -mt-px bg-primary-lightest rounded z-40
-      overflow-scroll"
+      class="block -mt-px bg-primary-lightest rounded z-40 overflow-scroll"
       role="listbox"
     >
       <li
         v-for="(option, index) in options"
         :key="`option-${index}`"
-        :class="{ 'pointer-events-none': option.value === selected.value || option === selected }"
-        class="mb-0 px-2 items-center cursor-pointer hover:bg-primary-lighter border-b border-primary-light last:border-b-0"
+        :class="{
+          'pointer-events-none':
+            option.value === selected.value || option === selected,
+        }"
+        class="
+          mb-0
+          px-2
+          items-center
+          cursor-pointer
+          hover:bg-primary-lighter
+          border-b border-primary-light
+          last:border-b-0
+        "
         role="option"
         @click="selectOption(option)"
       >
         <div
-          class="m-2"
+          class="w-full m-2"
           :class="{
             'opacity-25': option.label === selected || option === selected,
-            'my-2 mx-auto': appearance === 'popup'
+            'my-2 mx-auto': appearance === 'popup',
           }"
         >
           {{ option.value }}
@@ -69,17 +102,12 @@ export default {
   props: {
     appearance: {
       type: String,
-      default: 'float'
+      default: 'float',
     },
     currency: {
       type: String,
-      default: null
-    }
-  },
-
-  fetch() {
-    // Set component data
-    this.options = this.getCurrencyOptions()
+      default: null,
+    },
   },
 
   data() {
@@ -87,8 +115,13 @@ export default {
       value: null,
       options: [],
       dropdownIsActive: false,
-      selected: ''
+      selected: '',
     }
+  },
+
+  fetch() {
+    // Set component data
+    this.options = this.getCurrencyOptions()
   },
 
   watch: {
@@ -102,7 +135,7 @@ export default {
 
     value() {
       this.setDefaultValue()
-    }
+    },
   },
 
   created() {
@@ -126,10 +159,10 @@ export default {
     getCurrencyOptions() {
       const { $swell } = this
 
-      const options = $swell.currency.list().map(currency => ({
+      const options = $swell.currency.list().map((currency) => ({
         value: currency.code,
         label: `${currency.symbol} ${currency.code}`,
-        symbol: currency.symbol
+        symbol: currency.symbol,
       }))
 
       return options.length ? options : null
@@ -166,7 +199,7 @@ export default {
       if (!this.$el.contains(e.target)) {
         this.dropdownIsActive = false
       }
-    }
-  }
+    },
+  },
 }
 </script>

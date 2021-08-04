@@ -2,39 +2,41 @@ import Vue from 'vue'
 import middleware from './middleware'
 import { editor } from './swell-editor-utils'
 
-export default async (context, inject) => {
-  const useEditorSettings = '<%= options.useEditorSettings %>' === 'true'
-
-  if (process.browser && useEditorSettings) {
+export default (context, inject) => {
+  if (process.browser) {
     // Initialize data sync plugin
     Vue.use(SyncPlugin)
 
     // Listen for messages and pass to event bus
-    window.addEventListener('message', event => editor.processMessage(event, context), false)
+    window.addEventListener(
+      'message',
+      (event) => editor.processMessage(event, context),
+      false
+    )
 
     // Tell the editor we exist
     editor.sendMessage({
       type: 'route.changed',
       details: {
-        location: window.location.pathname
-      }
+        location: window.location.pathname,
+      },
     })
 
     // Listen for unload to tell the editor when we're gone
     window.addEventListener(
       'unload',
-      event => {
+      (event) => {
         editor.sendMessage({
           type: 'route.changed',
           details: {
-            location: ''
-          }
+            location: '',
+          },
         })
         editor.sendMessage({
           type: 'locale.changed',
           details: {
-            locale: ''
-          }
+            locale: '',
+          },
         })
       },
       false
@@ -60,14 +62,14 @@ middleware.editorFrame = ({ route }) => {
   editor.sendMessage({
     type: 'route.changed',
     details: {
-      location: route.fullPath
-    }
+      location: route.fullPath,
+    },
   })
 }
 
 // Vue plugin for watching editor updates and triggering data refetch
 const SyncPlugin = {
-  install: Vue => {
+  install: (Vue) => {
     Vue.mixin({
       mounted() {
         editor.enableFetchListener(this)
@@ -83,7 +85,7 @@ const SyncPlugin = {
 
       deactivated() {
         editor.disableFetchListener(this)
-      }
+      },
     })
-  }
+  },
 }

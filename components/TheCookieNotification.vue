@@ -9,12 +9,28 @@
   >
     <div
       v-if="showCookieNotification"
-      class="fixed z-20 bottom-6 inset-x-6 px-4 py-3 bg-primary-lightest border border-primary-light rounded shadow-md sm:left-auto sm:max-w-80"
+      class="
+        fixed
+        z-20
+        bottom-6
+        inset-x-6
+        px-4
+        py-3
+        bg-primary-lightest
+        border border-primary-light
+        rounded
+        shadow-md
+        sm:left-auto sm:max-w-80
+      "
     >
       <div v-if="type === 'compact'" class="flex justify-between items-center">
         <p class="text-sm">
           {{ $t('notifications.cookies.message') }}
-          <NuxtLink :to="localePath(resolveUrl({ type: 'page', value: 'privacy-policy' }))">
+          <NuxtLink
+            :to="
+              localePath(resolveUrl({ type: 'page', value: 'privacy-policy' }))
+            "
+          >
             {{ $t('notifications.cookies.privacy') }}
           </NuxtLink>
         </p>
@@ -54,7 +70,7 @@ export default {
   data() {
     return {
       type: 'compact',
-      showCookieNotification: false
+      showCookieNotification: false,
     }
   },
 
@@ -79,8 +95,10 @@ export default {
       this.showCookieNotification = false
       this.$store.commit('setState', { key: 'cookiesAreAccepted', value: true })
       const daysToExpire = 365
-      document.cookie = `cookiesAccepted=true; max-age=${daysToExpire * 60 * 60 * 1000}; path=/;`
-    }
-  }
+      document.cookie = `cookiesAccepted=true; max-age=${
+        daysToExpire * 60 * 60 * 1000
+      }; path=/;`
+    },
+  },
 }
 </script>

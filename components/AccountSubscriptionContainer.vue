@@ -5,7 +5,7 @@
         class="md:mb-0 mb-4"
         :class="{
           'grid grid-cols-2 gap-4': thumbnails.length <= 2,
-          'grid grid-cols-2 grid-rows-2 gap-4': thumbnails.length > 2
+          'grid grid-cols-2 grid-rows-2 gap-4': thumbnails.length > 2,
         }"
       >
         <div
@@ -19,12 +19,22 @@
             <div
               v-if="
                 subscription.product.bundleItems.length > thumbnails.length &&
-                  index === thumbnails.length - 1
+                index === thumbnails.length - 1
               "
             >
-              <div class="overlay"></div>
-              <span class="absolute center-xy text-lg font-semibold text-primary-lightest">
-                +{{ subscription.product.bundleItems.length - thumbnails.length }}
+              <div class="overlay" />
+              <span
+                class="
+                  absolute
+                  center-xy
+                  text-lg
+                  font-semibold
+                  text-primary-lightest
+                "
+              >
+                +{{
+                  subscription.product.bundleItems.length - thumbnails.length
+                }}
               </span>
             </div>
           </template>
@@ -42,14 +52,26 @@
 
         <p class="label-sm-bold mb-4">
           <span class="pr-2"
-            >{{ formatMoney(subscription.recurringTotal, currency) }}
+            >{{
+              formatMoney(subscription.recurringTotal, subscription.currency)
+            }}
             {{ subscription.interval }}</span
           >
         </p>
 
         <!-- Active -->
         <div v-if="subscription.status === 'active'" class="flex">
-          <div class="relative flex-shrink-0 w-6 h-6 mr-2 bg-ok rounded-full">
+          <div
+            class="
+              relative
+              flex-shrink-0
+              w-6
+              h-6
+              mr-2
+              bg-ok-default
+              rounded-full
+            "
+          >
             <BaseIcon
               class="absolute text-primary-lightest center-xy"
               icon="uil:sync"
@@ -57,13 +79,24 @@
             />
           </div>
           <span
-            >{{ $t('account.subscriptions.subscription.status.active') }} {{ renewalDate }}</span
+            >{{ $t('account.subscriptions.subscription.status.active') }}
+            {{ renewalDate }}</span
           >
         </div>
 
         <!-- Canceled -->
         <div v-else-if="subscription.status === 'canceled'" class="flex">
-          <div class="relative flex-shrink-0 w-6 h-6 mr-2 bg-primary-dark rounded-full">
+          <div
+            class="
+              relative
+              flex-shrink-0
+              w-6
+              h-6
+              mr-2
+              bg-primary-dark
+              rounded-full
+            "
+          >
             <BaseIcon
               class="absolute text-primary-lightest center-xy"
               icon="uil:sync-slash"
@@ -78,7 +111,17 @@
 
         <!-- Trial -->
         <div v-else-if="subscription.status === 'trial'" class="flex">
-          <div class="relative flex-shrink-0 w-6 h-6 mr-2 bg-warning rounded-full">
+          <div
+            class="
+              relative
+              flex-shrink-0
+              w-6
+              h-6
+              mr-2
+              bg-warning-default
+              rounded-full
+            "
+          >
             <BaseIcon
               class="absolute text-primary-lightest center-xy"
               icon="uil:calender"
@@ -91,48 +134,52 @@
           >
         </div>
 
-        <NuxtLink
-          :to="localePath(`/account/subscriptions/${subscription.id}/`)"
-          append
-          class="btn light w-full mt-5 md:mt-auto"
-        >
-          {{ $t('account.subscriptions.subscription.view') }}
-        </NuxtLink>
+        <BaseButton
+          class="mt-5 md:mt-auto"
+          appearance="light"
+          :label="$t('account.subscriptions.subscription.view')"
+          :link="localePath(`/account/subscriptions/${subscription.id}/`)"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import get from 'lodash/get'
 
 export default {
   props: {
     subscription: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
 
   computed: {
-    ...mapState(['currency']),
-
     thumbnails() {
       // Determine which images to display
       const { subscription } = this
 
       // Check for bundle item images
       if (subscription.product.bundle) {
-        const bundleThumbnails = subscription.product.bundleItems.map(item => {
-          if (item.variant && item.variant.images && item.variant.images.length) {
-            return item.variant.images[0].file
-          }
+        const bundleThumbnails = subscription.product.bundleItems
+          .map((item) => {
+            if (
+              item.variant &&
+              item.variant.images &&
+              item.variant.images.length
+            ) {
+              return item.variant.images[0].file
+            }
 
-          if (item.product.images.length) {
-            return item.product.images[0].file
-          }
-        })
+            if (item.product.images.length) {
+              return item.product.images[0].file
+            }
+
+            return false
+          })
+          .filter(Boolean)
 
         // Return only first four
         return bundleThumbnails.slice(0, 4)
@@ -167,18 +214,18 @@ export default {
         weekday: 'short',
         month: 'long',
         day: 'numeric',
-        year: 'numeric'
+        year: 'numeric',
       })
 
       const time = d.toLocaleString('en', {
         hour: 'numeric',
         minute: 'numeric',
-        hour12: true
+        hour12: true,
       })
 
       return `${date} at ${time}`
-    }
-  }
+    },
+  },
 }
 </script>
 

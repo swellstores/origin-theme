@@ -3,6 +3,7 @@
     <!-- Product Filter -->
     <FilterPanel
       v-show="filterModalIsVisible"
+      :show="filterModalIsVisible"
       :filters="filters"
       :filter-state="filterState"
       @click-close="toggleFilterModal()"
@@ -21,14 +22,16 @@
       <!-- Darkening overlay -->
       <div
         v-if="category && settings.darkenHeroImage"
-        :style="{ opacity: category.images ? settings.darkenHeroImage / 100 : 1 }"
+        :style="{
+          opacity: category.images ? settings.darkenHeroImage / 100 : 1,
+        }"
         class="absolute w-full h-full inset-0 bg-primary-darkest"
-      ></div>
+      />
       <div v-if="category" class="container absolute text-center center-xy">
         <h1
           :class="{
             'text-primary-lightest': settings.textColor === 'light',
-            'text-primary-darkest': settings.textColor === 'dark'
+            'text-primary-darkest': settings.textColor === 'dark',
           }"
         >
           {{ category.name }}
@@ -37,20 +40,23 @@
           class="mx-auto text-lg max-w-128"
           :class="{
             'text-primary-lightest': settings.textColor === 'light',
-            'text-primary-darkest': settings.textColor === 'dark'
+            'text-primary-darkest': settings.textColor === 'dark',
           }"
           v-html="category.description"
-        ></div>
+        />
       </div>
     </section>
 
     <div class="container pt-7 pb-4">
       <!-- Category name & description -->
       <template v-if="!settings.showHeroImage">
-        <div v-if="!category && $fetchState.pending" class="loader-el w-64 h-10 mt-2 mb-9"></div>
+        <div
+          v-if="!category && $fetchState.pending"
+          class="loader-el w-64 h-10 mt-2 mb-9"
+        />
         <div v-else-if="settings.headingPosition !== 'hero_image'" class="mb-7">
           <h1>{{ category.name }}</h1>
-          <div class="text-lg" v-html="category.description"></div>
+          <div class="text-lg" v-html="category.description" />
         </div>
       </template>
 
@@ -64,9 +70,20 @@
         >
           <div
             v-show="activeFilterCount"
-            class="w-6 h-6 flex justify-center items-center text-primary-lighter bg-accent rounded-full"
+            class="
+              w-6
+              h-6
+              flex
+              justify-center
+              items-center
+              text-primary-lighter
+              bg-accent-default
+              rounded-full
+            "
           >
-            <span class="block text-2xs leading-none">{{ activeFilterCount }}</span>
+            <span class="block text-2xs leading-none">{{
+              activeFilterCount
+            }}</span>
           </div>
           <div v-show="!activeFilterCount">
             <BaseIcon icon="uil:filter" />
@@ -74,8 +91,11 @@
           <span class="ml-1">{{ $t('categories.slug.filters') }}</span>
         </button>
         <span class="hidden ml-1 sm:inline">{{
-          !$fetchState.pending &&
-            $tc('categories.slug.productsCount', productsCount, { count: productsCount })
+          $fetchState.pending
+            ? ''
+            : $tc('categories.slug.productsCount', productsCount, {
+                count: productsCount,
+              })
         }}</span>
         <!-- Sort -->
         <div class="ml-auto">
@@ -97,11 +117,18 @@
         :products="products"
         :column-count="settings.productCols"
       />
-      <div v-else-if="activeFilterCount > 0" class="py-16 bg-primary-lighter text-center rounded">
+      <div
+        v-else-if="activeFilterCount > 0"
+        class="py-16 bg-primary-lighter text-center rounded"
+      >
         <p>{{ $t('categories.slug.filterProductsNotFound') }}</p>
-        <button type="button" name="button" class="btn mt-4" @click="toggleFilterModal">
-          {{ $t('categories.slug.editFilters') }}
-        </button>
+        <BaseButton
+          class="mt-4"
+          appearance="light"
+          fit="static"
+          :label="$t('categories.slug.editFilters')"
+          @click.native="toggleFilterModal"
+        />
       </div>
       <div v-else class="py-16 bg-primary-lighter text-center rounded">
         <p>{{ $t('categories.slug.categoryProductsNotFound') }}</p>
@@ -124,12 +151,31 @@ import { getFilterStateFromQuery } from '~/modules/swell'
 
 // Calculate product limit from category rows/cols
 function getProductLimit(category) {
-  return ~~get(category, 'content.productRows', 4) * ~~get(category, 'content.productCols', 6)
+  return (
+    ~~get(category, 'content.productRows', 4) *
+    ~~get(category, 'content.productCols', 6)
+  )
 }
 
 export default {
   name: 'CategoryDetailPage',
   mixins: [pageMeta],
+
+  data() {
+    return {
+      slug: undefined,
+      category: undefined,
+      products: undefined,
+      productsCount: 0,
+      filters: [],
+      filterState: {},
+      pages: {},
+      page: 1,
+      limit: 24,
+      sortMode: '',
+      filterModalIsVisible: false,
+    }
+  },
 
   async fetch() {
     const { $swell, $route } = this
@@ -147,7 +193,10 @@ export default {
 
     // Show 404 if category isn't found
     if (!category) {
-      this.$nuxt.error({ statusCode: 404, message: this.$t('errors.categoryNotFound') })
+      this.$nuxt.error({
+        statusCode: 404,
+        message: this.$t('errors.categoryNotFound'),
+      })
     }
 
     // Set limit from category settings
@@ -169,22 +218,6 @@ export default {
     this.setProducts(products)
   },
 
-  data() {
-    return {
-      slug: undefined,
-      category: undefined,
-      products: undefined,
-      productsCount: 0,
-      filters: [],
-      filterState: {},
-      pages: {},
-      page: 1,
-      limit: 24,
-      sortMode: '',
-      filterModalIsVisible: false
-    }
-  },
-
   computed: {
     ...mapState(['currency']),
     settings() {
@@ -192,32 +225,32 @@ export default {
     },
     activeFilterCount() {
       return Object.keys(this.filterState).length
-    }
+    },
   },
 
   watch: {
     // Call the update method when the URL query changes
-    '$route.query': 'updateProductsFiltered'
+    '$route.query': 'updateProductsFiltered',
   },
 
   created() {
     this.sortModes = [
       {
         value: '',
-        label: this.$t('categories.slug.sortModes.latest')
+        label: this.$t('categories.slug.sortModes.latest'),
       },
       {
         value: 'popularity',
-        label: this.$t('categories.slug.sortModes.popularity')
+        label: this.$t('categories.slug.sortModes.popularity'),
       },
       {
         value: 'price_asc',
-        label: this.$t('categories.slug.sortModes.priceAsc')
+        label: this.$t('categories.slug.sortModes.priceAsc'),
       },
       {
         value: 'price_desc',
-        label: this.$t('categories.slug.sortModes.priceDesc')
-      }
+        label: this.$t('categories.slug.sortModes.priceDesc'),
+      },
     ]
   },
 
@@ -230,7 +263,7 @@ export default {
         sort: typeof sortMode.value === 'undefined' ? sortMode : sortMode.value,
         categories: slug,
         $filters: filterState,
-        expand: ['variants']
+        expand: ['variants'],
       })
     },
     setProducts(products) {
@@ -257,7 +290,7 @@ export default {
     updateSortMode(option) {
       this.updateRouteQuery({
         ...this.filterState,
-        sort: typeof option.value === 'undefined' ? option : option.value
+        sort: typeof option.value === 'undefined' ? option : option.value,
       })
     },
     updateRouteQuery(newQuery) {
@@ -265,20 +298,23 @@ export default {
       const query = { ...currentQuery, ...newQuery }
 
       // Remove filters from merged query if not present in new query
-      const currentFilterState = getFilterStateFromQuery(currentQuery, this.filters)
+      const currentFilterState = getFilterStateFromQuery(
+        currentQuery,
+        this.filters
+      )
       const newFilterState = getFilterStateFromQuery(newQuery, this.filters)
 
-      Object.keys(currentFilterState).map(key => {
+      Object.keys(currentFilterState).forEach((key) => {
         if (!newFilterState[key]) delete query[key]
       })
 
       if (!query.sort) delete query.sort
 
-      this.$router.replace({ path, query }).catch(_err => {
+      this.$router.replace({ path, query }).catch((_err) => {
         // Avoid duplicate navigation error
         // TODO remove in Vue 3
       })
-    }
-  }
+    },
+  },
 }
 </script>

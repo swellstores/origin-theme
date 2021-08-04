@@ -1,5 +1,8 @@
 <template>
-  <div v-enter-key="login" class="relative container pt-6 pb-24 md:max-w-112 md:pt-24">
+  <div
+    class="relative container pt-6 pb-24 md:max-w-112 md:pt-24"
+    @keyup.enter="login"
+  >
     <h2 class="pb-6">{{ $t('account.login.title') }}</h2>
 
     <div class="mb-6">
@@ -13,13 +16,15 @@
       />
 
       <template v-if="$v.email.$dirty">
-        <span v-if="!$v.email.email" class="label-sm text-error">{{
+        <span v-if="!$v.email.email" class="label-sm text-error-default">{{
           $t('account.login.email.format')
         }}</span>
 
-        <span v-else-if="!$v.email.required" class="label-sm text-error">{{
-          $t('account.login.email.required')
-        }}</span>
+        <span
+          v-else-if="!$v.email.required"
+          class="label-sm text-error-default"
+          >{{ $t('account.login.email.required') }}</span
+        >
       </template>
     </div>
 
@@ -35,9 +40,11 @@
       />
 
       <template v-if="$v.password.$dirty">
-        <span v-if="!$v.password.required" class="label-sm text-error">{{
-          $t('account.login.password.required')
-        }}</span>
+        <span
+          v-if="!$v.password.required"
+          class="label-sm text-error-default"
+          >{{ $t('account.login.password.required') }}</span
+        >
       </template>
     </div>
 
@@ -48,17 +55,24 @@
       {{ $t('account.login.forgotPassword') }}
     </NuxtLink>
 
-    <ButtonLoading
-      class="dark w-full mt-6 mb-4"
+    <BaseButton
+      class="mt-6 mb-4"
+      appearance="dark"
       :label="$t('account.login.button.label')"
       :loading-label="$t('account.login.button.loadingLabel')"
       :is-loading="isProcessing"
       @click.native="login()"
     />
 
-    <NuxtLink class="btn light w-full" :to="localePath('/account/create-account/')">
-      {{ $t('account.login.createAccount') }}
-    </NuxtLink>
+    <BaseButton
+      class="mt-6 mb-4"
+      appearance="light"
+      :label="$t('account.login.createAccount')"
+      :link="{
+        url: localePath('/account/create-account/'),
+        title: 'Create Account',
+      }"
+    />
   </div>
 </template>
 
@@ -73,7 +87,7 @@ export default {
     return {
       email: '',
       password: '',
-      isProcessing: false
+      isProcessing: false,
     }
   },
 
@@ -99,20 +113,22 @@ export default {
           throw new Error('Error')
         }
 
-        this.$store.dispatch('showNotification', { message: this.$t('account.login.success') })
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.login.success'),
+        })
         this.$router.push(this.localePath('/account/orders/'))
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: this.$t('account.login.error'),
-          type: 'error'
+          type: 'error',
         })
       }
-    }
+    },
   },
 
   validations: {
     email: { required, email },
-    password: { required }
-  }
+    password: { required },
+  },
 }
 </script>

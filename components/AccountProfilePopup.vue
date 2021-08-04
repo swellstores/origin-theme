@@ -1,16 +1,29 @@
 <template>
   <transition name="popup" :duration="700" appear>
-    <div v-enter-key.native="updateProfile" class="z-40 fixed inset-0">
+    <div class="z-40 fixed inset-0" @keyup.enter="updateProfile">
       <!-- Overlay -->
       <div
         class="overlay opacity-50 absolute w-full h-full bg-primary-darker"
         @click="$emit('click-close')"
-      ></div>
+      />
 
       <!-- Panel -->
       <div
-        class="panel w-full md:w-128 h-vh-gap md:h-auto md:max-h-80vh absolute md:relative bottom-0 
-        rounded-t md:rounded bg-primary-lighter overflow-scroll md:center-xy"
+        class="
+          panel
+          w-full
+          md:w-128
+          h-vh-gap
+          md:h-auto md:max-h-80vh
+          absolute
+          md:relative
+          bottom-0
+          rounded-t
+          md:rounded
+          bg-primary-lighter
+          overflow-scroll
+          md:center-xy
+        "
       >
         <div class="container py-2">
           <div class="flex py-4">
@@ -31,13 +44,19 @@
                 autocomplete="given-name"
               />
               <template v-if="$v.firstName.$dirty">
-                <span v-if="!$v.firstName.required" class="label-sm text-error">{{
-                  $t('account.popup.firstName.required')
-                }}</span>
+                <span
+                  v-if="!$v.firstName.required"
+                  class="label-sm text-error-default"
+                  >{{ $t('account.popup.firstName.required') }}</span
+                >
 
-                <span v-if="!$v.firstName.maxLength" class="label-sm text-error">{{
-                  $t('account.popup.firstName.maxLength', { n: 40 })
-                }}</span>
+                <span
+                  v-if="!$v.firstName.maxLength"
+                  class="label-sm text-error-default"
+                  >{{
+                    $t('account.popup.firstName.maxLength', { n: 40 })
+                  }}</span
+                >
               </template>
             </div>
 
@@ -50,13 +69,17 @@
                 autocomplete="family-name"
               />
               <template v-if="$v.lastName.$dirty">
-                <span v-if="!$v.lastName.required" class="label-sm text-error">{{
-                  $t('account.popup.lastName.required')
-                }}</span>
+                <span
+                  v-if="!$v.lastName.required"
+                  class="label-sm text-error-default"
+                  >{{ $t('account.popup.lastName.required') }}</span
+                >
 
-                <span v-if="!$v.lastName.maxLength" class="label-sm text-error">{{
-                  $t('account.popup.lastName.maxLength', { n: 40 })
-                }}</span>
+                <span
+                  v-if="!$v.lastName.maxLength"
+                  class="label-sm text-error-default"
+                  >{{ $t('account.popup.lastName.maxLength', { n: 40 }) }}</span
+                >
               </template>
             </div>
 
@@ -71,13 +94,17 @@
               />
 
               <template v-if="$v.email.$dirty">
-                <span v-if="!$v.email.email" class="label-sm text-error">{{
-                  $t('account.popup.email.format')
-                }}</span>
+                <span
+                  v-if="!$v.email.email"
+                  class="label-sm text-error-default"
+                  >{{ $t('account.popup.email.format') }}</span
+                >
 
-                <span v-else-if="!$v.email.required" class="label-sm text-error">{{
-                  $t('account.popup.email.required')
-                }}</span>
+                <span
+                  v-else-if="!$v.email.required"
+                  class="label-sm text-error-default"
+                  >{{ $t('account.popup.email.required') }}</span
+                >
               </template>
             </div>
 
@@ -94,13 +121,17 @@
               />
 
               <template v-if="$v.password.$dirty">
-                <span v-if="!$v.password.minLength" class="label-sm text-error">{{
-                  $t('account.popup.password.minLength', { n: 6 })
-                }}</span>
+                <span
+                  v-if="!$v.password.minLength"
+                  class="label-sm text-error-default"
+                  >{{ $t('account.popup.password.minLength', { n: 6 }) }}</span
+                >
 
-                <span v-if="!$v.password.required" class="label-sm text-error">{{
-                  $t('account.popup.password.required')
-                }}</span>
+                <span
+                  v-if="!$v.password.required"
+                  class="label-sm text-error-default"
+                  >{{ $t('account.popup.password.required') }}</span
+                >
               </template>
             </div>
 
@@ -113,9 +144,11 @@
               />
 
               <template v-if="$v.confirmPassword.$dirty">
-                <span v-if="!$v.confirmPassword.sameAsPassword" class="label-sm text-error">{{
-                  $t('account.popup.confirmPassword.notMatch')
-                }}</span>
+                <span
+                  v-if="!$v.confirmPassword.sameAsPassword"
+                  class="label-sm text-error-default"
+                  >{{ $t('account.popup.confirmPassword.notMatch') }}</span
+                >
               </template>
             </div>
 
@@ -132,8 +165,8 @@
           </div>
 
           <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4">
-            <ButtonLoading
-              class="w-full dark"
+            <BaseButton
+              appearance="dark"
               :label="$t('account.popup.save.label')"
               :loading-label="$t('account.popup.save.loadingLabel')"
               :is-loading="isUpdating"
@@ -149,7 +182,13 @@
 <script>
 import { mapState } from 'vuex'
 import { validationMixin } from 'vuelidate'
-import { required, email, maxLength, minLength, sameAs } from 'vuelidate/lib/validators'
+import {
+  required,
+  email,
+  maxLength,
+  minLength,
+  sameAs,
+} from 'vuelidate/lib/validators'
 
 export default {
   mixins: [validationMixin],
@@ -162,12 +201,12 @@ export default {
       password: '',
       confirmPassword: '',
       emailOptin: false,
-      isUpdating: false
+      isUpdating: false,
     }
   },
 
   computed: {
-    ...mapState(['customer'])
+    ...mapState(['customer']),
   },
 
   created() {
@@ -196,7 +235,7 @@ export default {
           firstName,
           lastName,
           emailOptin,
-          password
+          password,
         })
 
         if (res) {
@@ -204,17 +243,17 @@ export default {
           this.isUpdating = false
           this.$store.dispatch('initializeCustomer')
           this.$store.dispatch('showNotification', {
-            message: this.$t('account.popup.save.success')
+            message: this.$t('account.popup.save.success'),
           })
           this.$emit('click-close')
         }
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: this.$t('account.popup.save.error'),
-          type: 'error'
+          type: 'error',
         })
       }
-    }
+    },
   },
 
   validations: {
@@ -222,7 +261,7 @@ export default {
     lastName: { required, maxLength: maxLength(40) },
     email: { required, email },
     password: { minLength: minLength(6) },
-    confirmPassword: { sameAsPassword: sameAs('password') }
-  }
+    confirmPassword: { sameAsPassword: sameAs('password') },
+  },
 }
 </script>

@@ -1,9 +1,11 @@
 <template>
   <div class="flex bg-primary-lightest p-4 rounded shadow-md">
     <div class="max-w-1/2">
-      <p v-if="address.name">{{ address.name }}</p>
+      <p v-if="address.name">
+        {{ address.name }}
+      </p>
       <p v-if="address.address1">
-        <template v-if="address.address2">{{ address.address2 }}, </template>
+        <template v-if="address.address2"> {{ address.address2 }}, </template>
         {{ address.address1 }}
       </p>
       <p v-if="address.city">
@@ -25,12 +27,20 @@
         {{ $t('account.addresses.default') }}
       </div>
 
-      <button v-else class="normal-case label-sm-bold" @click="$emit('set-default', address.id)">
+      <button
+        v-else
+        class="normal-case label-sm-bold"
+        @click="$emit('set-default', address.id)"
+      >
         {{ $t('account.addresses.useAsDefault') }}
       </button>
 
       <div class="mt-auto label-sm">
-        <button v-if="!isDefault" class="px-2 mr-2" @click="$emit('delete-address', address.id)">
+        <button
+          v-if="!isDefault"
+          class="px-2 mr-2"
+          @click="$emit('delete-address', address.id)"
+        >
           {{ $t('account.addresses.remove') }}
         </button>
         <button class="px-2" @click="$emit('click-open')">
@@ -46,12 +56,12 @@ export default {
   props: {
     address: {
       type: Object,
-      default: null
+      default: null,
     },
     isDefault: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 }
 </script>

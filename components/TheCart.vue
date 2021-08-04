@@ -3,19 +3,30 @@
     <div class="z-40 fixed inset-0">
       <!-- Overlay -->
       <div
-        class="overlay opacity-50 absolute w-full h-full bg-primary-darker hidden md:block"
+        class="
+          overlay
+          opacity-50
+          absolute
+          w-full
+          h-full
+          bg-primary-darker
+          hidden
+          md:block
+        "
         @click="$emit('click-close')"
-      ></div>
+      />
 
       <!-- Panel -->
       <div class="panel absolute w-full h-full right-0 max-w-112">
         <div class="w-full h-full bg-primary-lightest overflow-y-scroll">
           <!-- Header -->
-          <div class="relative container py-5 border-b">
+          <div class="relative container py-5 border-b border-primary-med">
             <div class="flex justify-between items-center">
               <h3>
                 {{ $t('cart.title') }}
-                <span v-if="cart && cart.itemQuantity">({{ cart.itemQuantity }})</span>
+                <span v-if="cart && cart.itemQuantity"
+                  >({{ cart.itemQuantity }})</span
+                >
               </h3>
               <button @click.prevent="$emit('click-close')">
                 <BaseIcon icon="uil:multiply" size="lg" />
@@ -26,7 +37,7 @@
               v-if="$te('cart.infoText')"
               class="mt-4 text-sm"
               v-html="$t('cart.infoText')"
-            ></div>
+            />
           </div>
 
           <!-- Items -->
@@ -40,66 +51,116 @@
           </div>
           <div v-else class="container py-10">
             <span class="block mb-4">{{ $t('cart.empty') }}</span>
-            <NuxtLink :to="localePath(resolveUrl({ type: 'product' }))" class="btn">{{
-              $t('cart.backToProducts')
-            }}</NuxtLink>
+            <BaseButton
+              :link="shopLink"
+              :label="$t('cart.backToProducts')"
+              fit="auto"
+            />
           </div>
 
           <!-- Footer -->
-          <div v-if="cart && cart.items && cart.items.length" class="bg-primary-lighter border-t">
-            <div class="container pt-6 pb-2">
+          <div
+            v-if="cart && cart.items && cart.items.length"
+            class="bg-primary-lighter border-t border-primary-med"
+          >
+            <div class="container py-6 border-b border-primary-med">
               <div class="flex">
                 <input
                   v-model="couponCode"
                   type="text"
                   placeholder="Add coupon or gift card code"
-                  class="w-full border rounded font-medium bg-primary-lightest px-4 py-2 text-sm mr-2"
+                  class="
+                    w-full
+                    border border-primary-med
+                    rounded
+                    font-medium
+                    bg-primary-lightest
+                    px-4
+                    py-2
+                    text-sm
+                    mr-2
+                    focus:outline-none focus:shadow-outline
+                  "
                 />
 
-                <button
-                  type="button"
+                <BaseButton
+                  class="flex-shrink-0"
+                  :label="$t('cart.applyCoupon')"
                   :disabled="!couponCode"
-                  :class="{ disabled: !couponCode }"
-                  class="btn flex-shrink-0"
-                  @click="applyDiscount"
-                >
-                  {{ $t('cart.applyCoupon') }}
-                </button>
+                  fit="auto"
+                  @click.native="applyDiscount"
+                />
               </div>
 
               <!-- Applied discounts -->
               <div v-if="cart">
                 <div v-if="cart.couponCode" class="mt-4 flex items-center">
                   <p class="label-xs-bold">{{ cart.couponCode }}</p>
-                  <ButtonCross class="ml-3" @click="removeDiscount()" />
+                  <button
+                    class="w-7 h-7 relative rounded-full bg-primary-light ml-3"
+                    @click="removeDiscount()"
+                  >
+                    <BaseIcon
+                      class="absolute center-xy"
+                      icon="uil:multiply"
+                      size="sm"
+                    />
+                  </button>
                 </div>
-                <div v-for="giftcard in cart.giftcards" :key="giftcard.id" class="mt-4">
+                <div
+                  v-for="giftcard in cart.giftcards"
+                  :key="giftcard.id"
+                  class="mt-4"
+                >
                   <p class="label-xs-bold flex items-center">
                     <span>**** **** **** {{ giftcard.last4 }}</span>
-                    <ButtonCross class="ml-3" @click="removeDiscount(giftcard.id, currency)" />
+                    <button
+                      class="
+                        w-7
+                        h-7
+                        relative
+                        rounded-full
+                        bg-primary-light
+                        ml-3
+                      "
+                      @click="removeDiscount(giftcard.id, currency)"
+                    >
+                      <BaseIcon
+                        class="absolute center-xy"
+                        icon="uil:multiply"
+                        size="sm"
+                      />
+                    </button>
                   </p>
                   <p class="text-sm">
-                    {{ $t('cart.giftCard', { amount: formatMoney(giftcard.amount, currency) }) }}
+                    {{
+                      $t('cart.giftCard', {
+                        amount: formatMoney(giftcard.amount, currency),
+                      })
+                    }}
                   </p>
                 </div>
               </div>
             </div>
 
             <!-- Summary -->
-            <div class="container py-6 border-b">
-              <div class="cart-line-total">
+            <div class="container py-6 border-b border-primary-med">
+              <div class="flex justify-between mb-1">
                 <span>{{ $t('cart.subtotal') }}</span>
                 <span>{{ formatMoney(cart.subTotal, currency) }}</span>
               </div>
-              <div class="cart-line-total">
+              <div class="flex justify-between mb-1">
                 <span>{{ $t('cart.shipping') }}</span>
                 <span>{{ formatMoney(cart.shipmentTotal, currency) }}</span>
               </div>
-              <div v-show="cart.discountTotal" class="cart-line-total">
+              <div
+                v-show="cart.discountTotal"
+                class="flex justify-between mb-1"
+              >
                 <span>{{ $t('cart.discounts') }}</span>
                 <span>–{{ formatMoney(cart.discountTotal, currency) }}</span>
               </div>
-              <div v-show="cart.taxTotal" class="cart-line-total">
+              <div v-show="cart.taxTotal" class="flex justify-between mb-1">
                 <span>{{ $t('cart.taxes') }}</span>
                 <span>{{ formatMoney(cart.taxTotal, currency) }}</span>
               </div>
@@ -109,22 +170,27 @@
               </h3>
               <div
                 v-if="account && account.balance && account.balance > 0"
-                class="cart-line-total border-t mt-4 pt-4"
+                class="
+                  flex
+                  justify-between
+                  mb-1
+                  border-t border-primary-med
+                  mt-4
+                  pt-4
+                "
               >
                 <span>{{ $t('cart.accountBalance') }}</span>
                 <span>{{ formatMoney(account.balance, currency) }}</span>
               </div>
-              <a
-                :href="cart.checkoutUrl"
-                :class="{ loading: cartIsUpdating }"
-                class="btn btn--lg relative mt-4 mb-1"
-              >
-                <span v-show="!cartIsUpdating">{{ $t('cart.checkout') }}</span>
-                <div v-show="cartIsUpdating" class>
-                  <div class="spinner absolute inset-0 mt-3"></div>
-                  <span class="absolute inset-0 mt-5">{{ $t('cart.updating') }}</span>
-                </div>
-              </a>
+
+              <BaseButton
+                class="block mt-4 mb-1"
+                size="lg"
+                :label="$t('cart.checkout')"
+                :is-loading="cartIsUpdating"
+                :loading-label="$t('cart.updating')"
+                :link="cart.checkoutUrl"
+              />
             </div>
           </div>
         </div>
@@ -142,8 +208,15 @@ export default {
 
   data() {
     return {
-      couponCode: null
+      couponCode: null,
+      shopLink: null,
     }
+  },
+
+  fetch() {
+    // Set component data
+    const { $swell } = this
+    this.shopLink = $swell.settings.get('cart.shopLink', '/categories/')
   },
 
   computed: {
@@ -152,7 +225,7 @@ export default {
     account() {
       if (!this.cart.account) return
       return this.cart.account
-    }
+    },
   },
 
   mounted() {
@@ -171,13 +244,7 @@ export default {
 
     removeDiscount(id) {
       this.$store.dispatch('removeDiscount', id)
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style lang="postcss" scoped>
-.cart-line-total {
-  @apply flex justify-between mb-1;
-}
-</style>

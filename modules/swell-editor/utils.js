@@ -20,7 +20,7 @@ const settingPaths = {
   bodyFontNormal: 'typography.bodyFontNormal',
   bodyFontBold: 'typography.bodyFontBold',
   ratio: 'typography.scaleRatio',
-  baseSize: 'typography.scaleBaseSize'
+  baseSize: 'typography.scaleBaseSize',
 }
 
 export const editor = {
@@ -90,7 +90,9 @@ export const editor = {
             updateGoogleFontsLink(settings)
           }
         } else if (details.path.includes('lang')) {
-          const locale = details.path.includes(i18n.locale) ? i18n.locale : i18n.defaultLocale
+          const locale = details.path.includes(i18n.locale)
+            ? i18n.locale
+            : i18n.defaultLocale
           const messages = await $swell.settings.get('lang')
 
           i18n.setLocaleMessage(locale, messages)
@@ -116,8 +118,8 @@ export const editor = {
             editor.sendMessage({
               type: 'locale.changed',
               details: {
-                locale
-              }
+                locale,
+              },
             })
           }
         }
@@ -156,7 +158,9 @@ export const editor = {
   enableFetchListener(vm) {
     // If component has a fetch method defined on it
     const hasFetch =
-      vm.$options && typeof vm.$options.fetch === 'function' && !vm.$options.fetch.length
+      vm.$options &&
+      typeof vm.$options.fetch === 'function' &&
+      !vm.$options.fetch.length
 
     if (!vm._swellEditorFetchHandler && this.isLoaded && hasFetch) {
       // Set fetch delay to zero to avoid flash while fetch is pending
@@ -190,7 +194,7 @@ export const editor = {
       // Remove fetch controller
       delete vm._swellEditorFetchHandler
     }
-  }
+  },
 }
 
 // Returns string of CSS variables to inject as a stylesheet
@@ -209,7 +213,7 @@ export function generateCssVariables(settings) {
     `- Using API settings: ${process.env.SWELL_EDITOR || false}`,
     '',
     '*/',
-    `:root {\n${variables.join('\n')}\n}`
+    `:root {\n${variables.join('\n')}\n}`,
   ].join('\n')
 }
 
@@ -217,11 +221,11 @@ export function normalizeKeys(obj, params) {
   const options = {
     case: 'camel',
     ignoredKeys: ['$cache'],
-    ...params
+    ...params,
   }
 
   if (obj && obj.constructor === Object) {
-    Object.keys(obj).forEach(key => {
+    Object.keys(obj).forEach((key) => {
       if (options.ignoredKeys.includes(key)) return
 
       const value = obj[key]
@@ -236,7 +240,7 @@ export function normalizeKeys(obj, params) {
       obj[key] = normalizeKeys(value, options)
     })
   } else if (obj && obj.constructor === Array) {
-    obj = obj.map(v => normalizeKeys(v, options))
+    obj = obj.map((v) => normalizeKeys(v, options))
   }
 
   return obj
@@ -250,41 +254,44 @@ export function getGoogleFontConfig(settings) {
   const fonts = [
     get(normalizedSettings, settingPaths.headingFont, {}),
     get(normalizedSettings, settingPaths.bodyFontNormal, {}),
-    get(normalizedSettings, settingPaths.bodyFontBold, {})
+    get(normalizedSettings, settingPaths.bodyFontBold, {}),
   ]
 
   // Generate families object
-  const families = fonts.reduce((families, { provider, name: rawName, weight }) => {
-    if (provider !== 'Google') return families
-    const name = rawName.replace(/\s/g, '+')
+  const families = fonts.reduce(
+    (families, { provider, name: rawName, weight }) => {
+      if (provider !== 'Google') return families
+      const name = rawName.replace(/\s/g, '+')
 
-    // Avoid duplicate family + weight declarations
-    const nameExists = Object.keys(families).includes(name)
-    const weightExists = nameExists ? families[name].includes(weight) : false
+      // Avoid duplicate family + weight declarations
+      const nameExists = Object.keys(families).includes(name)
+      const weightExists = nameExists ? families[name].includes(weight) : false
 
-    if (nameExists && !weightExists) {
-      // Family has been defined but we need to add another weight
-      families[name].push(weight)
-    } else if (!weightExists) {
-      families[name] = [weight]
-    }
+      if (nameExists && !weightExists) {
+        // Family has been defined but we need to add another weight
+        families[name].push(weight)
+      } else if (!weightExists) {
+        families[name] = [weight]
+      }
 
-    // Order weights because Google with return a 400 otherwise
-    families[name] = families[name].sort()
+      // Order weights because Google with return a 400 otherwise
+      families[name] = families[name].sort()
 
-    return families
-  }, {})
+      return families
+    },
+    {}
+  )
 
   return {
     families,
-    display: 'swap'
+    display: 'swap',
   }
 }
 
 function getGoogleFontsUrl(options) {
   const { families, display, subsets } = options
   const family = convertFamiliesToArray(families)
-  const isValidDisplay = display =>
+  const isValidDisplay = (display) =>
     ['auto', 'block', 'swap', 'fallback', 'optional'].includes(display)
 
   if (family.length < 1) {
@@ -292,7 +299,7 @@ function getGoogleFontsUrl(options) {
   }
 
   const query = {
-    family
+    family,
   }
 
   if (display && isValidDisplay(display)) {
@@ -309,7 +316,7 @@ function getGoogleFontsUrl(options) {
     buildUrl('https://fonts.googleapis.com', {
       path: 'css2',
       queryParams: query,
-      disableCSV: true
+      disableCSV: true,
     })
   )
 }
@@ -331,7 +338,7 @@ function convertFamiliesToArray(families) {
 
       Object.entries(values).forEach(([style, weight], index) => {
         styles.push(style)
-        ;(Array.isArray(weight) ? weight : [weight]).forEach(value => {
+        ;(Array.isArray(weight) ? weight : [weight]).forEach((value) => {
           if (Object.keys(values).length === 1 && style === 'wght') {
             weights.push(value)
           } else {
@@ -356,7 +363,7 @@ function convertFamiliesToArray(families) {
 function selectContent(path) {
   setTimeout(() => {
     const elements = Array.from(document.querySelectorAll('[data-sw-path]'))
-    const element = elements.find(el => el.dataset.swPath === path)
+    const element = elements.find((el) => el.dataset.swPath === path)
 
     if (!element) return
 
@@ -367,7 +374,7 @@ function selectContent(path) {
 
     element.scrollIntoView({
       behavior: 'smooth',
-      block: 'center'
+      block: 'center',
     })
   }, 500)
 }
@@ -392,7 +399,7 @@ function setCssVariables(settings) {
 
   if (process.browser) {
     // Set variables on document root
-    variables.map(cssVar => {
+    variables.forEach((cssVar) => {
       const [name, value] = cssVar.split(':')
       const rawValue = value.slice(0, -1) // Remove the semicolon otherwise the value gets ignored
       document.documentElement.style.setProperty(name, rawValue)
@@ -402,13 +409,13 @@ function setCssVariables(settings) {
 
 // Generate array of CSS variables with values
 function getCssVariables(settings) {
-  const toVarName = path => '--' + kebabCase(path)
-  const isRatioSetting = varName => varName === toVarName(settingPaths.ratio)
-  const isFontSetting = varName =>
+  const toVarName = (path) => '--' + kebabCase(path)
+  const isRatioSetting = (varName) => varName === toVarName(settingPaths.ratio)
+  const isFontSetting = (varName) =>
     [
       toVarName(settingPaths.headingFont),
       toVarName(settingPaths.bodyFontNormal),
-      toVarName(settingPaths.bodyFontBold)
+      toVarName(settingPaths.bodyFontBold),
     ].includes(varName)
 
   return getVariableGroups().reduce((variables, groupName) => {
@@ -417,7 +424,7 @@ function getCssVariables(settings) {
 
     // Turn each property into a CSS variable name with value
     for (const [key, value] of Object.entries(properties)) {
-      if (!value) return
+      if (!value) return variables
 
       // Transform property group + key to CSS variable name
       const varName = `--${groupName}-${kebabCase(key)}`
@@ -427,7 +434,7 @@ function getCssVariables(settings) {
         const base = parseInt(get(settings, settingPaths.baseSize)) || 16
         const ratio = parseFloat(value) || 1.125
         const steps = range(-6, 17) // Generate a reasonable range for the scale
-        steps.map(step => {
+        steps.forEach((step) => {
           const typeSizeValue = round(ratio ** step * (base / 16), 3) + 'rem'
           variables.push(`--type-scale-${step}: ${typeSizeValue};`)
         })
@@ -479,10 +486,12 @@ function getVariableGroups() {
 // Returns flattened object with kebab-case keys
 // (based on https://github.com/tailwindcss/tailwindcss/blob/master/src/util/flattenColorPalette.js)
 function flattenGroup(groupValue, groupName) {
-  const isFontSetting = name =>
-    [settingPaths.headingFont, settingPaths.bodyFontNormal, settingPaths.bodyFontBold].includes(
-      `${groupName}.${camelCase(name)}`
-    )
+  const isFontSetting = (name) =>
+    [
+      settingPaths.headingFont,
+      settingPaths.bodyFontNormal,
+      settingPaths.bodyFontBold,
+    ].includes(`${groupName}.${camelCase(name)}`)
 
   const flatMapFP = flatMap.convert({ cap: false })
 

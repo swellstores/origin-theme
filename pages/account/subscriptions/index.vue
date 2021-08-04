@@ -5,9 +5,9 @@
     </h1>
 
     <div v-if="$fetchState.pending">
-      <div class="loader-el w-1/3 h-7 mb-6 m-auto"></div>
-      <div class="loader-el w-3/5 h-2 mb-4 m-auto"></div>
-      <div class="loader-el w-2/5 h-2 mb-8 m-auto"></div>
+      <div class="loader-el w-1/3 h-7 mb-6 m-auto" />
+      <div class="loader-el w-3/5 h-2 mb-4 m-auto" />
+      <div class="loader-el w-2/5 h-2 mb-8 m-auto" />
     </div>
 
     <div v-else>
@@ -25,13 +25,14 @@
           {{ $t('account.subscriptions.noSubscriptions') }}
         </p>
 
-        <NuxtLink
-          :to="localePath('/products/')"
-          class="inline-flex justify-center items-center btn btn dark mt-10"
-        >
-          <BaseIcon icon="uil:shopping-bag" size="sm" class="mr-2" />
-          {{ $t('account.subscriptions.backToProducts') }}
-        </NuxtLink>
+        <BaseButton
+          class="block mt-10"
+          fit="auto"
+          appearance="dark"
+          icon="shopping-bag"
+          :label="$t('account.subscriptions.backToProducts')"
+          :link="shopLink"
+        />
       </template>
     </div>
   </div>
@@ -39,21 +40,24 @@
 
 <script>
 export default {
-  async fetch() {
-    // Set page data
-    const { results: subscriptions } = await this.$swell.subscriptions.get({
-      expand: ['product', 'variant']
-    })
-
-    this.subscriptions = subscriptions
-  },
+  layout: 'account',
 
   data() {
     return {
-      subscriptions: null
+      subscriptions: null,
+      shopLink: null,
     }
   },
 
-  layout: 'account'
+  async fetch() {
+    // Set page data
+    const { $swell } = this
+    const { results: subscriptions } = await this.$swell.subscriptions.get({
+      expand: ['product', 'variant'],
+    })
+
+    this.subscriptions = subscriptions
+    this.shopLink = $swell.settings.get('cart.shopLink', '/categories/')
+  },
 }
 </script>

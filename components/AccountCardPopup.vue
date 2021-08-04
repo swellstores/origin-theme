@@ -1,21 +1,38 @@
 <template>
   <transition name="popup" :duration="700" appear>
-    <div v-enter-key="handleEnterKey" class="z-40 fixed inset-0">
+    <div class="z-40 fixed inset-0" @keyup.enter="handleEnterKey">
       <!-- Overlay -->
       <div
         class="overlay opacity-50 absolute w-full h-full bg-primary-darker"
         @click="$emit('click-close')"
-      ></div>
+      />
 
       <!-- Panel -->
       <div
-        class="panel w-full md:w-128 h-vh-gap md:h-auto md:max-h-80vh absolute md:relative bottom-0 
-        rounded-t md:rounded bg-primary-lighter overflow-scroll md:center-xy"
+        class="
+          panel
+          w-full
+          md:w-128
+          h-vh-gap
+          md:h-auto md:max-h-80vh
+          absolute
+          md:relative
+          bottom-0
+          rounded-t
+          md:rounded
+          bg-primary-lighter
+          overflow-scroll
+          md:center-xy
+        "
       >
         <div class="container relative py-2">
           <div class="flex py-4">
-            <h3 v-if="type === 'new'">{{ $t('account.payments.popup.new.title') }}</h3>
-            <h3 v-else>{{ $t('account.payments.popup.edit.title') }}</h3>
+            <h3 v-if="type === 'new'">
+              {{ $t('account.payments.popup.new.title') }}
+            </h3>
+            <h3 v-else>
+              {{ $t('account.payments.popup.edit.title') }}
+            </h3>
             <button class="ml-auto" @click.prevent="$emit('click-close')">
               <BaseIcon icon="uil:multiply" size="sm" />
             </button>
@@ -36,13 +53,19 @@
               />
 
               <template v-if="$v.cardNumber.$dirty">
-                <span v-if="!$v.cardNumber.required" class="label-sm text-error">{{
-                  $t('account.payments.popup.cardNumber.required')
-                }}</span>
+                <span
+                  v-if="!$v.cardNumber.required"
+                  class="label-sm text-error-default"
+                  >{{ $t('account.payments.popup.cardNumber.required') }}</span
+                >
 
-                <span v-else-if="!$v.cardNumber.maxLength" class="label-sm text-error">{{
-                  $t('account.payments.popup.cardNumber.maxLength', { n: 19 })
-                }}</span>
+                <span
+                  v-else-if="!$v.cardNumber.maxLength"
+                  class="label-sm text-error-default"
+                  >{{
+                    $t('account.payments.popup.cardNumber.maxLength', { n: 19 })
+                  }}</span
+                >
               </template>
             </div>
 
@@ -58,13 +81,19 @@
                 />
 
                 <template v-if="$v.cardExpiry.$dirty">
-                  <span v-if="!$v.cardExpiry.required" class="label-sm text-error">{{
-                    $t('account.payments.popup.cardExpiry.required')
-                  }}</span>
+                  <span
+                    v-if="!$v.cardExpiry.required"
+                    class="label-sm text-error-default"
+                    >{{
+                      $t('account.payments.popup.cardExpiry.required')
+                    }}</span
+                  >
 
-                  <span v-else-if="!$v.cardExpiry.validDate" class="label-sm text-error">{{
-                    $t('account.payments.popup.cardExpiry.date')
-                  }}</span>
+                  <span
+                    v-else-if="!$v.cardExpiry.validDate"
+                    class="label-sm text-error-default"
+                    >{{ $t('account.payments.popup.cardExpiry.date') }}</span
+                  >
                 </template>
               </div>
 
@@ -78,13 +107,15 @@
                 />
 
                 <template v-if="$v.cardCVC.$dirty">
-                  <span v-if="!$v.cardCVC.required" class="label-sm text-error">{{
-                    $t('account.payments.popup.cvc.required')
-                  }}</span>
+                  <span
+                    v-if="!$v.cardCVC.required"
+                    class="label-sm text-error-default"
+                    >{{ $t('account.payments.popup.cvc.required') }}</span
+                  >
 
                   <span
                     v-else-if="!$v.cardCVC.integer || !$v.cardCVC.maxLength"
-                    class="label-sm text-error"
+                    class="label-sm text-error-default"
                     >{{ $t('account.payments.popup.cvc.format') }}</span
                   >
                 </template>
@@ -100,7 +131,9 @@
               />
 
               <label class="w-full" for="set-default">
-                <p class="text-sm">{{ $t('account.payments.popup.card.setAsDefault') }}</p>
+                <p class="text-sm">
+                  {{ $t('account.payments.popup.card.setAsDefault') }}
+                </p>
                 <div class="indicator ml-auto text-primary-lighter">
                   <BaseIcon icon="uil:check" size="sm" />
                 </div>
@@ -110,7 +143,7 @@
         </div>
 
         <div class="py-6 border-t border-primary-med">
-          <div class="container ">
+          <div class="container">
             <span class="block text-md font-semibold mb-2">{{
               $t('account.payments.popup.billingAddress')
             }}</span>
@@ -121,7 +154,9 @@
               :compact="true"
               :options="formattedAddressOptions"
               :value="
-                formattedDefaultAddress ? formattedDefaultAddress : 'Select an existing address'
+                formattedDefaultAddress
+                  ? formattedDefaultAddress
+                  : 'Select an existing address'
               "
               class="text-sm max-h-48"
               @change="billingAddress = $event"
@@ -138,19 +173,23 @@
 
         <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4 z-30">
           <div class="container">
-            <ButtonLoading
+            <BaseButton
               v-if="type === 'new'"
-              class="w-full dark my-4"
+              class="my-4"
+              appearance="dark"
               :label="$t('account.payments.popup.create.button.label')"
-              :loading-label="$t('account.payments.popup.create.button.loadingLabel')"
+              :loading-label="
+                $t('account.payments.popup.create.button.loadingLabel')
+              "
               :is-loading="isCreating"
               :disabled="isUpdating || isDeleting"
               @click.native="createCard()"
             />
 
-            <ButtonLoading
+            <BaseButton
               v-if="type === 'update'"
-              class="w-full dark my-4"
+              class="my-4"
+              appearance="dark"
               :label="$t('account.payments.popup.save.button.label')"
               :loading-label="$t('account.payments.save.button.label')"
               :is-loading="isUpdating"
@@ -158,11 +197,13 @@
               @click.native="updateCard()"
             />
 
-            <ButtonLoading
+            <BaseButton
               v-if="type === 'update'"
-              class="w-full light-error"
+              appearance="light-error"
               :label="$t('account.payments.popup.delete.button.label')"
-              :loading-label="$t('account.payments.popup.delete.button.loadingLabel')"
+              :loading-label="
+                $t('account.payments.popup.delete.button.loadingLabel')
+              "
               :is-loading="isDeleting"
               :disabled="isCreating || isUpdating"
               @click.native="deleteCard()"
@@ -183,20 +224,17 @@ import isEmpty from 'lodash/isEmpty'
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, integer } from 'vuelidate/lib/validators'
 
-const validDate = date => {
+const validDate = (date) => {
   if (!date.includes('/')) return false
 
   const month = date.split('/')[0].trim()
   let year = date.split('/')[1].trim()
 
-  if (!month || !year || (!year.length === 2 && !year.length === 4)) return false
+  if (!month || !year || (!year.length === 2 && !year.length === 4))
+    return false
 
   if (year.length === 2) {
-    year =
-      new Date()
-        .getFullYear()
-        .toString()
-        .substring(0, 2) + year
+    year = new Date().getFullYear().toString().substring(0, 2) + year
   }
 
   const currMonth = new Date().getMonth() + 1
@@ -220,33 +258,28 @@ export default {
   props: {
     card: {
       type: Object,
-      default: null
+      default: null,
     },
     cardsLength: {
       type: Number,
-      default: 0
+      default: 0,
     },
     type: {
-      type: String
+      type: String,
+      default: '',
     },
     refresh: {
       type: Boolean,
-      value: false
+      value: false,
     },
     defaultCardId: {
       type: String,
-      default: null
+      default: null,
     },
     newBillingAddress: {
       type: Object,
-      default: null
-    }
-  },
-
-  async fetch() {
-    // Set component data
-    const { results: addresses } = await this.$swell.account.listAddresses()
-    this.addresses = addresses
+      default: null,
+    },
   },
 
   data() {
@@ -261,19 +294,27 @@ export default {
       isCreating: false,
       isUpdating: false,
       isDeleting: false,
-      formattedDefaultAddress: ''
+      formattedDefaultAddress: '',
     }
+  },
+
+  async fetch() {
+    // Set component data
+    const { results: addresses } = await this.$swell.account.listAddresses()
+    this.addresses = addresses
   },
 
   computed: {
     formattedAddressOptions() {
       if (!this.addresses) return
-      return this.addresses.map(address => {
+      return this.addresses.map((address) => {
         return {
           value: address,
-          label: `${address.name}, ${address.address2 || ''} ${address.address1}, ${
-            address.state
-          }, ${address.city} ${address.zip}, ${address.country}`
+          label: `${address.name}, ${address.address2 || ''} ${
+            address.address1
+          }, ${address.state}, ${address.city} ${address.zip}, ${
+            address.country
+          }`,
         }
       })
     },
@@ -286,12 +327,7 @@ export default {
       const year = this.cardExpiry.split('/')[1].trim()
       // Affix century if year is only two digits
       if (year.length === 2) {
-        return (
-          new Date()
-            .getFullYear()
-            .toString()
-            .substring(0, 2) + year
-        )
+        return new Date().getFullYear().toString().substring(0, 2) + year
       }
       return year
     },
@@ -300,10 +336,11 @@ export default {
       if (!this.defaultCardId && !this.cardsLength) return true
       // Disable if current card is the only one and default
       if (this.card) {
-        if (this.defaultCardId === this.card.id && this.cardsLength === 1) return true
+        if (this.defaultCardId === this.card.id && this.cardsLength === 1)
+          return true
       }
       return false
-    }
+    },
   },
 
   watch: {
@@ -321,7 +358,7 @@ export default {
             ${city} ${zip},
             ${country}
           `
-    }
+    },
   },
 
   created() {
@@ -332,10 +369,10 @@ export default {
       // Set formatted card number of existing card
       const { brand, last4 } = this.card
       if (brand === 'American Express') {
-        this.cardNumber = `••••  ••••   •••${last4.substring(0, 1)}   ${last4.substring(
-          1,
-          last4.length
-        )}`
+        this.cardNumber = `••••  ••••   •••${last4.substring(
+          0,
+          1
+        )}   ${last4.substring(1, last4.length)}`
       } else {
         this.cardNumber = `••••  ••••   ••••   ${last4}`
       }
@@ -347,7 +384,8 @@ export default {
       if (this.card.billing && !values(this.card.billing).every(isEmpty)) {
         this.billingAddress = this.card.billing
 
-        const { name, address1, address2, state, city, zip, country } = this.card.billing
+        const { name, address1, address2, state, city, zip, country } =
+          this.card.billing
 
         this.formattedDefaultAddress = `
           ${name},
@@ -371,7 +409,8 @@ export default {
         this.isUpdating = true
 
         if (this.billingAddress) {
-          const { name, address1, address2, city, state, zip, country } = this.billingAddress
+          const { name, address1, address2, city, state, zip, country } =
+            this.billingAddress
 
           await this.$swell.account.updateCard(this.card.id, {
             billing: {
@@ -381,8 +420,8 @@ export default {
               city,
               state,
               zip,
-              country
-            }
+              country,
+            },
           })
         }
 
@@ -390,8 +429,8 @@ export default {
           // Set current card as default
           await this.$swell.account.update({
             billing: {
-              accountCardId: this.card.id
-            }
+              accountCardId: this.card.id,
+            },
           })
         }
 
@@ -400,13 +439,13 @@ export default {
         this.$emit('click-close')
         this.$store.dispatch('initializeCustomer')
         this.$store.dispatch('showNotification', {
-          message: this.$t('account.payments.popup.save.success')
+          message: this.$t('account.payments.popup.save.success'),
         })
         this.$emit('refresh')
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: this.$t('account.payments.popup.save.error'),
-          type: 'error'
+          type: 'error',
         })
       }
     },
@@ -423,16 +462,18 @@ export default {
           number: this.cardNumber,
           exp_month: this.expMonth,
           exp_year: this.expYear,
-          cvc: this.cardCVC
+          cvc: this.cardCVC,
         })
 
         if (token) {
           const card = await this.$swell.account.createCard({ token })
 
-          if (!card) throw new Error(this.$t('account.payments.popup.create.error'))
+          if (!card)
+            throw new Error(this.$t('account.payments.popup.create.error'))
 
           if (this.billingAddress) {
-            const { name, address1, address2, city, state, zip, country } = this.billingAddress
+            const { name, address1, address2, city, state, zip, country } =
+              this.billingAddress
 
             await this.$swell.account.updateCard(card.id, {
               billing: {
@@ -442,8 +483,8 @@ export default {
                 city,
                 state,
                 zip,
-                country
-              }
+                country,
+              },
             })
           }
 
@@ -451,8 +492,8 @@ export default {
             // Set current address as default
             await this.$swell.account.update({
               billing: {
-                accountCardId: card.id
-              }
+                accountCardId: card.id,
+              },
             })
           }
 
@@ -461,16 +502,15 @@ export default {
           this.$emit('click-close')
           this.$store.dispatch('initializeCustomer')
           this.$store.dispatch('showNotification', {
-            message: this.$t('account.payments.popup.create.success')
+            message: this.$t('account.payments.popup.create.success'),
           })
           this.$emit('refresh')
         }
       } catch (err) {
         this.isCreating = false
-        console.log(err)
         this.$store.dispatch('showNotification', {
           message: this.$t('account.payments.popup.create.error'),
-          type: 'error'
+          type: 'error',
         })
       }
     },
@@ -485,8 +525,8 @@ export default {
         if (this.defaultCardId === this.card.id) {
           await this.$swell.account.update({
             billing: {
-              accountCardId: null
-            }
+              accountCardId: null,
+            },
           })
         }
 
@@ -496,13 +536,13 @@ export default {
         this.$emit('click-close')
         this.$store.dispatch('initializeCustomer')
         this.$store.dispatch('showNotification', {
-          message: this.$t('account.payments.popup.delete.success')
+          message: this.$t('account.payments.popup.delete.success'),
         })
         this.$emit('refresh')
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: this.$t('account.payments.popup.delete.error'),
-          type: 'error'
+          type: 'error',
         })
       }
     },
@@ -517,13 +557,13 @@ export default {
           break
         default:
       }
-    }
+    },
   },
 
   validations: {
     cardNumber: { required, maxLength: maxLength(19) },
     cardExpiry: { required, validDate },
-    cardCVC: { required, integer, maxLength: maxLength(4) }
-  }
+    cardCVC: { required, integer, maxLength: maxLength(4) },
+  },
 }
 </script>

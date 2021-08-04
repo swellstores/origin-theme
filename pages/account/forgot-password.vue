@@ -1,5 +1,8 @@
 <template>
-  <div v-enter-key="sendPasswordReset" class="relative container pt-6 pb-24 md:max-w-112 md:pt-24">
+  <div
+    class="relative container pt-6 pb-24 md:max-w-112 md:pt-24"
+    @keyup.enter="endPasswordReset"
+  >
     <h2 class="pb-6">{{ $t('account.forgotPassword.title') }}</h2>
 
     <p class="text-sm mb-10">
@@ -17,27 +20,32 @@
       />
 
       <template v-if="$v.email.$dirty">
-        <span v-if="!$v.email.email" class="label-sm text-error">{{
+        <span v-if="!$v.email.email" class="label-sm text-error-default">{{
           $t('account.forgotPassword.email.format')
         }}</span>
 
-        <span v-else-if="!$v.email.required" class="label-sm text-error">{{
-          $t('account.forgotPassword.email.required')
-        }}</span>
+        <span
+          v-else-if="!$v.email.required"
+          class="label-sm text-error-default"
+          >{{ $t('account.forgotPassword.email.required') }}</span
+        >
       </template>
     </div>
 
-    <ButtonLoading
-      class="dark w-full mt-6 mb-4"
-      label="Send Email"
-      loading-label="Processing"
+    <BaseButton
+      class="mt-6 mb-4"
+      appearance="dark"
+      :label="$t('account.forgotPassword.button.label')"
+      :loading-label="$t('account.forgotPassword.button.loadingLabel')"
       :is-loading="isProcessing"
       @click.native="sendPasswordReset()"
     />
 
-    <NuxtLink class="btn light w-full" :to="localePath('/account/login/')">
-      {{ $t('account.forgotPassword.logIn') }}
-    </NuxtLink>
+    <BaseButton
+      appearance="light"
+      :label="$t('account.forgotPassword.logIn')"
+      :link="{ url: localePath('/account/login/'), title: 'Log in' }"
+    />
   </div>
 </template>
 
@@ -51,7 +59,7 @@ export default {
   data() {
     return {
       email: '',
-      isProcessing: false
+      isProcessing: false,
     }
   },
 
@@ -69,7 +77,7 @@ export default {
 
         const res = await this.$swell.account.recover({
           email: this.email,
-          reset_url: `${window.location.origin}/account/reset-password/?key={key}`
+          reset_url: `${window.location.origin}/account/reset-password/?key={key}`,
         })
 
         this.isProcessing = false
@@ -77,20 +85,20 @@ export default {
         if (res.success) {
           this.flow = 'login'
           this.$store.dispatch('showNotification', {
-            message: this.$t('account.forgotPassword.success')
+            message: this.$t('account.forgotPassword.success'),
           })
         }
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: this.$t('account.forgotPassword.error'),
-          type: 'error'
+          type: 'error',
         })
       }
-    }
+    },
   },
 
   validations: {
-    email: { required, email }
-  }
+    email: { required, email },
+  },
 }
 </script>

@@ -1,11 +1,13 @@
 <template>
   <div class="container md:pr-0">
-    <h1 class="text-4xl hidden md:block mb-9">{{ $t('account.payments.title') }}</h1>
+    <h1 class="text-4xl hidden md:block mb-9">
+      {{ $t('account.payments.title') }}
+    </h1>
 
     <div v-if="$fetchState.pending" class="container">
-      <div class="loader-el w-1/3 h-7 mb-6 mx-auto"></div>
-      <div class="loader-el w-3/5 h-2 mb-4 mx-auto"></div>
-      <div class="loader-el w-2/5 h-2 mb-8 mx-auto"></div>
+      <div class="loader-el w-1/3 h-7 mb-6 mx-auto" />
+      <div class="loader-el w-3/5 h-2 mb-4 mx-auto" />
+      <div class="loader-el w-2/5 h-2 mb-8 mx-auto" />
     </div>
 
     <template v-else>
@@ -33,9 +35,13 @@
         {{ $t('account.payments.noPaymentMethods') }}
       </p>
 
-      <button class="btn w-full md:w-auto light mt-10" type="button" @click="openEditPopup('new')">
-        {{ $t('account.payments.addPaymentMethod') }}
-      </button>
+      <BaseButton
+        class="block mt-10"
+        fit="auto"
+        appearance="light"
+        :label="$t('account.payments.addPaymentMethod')"
+        @click.native="openEditPopup('new')"
+      />
 
       <AccountCardPopup
         v-if="editCardPopupIsActive"
@@ -66,14 +72,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  async fetch() {
-    // Set page data
-    const { results: cards } = await this.$swell.account.listCards()
-
-    if (this.customer.billing) this.defaultCardId = this.customer.billing.accountCardId
-    this.cards = cards
-  },
-
+  layout: 'account',
   data() {
     return {
       cards: null,
@@ -84,22 +83,30 @@ export default {
       refreshCardPopup: false,
       defaultCardId: '',
       newBillingAddress: null,
-      isCreating: false
+      isCreating: false,
     }
+  },
+  async fetch() {
+    // Set page data
+    const { results: cards } = await this.$swell.account.listCards()
+
+    if (this.customer.billing)
+      this.defaultCardId = this.customer.billing.accountCardId
+    this.cards = cards
   },
 
   computed: {
     ...mapState(['customer']),
     defaultCard() {
       if (!this.defaultCardId || !this.cards) return
-      return this.cards.find(card => card.id === this.defaultCardId)
+      return this.cards.find((card) => card.id === this.defaultCardId)
     },
     otherCards() {
       if (!this.defaultCardId || !this.cards) {
         return this.cards
       }
-      return this.cards.filter(card => card.id !== this.defaultCardId)
-    }
+      return this.cards.filter((card) => card.id !== this.defaultCardId)
+    },
   },
 
   methods: {
@@ -116,7 +123,7 @@ export default {
           state,
           zip,
           country,
-          isDefault
+          isDefault,
         } = addr
 
         const address = await this.$swell.account.createAddress({
@@ -126,15 +133,15 @@ export default {
           city,
           state,
           zip,
-          country
+          country,
         })
 
         if (isDefault && address.id) {
           // Set address as default
           await this.$swell.account.update({
             shipping: {
-              accountAddressId: address.id
-            }
+              accountAddressId: address.id,
+            },
           })
         }
 
@@ -145,12 +152,12 @@ export default {
         this.editAddressPopupIsActive = false
         this.$store.dispatch('initializeCustomer')
         this.$store.dispatch('showNotification', {
-          message: this.$t('account.addresses.popup.create.success')
+          message: this.$t('account.addresses.popup.create.success'),
         })
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: this.$t('account.addresses.popup.create.error'),
-          type: 'error'
+          type: 'error',
         })
       }
     },
@@ -169,9 +176,7 @@ export default {
           break
         default:
       }
-    }
+    },
   },
-
-  layout: 'account'
 }
 </script>

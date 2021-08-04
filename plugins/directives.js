@@ -1,19 +1,23 @@
 import Vue from 'vue'
+import balanceText from 'balance-text'
 
-/*
- ** Event listener: 'Enter' keypress
- */
-let enterKeyPress
+function balanceTarget(el, isChildrenDirective) {
+  return isChildrenDirective ? Array.from(el.children) : el
+}
 
-Vue.directive('enter-key', {
-  bind: function(el, binding) {
-    enterKeyPress = e => {
-      if (e.keyCode === 13) binding.value()
-    }
-
-    el.addEventListener('keypress', enterKeyPress)
+Vue.directive('balance-text', {
+  bind(el, { modifiers: { children } }) {
+    const target = balanceTarget(el, children)
+    Vue.nextTick(() => {
+      balanceText(target, { watch: true })
+    })
   },
-  unbind(el) {
-    el.removeEventListener('keypress', enterKeyPress)
-  }
+  componentUpdated(el, { modifiers: { children } }) {
+    const target = balanceTarget(el, children)
+    balanceText(target)
+  },
+  unbind(el, { modifiers: { children } }) {
+    const target = balanceTarget(el, children)
+    balanceText(target, { watch: false })
+  },
 })

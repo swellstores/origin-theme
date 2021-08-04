@@ -1,8 +1,9 @@
 <template>
   <footer
     :class="{
-      'bg-primary-darkest text-primary-lightest border-primary-darker': background === 'dark',
-      'bg-primary-lighter border-primary-med': background === 'light'
+      'bg-primary-darkest text-primary-lightest border-primary-darker':
+        background === 'dark',
+      'bg-primary-lighter border-primary-med': background === 'light',
     }"
     class="border-t"
     data-sw-path="footer"
@@ -10,7 +11,10 @@
     <!-- Main footer -->
     <div class="container py-16 text-center lg:flex lg:flex-row lg:text-left">
       <!-- Store info -->
-      <div v-if="footer.showContactInfo || footer.showSocial" class="lg:w-1/4 lg:pr-6">
+      <div
+        v-if="footer.showContactInfo || footer.showSocial"
+        class="lg:w-1/4 lg:pr-6"
+      >
         <div v-if="footer.showContactInfo" class="mb-5">
           <p v-if="footer.contactInfoHeading" class="text-sm mb-4">
             {{ footer.contactInfoHeading }}
@@ -23,13 +27,26 @@
               {{ store.supportEmail }}
             </a>
           </p>
-          <div class="mt-2" v-html="footer.contactInfoText"></div>
+          <div class="mt-2" v-html="footer.contactInfoText" />
         </div>
 
         <!-- Social links-->
-        <ul v-if="footer.showSocial" class="mx-auto lg:-ml-2" data-sw-path="social">
-          <li v-for="link of orderedSocialLinks" :key="link.id" class="inline-block mb-0">
-            <a :href="link.url" target="_blank" :title="`Join us on ${link.id}`" class="block mx-2">
+        <ul
+          v-if="footer.showSocial"
+          class="mx-auto lg:-ml-2"
+          data-sw-path="social"
+        >
+          <li
+            v-for="link of orderedSocialLinks"
+            :key="link.id"
+            class="inline-block mb-0"
+          >
+            <a
+              :href="link.url"
+              target="_blank"
+              :title="`Join us on ${link.id}`"
+              class="block mx-2"
+            >
               <BaseIcon :icon="`mdi:${link.id}`" />
             </a>
           </li>
@@ -58,8 +75,9 @@
                 v-else
                 :to="localePath(resolveUrl(item))"
                 class="inline-block py-1 leading-tight text-xl"
-                >{{ item.name }}</NuxtLink
               >
+                {{ item.name }}
+              </NuxtLink>
             </li>
           </ul>
         </div>
@@ -72,8 +90,11 @@
           <p v-if="footer.emailSignupHeading" class="text-sm mb-5">
             {{ footer.emailSignupHeading }}
           </p>
-          <div v-if="footer.emailSignupText" v-html="footer.emailSignupText"></div>
-          <EmailSignupForm :theme="background === 'dark' ? 'dark' : 'light'" class="mt-5" />
+          <div v-if="footer.emailSignupText" v-html="footer.emailSignupText" />
+          <EmailSignupForm
+            :theme="background === 'dark' ? 'dark' : 'light'"
+            class="mt-5"
+          />
         </div>
       </template>
     </div>
@@ -83,7 +104,7 @@
     <div
       :class="{
         'border-primary-darker': background === 'dark',
-        'border-primary-med': background === 'light'
+        'border-primary-med': background === 'light',
       }"
       class="py-4 border-t border-primary-darker text-sm text-center"
     >
@@ -102,8 +123,14 @@
 
         <!-- Secondary nav menu -->
         <ul v-if="footer.showSecondaryMenu && secondaryMenu" class="my-3">
-          <li v-for="item in secondaryMenu.items" :key="item.name" class="inline-block mx-3 mb-0">
-            <NuxtLink :to="localePath(resolveUrl(item))">{{ item.name }}</NuxtLink>
+          <li
+            v-for="item in secondaryMenu.items"
+            :key="item.name"
+            class="inline-block mx-3 mb-0"
+          >
+            <NuxtLink :to="localePath(resolveUrl(item))">
+              {{ item.name }}
+            </NuxtLink>
           </li>
         </ul>
 
@@ -112,14 +139,14 @@
           v-if="footer.showPaymentMethods && paymentMethods"
           class="flex flex-wrap justify-center"
         >
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
+          <li />
+          <li />
+          <li />
+          <li />
+          <li />
+          <li />
+          <li />
+          <li />
         </ul>
       </div>
     </div>
@@ -133,12 +160,28 @@ import get from 'lodash/get'
 export default {
   name: 'TheFooter',
 
+  data() {
+    return {
+      footer: {},
+      store: {},
+      socialLinks: {},
+      menu: null,
+      secondaryMenu: null,
+      paymentMethods: null,
+      currentYear: new Date().getFullYear(),
+      background: 'dark',
+    }
+  },
+
   fetch() {
     const { $swell } = this
 
     // Get menu settings
     const menuId = $swell.settings.get('footer.menu', 'footer')
-    const secondaryMenuId = $swell.settings.get('footer.secondaryMenu', 'footer-secondary')
+    const secondaryMenuId = $swell.settings.get(
+      'footer.secondaryMenu',
+      'footer-secondary'
+    )
 
     // Set menus
     this.menu = $swell.settings.menus(menuId)
@@ -151,25 +194,19 @@ export default {
     this.background = $swell.settings.get('footer.background', 'dark')
   },
 
-  data() {
-    return {
-      footer: {},
-      store: {},
-      socialLinks: {},
-      menu: null,
-      secondaryMenu: null,
-      paymentMethods: null,
-      currentYear: new Date().getFullYear(),
-      background: 'dark'
-    }
-  },
-
   computed: {
     orderedSocialLinks() {
-      return ['twitter', 'facebook', 'pinterest', 'instagram', 'youtube', 'vimeo']
-        .map(id => ({ id, ...get(this, `socialLinks.${id}`, {}) })) // Get the network's link value from settings
-        .filter(link => link.show && link.url) // Only include if it's switched on and  has a url
-    }
-  }
+      return [
+        'twitter',
+        'facebook',
+        'pinterest',
+        'instagram',
+        'youtube',
+        'vimeo',
+      ]
+        .map((id) => ({ id, ...get(this, `socialLinks.${id}`, {}) })) // Get the network's link value from settings
+        .filter((link) => link.show && link.url) // Only include if it's switched on and  has a url
+    },
+  },
 }
 </script>

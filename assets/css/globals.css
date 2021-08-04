@@ -14,15 +14,7 @@ button {
 
 @responsive {
   .container {
-    @apply mx-auto px-6;
-
-    @screen lg {
-      @apply max-w-full px-8;
-    }
-
-    @screen xl {
-      @apply px-10;
-    }
+    @apply mx-auto px-6 lg:px-8 xl:px-10;
   }
 }
 
@@ -70,7 +62,7 @@ button {
     @apply bg-primary-light text-primary-darkest;
 
     &:hover {
-      @apply bg-error text-primary-lightest;
+      @apply bg-error-default text-primary-lightest;
     }
   }
 
@@ -78,7 +70,7 @@ button {
     @apply bg-primary-lighter;
 
     &:hover {
-      @apply bg-primary-lightest text-accent;
+      @apply bg-primary-lightest text-accent-default;
     }
   }
 }
@@ -143,7 +135,7 @@ img {
 }
 
 .cta-link {
-  @apply inline-block pb-1 border-b rounded-none border-primary-darkest;
+  @apply inline-block mb-3 pb-1 border-b rounded-none border-primary-darkest;
 
   &.light {
     @apply text-primary-lightest border-primary-lightest;
@@ -159,7 +151,7 @@ img {
 }
 
 .label-tag--sale {
-  @apply bg-error-faded text-error;
+  @apply bg-error-faded text-error-default;
 }
 
 .loader-el {
@@ -180,15 +172,15 @@ img {
   }
 
   & label {
-    @apply relative flex items-center appearance-none;
+    @apply relative flex items-center appearance-none cursor-pointer;
 
     & .indicator {
-      @apply flex justify-center items-center cursor-pointer w-6 h-6 mr-3 border border-primary-med rounded;
+      @apply flex justify-center items-center cursor-pointer w-6 h-6 border border-primary-med rounded;
       transition: all 0.2s ease;
     }
 
     & p {
-      @apply ml-0 font-medium;
+      @apply ml-0;
     }
   }
 

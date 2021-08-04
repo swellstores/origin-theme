@@ -7,9 +7,11 @@
 <script>
 const networkUrls = {
   email: 'mailto:%20?subject=@t&body=@u%0D%0A@d',
-  facebook: 'https://www.facebook.com/sharer/sharer.php?u=@u&title=@t&description=@d',
-  pinterest: 'https://pinterest.com/pin/create/button/?url=@u&media=@m&description=@t',
-  twitter: 'https://twitter.com/intent/tweet?text=@t&url=@u'
+  facebook:
+    'https://www.facebook.com/sharer/sharer.php?u=@u&title=@t&description=@d',
+  pinterest:
+    'https://pinterest.com/pin/create/button/?url=@u&media=@m&description=@t',
+  twitter: 'https://twitter.com/intent/tweet?text=@t&url=@u',
 }
 
 const $window = typeof window !== 'undefined' ? window : null
@@ -20,40 +22,40 @@ export default {
   props: {
     network: {
       type: String,
-      default: 'facebook'
+      default: 'facebook',
     },
 
     url: {
       type: String,
-      default: null
+      default: null,
     },
 
     title: {
       type: String,
-      default: null
+      default: null,
     },
 
     description: {
       type: String,
-      default: null
+      default: null,
     },
 
     media: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
 
   data() {
     return {
       popup: {
         width: 620,
-        height: 420
+        height: 420,
       },
       popupTop: 0,
       popupLeft: 0,
       popupWindow: undefined,
-      popupInterval: null
+      popupInterval: null,
     }
   },
 
@@ -86,7 +88,7 @@ export default {
         .replace(/@t/g, encodeURIComponent(this.title))
         .replace(/@d/g, encodeURIComponent(this.description))
         .replace(/@m/g, encodeURIComponent(this.media))
-    }
+    },
   },
 
   methods: {
@@ -103,13 +105,21 @@ export default {
      * http://stackoverflow.com/questions/4068373/center-a-popup-window-on-screen/32261263
      */
     resizePopup() {
-      const width = $window.innerWidth || document.documentElement.clientWidth || $window.screenX
-      const height = $window.innerHeight || document.documentElement.clientHeight || $window.screenY
+      const width =
+        $window.innerWidth ||
+        document.documentElement.clientWidth ||
+        $window.screenX
+      const height =
+        $window.innerHeight ||
+        document.documentElement.clientHeight ||
+        $window.screenY
       const systemZoom = width / $window.screen.availWidth
 
       this.popupLeft =
         (width - this.popup.width) / 2 / systemZoom +
-        ($window.screenLeft !== undefined ? $window.screenLeft : $window.screenX)
+        ($window.screenLeft !== undefined
+          ? $window.screenLeft
+          : $window.screenX)
       this.popupTop =
         (height - this.popup.height) / 2 / systemZoom +
         ($window.screenTop !== undefined ? $window.screenTop : $window.screenY)
@@ -163,7 +173,7 @@ export default {
 
     share() {
       window.open(this.shareLink, '_blank')
-    }
-  }
+    },
+  },
 }
 </script>

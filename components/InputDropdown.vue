@@ -2,7 +2,20 @@
   <div class="relative">
     <div
       ref="dropdown"
-      class="relative w-full flex p-2 pr-10 items-center bg-primary-lightest border font-semibold cursor-pointer rounded focus:outline-none focus:shadow-outline"
+      class="
+        relative
+        w-full
+        flex
+        p-2
+        pr-10
+        items-center
+        bg-primary-lightest
+        border border-primary-med
+        font-semibold
+        cursor-pointer
+        rounded
+        focus:outline-none focus:shadow-outline
+      "
       :class="{ 'rounded-b-none': dropdownIsActive }"
       @click="toggleDropdown()"
     >
@@ -18,14 +31,31 @@
     <ul
       v-show="dropdownIsActive"
       :class="{ 'rounded-t-none': dropdownIsActive, 'max-h-40': compact }"
-      class="absolute block -mt-px w-full bg-primary-lightest py-2 border rounded z-40 
-      overflow-scroll"
+      class="
+        absolute
+        block
+        -mt-px
+        w-full
+        bg-primary-lightest
+        py-2
+        border border-primary-med
+        rounded
+        z-40
+        overflow-scroll
+      "
       role="listbox"
     >
       <li
         v-for="(option, index) in options"
         :key="`option-${index}`"
-        class="mb-0 px-2 py-3 items-center cursor-pointer hover:bg-primary-lighter"
+        class="
+          mb-0
+          px-2
+          py-3
+          items-center
+          cursor-pointer
+          hover:bg-primary-lighter
+        "
         role="option"
         @click="selectOption(option)"
       >
@@ -47,21 +77,22 @@ export default {
   props: {
     options: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     value: {
-      type: String
+      type: String,
+      default: '',
     },
     compact: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data() {
     return {
       dropdownIsActive: false,
-      selected: ''
+      selected: '',
     }
   },
 
@@ -72,7 +103,7 @@ export default {
       }
 
       return ''
-    }
+    },
   },
 
   watch: {
@@ -82,7 +113,9 @@ export default {
       if (value !== undefined) {
         if (options && options.length > 0) {
           const selected =
-            find(options, value) || find(options, { value }) || find(options, { label: value })
+            find(options, value) ||
+            find(options, { value }) ||
+            find(options, { label: value })
           if (selected !== undefined) {
             this.selected = selected.label || selected
             return
@@ -92,7 +125,7 @@ export default {
         // Fallback
         this.selected = value
       }
-    }
+    },
   },
 
   created() {
@@ -101,7 +134,9 @@ export default {
     if (value !== undefined) {
       if (options && options.length > 0) {
         const selected =
-          find(options, value) || find(options, { value }) || find(options, { label: value })
+          find(options, value) ||
+          find(options, { value }) ||
+          find(options, { label: value })
         if (selected !== undefined) {
           this.selected = selected.label || selected
           return
@@ -137,7 +172,7 @@ export default {
       if (!this.$el.contains(e.target)) {
         this.dropdownIsActive = false
       }
-    }
-  }
+    },
+  },
 }
 </script>

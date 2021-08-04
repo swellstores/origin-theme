@@ -11,6 +11,10 @@
     @apply left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
   }
 
+  .center-offset-bottom {
+    transform: translate(-50%, calc(-50% + 5rem));
+  }
+
   .h-vh-gap {
     height: calc(100vh - 2rem);
   }
@@ -49,22 +53,41 @@
 
 .popup-enter .panel,
 .popup-leave-to .panel {
-  @apply transform translate-y-full;
-
-  @screen md {
-    transform: translate(-50%, calc(-50% + 5rem));
-    opacity: 0;
-  }
+  @apply transform translate-y-full md:center-offset-bottom md:opacity-0;
 }
 
-.popup-enter-to .panel,
-.popup-leave .overlay {
-  @apply transform translate-y-0;
+.popup-enter-to .panel {
+  @apply transform translate-y-0 md:center-xy md:opacity-100;
+}
 
-  @screen md {
-    transform: translate(-50%, -50%);
-    opacity: 1;
-  }
+.float-enter-active .overlay,
+.float-leave-active .overlay {
+  @apply transition-all duration-500 ease-in-out;
+}
+
+.float-enter .overlay,
+.float-leave-to .overlay {
+  @apply opacity-0;
+}
+
+.float-enter-to .overlay,
+.float-leave .overlay {
+  @apply opacity-50;
+}
+
+.float-enter-active .panel,
+.float-leave-active .panel {
+  @apply transition-all duration-500;
+  transition-timing-function: cubic-bezier(0.6, 0.2, 0, 1);
+}
+
+.float-enter .panel,
+.float-leave-to .panel {
+  @apply transform translate-y-1/4 opacity-0 md:center-offset-bottom;
+}
+
+.float-enter-to .panel {
+  @apply transform translate-y-0 opacity-100 md:center-xy;
 }
 
 .slide-modal-rtl-enter-active .overlay,
