@@ -356,8 +356,7 @@
         </template>
 
         <!-- Payment details -->
-
-        <div v-if="subscriptionOrder.paid" class="mb-8">
+        <div class="mb-8">
           <p class="text-base font-semibold pb-4">
             {{ $t('account.subscriptions.id.paymentMethod') }}
           </p>
@@ -561,8 +560,8 @@ export default {
     },
 
     shipping() {
-      if (isEmpty(this.subscriptionOrder.shipping)) return
-      return this.subscriptionOrder.shipping
+      if (isEmpty(this.subscription.shipping)) return
+      return this.subscription.shipping
     },
 
     billing() {
