@@ -299,7 +299,7 @@
 
       <div class="container pt-4">
         <!-- Delievry details -->
-        <template v-if="subscriptionOrder.subscriptionDelivery && shipping">
+        <template v-if="shipping">
           <p class="text-base font-semibold pb-4">
             {{ $t('account.subscriptions.id.deliveryDetails') }}
           </p>
@@ -356,8 +356,7 @@
         </template>
 
         <!-- Payment details -->
-
-        <div v-if="subscriptionOrder.paid" class="mb-8">
+        <div class="mb-8">
           <p class="text-base font-semibold pb-4">
             {{ $t('account.subscriptions.id.paymentMethod') }}
           </p>
@@ -403,7 +402,7 @@
               </div>
             </div>
 
-            <div class="flex md:text-sm p-4">
+            <div v-if="billing" class="flex md:text-sm p-4">
               <div>
                 <p class="font-semibold pb-2">
                   {{ $t('account.subscriptions.id.billingAddress') }}
@@ -492,6 +491,7 @@
 // Helpers
 import { mapState } from 'vuex'
 import padStart from 'lodash/padStart'
+import isEmpty from 'lodash/isEmpty'
 
 export default {
   name: 'Subscription',
@@ -550,22 +550,22 @@ export default {
     },
 
     status() {
-      if (!this.subscription) return
+      if (!this.subscription) return ''
       return this.subscription.status
     },
 
     orders() {
-      if (!this.subscription.orders) return
+      if (isEmpty(this.subscription.orders)) return []
       return this.subscription.orders.results
     },
 
     shipping() {
-      if (!this.subscription.shipping) return
+      if (isEmpty(this.subscription.shipping)) return null
       return this.subscription.shipping
     },
 
     billing() {
-      if (!this.subscription.billing) return
+      if (isEmpty(this.subscription.billing)) return null
       return this.subscription.billing
     },
 
@@ -576,7 +576,7 @@ export default {
     },
 
     planItems() {
-      if (!this.subscription.product.bundle) return
+      if (!this.subscription.product.bundle) return []
       return this.subscription.product.bundleItems
     },
   },
