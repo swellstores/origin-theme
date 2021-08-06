@@ -90,9 +90,10 @@
             <BaseButton
               class="w-1/2 mr-2"
               fit="full"
-              :link="cart.checkoutUrl"
               appearance="dark"
               :label="$t('notifications.checkout')"
+              :link="cart.checkoutUrl"
+              target="_self"
             />
 
             <div class="relative w-1/2">
