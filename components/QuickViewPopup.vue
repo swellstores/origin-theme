@@ -298,7 +298,7 @@ export default {
 
         optionInputs.push({
           option,
-          component: () => import(`../ProductOption${componentName}.vue`),
+          component: () => import(`./ProductOption${componentName}.vue`),
         })
 
         return optionInputs
