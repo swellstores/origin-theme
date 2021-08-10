@@ -190,6 +190,7 @@
                 :is-loading="cartIsUpdating"
                 :loading-label="$t('cart.updating')"
                 :link="cart.checkoutUrl"
+                target="_self"
               />
             </div>
           </div>

@@ -1,5 +1,5 @@
 <template>
-  <component :is="link ? 'BaseLink' : 'div'" :link="link">
+  <component :is="link ? 'BaseLink' : 'div'" :link="link" :target="target">
     <button
       class="relative"
       :class="[
@@ -65,6 +65,10 @@ export default {
     link: {
       type: [Object, String],
       default: '',
+    },
+    target: {
+      type: String,
+      default: '_blank',
     },
     appearance: {
       type: String,

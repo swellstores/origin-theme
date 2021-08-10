@@ -12,6 +12,10 @@ export default {
       type: [Object, String],
       required: true,
     },
+    target: {
+      type: String,
+      default: '_blank',
+    },
   },
   computed: {
     attributes() {
@@ -21,7 +25,7 @@ export default {
         return {
           is: 'a',
           href: url,
-          target: '_blank',
+          target: this.target,
           rel: 'noopener',
         }
       }
