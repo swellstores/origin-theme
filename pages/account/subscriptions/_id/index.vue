@@ -26,110 +26,16 @@
             {{ subscription.product.name }}
           </h2>
 
-          <!-- Active -->
-          <div v-if="status === 'active'" class="flex">
-            <div
-              class="
-                relative
-                flex-shrink-0
-                w-6
-                h-6
-                mr-2
-                bg-ok-default
-                rounded-full
-              "
-            >
-              <BaseIcon
-                class="absolute text-primary-lightest center-xy"
-                icon="uil:sync"
-                size="w-4 h-4"
-              />
-            </div>
-            <div>
-              <p>
-                {{ $t('account.subscriptions.subscription.status.active') }}
-                {{ renewalDate }}
-              </p>
-              <p class="text-sm text-primary-dark">
-                {{
-                  $t('account.subscriptions.subscription.status.activeMessage')
-                }}
-              </p>
-            </div>
-          </div>
-
-          <!-- Canceled -->
-          <div v-else-if="status === 'canceled'" class="flex">
-            <div
-              class="
-                relative
-                flex-shrink-0
-                w-6
-                h-6
-                mr-2
-                bg-primary-dark
-                rounded-full
-              "
-            >
-              <BaseIcon
-                class="absolute text-primary-lightest center-xy"
-                icon="uil:sync-slash"
-                size="w-4 h-4"
-              />
-            </div>
-            <div>
-              <p>
-                {{ $t('account.subscriptions.subscription.status.canceled') }}
-                {{ formatDate(subscription.dateCanceled) }}
-              </p>
-              <p class="text-sm text-primary-dark">
-                {{
-                  $t(
-                    'account.subscriptions.subscription.status.canceledMessage'
-                  )
-                }}
-              </p>
-            </div>
-          </div>
-
-          <!-- Trial -->
-          <div v-else-if="status === 'trial'" class="flex">
-            <div
-              class="
-                relative
-                flex-shrink-0
-                w-6
-                h-6
-                mr-2
-                bg-warning-default
-                rounded-full
-              "
-            >
-              <BaseIcon
-                class="absolute text-primary-lightest center-xy"
-                icon="uil:calender"
-                size="w-4 h-4"
-              />
-            </div>
-            <div>
-              <p>
-                {{ $t('account.subscriptions.subscription.status.trial') }}
-                {{ formatDate(subscription.dateTrialEnd) }}
-              </p>
-              <p class="text-sm text-primary-dark">
-                {{
-                  $t('account.subscriptions.subscription.status.trialMessage')
-                }}
-                {{ subscription.interval }} at
-                {{
-                  formatMoney(
-                    subscription.recurringTotal,
-                    subscription.currency
-                  )
-                }}
-              </p>
-            </div>
-          </div>
+          <AccountSubscriptionStatus
+            :status="subscription.status"
+            :interval="subscription.interval"
+            :date-trial-end="subscription.dateTrialEnd"
+            :date-canceled="subscription.dateCanceled"
+            :date-paused="subscription.datePaused"
+            :date-pause-end="subscription.datePauseEnd"
+            :date-period-end="subscription.datePeriodEnd"
+            :recurring-total="subscription.recurringTotal"
+          />
         </div>
 
         <!-- Plan items -->
@@ -235,6 +141,29 @@
             class="p-4"
             :class="{ 'border-b border-primary-med': status !== 'canceled' }"
           >
+            <div class="flex pb-2">
+              <span>{{ $t('account.subscriptions.id.planTotal') }}</span>
+              <span class="ml-auto">
+                {{
+                  formatMoney(
+                    subscription.recurringTotal,
+                    subscription.currency
+                  )
+                }}</span
+              >
+            </div>
+
+            <div
+              v-for="item in subscription.items"
+              :key="item.id"
+              class="flex pb-2"
+            >
+              <span>{{ item.description }}</span>
+              <span class="ml-auto">
+                {{ formatMoney(item.price, subscription.currency) }}</span
+              >
+            </div>
+
             <div
               v-if="subscriptionOrder.subscriptionDelivery"
               class="flex pb-2"
@@ -284,7 +213,7 @@
             </div>
 
             <BaseButton
-              v-if="status !== 'canceled'"
+              v-if="status !== 'canceled' && allowPlanEdit"
               class="w-full block mt-6"
               fit="auto"
               appearance="dark"
@@ -298,7 +227,7 @@
       </div>
 
       <div class="container pt-4">
-        <!-- Delievry details -->
+        <!-- Delivery details -->
         <template v-if="shipping">
           <p class="text-base font-semibold pb-4">
             {{ $t('account.subscriptions.id.deliveryDetails') }}
@@ -425,7 +354,47 @@
             </div>
           </div>
         </div>
+      </div>
 
+      <!-- Pause/resume subscription -->
+      <div
+        v-if="pausable"
+        class="container border-t border-b border-primary-med"
+      >
+        <div class="py-10">
+          <p class="text-base font-semibold pb-4">
+            {{
+              status === 'paused'
+                ? $t('account.subscriptions.id.resume.title')
+                : $t('account.subscriptions.id.pause.title')
+            }}
+          </p>
+
+          <p class="pb-10">
+            {{
+              status === 'paused'
+                ? $t('account.subscriptions.id.resume.message', {
+                    date: formatDate(subscription.datePaused),
+                  })
+                : $t('account.subscriptions.id.pause.message')
+            }}
+          </p>
+
+          <BaseButton
+            class="block md:inline-block"
+            fit="auto"
+            :label="
+              status === 'paused'
+                ? $t('account.subscriptions.id.resume.label')
+                : $t('account.subscriptions.id.pause.label')
+            "
+            @click.native="pauseResumeSubscriptionPopupIsActive = true"
+          />
+        </div>
+      </div>
+
+      <div class="container">
+        <!-- Orders -->
         <div v-if="orders" class="mb-10">
           <p class="text-base font-semibold pt-10 pb-4">
             {{ $t('account.subscriptions.id.orders') }}
@@ -447,6 +416,7 @@
 
         <BaseButton
           v-if="status !== 'canceled'"
+          class="block md:inline-block"
           appearance="light-error"
           fit="auto"
           :label="$t('account.subscriptions.id.cancelSubscription')"
@@ -459,7 +429,7 @@
       v-if="editShippingAddressPopupIsActive"
       type="update"
       :address="shipping"
-      :is-updating="isUpdating"
+      :is-loading="isUpdating"
       @click-close="editShippingAddressPopupIsActive = false"
       @update="updateShippingAddress"
     />
@@ -468,9 +438,27 @@
       v-if="editBillingAddressPopupIsActive"
       type="update"
       :address="billing"
-      :is-updating="isUpdating"
+      :is-loading="isUpdating"
       @click-close="editBillingAddressPopupIsActive = false"
       @update="updateBillingAddress"
+    />
+
+    <AccountPauseResumeSubscriptionPopup
+      v-if="pauseResumeSubscriptionPopupIsActive"
+      :status="status"
+      :is-loading="isUpdating"
+      :cycle-skippable="cycleSkippable"
+      @pause-subscription="pauseSubscription"
+      @resume-subscription="resumeSubscription"
+      @select-date-time="selectDateTimePopupIsActive = true"
+      @click-close="pauseResumeSubscriptionPopupIsActive = false"
+    />
+
+    <AccountSubscriptionDateTimePopup
+      v-if="selectDateTimePopupIsActive"
+      :is-loading="isUpdating"
+      @resume-subscription="resumeSubscription"
+      @click-close="selectDateTimePopupIsActive = false"
     />
 
     <AccountConfirmationPopup
@@ -479,7 +467,7 @@
       :prompt-message="$t('account.subscriptions.id.popup.cancel.text')"
       :accept-label="$t('account.subscriptions.id.popup.cancel.yes')"
       :refuse-label="$t('account.subscriptions.id.popup.cancel.no')"
-      :is-loading="isCanceling"
+      :is-loading="isUpdating"
       :loading-label="$t('account.subscriptions.id.popup.cancel.loading')"
       @accept="cancelSubscription"
       @click-close="cancelPopupIsActive = false"
@@ -501,15 +489,25 @@ export default {
     return {
       subscription: null,
       subscriptionOrder: null,
+      pauseSkipNext: false,
+      pauseIndefinitely: false,
+      pauseDuringTrial: false,
+      pausePastDue: false,
+      cycleSkippable: false,
       editShippingAddressPopupIsActive: false,
       editBillingAddressPopupIsActive: false,
+      allowPlanEdit: true,
+      pauseResumeSubscriptionPopupIsActive: false,
+      selectDateTimePopupIsActive: false,
       cancelPopupIsActive: false,
-      isCanceling: false,
       isUpdating: false,
     }
   },
 
   async fetch() {
+    const { $swell } = this
+
+    // Fetch subscription
     const subscription = await this.$swell.subscriptions.get(
       this.$route.params.id,
       {
@@ -517,41 +515,80 @@ export default {
       }
     )
 
-    if (!subscription) return
+    // Show 404 if subscription data isn't found
+    if (!subscription) {
+      return this.$nuxt.error({ statusCode: 404 })
+    }
 
+    // Set component data
     this.subscription = subscription
+    this.allowPlanEdit = $swell.settings.get(
+      'account.subscriptions.allowPlanEdit',
+      true
+    )
+    // Fetch subscription settings
+    const {
+      features: {
+        pauseIndefinitely,
+        pauseSkipNext,
+        pauseDuringTrial,
+        pausePastDue,
+      },
+      pauseNextSkipThreshold,
+    } = this.$swell.settings.subscriptions()
+
+    // Set component data
+    this.pauseIndefinitely = pauseIndefinitely
+    this.pauseSkipNext = pauseSkipNext
+    this.pauseDuringTrial = pauseDuringTrial
+    this.pausePastDue = pausePastDue
 
     if (subscription.orderId) {
-      const subscriptionOrder = await this.$swell.account.getOrder(
+      const subscriptionOrder = await $swell.account.getOrder(
         subscription.orderId
       )
       if (subscriptionOrder) this.subscriptionOrder = subscriptionOrder
+    }
+
+    // Determine if subscription cycle can be skipped
+    if (pauseSkipNext) {
+      const currentDate = new Date()
+      const datePauseEnd = new Date(this.subscription.datePeriodEnd)
+
+      const pauseNextSkipThresholdDate = new Date(
+        datePauseEnd.setDate(datePauseEnd.getDate() - pauseNextSkipThreshold)
+      )
+
+      this.cycleSkippable = currentDate < pauseNextSkipThresholdDate
     }
   },
 
   computed: {
     ...mapState(['currency']),
 
-    renewalDate() {
-      const d = new Date(this.subscription.datePeriodEnd)
-      const date = this.formatDate(d, {
-        weekday: 'short',
-        month: 'long',
-        day: 'numeric',
-      })
-
-      const time = d.toLocaleString('en', {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true,
-      })
-
-      return this.$t('account.subscriptions.id.renewal', { date, time })
-    },
-
     status() {
       if (!this.subscription) return ''
       return this.subscription.status
+    },
+
+    pausable() {
+      switch (this.status) {
+        case 'active':
+          return (
+            this.pauseIndefinitely ||
+            (this.pauseSkipNext && this.cycleSkippable)
+          )
+        case 'trial':
+          return this.pauseDuringTrial
+        case 'pastdue':
+          return this.pausePastDue
+        case 'canceled':
+          return false
+        case 'paused':
+          return true
+        default:
+          return false
+      }
     },
 
     orders() {
@@ -576,22 +613,17 @@ export default {
     },
 
     planItems() {
-      if (!this.subscription.product.bundle) return []
+      if (!this.subscription.product.bundle) return null
       return this.subscription.product.bundleItems
     },
   },
 
+  activated() {
+    // Refetch updated data
+    this.$fetch()
+  },
+
   methods: {
-    formatDate(iso) {
-      const date = new Date(iso)
-
-      return new Intl.DateTimeFormat('default', {
-        month: 'long',
-        day: '2-digit',
-        year: 'numeric',
-      }).format(date)
-    },
-
     selectThumbnail(item) {
       if (item.variant && item.variant.images && item.variant.images.length) {
         return item.variant.images[0].file
@@ -636,15 +668,90 @@ export default {
       this.$fetch()
     },
 
+    async pauseSubscription(type) {
+      const { subscription, $swell } = this
+      try {
+        this.isUpdating = true
+        if (type === 'skip-cycle') {
+          // Skip cycle
+          await $swell.subscriptions.update(subscription.id, {
+            paused: true,
+            date_pause_end: subscription.datePeriodEnd,
+          })
+
+          this.$store.dispatch('showNotification', {
+            message: this.$t(
+              'account.subscriptions.id.popup.pause.skipCycleSuccess'
+            ),
+            type: 'success',
+          })
+        } else {
+          // Pause immediately
+          await $swell.subscriptions.update(subscription.id, {
+            paused: true,
+            date_pause_end: null,
+          })
+
+          this.$store.dispatch('showNotification', {
+            message: this.$t('account.subscriptions.id.popup.pause.success'),
+            type: 'success',
+          })
+        }
+
+        this.isUpdating = false
+        this.pauseResumeSubscriptionPopupIsActive = false
+        this.$fetch()
+      } catch (err) {
+        this.isUpdating = false
+        this.$store.dispatch('handleError', err)
+      }
+    },
+
+    async resumeSubscription(date) {
+      const { subscription, $swell } = this
+      try {
+        this.isUpdating = true
+        if (date) {
+          // Resume on date
+          await $swell.subscriptions.update(subscription.id, {
+            paused: true,
+            date_pause_end: date,
+          })
+        } else {
+          // Resume immediately
+          await $swell.subscriptions.update(subscription.id, {
+            paused: false,
+            date_pause_end: null,
+          })
+        }
+
+        this.isUpdating = false
+        this.pauseResumeSubscriptionPopupIsActive = false
+        this.selectDateTimePopupIsActive = false
+        this.$store.dispatch('showNotification', {
+          message: date
+            ? this.$t('account.subscriptions.id.popup.chooseDate.success', {
+                date: this.formatDate(date),
+              })
+            : this.$t('account.subscriptions.id.popup.resume.success'),
+          type: 'success',
+        })
+        this.$fetch()
+      } catch (err) {
+        this.isUpdating = false
+        this.$store.dispatch('handleError', err)
+      }
+    },
+
     async cancelSubscription() {
       try {
-        this.isCanceling = true
+        this.isUpdating = true
 
         await this.$swell.subscriptions.update(this.subscription.id, {
           canceled: true,
         })
 
-        this.isCanceling = false
+        this.isUpdating = false
         this.cancelPopupIsActive = false
 
         this.$store.dispatch('showNotification', {
@@ -653,7 +760,7 @@ export default {
         })
         this.$fetch()
       } catch (err) {
-        this.isCanceling = false
+        this.isUpdating = false
         this.$store.dispatch('handleError', err)
       }
     },

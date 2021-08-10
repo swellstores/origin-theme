@@ -2,10 +2,11 @@
   <div class="bg-primary-lightest md:py-0 py-4 rounded shadow-md">
     <div class="container md:p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
       <div
-        class="md:mb-0 mb-4"
+        class="grid md:mb-0 mb-4"
         :class="{
-          'grid grid-cols-2 gap-4': thumbnails.length <= 2,
-          'grid grid-cols-2 grid-rows-2 gap-4': thumbnails.length > 2,
+          'grid-cols-1 md:grid-cols-2 gap-4': thumbnails.length === 1,
+          'grid-cols-2 gap-4': thumbnails.length === 2,
+          'grid-cols-2 grid-rows-2 gap-4': thumbnails.length > 2,
         }"
       >
         <div
@@ -59,80 +60,17 @@
           >
         </p>
 
-        <!-- Active -->
-        <div v-if="subscription.status === 'active'" class="flex">
-          <div
-            class="
-              relative
-              flex-shrink-0
-              w-6
-              h-6
-              mr-2
-              bg-ok-default
-              rounded-full
-            "
-          >
-            <BaseIcon
-              class="absolute text-primary-lightest center-xy"
-              icon="uil:sync"
-              size="w-4 h-4"
-            />
-          </div>
-          <span
-            >{{ $t('account.subscriptions.subscription.status.active') }}
-            {{ renewalDate }}</span
-          >
-        </div>
-
-        <!-- Canceled -->
-        <div v-else-if="subscription.status === 'canceled'" class="flex">
-          <div
-            class="
-              relative
-              flex-shrink-0
-              w-6
-              h-6
-              mr-2
-              bg-primary-dark
-              rounded-full
-            "
-          >
-            <BaseIcon
-              class="absolute text-primary-lightest center-xy"
-              icon="uil:sync-slash"
-              size="w-4 h-4"
-            />
-          </div>
-          <span
-            >{{ $t('account.subscriptions.subscription.status.canceled') }} on
-            {{ formatDate(subscription.dateCanceled) }}</span
-          >
-        </div>
-
-        <!-- Trial -->
-        <div v-else-if="subscription.status === 'trial'" class="flex">
-          <div
-            class="
-              relative
-              flex-shrink-0
-              w-6
-              h-6
-              mr-2
-              bg-warning-default
-              rounded-full
-            "
-          >
-            <BaseIcon
-              class="absolute text-primary-lightest center-xy"
-              icon="uil:calender"
-              size="w-4 h-4"
-            />
-          </div>
-          <span
-            >{{ $t('account.subscriptions.subscription.status.trial') }}
-            {{ formatDate(subscription.dateTrialEnd) }}</span
-          >
-        </div>
+        <AccountSubscriptionStatus
+          class="md:mb-4"
+          :status="subscription.status"
+          :interval="subscription.interval"
+          :date-trial-end="subscription.dateTrialEnd"
+          :date-canceled="subscription.dateCanceled"
+          :date-paused="subscription.datePaused"
+          :date-period-end="subscription.datePeriodEnd"
+          :recurring-total="subscription.recurringTotal"
+          :show-message="false"
+        />
 
         <BaseButton
           class="mt-5 md:mt-auto"
@@ -165,16 +103,12 @@ export default {
       if (subscription.product.bundle) {
         const bundleThumbnails = subscription.product.bundleItems
           .map((item) => {
-            if (
-              item.variant &&
-              item.variant.images &&
-              item.variant.images.length
-            ) {
-              return item.variant.images[0].file
+            if (item.variant?.images?.length) {
+              return get(item, 'variant.images[0].file', false)
             }
 
-            if (item.product.images.length) {
-              return item.product.images[0].file
+            if (item.product?.images?.length) {
+              return get(item, 'product.images[0].file', false)
             }
 
             return false
@@ -186,7 +120,7 @@ export default {
       }
 
       // Otherwise use subscription images
-      if (subscription.variant.images && subscription.variant.images.length) {
+      if (subscription.variant?.images?.length) {
         return [get(subscription, 'variant.images[0]')]
       }
 
@@ -206,24 +140,6 @@ export default {
       if (options.length < 2) return
 
       return options.slice(1).join(', ')
-    },
-
-    renewalDate() {
-      const d = new Date(this.subscription.datePeriodEnd)
-      const date = this.formatDate(d, {
-        weekday: 'short',
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      })
-
-      const time = d.toLocaleString('en', {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true,
-      })
-
-      return `${date} at ${time}`
     },
   },
 }

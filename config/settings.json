@@ -73,6 +73,13 @@
   "product_list": {
     "enable_quick_add": true
   },
+  "account": {
+    "subscriptions": {
+      "allow_plan_edit": false,
+      "allow_frequency_edit": false,
+      "allow_options_edit": false
+    }
+  },
   "cart": {
     "shop_link": "/categories/"
   },
@@ -171,7 +178,10 @@
         },
         "stock_status": {
           "out_of_stock": { "message": "", "label": "Out of stock" },
-          "limited_availability": { "message": "Ships in 1–2 days", "label": "Low stock" },
+          "limited_availability": {
+            "message": "Ships in 1–2 days",
+            "label": "Low stock"
+          },
           "in_stock": { "message": "Ships in 1–2 days", "label": "In stock" },
           "custom": { "message": "Ships in 9–16 days", "label": "Custom order" }
         }
@@ -217,7 +227,10 @@
           "create": {
             "error": "There was an issue adding your payment method.",
             "success": "Payment method created.",
-            "button": { "loading_label": "Adding", "label": "Add new payment method" }
+            "button": {
+              "loading_label": "Adding",
+              "label": "Add new payment method"
+            }
           },
           "new_billing_address": "Add a new address",
           "no_billing_address": "You have no existing addresses. Create one below.",
@@ -274,7 +287,10 @@
       "reset_password": {
         "error": "There was an error updating your password. The reset password key may have expired.",
         "success": "You’ve successfully updated your password.",
-        "button": { "loading_label": "Processing...", "label": "Change password" },
+        "button": {
+          "loading_label": "Processing...",
+          "label": "Change password"
+        },
         "confirm_password": {
           "not_match": "Passwords do not match.",
           "placeholder": "Confirm new password"
@@ -339,25 +355,46 @@
           "delete": {
             "error": "There was an error deleting this address.",
             "success": "Address deleted.",
-            "button": { "loading_label": "Deleting address", "label": "Delete address" }
+            "button": {
+              "loading_label": "Deleting address",
+              "label": "Delete address"
+            }
           },
           "save": {
             "error": "There was an error updating this address.",
             "success": "Address updated.",
-            "button": { "loading_label": "Saving address", "label": "Save address" }
+            "button": {
+              "loading_label": "Saving address",
+              "label": "Save address"
+            }
           },
           "create": {
             "error": "There was an error updating this address.",
             "success": "Address created.",
-            "button": { "loading_label": "Creating address", "label": "Create address" }
+            "button": {
+              "loading_label": "Creating address",
+              "label": "Create address"
+            }
           },
           "set_as_default": "Make this my default shipping address.",
-          "country": { "required": "Please enter your country.", "label": "Country" },
-          "zipCode": { "required": "Please enter your zip code.", "label": "Zip code" },
-          "region": { "required": "Please enter your region.", "label": "Region" },
+          "country": {
+            "required": "Please enter your country.",
+            "label": "Country"
+          },
+          "zipCode": {
+            "required": "Please enter your zip code.",
+            "label": "Zip code"
+          },
+          "region": {
+            "required": "Please enter your region.",
+            "label": "Region"
+          },
           "city": { "required": "Please enter your city.", "label": "City" },
           "address2": { "label": "Apartment / Floor / Suite" },
-          "address1": { "required": "Please enter your address.", "label": "Address" },
+          "address1": {
+            "required": "Please enter your address.",
+            "label": "Address"
+          },
           "last_name": {
             "max_length": "Last name cannot exceed {n} characters.",
             "required": "Please enter your last name.",
@@ -400,12 +437,16 @@
         "subscription": {
           "summary": "{interval} at {amount}",
           "status": {
-            "trial_message": "You can edit your plan or order items until this time. We’ll ship your order the next day.",
-            "trial": "Trial ends",
-            "canceled_message": "You’re subscription has been cancellled and is unable to be reactivated.",
-            "canceled": "Canceled on",
             "active_message": "You can edit your plan or order items until this time. We’ll ship your order the next day.",
-            "active": "Renews"
+            "active": "Renews {date} at {time}",
+            "paused_message": "Your subscription has been paused. You can resume your subscription below.",
+            "paused": "Paused since {date}",
+            "paused_resumes_message": "Your subscription has been paused, but scheduled to resume. You can still change when your subscription resumes below.",
+            "paused_resumes": "Paused. Resumes on {date} at {time}.",
+            "trial_message": "You can edit your plan or order items until this time. We’ll ship your order the next day.",
+            "trial": "Trial ends {date} at {time}",
+            "canceled_message": "Your subscription has been cancellled and is unable to be reactivated.",
+            "canceled": "Canceled on {date}"
           },
           "view": "View subscription"
         },
@@ -413,7 +454,27 @@
           "edit": {
             "contact": "Contact us",
             "back_to_subscription": "Back to",
-            "title": "Edit plan"
+            "title": "Edit plan",
+            "change_frequency": "Change frequency",
+            "change_options": "Change option",
+            "plan": "Plan",
+            "popup": {
+              "change_frequency": {
+                "title": "Change frequency",
+                "text": "Changing your subscription frequency will change all future order dates and pricing.",
+                "yes": "Save",
+                "no": "Go back",
+                "loading": "Saving",
+                "success": "Your subscription has been updated."
+              },
+              "change_options": {
+                "title": "Change options",
+                "yes": "Save",
+                "no": "Go back",
+                "loading": "Saving",
+                "success": "Your subscription has been updated."
+              }
+            }
           },
           "popup": {
             "cancel": {
@@ -421,13 +482,63 @@
               "loading": "Canceling",
               "no": "No",
               "yes": "Yes",
-              "text": "Are you sure you want to cancel this subscription? This can’t be undone.",
-              "title": "Cancel subscription."
+              "text": "Are you sure you want to cancel this subscription?",
+              "title": "Cancel subscription"
             },
             "update": {
               "billing_address": { "success": "Billing address updated." },
               "shipping_address": { "success": "Shipping address updated." }
+            },
+            "pause": {
+              "title": "Pause your subscription",
+              "message": "We all need a break from time to time. You can also skip the next cycle and continue with your subscription.",
+              "pause_now": "Pause subscription now",
+              "skip_cycle": "Skip this cycle",
+              "no": "Go back",
+              "yes": "Save",
+              "loading": "Saving",
+              "success": "Your subscription has been paused.",
+              "skip_cycle_success": "Your subscription will skip the next cycle."
+            },
+            "resume": {
+              "title": "Resume your subscription",
+              "message": "Resume your subscription now or choose a date and time. If you choose a different date, you’ll be billed on that day.",
+              "resume_now": "Resume subscription now",
+              "choose_date": "Choose date and time",
+              "no": "Go back",
+              "yes": "Save",
+              "continue": "Continue",
+              "loading": "Saving",
+              "success": "Your subscription has been resumed."
+            },
+            "chooseDate": {
+              "title": "Choose date and time",
+              "message": "You’re about to change your order date.",
+              "date": {
+                "label": "Resume date",
+                "required": "Please enter a date",
+                "valid": "Please enter a future date"
+              },
+              "time": {
+                "label": "Resume date",
+                "required": "Please enter a date",
+                "valid": "Please enter a future date"
+              },
+              "no": "Cancel",
+              "yes": "Save new date",
+              "loading": "Saving",
+              "success": "Subscription will resume on {date}."
             }
+          },
+          "pause": {
+            "title": "Need a break?",
+            "message": "We get it. Sometimes we all need to snooze and sleep in. Pause your subscription before the next billing cycle and you won’t get charged.",
+            "label": "Pause subscription"
+          },
+          "resume": {
+            "title": "Resume your subscription",
+            "message": "You paused your subscription on {date}. You can resume your subscription now or choose a specific date.",
+            "label": "Resume subscription"
           },
           "cancel_subscription": "Cancel subscription",
           "renewal": "{date} at {time}",
@@ -448,6 +559,7 @@
           "shipping": "Shipping",
           "plan": "Plan",
           "plan_items": "Plan items",
+          "plan_total": "Plan",
           "back_to_subscriptions": "Back to all subscriptions"
         },
         "back_to_products": "Start shopping",

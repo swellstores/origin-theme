@@ -84,7 +84,7 @@
         :addresses-length="addresses.length"
         :default-address-id="defaultAddressId"
         :is-creating="isCreating"
-        :is-updating="isUpdating"
+        :is-loading="isUpdating"
         :is-deleting="isDeleting"
         :deletable="editAddressType === 'update' ? true : false"
         @click-close="editAddressPopupIsActive = false"

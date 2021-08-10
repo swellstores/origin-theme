@@ -26,29 +26,48 @@
         "
       >
         <div class="container py-6">
-          <h3 v-if="heading" class="pb-2">
-            {{ heading }}
-          </h3>
-          <p v-if="text" class="pb-6">
+          <div class="flex mb-5">
+            <h3 v-if="heading">
+              {{ heading }}
+            </h3>
+            <button class="ml-auto" @click.prevent="$emit('click-close')">
+              <BaseIcon icon="uil:multiply" size="sm" />
+            </button>
+          </div>
+
+          <p v-if="text">
             {{ text }}
           </p>
           <!-- Product options -->
-          <div v-for="input in optionInputs" :key="input.name">
+          <div v-for="input in optionInputs" :key="input.name" class="my-4">
             <component
               :is="input.component"
+              v-if="visibleOptionIds.includes(input.option.id)"
               :option="input.option"
               :current-value="optionState[input.option.name]"
-              @value-changed="setOptionValue"
+              :validation="$v.optionState[input.option.name]"
+              @value-changed="emitValue"
             />
           </div>
 
-          <BaseButton
-            class="w-full dark mt-6"
-            label="Save"
-            loading-label="Saving..."
-            :is-loading="isUpdating"
-            @click.native="update()"
-          />
+          <!-- Action buttons -->
+          <div class="block md:flex mt-16">
+            <BaseButton
+              class="md:w-1/2 mb-4 md:ml-4 md:mb-0 md:order-2"
+              appearance="dark"
+              :label="acceptLabel"
+              :loading-label="loadingLabel"
+              :is-loading="isUpdating"
+              @click.native="update()"
+            />
+
+            <BaseButton
+              class="md:w-1/2 md:mb-0 md:order-1"
+              appearance="light"
+              :label="refuseLabel"
+              @click.native="$emit('click-close')"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -57,9 +76,13 @@
 
 <script>
 // Helpers
-import get from 'lodash/get'
+import { validationMixin } from 'vuelidate'
+import { required } from 'vuelidate/lib/validators'
+import { listVisibleOptions } from '~/modules/swell'
 
 export default {
+  mixins: [validationMixin],
+
   props: {
     heading: {
       type: String,
@@ -69,9 +92,25 @@ export default {
       type: String,
       default: '',
     },
+    acceptLabel: {
+      type: String,
+      default: 'Save',
+    },
+    refuseLabel: {
+      type: String,
+      default: 'Go back',
+    },
+    loadingLabel: {
+      type: String,
+      default: 'Saving',
+    },
     options: {
       type: Array,
       default: () => [],
+    },
+    optionState: {
+      type: [Object, Array],
+      default: () => {},
     },
     isUpdating: {
       type: Boolean,
@@ -79,27 +118,13 @@ export default {
     },
   },
 
-  data() {
-    return {
-      optionState: null,
-    }
-  },
-
-  fetch() {
-    // Compute initial values for options
-    const optionState =
-      this.optionState ||
-      (this.options || []).reduce((options, { name, values }) => {
-        // Set first available value for current option
-        options[name] = get(values, '0.name')
-        return options
-      }, {})
-
-    // Set component data
-    this.optionState = optionState
-  },
-
   computed: {
+    visibleOptionIds() {
+      const optionState = this.optionState
+
+      return listVisibleOptions(this.options, optionState).map(({ id }) => id)
+    },
+
     optionInputs() {
       if (!this.options) return {}
       const options = this.options
@@ -134,17 +159,29 @@ export default {
   },
 
   methods: {
-    // Update an option value based on user input
-    setOptionValue({ option, value }) {
-      // Use $set to update the data object because options are dynamic
-      // and optionState won't be reactive otherwise
-      // TODO in Vue 3 this.optionState[option] = value should work
-      this.$set(this.optionState, option, value)
+    // Emit value to parent component
+    emitValue(value) {
+      this.$emit('value-changed', value)
     },
 
+    // Update an option value based on user input
     update() {
       this.$emit('update', this.optionState)
     },
+  },
+
+  validations() {
+    const { options } = this
+    const fields = options.reduce((obj, option) => {
+      if (option.required) {
+        obj[option.name] = { required }
+      }
+      return obj
+    }, {})
+
+    return {
+      optionState: fields,
+    }
   },
 }
 </script>

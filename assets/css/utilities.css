@@ -16,7 +16,7 @@
   }
 
   .h-vh-gap {
-    height: calc(100vh - 2rem);
+    height: calc(100vh - 6rem);
   }
 
   .w-full-px-6 {

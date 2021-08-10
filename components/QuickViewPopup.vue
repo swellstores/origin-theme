@@ -251,7 +251,9 @@ export default {
       this.optionState ||
       (product.options || []).reduce((options, { name, values, inputType }) => {
         // Set first available value for select current option
-        if (inputType === 'select') options[name] = get(values, '0.name')
+        if (!inputType || inputType === 'select') {
+          options[name] = get(values, '0.name')
+        }
         return options
       }, {})
 
