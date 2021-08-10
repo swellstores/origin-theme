@@ -2,10 +2,11 @@
   <div class="bg-primary-lightest md:py-0 py-4 rounded shadow-md">
     <div class="container md:p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
       <div
-        class="md:mb-0 mb-4"
+        class="grid md:mb-0 mb-4"
         :class="{
-          'grid grid-cols-2 gap-4': thumbnails.length <= 2,
-          'grid grid-cols-2 grid-rows-2 gap-4': thumbnails.length > 2,
+          'grid-cols-1 md:grid-cols-2 gap-4': thumbnails.length === 1,
+          'grid-cols-2 gap-4': thumbnails.length === 2,
+          'grid-cols-2 grid-rows-2 gap-4': thumbnails.length > 2,
         }"
       >
         <div
@@ -17,7 +18,7 @@
 
           <div
             v-if="
-              order.items.length > thumbnails.length &&
+              orderProducts.length > thumbnails.length &&
               index === thumbnails.length - 1
             "
             class="overlay text-primary-lightest"
@@ -31,7 +32,7 @@
                 text-primary-lightest
               "
             >
-              +{{ order.items.length - thumbnails.length }}
+              +{{ orderProducts.length - thumbnails.length }}
             </span>
           </div>
         </div>
@@ -108,7 +109,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+// Helpers
 import flatMap from 'lodash/flatMap'
 import get from 'lodash/get'
 
@@ -121,14 +122,22 @@ export default {
   },
 
   computed: {
-    ...mapState(['currency']),
-
     thumbnails() {
       // Get max of 4 images per item of order
+      if (!this.orderProducts.length) return []
+
+      return flatMap(this.orderProducts.slice(0, 4), (item) => {
+        if (!item.images.length) return false
+        return get(item, 'images[0].file', false)
+      }).filter(Boolean)
+    },
+
+    orderProducts() {
       if (!this.order.items) return
-      return flatMap(this.order.items.slice(0, 4), (item, index) => {
-        if (!item.product.images.length) return
-        return get(item.product, 'images[0].file')
+
+      return flatMap(this.order.items, (item) => {
+        if (!item.product) return []
+        return item.product
       })
     },
 

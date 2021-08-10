@@ -252,8 +252,18 @@
             </div>
           </div>
 
-          <!-- Action Buttons -->
-          <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4">
+          <!-- Action buttons -->
+          <div
+            class="
+              w-full
+              fixed
+              container
+              left-0
+              bottom-0
+              bg-primary-lighter
+              pb-4
+            "
+          >
             <BaseButton
               v-if="type === 'new'"
               class="mt-4"

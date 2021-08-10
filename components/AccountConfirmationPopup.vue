@@ -21,16 +21,22 @@
         "
       >
         <div class="container">
-          <h3 v-if="heading">
-            {{ heading }}
-          </h3>
-          <p class="pb-10">
+          <div class="flex mb-5">
+            <h3 v-if="heading">
+              {{ heading }}
+            </h3>
+            <button class="ml-auto" @click.prevent="$emit('click-close')">
+              <BaseIcon icon="uil:multiply" size="sm" />
+            </button>
+          </div>
+
+          <p class="mb-10">
             {{ promptMessage }}
           </p>
 
-          <div class="block mb-4 md:mb-0 md:flex">
+          <div class="block md:mb-0 md:flex">
             <BaseButton
-              class="w-full mb-4 md:w-1/2 md:mr-2 md:mb-0"
+              class="w-full mb-4 md:w-1/2 md:ml-4 md:mb-0 md:order-2"
               appearance="dark"
               :label="acceptLabel"
               :loading-label="loadingLabel"
@@ -39,7 +45,7 @@
             />
 
             <BaseButton
-              class="w-full md:w-1/2 md:mr-2 md:mb-0"
+              class="w-full md:w-1/2 md:mb-0 md:order-1"
               appearance="light"
               :label="refuseLabel"
               @click.native="refuse()"

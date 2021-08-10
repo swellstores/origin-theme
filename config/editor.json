@@ -445,6 +445,40 @@
       ]
     },
     {
+      "id": "account.subscriptions",
+      "url": "/account/orders",
+      "label": "Subscriptions",
+      "fields": [
+        {
+          "id": "account.subscriptions.allow_plan_edit",
+          "label": "Allow subscription plan edit",
+          "hint": "Allows customers to edit their susbcription plan.",
+          "default": true,
+          "type": "toggle"
+        },
+        {
+          "id": "account.subscriptions.allow_frequency_edit",
+          "label": "Allow subscription frequency edit",
+          "hint": "Allows customers to edit the frequency of their plan, if another frequency is available.",
+          "default": false,
+          "conditions": {
+            "account.subscriptions.allow_plan_edit": true
+          },
+          "type": "toggle"
+        },
+        {
+          "id": "account.subscriptions.allow_options_edit",
+          "label": "Allow subscription options edit",
+          "hint": "Allows customers to edit the options of their plan.",
+          "default": false,
+          "conditions": {
+            "account.subscriptions.allow_plan_edit": true
+          },
+          "type": "toggle"
+        }
+      ]
+    },
+    {
       "id": "cart",
       "label": "Cart",
       "fields": [
@@ -660,7 +694,7 @@
           "id": "lang.account.popup.save.success",
           "label": "Save success message",
           "default": "Account updated.",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         },
         {
@@ -1179,7 +1213,7 @@
         {
           "id": "lang.account.subscriptions.subscription.status.active",
           "label": "Active status",
-          "default": "Renews",
+          "default": "Renews {date} at {time}",
           "type": "short_text",
           "localized": true
         },
@@ -1187,27 +1221,55 @@
           "id": "lang.account.subscriptions.subscription.status.active_message",
           "label": "Active status message",
           "default": "You can edit your plan or order items until this time. We’ll ship your order the next day.",
+          "type": "long_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions.subscription.status.paused",
+          "label": "Paused status",
+          "default": "Paused since",
           "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions.subscription.status.paused_message",
+          "label": "Paused status message",
+          "default": "Your subscription has been paused. You can resume your subscription below.",
+          "type": "long_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions.subscription.status.paused_resumes",
+          "label": "Paused resumes status",
+          "default": "Paused. Resumes on {date} at {time}.",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions.subscription.status.paused_resumes_message",
+          "label": "Paused status message",
+          "default": "Your subscription has been paused, but scheduled to resume. You can still change when your subscription resumes below.",
+          "type": "long_text",
           "localized": true
         },
         {
           "id": "lang.account.subscriptions.subscription.status.canceled",
           "label": "Canceled status",
-          "default": "Canceled on",
+          "default": "Canceled on {date}",
           "type": "short_text",
           "localized": true
         },
         {
           "id": "lang.account.subscriptions.subscription.status.canceled_message",
           "label": "Canceled status message",
-          "default": "You’re subscription has been cancellled and is unable to be reactivated.",
-          "type": "short_text",
+          "default": "Your subscription has been cancellled and is unable to be reactivated.",
+          "type": "long_text",
           "localized": true
         },
         {
           "id": "lang.account.subscriptions.subscription.status.trial",
           "label": "Trial status",
-          "default": "Trial ends",
+          "default": "Trial ends {date} at {time}",
           "type": "short_text",
           "localized": true
         },
@@ -1215,7 +1277,7 @@
           "id": "lang.account.subscriptions.subscription.status.trial_message",
           "label": "Trial status message",
           "default": "You can edit your plan or order items until this time. We’ll ship your order the next day.",
-          "type": "short_text",
+          "type": "long_text",
           "localized": true
         }
       ]
@@ -1237,6 +1299,13 @@
           "id": "lang.account.subscriptions._id.plan_items",
           "label": "Plan items",
           "default": "Plan items",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.plan_total",
+          "label": "Plan total label",
+          "default": "Plan",
           "type": "short_text",
           "localized": true
         },
@@ -1368,14 +1437,260 @@
           "id": "lang.account.subscriptions._id.popup.update.shipping_address.success",
           "label": "Update shipping address success",
           "default": "Shipping address updated.",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         },
         {
           "id": "lang.account.subscriptions._id.popup.update.billing_address.success",
           "label": "Update billing address success",
           "default": "Billing address updated.",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "label": "Pause subscription",
+          "type": "heading"
+        },
+        {
+          "id": "lang.account.subscriptions._id.pause.title",
+          "label": "Pause subscription title",
+          "default": "Need a break?",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.pause.message",
+          "label": "Pause subscription message",
+          "default": "We get it. Sometimes we all need to snooze and sleep in. Pause your subscription before the next billing cycle and you won’t get charged.",
           "type": "long_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.pause.label",
+          "label": "Pause subscription link label",
+          "default": "Pause subscription",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.pause.title",
+          "label": "Pause subscription popup title",
+          "default": "Pause your subscription",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.pause.message",
+          "label": "Pause subscription popup message",
+          "default": "We all need a break from time to time. You can also skip the next cycle and continue with your subscription.",
+          "type": "long_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.pause.pause_now",
+          "label": "Pause subscription popup pause now option",
+          "default": "Pause subscription now",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.pause.skip_cycle",
+          "label": "Pause subscription popup skip cycle option",
+          "default": "Skip this cycle",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.pause.yes",
+          "label": "Accept subscription pausing",
+          "default": "Save",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.pause.no",
+          "label": "Cancel subscription pausing",
+          "default": "Go back",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.pause.loading",
+          "label": "Pausing subscription",
+          "default": "Saving",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.pause.success",
+          "label": "Pause subscription success",
+          "default": "Your subscription has been paused.",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.pause.skip_cycle_success",
+          "label": "Skip cycle success",
+          "default": "Your subscription will skip the next cycle.",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "label": "Resume subscription",
+          "type": "heading"
+        },
+        {
+          "id": "lang.account.subscriptions._id.resume.title",
+          "label": "Resume subscription title",
+          "default": "Resume subscription",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.resume.message",
+          "label": "Resume subscription message",
+          "default": "You paused your subscription on {date}. You can resume your subscription now or choose a specific date.",
+          "type": "long_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.resume.label",
+          "label": "Resume subscription link label",
+          "default": "Resume subscription",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.resume.title",
+          "label": "Resume subscription popup title",
+          "default": "Resume your subscription",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.resume.message",
+          "label": "Resume subscription popup message",
+          "default": "Resume your subscription now or choose a date and time. If you choose a different date, you’ll be billed on that day.",
+          "type": "long_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.resume.resume_now",
+          "label": "Resume subscription popup resume now option",
+          "default": "Resume subscription now",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.resume.choose_date",
+          "label": "Resume subscription popup choose date option",
+          "default": "Choose date and time",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.resume.yes",
+          "label": "Accept subscription resume",
+          "default": "Save",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.resume.no",
+          "label": "Cancel subscription resume",
+          "default": "Go back",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.resume.loading",
+          "label": "Resuming subscription",
+          "default": "Saving",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.resume.success",
+          "label": "Resume subscription success",
+          "default": "Your subscription has been resumed.",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.chooseDate.title",
+          "label": "Resume subscription date popup title",
+          "default": "Choose date and time",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.chooseDate.message",
+          "label": "Resume subscription date popup message",
+          "default": "You’re about to change your order date.",
+          "type": "long_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.chooseDate.date.label",
+          "label": "Resume date label",
+          "default": "Resume date",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.chooseDate.date.required",
+          "label": "Resume date required message",
+          "default": "Please enter a date",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.chooseDate.date.valid",
+          "label": "Resume date valid message",
+          "default": "Please enter a future date",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.chooseDate.time.required",
+          "label": "Resume time valid message",
+          "default": "Please enter a time",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.chooseDate.time.valid",
+          "label": "Resume time valid message",
+          "default": "Please enter a future time",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.chooseDate.yes",
+          "label": "Accept resume date",
+          "default": "Save new date",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.chooseDate.no",
+          "label": "Cancel resume date",
+          "default": "Cancel",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.chooseDate.loading",
+          "label": "Resuming subscription date",
+          "default": "Saving",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.popup.chooseDate.success",
+          "label": "Resume subscription success",
+          "default": "Subscription will resume on {date}.",
+          "type": "short_text",
           "localized": true
         },
         {
@@ -1392,14 +1707,14 @@
         {
           "id": "lang.account.subscriptions._id.popup.cancel.title",
           "label": "Cancel subscription popup title",
-          "default": "Cancel subscription.",
+          "default": "Cancel subscription",
           "type": "short_text",
           "localized": true
         },
         {
           "id": "lang.account.subscriptions._id.popup.cancel.text",
           "label": "Cancel subscription popup text",
-          "default": "Are you sure you want to cancel this subscription? This can’t be undone.",
+          "default": "Are you sure you want to cancel this subscription?",
           "type": "long_text",
           "localized": true
         },
@@ -1428,7 +1743,7 @@
           "id": "lang.account.subscriptions._id.popup.cancel.success",
           "label": "Cancel subscription success",
           "default": "Subscription cancelled successfully.",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         },
         {
@@ -1457,10 +1772,100 @@
           "localized": true
         },
         {
-          "id": "lang.account.subscriptions.subscription.summary",
-          "label": "Interval and amount summary",
-          "default": "{interval} at {amount}",
-          "hint": "Supports {interval} and {amount} placeholders.",
+          "id": "lang.account.subscriptions._id.edit.change_frequency",
+          "label": "Change frequency label",
+          "default": "Change frequency",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.popup.change_frequency.title",
+          "label": "Change frequency popup title",
+          "default": "Change frequency",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.popup.change_frequency.text",
+          "label": "Change frequency popup text",
+          "default": "Changing your subscription frequency will change all future order dates and pricing.",
+          "type": "long_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.popup.change_frequency.yes",
+          "label": "Accept change frequency",
+          "default": "Save",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.popup.change_frequency.no",
+          "label": "Cancel change frequency",
+          "default": "Go back",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.popup.change_frequency.loading",
+          "label": "Changing frequency",
+          "default": "Saving",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.popup.change_frequency.success",
+          "label": "Change frequency success",
+          "default": "Your subscription has been updated.",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.plan",
+          "label": "Plan title",
+          "default": "Plan",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.change_options",
+          "label": "Change options label",
+          "default": "Change options",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.popup.change_frequency.title",
+          "label": "Change options popup title",
+          "default": "Change options",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.popup.change_options.yes",
+          "label": "Accept change options",
+          "default": "Save",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.popup.change_options.no",
+          "label": "Cancel change options",
+          "default": "Go back",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.popup.change_options.loading",
+          "label": "Changing options",
+          "default": "Saving",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.subscriptions._id.edit.popup.change_options.success",
+          "label": "Change options success",
+          "default": "Your subscription has been updated.",
           "type": "short_text",
           "localized": true
         }
@@ -1581,7 +1986,7 @@
           "id": "lang.account.addresses.set_default_address.success",
           "label": "Set default address success message",
           "default": "Address set as default.",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         },
         {
@@ -1774,7 +2179,7 @@
           "id": "lang.account.addresses.popup.create.success",
           "label": "Update success message",
           "default": "Address created.",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         },
         {
@@ -1802,7 +2207,7 @@
           "id": "lang.account.addresses.popup.save.success",
           "label": "Save success message",
           "default": "Address updated.",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         },
         {
@@ -1830,7 +2235,7 @@
           "id": "lang.account.addresses.popup.delete.success",
           "label": "Delete success message",
           "default": "Address deleted.",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         },
         {
@@ -1985,7 +2390,7 @@
           "id": "lang.account.create_account.success",
           "label": "Create account success message",
           "default": "You’ve succesfully created an account.",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         },
         {
@@ -2077,7 +2482,7 @@
           "id": "lang.account.forgot_password.success",
           "label": "Password recovery sent message",
           "default": "An email has been sent to reset your password.",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         },
         {
@@ -2176,7 +2581,7 @@
           "id": "lang.account.reset_password.success",
           "label": "Reset password success message",
           "default": "You’ve successfully updated your password.",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         },
         {
@@ -2282,7 +2687,7 @@
           "id": "lang.account.login.success",
           "label": "Login success message",
           "default": "You’ve succesfully logged in.",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         },
         {
@@ -2339,7 +2744,7 @@
           "id": "lang.account.logout.success",
           "label": "Log out success message",
           "default": "You’ve succesfully logged out.",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         }
       ]
@@ -2530,7 +2935,7 @@
           "id": "lang.account.payments.popup.create.success",
           "label": "New payment success message",
           "default": "Payment method created.",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         },
         {
@@ -2558,7 +2963,7 @@
           "id": "lang.account.payments.popup.save.success",
           "label": "Save success message",
           "default": "Payment method updated.",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         },
         {
@@ -2586,7 +2991,7 @@
           "id": "lang.account.payments.popup.delete.success",
           "label": "Delete success message",
           "default": "Card deleted.",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         },
         {
@@ -2983,7 +3388,7 @@
           "id": "lang.email_signup.success",
           "label": "Success message",
           "default": "You're on the list!",
-          "type": "long_text",
+          "type": "short_text",
           "localized": true
         },
         {

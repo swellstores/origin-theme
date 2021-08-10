@@ -59,5 +59,10 @@ export default {
     this.subscriptions = subscriptions
     this.shopLink = $swell.settings.get('cart.shopLink', '/categories/')
   },
+
+  activated() {
+    // Refetch updated data
+    this.$fetch()
+  },
 }
 </script>

@@ -35,192 +35,143 @@
             </span>
           </div>
 
-          <!-- Active -->
-          <div v-if="status === 'active'" class="flex">
-            <div
-              class="
-                relative
-                flex-shrink-0
-                w-6
-                h-6
-                mr-2
-                bg-ok-default
-                rounded-full
-              "
-            >
-              <BaseIcon
-                class="absolute text-primary-lightest center-xy"
-                icon="uil:sync"
-                size="w-4 h-4"
-              />
+          <AccountSubscriptionStatus
+            :status="subscription.status"
+            :interval="subscription.interval"
+            :date-trial-end="subscription.dateTrialEnd"
+            :date-canceled="subscription.dateCanceled"
+            :date-paused="subscription.datePaused"
+            :date-pause-end="subscription.datePauseEnd"
+            :date-period-end="subscription.datePeriodEnd"
+            :recurring-total="subscription.recurringTotal"
+          />
+        </div>
+
+        <!-- Allow email contact to edit plan -->
+        <a
+          v-if="
+            !allowFrequencyEdit &&
+            !allowOptionsEdit &&
+            status !== 'canceled' &&
+            supportEmail
+          "
+          :href="'mailto:' + supportEmail"
+          class="btn light md:w-auto mb-6"
+        >
+          {{ $t('account.subscriptions.id.edit.contact') }}
+        </a>
+
+        <!-- Edit frequency of plan -->
+        <BaseButton
+          v-if="allowFrequencyEdit && status !== 'canceled'"
+          class="mb-6"
+          fit="auto"
+          appearance="light"
+          :label="$t('account.subscriptions.id.edit.changeFrequency')"
+          @click.native="changeFrequencyPopupisActive = true"
+        />
+
+        <!-- Plan items -->
+        <span class="block label-xs-bold-faded">{{
+          $t('account.subscriptions.id.edit.plan')
+        }}</span>
+
+        <div class="mb-6 border-b border-primary-light">
+          <div class="w-full flex py-6">
+            <div v-if="planThumbnail" class="min-w-26 mr-6">
+              <VisualMedia :source="planThumbnail.file" sizes="120px" />
             </div>
-            <div>
-              <p>
-                {{ $t('account.subscriptions.subscription.status.active') }}
-                {{ renewalDate }}
-              </p>
-              <p class="text-sm text-primary-dark">
+
+            <div class="text-sm text-primary-darker">
+              <h4 class="pb-2">{{ subscription.product.name }}</h4>
+              <p v-if="subscription.quantity > 1">
                 {{
-                  $t('account.subscriptions.subscription.status.activeMessage')
+                  $tc('account.orders.id.quantity', subscription.quantity, {
+                    count: subscription.quantity,
+                  })
                 }}
               </p>
-            </div>
-          </div>
-
-          <!-- Canceled -->
-          <div v-else-if="status === 'canceled'" class="flex">
-            <div
-              class="
-                relative
-                flex-shrink-0
-                w-6
-                h-6
-                mr-2
-                bg-primary-dark
-                rounded-full
-              "
-            >
-              <BaseIcon
-                class="absolute text-primary-lightest center-xy"
-                icon="uil:sync-slash"
-                size="w-4 h-4"
-              />
-            </div>
-            <div>
-              <p>
-                {{ $t('account.subscriptions.subscription.status.canceled') }}
-                {{ formatDate(subscription.dateCanceled) }}
+              <p v-for="option in subscription.options" :key="option.id">
+                <span>{{ option.name }}: {{ option.value }}</span>
               </p>
-              <p class="text-sm text-primary-dark">
+              <p class="font-semibold">
                 {{
-                  $t(
-                    'account.subscriptions.subscription.status.canceledMessage'
+                  formatMoney(
+                    subscription.recurringTotal,
+                    subscription.currency
                   )
                 }}
               </p>
             </div>
-          </div>
 
-          <!-- Trial -->
-          <div v-else-if="status === 'trial'" class="flex">
-            <div
-              class="
-                relative
-                flex-shrink-0
-                w-6
-                h-6
-                mr-2
-                bg-warning-default
-                rounded-full
-              "
-            >
-              <BaseIcon
-                class="absolute text-primary-lightest center-xy"
-                icon="uil:calender"
-                size="w-4 h-4"
-              />
-            </div>
-            <div>
-              <p>
-                {{ $t('account.subscriptions.subscription.status.trial') }}
-                {{ formatDate(subscription.dateTrialEnd) }}
-              </p>
-              <p class="text-sm text-primary-dark">
-                {{
-                  $t('account.subscriptions.subscription.status.trialMessage')
-                }}
-
-                {{
-                  $t('account.subscriptions.subscription.summary', {
-                    interval: subscription.interval,
-                    amount: formatMoney(subscription.recurringTotal, currency),
-                  })
-                }}
-              </p>
-            </div>
+            <!-- Edit plan options -->
           </div>
+          <BaseButton
+            v-if="
+              status !== 'canceled' && allowOptionsEdit && planOptions.length
+            "
+            class="block mb-6"
+            fit="auto"
+            appearance="light"
+            :label="$t('account.subscriptions.id.edit.changeOptions')"
+            @click.native="changeOptionsPopupisActive = true"
+          />
         </div>
 
-        <!--  TODO: Add ability to change frequency and plan item options. -->
-        <!-- <button class="btn light w-full mb-6" @click="changeFrequencyPopupisActive = true">
-          {{ $t('account.subscriptions.id.edit.changeFrequency') }}
-        </button> -->
-
+        <!-- Cancel subscription -->
         <BaseButton
-          v-if="status === 'trial'"
-          class="w-full block mb-6 md:mr-4 md:mb-0"
+          v-if="status !== 'canceled'"
+          class="block mb-6"
           fit="auto"
           appearance="light-error"
           :label="$t('account.subscriptions.id.cancelSubscription')"
           @click.native="cancelPopupIsActive = true"
         />
-
-        <a
-          v-else-if="status === 'active'"
-          :href="'mailto:' + store.supportEmail"
-          class="btn light w-full md:w-auto mt-6"
-        >
-          {{ $t('account.subscriptions.id.edit.contact') }}
-        </a>
-
-        <!--  TODO: Add ability to change frequency and plan item options. -->
-        <!-- Plan items -->
-        <!-- <span class="label-xs-bold-faded">Plan</span>
-
-        <div class="mb-6 md:grid md:grid-cols-2 md:col-gap-4">
-          <div class="w-full flex py-6 border-b border-primary-light">
-            <div v-if="subscription.variant.images" class="min-w-26 mr-6">
-              <VisualMedia :source="subscription.variant.images[0].file" sizes="120px" />
-            </div>
-
-            <div>
-              <h4 class="pb-2">{{ subscription.product.name }}</h4>
-              <p v-if="subscription.quantity > 1" class="text-sm text-primary-darker">
-                {{
-                  $tc('account.orders.id.quantity', subscription.quantity, {
-                    count: subscription.quantity
-                  })
-                }}
-              </p>
-              <p
-                v-for="option in subscription.options"
-                :key="option.id"
-                class="text-sm text-primary-darker"
-              >
-                <span>{{ option.name }}: {{ option.value }}</span>
-              </p>
-            </div>
-          </div>
-
-          <button class="btn light w-full mb-6" @click="changeOptionsPopupisActive = true">
-            Change options
-          </button>
-        </div>
-
-        <div class="mb-6">
-          <div v-for="(item, index) in planItems" :key="`plan-item-${index}`"></div>
-        </div> -->
       </div>
 
-      <!--  TODO: Add ability to change frequency and plan item options. -->
-      <!-- <AccountEditOptionsPopup
+      <!-- Change frequency/options popups -->
+      <AccountEditOptionsPopup
         v-if="changeFrequencyPopupisActive"
-        heading="Change frequency"
-        text="Changing your subscription frequency will also change all future order dates."
+        :heading="
+          $t('account.subscriptions.id.edit.popup.changeFrequency.title')
+        "
+        :text="$t('account.subscriptions.id.edit.popup.changeFrequency.text')"
+        :accept-label="
+          $t('account.subscriptions.id.edit.popup.changeFrequency.yes')
+        "
+        :refuse-label="
+          $t('account.subscriptions.id.edit.popup.changeFrequency.no')
+        "
+        :loading-label="
+          $t('account.subscriptions.id.edit.popup.changeFrequency.loading')
+        "
         :options="subscriptionOptions"
+        :option-state="optionState"
         :is-updating="isUpdating"
-        @click-close="changeFrequencyPopupisActive = false"
-        @update="updateSubscriptionFrequency"
+        @click-close="closeAndResetPopups"
+        @value-changed="setOptionValue"
+        @update="updatePlan('frequency')"
       />
 
       <AccountEditOptionsPopup
         v-if="changeOptionsPopupisActive"
-        :heading="subscription.product.name"
+        :heading="$t('account.subscriptions.id.edit.popup.changeOptions.title')"
+        :accept-label="
+          $t('account.subscriptions.id.edit.popup.changeOptions.yes')
+        "
+        :refuse-label="
+          $t('account.subscriptions.id.edit.popup.changeOptions.no')
+        "
+        :loading-label="
+          $t('account.subscriptions.id.edit.popup.changeOptions.loading')
+        "
         :options="planOptions"
+        :option-state="optionState"
         :is-updating="isUpdating"
-        @click-close="changeOptionsPopupisActive = false"
-        @update="updatePlanOption"
-      /> -->
+        @click-close="closeAndResetPopups"
+        @value-changed="setOptionValue"
+        @update="updatePlan"
+      />
 
       <AccountConfirmationPopup
         v-if="cancelPopupIsActive"
@@ -241,6 +192,7 @@
 // Helpers
 import { mapState } from 'vuex'
 import filter from 'lodash/filter'
+import get from 'lodash/get'
 
 export default {
   name: 'Subscription',
@@ -250,29 +202,50 @@ export default {
     return {
       store: null,
       subscription: null,
-      subscriptionOrder: null,
-      // changeFrequencyPopupisActive: false,
-      // changeOptionsPopupisActive: false,
+      optionState: null,
+      changeFrequencyPopupisActive: false,
+      changeOptionsPopupisActive: false,
       cancelPopupIsActive: false,
       isCanceling: false,
       isUpdating: false,
+      allowFrequencyEdit: true,
+      allowOptionsEdit: true,
     }
   },
 
   async fetch() {
-    const subscription = await this.$swell.subscriptions.get(
-      this.$route.params.id,
-      {
-        expand: ['product', 'variant'],
-      }
-    )
-    this.subscription = subscription
+    const { $swell } = this
 
-    this.store = this.$swell.settings.get('store', {})
+    const subscription = await $swell.subscriptions.get(this.$route.params.id, {
+      expand: ['product', 'variant'],
+    })
+
+    // Show 404 if subscription isn't found
+    if (!subscription) {
+      return this.$nuxt.error({ statusCode: 404 })
+    }
+
+    // Set component data
+    this.subscription = subscription
+    this.allowFrequencyEdit = $swell.settings.get(
+      'account.subscriptions.allowFrequencyEdit',
+      false
+    )
+    this.allowOptionsEdit = $swell.settings.get(
+      'account.subscriptions.allowOptionsEdit',
+      false
+    )
+
+    // Compute initial values for options
+    this.resetOptionValues()
   },
 
   computed: {
     ...mapState(['currency']),
+
+    supportEmail() {
+      return this.$swell.settings.get('store.supportEmail')
+    },
 
     subscriptionName() {
       if (!this.subscription) return
@@ -280,38 +253,29 @@ export default {
     },
 
     subscriptionOptions() {
-      const options = filter(this.subscription.product.options, 'subscription')
-      return options
+      return filter(this.subscription.product.options, 'subscription')
     },
 
     planOptions() {
-      const options = filter(
+      return filter(
         this.subscription.product.options,
         (option) => !option.subscription
       )
-      return options
+    },
+
+    planThumbnail() {
+      const { subscription } = this
+
+      if (subscription.variant?.images?.length) {
+        return get(subscription, 'variant.images[0]')
+      }
+
+      return get(subscription, 'product.images[0]')
     },
 
     status() {
       if (!this.subscription) return
       return this.subscription.status
-    },
-
-    renewalDate() {
-      const d = new Date(this.subscription.datePeriodEnd)
-      const date = this.formatDate(d, {
-        weekday: 'short',
-        month: 'long',
-        day: 'numeric',
-      })
-
-      const time = d.toLocaleString('en', {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true,
-      })
-
-      return this.$t('account.subscriptions.id.renewal', { date, time })
     },
 
     planItems() {
@@ -320,15 +284,42 @@ export default {
     },
   },
 
-  methods: {
-    formatDate(iso) {
-      const date = new Date(iso)
+  activated() {
+    // Refetch updated data
+    this.$fetch()
+  },
 
-      return new Intl.DateTimeFormat('default', {
-        month: 'long',
-        day: '2-digit',
-        year: 'numeric',
-      }).format(date)
+  methods: {
+    resetOptionValues() {
+      // Reset option values
+      // Compute initial values for options
+      this.optionState = (this.subscription.product.options || []).reduce(
+        (options, { name, values, id }) => {
+          // If option has been set, select for current option,
+          // otherwise fallback to first available option
+          const matched = this.subscription.options?.find(
+            (option) => option.id === id
+          )
+          options[name] = matched ? matched.value : get(values, '0.name')
+
+          return options
+        },
+        {}
+      )
+    },
+
+    closeAndResetPopups() {
+      this.changeFrequencyPopupisActive = false
+      this.changeOptionsPopupisActive = false
+      this.resetOptionValues()
+    },
+
+    // Update an option value based on user input
+    setOptionValue({ option, value }) {
+      // Use $set to update the data object because options are dynamic
+      // and optionState won't be reactive otherwise
+      // TODO in Vue 3 this.optionState[option] = value should work
+      this.$set(this.optionState, option, value)
     },
 
     async cancelSubscription() {
@@ -353,71 +344,38 @@ export default {
       }
     },
 
-    // TODO: Add ability to change frequency and plan item options.
-    /* async updateSubscriptionFrequency(freq) {
+    async updatePlan(type = 'options') {
       this.isUpdating = true
-      let frequency = {}
+      const optionState = this.optionState
+      const options = []
 
-      const val = Object.values(freq)[0]
-
-      switch (val) {
-        case 'Daily':
-          frequency = {
-            interval: 'daily',
-            intervalCount: 1,
-            options: [{ id: 'Plan', value: 'Daily' }]
-          }
-          break
-        case 'Weekly':
-          frequency = {
-            interval: 'weekly',
-            intervalCount: 1,
-            options: [{ id: 'Plan', value: 'Weekly' }]
-          }
-          break
-        case 'Monthly':
-          frequency = {
-            interval: 'monthly',
-            intervalCount: 1,
-            options: [{ id: 'Plan', value: 'Monthly' }]
-          }
-          break
-        case 'Yearly':
-          frequency = {
-            interval: 'yearly',
-            intervalCount: 1,
-            options: [{ id: 'Plan', value: 'Yearly' }]
-          }
-          break
+      for (const key in optionState) {
+        const value = optionState[key]
+        const { id } = this.subscription.product.options.find(
+          (option) => option.name === key
+        )
+        options.push({ id, value })
       }
 
-      await this.$swell.subscriptions.update(this.subscription.id, frequency)
-
-      this.isUpdating = false
-      this.changeFrequencyPopupisActive = false
-      this.$store.dispatch('showNotification', {
-        message: 'Your subscription has been updated.',
-        type: 'success'
-      })
-      this.$fetch()
-    },
-
-    async updatePlanOption(option) {
-      this.isUpdating = true
-
-      const val = Object.values(option)[0]
-      await this.$swell.subscriptions.update(this.subscription.id, {
-        options: [{ id: '60855ad11e98240c11d7d79d', value: val }]
-      })
+      await this.$swell.subscriptions.update(this.subscription.id, { options })
 
       this.isUpdating = false
       this.changeOptionsPopupisActive = false
+      this.changeFrequencyPopupisActive = false
+
       this.$store.dispatch('showNotification', {
-        message: 'Your subscription has been updated.',
-        type: 'success'
+        message:
+          type === 'frequency'
+            ? this.$t(
+                'account.subscriptions.id.edit.popup.changeFrequency.success'
+              )
+            : this.$t(
+                'account.subscriptions.id.edit.popup.changeOptions.success'
+              ),
+        type: 'success',
       })
       this.$fetch()
-    } */
+    },
   },
 }
 </script>

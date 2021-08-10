@@ -12,17 +12,13 @@
         class="
           panel
           w-full
-          md:w-128
           h-vh-gap
-          md:h-auto md:max-h-80vh
           absolute
-          md:relative
           bottom-0
           rounded-t
-          md:rounded
           bg-primary-lighter
           overflow-scroll
-          md:center-xy
+          md:w-128 md:h-auto md:max-h-80vh md:relative md:rounded md:center-xy
         "
       >
         <div class="container py-2">
@@ -162,16 +158,32 @@
                 </div>
               </label>
             </div>
-          </div>
 
-          <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4">
-            <BaseButton
-              appearance="dark"
-              :label="$t('account.popup.save.label')"
-              :loading-label="$t('account.popup.save.loadingLabel')"
-              :is-loading="isUpdating"
-              @click.native="updateProfile()"
-            />
+            <!-- Duplicate button elements to match fixed content below -->
+            <div class="invisible pointer-events-none pb-4">
+              <BaseButton class="mt-4" label="|" />
+            </div>
+
+            <div
+              class="
+                w-full
+                container
+                fixed
+                left-0
+                bottom-0
+                bg-primary-lighter
+                pb-4
+              "
+            >
+              <BaseButton
+                appearance="dark"
+                class="mt-4"
+                :label="$t('account.popup.save.label')"
+                :loading-label="$t('account.popup.save.loadingLabel')"
+                :is-loading="isUpdating"
+                @click.native="updateProfile()"
+              />
+            </div>
           </div>
         </div>
       </div>
