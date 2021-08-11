@@ -12,20 +12,16 @@
         class="
           panel
           w-full
-          md:w-128
           h-vh-gap
-          md:h-auto md:max-h-80vh
           absolute
-          md:relative
           bottom-0
           rounded-t
-          md:rounded
           bg-primary-lighter
           overflow-scroll
-          md:center-xy
+          md:w-128 md:h-auto md:max-h-80vh md:relative md:rounded md:center-xy
         "
       >
-        <div class="container py-2">
+        <div class="container pt-2 pb-4 md:pb-0">
           <div class="flex py-4">
             <h3 v-if="type === 'new'">
               {{ $t('account.addresses.popup.new.title') }}
@@ -39,7 +35,7 @@
           </div>
 
           <!-- Fields -->
-          <div class="pt-6">
+          <div class="pt-6 pb-4">
             <div class="mb-6">
               <InputText
                 v-model="firstName"
@@ -235,7 +231,7 @@
               </template>
             </div>
 
-            <div v-if="flow === 'default' || defaultable" class="checkbox mb-6">
+            <div v-if="flow === 'default' || defaultable" class="checkbox">
               <input
                 id="set-default"
                 v-model="setDefault"
@@ -250,59 +246,68 @@
                 </div>
               </label>
             </div>
-          </div>
 
-          <!-- Action buttons -->
-          <div
-            class="
-              w-full
-              fixed
-              container
-              left-0
-              bottom-0
-              bg-primary-lighter
-              pb-4
+            <!-- Duplicate button elements to match fixed content below -->
+            <div
+              class="block md:hidden grid gap-y-4 invisible pointer-events-none"
+            >
+              <div v-if="type === 'new'" class="btn">|</div>
+              <div v-if="type === 'update'" class="btn">|</div>
+              <div v-if="type === 'update' && deletable" class="btn">|</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div
+          class="
+            w-full
+            fixed
+            container
+            center-x
+            bottom-0
+            py-4
+            bg-primary-lighter
+            grid
+            gap-y-4
+            md:transform-none md:sticky md:left-0
+          "
+        >
+          <BaseButton
+            v-if="type === 'new'"
+            appearance="dark"
+            :label="$t('account.addresses.popup.create.button.label')"
+            :loading-label="
+              $t('account.addresses.popup.create.button.loadingLabel')
             "
-          >
-            <BaseButton
-              v-if="type === 'new'"
-              class="mt-4"
-              appearance="dark"
-              :label="$t('account.addresses.popup.create.button.label')"
-              :loading-label="
-                $t('account.addresses.popup.create.button.loadingLabel')
-              "
-              :is-loading="isCreating"
-              :disabled="isUpdating || isDeleting"
-              @click.native="create()"
-            />
+            :is-loading="isCreating"
+            :disabled="isUpdating || isDeleting"
+            @click.native="create()"
+          />
 
-            <BaseButton
-              v-if="type === 'update'"
-              class="mt-4"
-              appearance="dark"
-              :label="$t('account.addresses.popup.save.button.label')"
-              :loading-label="
-                $t('account.addresses.popup.save.button.loadingLabel')
-              "
-              :is-loading="isUpdating"
-              :disabled="isCreating || isDeleting"
-              @click.native="update()"
-            />
+          <BaseButton
+            v-if="type === 'update'"
+            appearance="dark"
+            :label="$t('account.addresses.popup.save.button.label')"
+            :loading-label="
+              $t('account.addresses.popup.save.button.loadingLabel')
+            "
+            :is-loading="isUpdating"
+            :disabled="isCreating || isDeleting"
+            @click.native="update()"
+          />
 
-            <BaseButton
-              v-if="type === 'update' && deletable"
-              class="mt-4"
-              appearance="light-error"
-              :label="$t('account.addresses.popup.delete.button.label')"
-              :loading-label="
-                $t('account.addresses.popup.delete.button.loadingLabel')
-              "
-              :is-loading="isDeleting"
-              :disabled="isCreating || isUpdating"
-              @click.native="remove()"
-            />
-          </div>
+          <BaseButton
+            v-if="type === 'update' && deletable"
+            appearance="light-error"
+            :label="$t('account.addresses.popup.delete.button.label')"
+            :loading-label="
+              $t('account.addresses.popup.delete.button.loadingLabel')
+            "
+            :is-loading="isDeleting"
+            :disabled="isCreating || isUpdating"
+            @click.native="remove()"
+          />
         </div>
       </div>
     </div>
