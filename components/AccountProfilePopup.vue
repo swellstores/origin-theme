@@ -21,7 +21,7 @@
           md:w-128 md:h-auto md:max-h-80vh md:relative md:rounded md:center-xy
         "
       >
-        <div class="container py-2">
+        <div class="container pt-2 pb-4 md:pb-0">
           <div class="flex py-4">
             <h3>{{ $t('account.edit') }}</h3>
             <button class="ml-auto" @click.prevent="$emit('click-close')">
@@ -30,7 +30,7 @@
           </div>
 
           <!-- Fields -->
-          <div class="pt-6">
+          <div class="pt-6 pb-4">
             <div class="mb-6">
               <InputText
                 v-model="firstName"
@@ -148,7 +148,7 @@
               </template>
             </div>
 
-            <div class="checkbox mb-6">
+            <div class="checkbox">
               <input id="set-default" v-model="emailOptin" type="checkbox" />
 
               <label class="w-full" for="set-default">
@@ -160,31 +160,34 @@
             </div>
 
             <!-- Duplicate button elements to match fixed content below -->
-            <div class="invisible pointer-events-none pb-4">
-              <BaseButton class="mt-4" label="|" />
-            </div>
-
-            <div
-              class="
-                w-full
-                container
-                fixed
-                left-0
-                bottom-0
-                bg-primary-lighter
-                pb-4
-              "
-            >
-              <BaseButton
-                appearance="dark"
-                class="mt-4"
-                :label="$t('account.popup.save.label')"
-                :loading-label="$t('account.popup.save.loadingLabel')"
-                :is-loading="isUpdating"
-                @click.native="updateProfile()"
-              />
+            <div class="block md:hidden invisible pointer-events-none">
+              <div class="btn">|</div>
             </div>
           </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div
+          class="
+            w-full
+            fixed
+            container
+            center-x
+            bottom-0
+            py-4
+            bg-primary-lighter
+            grid
+            gap-y-4
+            md:transform-none md:sticky md:left-0
+          "
+        >
+          <BaseButton
+            appearance="dark"
+            :label="$t('account.popup.save.label')"
+            :loading-label="$t('account.popup.save.loadingLabel')"
+            :is-loading="isUpdating"
+            @click.native="updateProfile()"
+          />
         </div>
       </div>
     </div>

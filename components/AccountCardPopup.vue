@@ -12,20 +12,16 @@
         class="
           panel
           w-full
-          md:w-128
           h-vh-gap
-          md:h-auto md:max-h-80vh
           absolute
-          md:relative
           bottom-0
           rounded-t
-          md:rounded
           bg-primary-lighter
           overflow-scroll
-          md:center-xy
+          md:w-128 md:h-auto md:max-h-80vh md:relative md:rounded md:center-xy
         "
       >
-        <div class="container relative py-2">
+        <div class="container pt-2 pb-4 md:pb-0">
           <div class="flex py-4">
             <h3 v-if="type === 'new'">
               {{ $t('account.payments.popup.new.title') }}
@@ -39,7 +35,7 @@
           </div>
 
           <!-- Fields -->
-          <div class="pt-6">
+          <div class="pt-6 pb-4">
             <div class="mb-6">
               <InputText
                 v-model="cardNumber"
@@ -142,8 +138,8 @@
           </div>
         </div>
 
-        <div class="py-6 border-t border-primary-med">
-          <div class="container">
+        <div class="container pt-6 pb-4 border-t border-primary-med">
+          <div class="mb-6 md:mb-0">
             <span class="block text-md font-semibold mb-2">{{
               $t('account.payments.popup.billingAddress')
             }}</span>
@@ -169,46 +165,65 @@
               + {{ $t('account.payments.popup.newBillingAddress') }}
             </button>
           </div>
+
+          <!-- Duplicate button elements to match fixed content below -->
+          <div
+            class="block md:hidden grid gap-y-4 invisible pointer-events-none"
+          >
+            <div v-if="type === 'new'" class="btn">|</div>
+            <div v-if="type === 'update'" class="btn">|</div>
+            <div v-if="type === 'update'" class="btn">|</div>
+          </div>
         </div>
 
-        <div class="w-full sticky left-0 bottom-0 bg-primary-lighter pb-4 z-30">
-          <div class="container">
-            <BaseButton
-              v-if="type === 'new'"
-              class="my-4"
-              appearance="dark"
-              :label="$t('account.payments.popup.create.button.label')"
-              :loading-label="
-                $t('account.payments.popup.create.button.loadingLabel')
-              "
-              :is-loading="isCreating"
-              :disabled="isUpdating || isDeleting"
-              @click.native="createCard()"
-            />
+        <!-- Action buttons -->
+        <div
+          class="
+            w-full
+            fixed
+            container
+            center-x
+            bottom-0
+            py-4
+            bg-primary-lighter
+            grid
+            gap-y-4
+            md:transform-none md:sticky md:left-0
+          "
+        >
+          <BaseButton
+            v-if="type === 'new'"
+            appearance="dark"
+            :label="$t('account.payments.popup.create.button.label')"
+            :loading-label="
+              $t('account.payments.popup.create.button.loadingLabel')
+            "
+            :is-loading="isCreating"
+            :disabled="isUpdating || isDeleting"
+            @click.native="createCard()"
+          />
 
-            <BaseButton
-              v-if="type === 'update'"
-              class="my-4"
-              appearance="dark"
-              :label="$t('account.payments.popup.save.button.label')"
-              :loading-label="$t('account.payments.save.button.label')"
-              :is-loading="isUpdating"
-              :disabled="isCreating || isDeleting"
-              @click.native="updateCard()"
-            />
+          <BaseButton
+            v-if="type === 'update'"
+            appearance="dark"
+            :label="$t('account.payments.popup.save.button.label')"
+            :loading-label="$t('account.payments.save.button.label')"
+            :is-loading="isUpdating"
+            :disabled="isCreating || isDeleting"
+            @click.native="updateCard()"
+          />
 
-            <BaseButton
-              v-if="type === 'update'"
-              appearance="light-error"
-              :label="$t('account.payments.popup.delete.button.label')"
-              :loading-label="
-                $t('account.payments.popup.delete.button.loadingLabel')
-              "
-              :is-loading="isDeleting"
-              :disabled="isCreating || isUpdating"
-              @click.native="deleteCard()"
-            />
-          </div>
+          <BaseButton
+            v-if="type === 'update'"
+            appearance="light-error"
+            :label="$t('account.payments.popup.delete.button.label')"
+            :loading-label="
+              $t('account.payments.popup.delete.button.loadingLabel')
+            "
+            :is-loading="isDeleting"
+            :disabled="isCreating || isUpdating"
+            @click.native="deleteCard()"
+          />
         </div>
       </div>
     </div>

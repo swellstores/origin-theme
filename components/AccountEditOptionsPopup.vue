@@ -12,17 +12,13 @@
         class="
           panel
           w-full
-          md:w-128
-          h-auto
-          md:max-h-80vh
+          h-vh-gap
           absolute
-          md:relative
           bottom-0
           rounded-t
-          md:rounded
           bg-primary-lighter
           overflow-scroll
-          md:center-xy
+          md:w-128 md:h-auto md:max-h-80vh md:relative md:rounded md:center-xy
         "
       >
         <div class="container py-6">
