@@ -104,9 +104,17 @@
             >
               <div class="min-w-26 mr-6">
                 <VisualMedia
+                  v-if="item.product.images && item.product.images.length"
                   :source="item.product.images[0].file"
                   sizes="120px"
                 />
+                <div v-else class="relative bg-primary-light rounded pb-full">
+                  <BaseIcon
+                    icon="uil:camera-slash"
+                    size="lg"
+                    class="absolute center-xy text-primary-med"
+                  />
+                </div>
               </div>
 
               <div>

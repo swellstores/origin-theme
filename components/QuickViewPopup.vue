@@ -20,7 +20,7 @@
           bottom-0
           rounded-t
           md:rounded-md
-          bg-primary-lighter
+          bg-primary-lightest
           md:center-xy
           overflow-scroll
           hide-scroll
@@ -55,12 +55,24 @@
           <!-- Product image -->
           <div class="relative h-min mb-5 md:mb-0 md:w-96 lg:w-120">
             <MediaSlider
+              v-if="productImages"
               :media="product.images"
               class="md:hidden h-0 pb-full"
             />
+            <!-- Fallback image -->
+            <div
+              v-else
+              class="md:hidden relative bg-primary-lighter rounded pb-full"
+            >
+              <BaseIcon
+                icon="uil:camera-slash"
+                size="lg"
+                class="absolute center-xy text-primary-med"
+              />
+            </div>
             <!-- Media stack for large screens -->
-            <div class="hidden h-full md:block">
-              <template v-for="(image, index) in product.images">
+            <div v-if="productImages" class="hidden h-full md:block">
+              <template v-for="(image, index) in productImages">
                 <div v-show="index === productPreviewIndex" :key="image.id">
                   <VisualMedia
                     :id="index"
@@ -102,6 +114,14 @@
                   />
                 </button>
               </div>
+            </div>
+            <!-- Fallback image -->
+            <div v-else class="relative bg-primary-lighter rounded pb-full">
+              <BaseIcon
+                icon="uil:camera-slash"
+                size="lg"
+                class="absolute center-xy text-primary-med"
+              />
             </div>
           </div>
 
@@ -269,6 +289,11 @@ export default {
     variation() {
       if (!this.product) return {}
       return this.$swell.products.variation(this.product, this.optionState)
+    },
+
+    productImages() {
+      if (!this.product?.images?.length) return null
+      return this.product.images
     },
 
     billingInterval() {

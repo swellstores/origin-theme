@@ -14,7 +14,15 @@
           :key="`product-media-${index}`"
           class="relative rounded overflow-hidden"
         >
-          <VisualMedia :source="media" sizes="120px" />
+          <VisualMedia v-if="media" :source="media" sizes="120px" />
+
+          <div v-else class="relative bg-primary-lighter rounded pb-full">
+            <BaseIcon
+              icon="uil:camera-slash"
+              size="lg"
+              class="absolute center-xy text-primary-med"
+            />
+          </div>
 
           <div
             v-if="
@@ -127,13 +135,13 @@ export default {
       if (!this.orderProducts.length) return []
 
       return flatMap(this.orderProducts.slice(0, 4), (item) => {
-        if (!item.images.length) return false
+        if (!item.images?.length) return null
         return get(item, 'images[0].file', false)
-      }).filter(Boolean)
+      })
     },
 
     orderProducts() {
-      if (!this.order.items) return
+      if (!this.order.items) return []
 
       return flatMap(this.order.items, (item) => {
         if (!item.product) return []

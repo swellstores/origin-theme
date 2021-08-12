@@ -24,7 +24,6 @@
       <div v-else class="relative block h-full rounded">
         <!-- Preview media -->
         <div
-          v-if="product.images"
           class="group relative"
           @mouseenter="showQuickAdd(product.id)"
           @mouseleave="hideQuickAdd(product.id)"
@@ -35,32 +34,43 @@
             "
             class="relative block rounded overflow-hidden"
           >
-            <!-- Main image -->
-            <VisualMedia
-              :source="product.images[0]"
-              :aspect-ratio="aspectRatio"
-              :sizes="sizes"
-              :widths="widths"
-            />
-            <!-- Hover image -->
-            <div
-              v-if="product.images[1]"
-              class="
-                group-hover:opacity-100
-                absolute
-                w-full
-                h-full
-                inset-0
-                opacity-0
-                transition-opacity
-                duration-150
-              "
-            >
+            <div v-if="product.images && product.images.length">
+              <!-- Main image -->
               <VisualMedia
-                :source="product.images[1]"
+                :source="product.images[0]"
                 :aspect-ratio="aspectRatio"
                 :sizes="sizes"
                 :widths="widths"
+              />
+              <!-- Hover image -->
+              <div
+                v-if="product.images[1]"
+                class="
+                  group-hover:opacity-100
+                  absolute
+                  w-full
+                  h-full
+                  inset-0
+                  opacity-0
+                  transition-opacity
+                  duration-150
+                "
+              >
+                <VisualMedia
+                  :source="product.images[1]"
+                  :aspect-ratio="aspectRatio"
+                  :sizes="sizes"
+                  :widths="widths"
+                />
+              </div>
+            </div>
+
+            <!-- Fallback image -->
+            <div v-else class="relative bg-primary-lighter rounded pb-full">
+              <BaseIcon
+                icon="uil:camera-slash"
+                size="lg"
+                class="absolute center-xy text-primary-med"
               />
             </div>
           </NuxtLink>
@@ -86,17 +96,6 @@
               />
             </transition>
           </template>
-        </div>
-        <div
-          v-else
-          class="relative bg-primary-lighter rounded"
-          :style="{ paddingBottom: ratioPadding }"
-        >
-          <BaseIcon
-            icon="uil:camera-slash"
-            size="lg"
-            class="absolute center-xy text-primary-med"
-          />
         </div>
         <!-- Product summary -->
         <div class="py-3" :class="{ 'text-center': textAlign === 'center' }">

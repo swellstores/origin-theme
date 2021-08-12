@@ -56,6 +56,15 @@
                 ratio="1:1"
                 class="rounded overflow-hidden"
               />
+
+              <!-- Fallback image -->
+              <div v-else class="relative bg-primary-lighter rounded pb-full">
+                <BaseIcon
+                  icon="uil:camera-slash"
+                  size="lg"
+                  class="absolute center-xy text-primary-med"
+                />
+              </div>
             </div>
 
             <!-- Name + options -->
