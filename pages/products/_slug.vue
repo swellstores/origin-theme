@@ -4,18 +4,44 @@
     <section class="pb-12 md:flex">
       <div class="relative md:w-1/2">
         <!-- Media slider for small screens -->
-        <MediaSlider :media="product.images" class="md:hidden h-0 pb-full" />
+        <MediaSlider
+          v-if="productImages"
+          :media="productImages"
+          class="md:hidden h-0 pb-full"
+        />
+        <!-- Fallback image -->
+        <div
+          v-else
+          class="md:hidden relative bg-primary-lighter rounded pb-full"
+        >
+          <BaseIcon
+            icon="uil:camera-slash"
+            size="lg"
+            class="absolute center-xy text-primary-med"
+          />
+        </div>
         <!-- Media stack for large screens -->
         <div class="hidden h-full md:block">
           <div v-if="$fetchState.pending" class="h-full bg-primary-lighter" />
           <template v-else>
-            <VisualMedia
-              v-for="image in product.images"
-              :key="image.id"
-              :source="image"
-              :alt="image.alt"
-              sizes="(min-width: 768px) 50vw, 100vw"
-            />
+            <div v-if="productImages">
+              <VisualMedia
+                v-for="image in productImages"
+                :key="image.id"
+                :source="image"
+                :alt="image.alt"
+                sizes="(min-width: 768px) 50vw, 100vw"
+              />
+            </div>
+
+            <!-- Fallback image -->
+            <div v-else class="relative bg-primary-lighter rounded pb-full">
+              <BaseIcon
+                icon="uil:camera-slash"
+                size="lg"
+                class="absolute center-xy text-primary-med"
+              />
+            </div>
           </template>
         </div>
 
@@ -332,6 +358,11 @@ export default {
     variation() {
       if (!this.product) return {}
       return this.$swell.products.variation(this.product, this.optionState)
+    },
+
+    productImages() {
+      if (!this.product?.images?.length) return null
+      return this.product.images
     },
 
     billingInterval() {
