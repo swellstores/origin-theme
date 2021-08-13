@@ -50,6 +50,8 @@ export default async () => {
      ** Nuxt.js modules
      */
     modules: [
+      ['@nuxtjs/gtm'],
+
       [
         '@nuxtjs/sentry',
         /*
@@ -137,6 +139,11 @@ export default async () => {
          */
       ],
     ],
+
+    gtm: {
+      id: allSettings.analytics.gtmId,
+      enabled: allSettings.analytics.gtmId && isProduction,
+    },
 
     pwa: {
       manifest: false,

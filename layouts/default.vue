@@ -44,6 +44,15 @@ export default {
           async: true,
           body: true,
         },
+        {
+          type: 'text/javascript',
+          innerHTML: this.$swell.settings.get('scripts.global.head'),
+        },
+        {
+          type: 'text/javascript',
+          innerHTML: this.$swell.settings.get('scripts.global.body'),
+          body: true,
+        },
       ],
     }
   },
@@ -60,17 +69,6 @@ export default {
 
       // Hide notification on reroute
       this.$store.commit('setState', { key: 'notification', value: null })
-
-      // Track page
-      if (this.$swellAnalytics) {
-        this.$swellAnalytics.trackPage(to.path)
-      }
-    },
-
-    cookiesWereAccepted(accepted) {
-      if (accepted && this.$swellAnalytics) {
-        this.$swellAnalytics.enable()
-      }
     },
   },
 

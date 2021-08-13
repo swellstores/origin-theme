@@ -4,6 +4,7 @@
   "description": "Swell's original storefront theme",
   "settings": [
     {
+      "id": "style",
       "label": "Style",
       "fields": [
         {
@@ -448,6 +449,7 @@
       "id": "account.subscriptions",
       "url": "/account/orders",
       "label": "Subscriptions",
+      "icon": "history",
       "fields": [
         {
           "id": "account.subscriptions.allow_plan_edit",
@@ -488,6 +490,40 @@
           "type": "short_text",
           "format": "url",
           "placeholder": "/categories/"
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "label": "Analytics",
+      "icon": "analytics",
+      "fields": [
+        {
+          "id": "analytics.gtm_id",
+          "label": "Google Tag Manager ID",
+          "type": "short_text",
+          "placeholder": "GTM-XXXXXX"
+        }
+      ]
+    },
+    {
+      "id": "scripts",
+      "label": "Global scripts",
+      "icon": "code",
+      "fields": [
+        {
+          "id": "scripts.global.head",
+          "label": "Global <head> script",
+          "type": "long_text",
+          "placeholder": "Paste code here, excluding <script> tag opening and closing",
+          "hint": "Scripts to be loaded on every page of your store, before closing the <head> tag."
+        },
+        {
+          "id": "scripts.global.body",
+          "label": "Global <body> script",
+          "type": "long_text",
+          "placeholder": "Paste code here, excluding <script> tag opening and closing",
+          "hint": "Scripts to be loaded on every page of your store, before closing the <body> tag."
         }
       ]
     }

@@ -75,6 +75,29 @@ export default {
     },
   },
 
+  head() {
+    return {
+      script: [
+        // Iconify API script for loading SVG icons on demand
+        {
+          type: 'text/javascript',
+          src: 'https://code.iconify.design/1/1.0.1/iconify.min.js',
+          async: true,
+          body: true,
+        },
+        {
+          type: 'text/javascript',
+          innerHTML: this.$swell.settings.get('scripts.global.head'),
+        },
+        {
+          type: 'text/javascript',
+          innerHTML: this.$swell.settings.get('scripts.global.body'),
+          body: true,
+        },
+      ],
+    }
+  },
+
   methods: {
     reload() {
       window.location.reload()

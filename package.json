@@ -11,6 +11,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@nuxtjs/gtm": "2.4.0",
     "@nuxtjs/pwa": "3.3.5",
     "@nuxtjs/sentry": "5.1.0",
     "balance-text": "3.3.0",
