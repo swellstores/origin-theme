@@ -4,31 +4,21 @@
       class="flex flex-col min-h-screen"
       :class="{ 'overflow-y-hidden': searchIsActive || cartIsActive }"
     >
-      <TheHeader
-        @click-cart="cartIsActive = true"
-        @click-search="searchIsActive = true"
+      <TheHeader @click-search="searchIsActive = true" />
+      <TheToastNotification
+        v-if="notification"
+        class="z-40"
+        :message="notification.message"
+        :type="notification.type"
       />
-      <transition name="fade-up-out">
-        <TheToastNotification
-          v-if="notification"
-          :message="notification.message"
-          :type="notification.type"
-          @open-cart="cartIsActive = true"
-        />
-      </transition>
       <div class="flex flex-col flex-grow">
         <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
       </div>
       <TheFooter />
     </div>
-    <transition name="fade-up">
-      <TheCookieNotification />
-    </transition>
-
-    <TheCart v-show="cartIsActive" @click-close="cartIsActive = false" />
-    <transition name="fade">
-      <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
-    </transition>
+    <TheCookieNotification />
+    <TheCart v-show="cartIsActive" />
+    <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
   </div>
 </template>
 
@@ -39,7 +29,6 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      cartIsActive: false,
       searchIsActive: false,
       cookieNotificationIsActive: false, // TODO set true,
     }
@@ -60,11 +49,11 @@ export default {
   },
 
   computed: {
-    ...mapState(['notification', 'cookiesWereAccepted']),
+    ...mapState(['cartIsActive', 'notification', 'cookiesWereAccepted']),
   },
 
   watch: {
-    $route(to, from) {
+    $route(to) {
       // Hide cart and search on reroute
       this.cartIsActive = false
       this.searchIsActive = false
@@ -77,6 +66,7 @@ export default {
         this.$swellAnalytics.trackPage(to.path)
       }
     },
+
     cookiesWereAccepted(accepted) {
       if (accepted && this.$swellAnalytics) {
         this.$swellAnalytics.enable()

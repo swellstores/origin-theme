@@ -1,6 +1,7 @@
 export const state = () => ({
   cart: null,
   cartError: null,
+  cartIsActive: false,
   cartIsUpdating: false,
   currency: null,
   customer: null,

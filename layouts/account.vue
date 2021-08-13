@@ -1,19 +1,13 @@
 <template>
   <div class="relative">
     <div :class="{ 'overflow-y-hidden': searchIsActive || cartIsActive }">
-      <TheHeader
-        @click-cart="cartIsActive = true"
-        @click-search="searchIsActive = true"
+      <TheHeader @click-search="searchIsActive = true" />
+      <TheToastNotification
+        v-if="notification"
+        :message="notification.message"
+        :type="notification.type"
+        @open-cart="cartIsActive = true"
       />
-
-      <transition name="fade-up-out">
-        <TheToastNotification
-          v-if="notification"
-          :message="notification.message"
-          :type="notification.type"
-          @open-cart="cartIsActive = true"
-        />
-      </transition>
 
       <div class="min-h-screen bg-primary-lighter">
         <div
@@ -139,13 +133,8 @@
     </div>
 
     <TheFooter />
-
-    <TheCart v-show="cartIsActive" @click-close="cartIsActive = false" />
-
-    <transition name="fade">
-      <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
-    </transition>
-
+    <TheCart v-show="cartIsActive" />
+    <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
     <AccountConfirmationPopup
       v-if="logoutPopupIsActive"
       :heading="$t('account.logout.label')"
@@ -185,7 +174,6 @@ export default {
       ],
       editProfilePopupIsActive: false,
       logoutPopupIsActive: false,
-      cartIsActive: false,
       searchIsActive: false,
     }
   },
@@ -205,7 +193,13 @@ export default {
   },
 
   computed: {
-    ...mapState(['notification', 'customer', 'customerLoggedIn']),
+    ...mapState([
+      'notification',
+      'cartIsActive',
+      'customer',
+      'customerLoggedIn',
+    ]),
+
     currentRouteValue() {
       const path = this.$route.path
 
@@ -219,6 +213,7 @@ export default {
 
       return ''
     },
+
     hideOnRouteRoot() {
       const matchedPath = this.$route.matched[0].path
       const pathsToHideOn = [
@@ -227,6 +222,7 @@ export default {
       ]
       return pathsToHideOn.some((path) => matchedPath.includes(path))
     },
+
     localizedViews() {
       const { views } = this
       return views.map(({ label, value }) => ({ label: this.$t(label), value }))
@@ -234,7 +230,7 @@ export default {
   },
 
   watch: {
-    $route(to, from) {
+    $route(to) {
       this.cartIsActive = false
       this.searchIsActive = false
       if (this.$swellAnalytics) {

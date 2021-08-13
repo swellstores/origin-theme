@@ -1,6 +1,6 @@
 <template>
   <transition name="slide-modal-rtl" :duration="700">
-    <div class="z-40 fixed inset-0">
+    <div class="z-50 fixed inset-0">
       <!-- Overlay -->
       <div
         class="
@@ -13,7 +13,7 @@
           hidden
           md:block
         "
-        @click="$emit('click-close')"
+        @click="closeCart"
       />
 
       <!-- Panel -->
@@ -28,7 +28,7 @@
                   >({{ cart.itemQuantity }})</span
                 >
               </h3>
-              <button @click.prevent="$emit('click-close')">
+              <button @click.prevent="closeCart">
                 <BaseIcon icon="uil:multiply" size="lg" />
               </button>
             </div>
@@ -236,6 +236,10 @@ export default {
   },
 
   methods: {
+    closeCart() {
+      this.$store.commit('setState', { key: 'cartIsActive', value: false })
+    },
+
     async applyDiscount() {
       // Try to apply a coupon or gift card code
       await this.$store.dispatch('applyDiscount', this.couponCode)
