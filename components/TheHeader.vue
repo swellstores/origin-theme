@@ -149,7 +149,12 @@
                 class="relative h-10 p-2"
                 data-sw-path="cart"
                 data-sw-click="true"
-                @click.prevent="$emit('click-cart')"
+                @click.prevent="
+                  $store.commit('setState', {
+                    key: 'cartIsActive',
+                    value: true,
+                  })
+                "
               >
                 <BaseIcon icon="uil:cart" />
                 <div
