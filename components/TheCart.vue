@@ -54,7 +54,7 @@
             <BaseButton
               :link="shopLink"
               :label="$t('cart.backToProducts')"
-              fit="auto"
+              fit="static"
             />
           </div>
 

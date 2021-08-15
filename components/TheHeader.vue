@@ -179,6 +179,7 @@
                 :class="{ 'is-active': mobileNavIsVisible }"
                 class="
                   hamburger hamburger--squeeze
+                  outline-none
                   relative
                   w-10
                   h-10

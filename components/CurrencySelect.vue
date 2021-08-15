@@ -7,21 +7,22 @@
         p-2
         items-center
         text-center
-        font-medium
         cursor-pointer
         focus:outline-none focus:shadow-outline
         hover:text-accent-default
       "
       :class="{
-        'font-semibold h-full': appearance === 'popup',
+        'h-full': appearance === 'popup',
         'rounded bg-primary-lightest': appearance === 'float',
       }"
       @click="toggleDropdown()"
     >
       <div v-if="selected" class="mx-auto transition-all duration-200 ease-out">
         <span
-          class="font-medium"
-          :class="{ 'font-semibold': appearance === 'popup' }"
+          :class="{
+            'font-semibold': appearance === 'popup',
+            'font-medium': appearance === 'float',
+          }"
           >{{ selected.value }}</span
         >
         <span class="font-semibold">{{ selected.symbol }}</span>
