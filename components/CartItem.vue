@@ -1,6 +1,9 @@
 <template>
   <div class="container overflow-hidden">
-    <div :class="{ 'border-t': index !== 0 }" class="py-6 flex">
+    <div
+      :class="{ 'border-t border-primary-med': index !== 0 }"
+      class="py-6 flex"
+    >
       <NuxtLink
         :to="
           localePath(resolveUrl({ type: 'product', value: item.product.slug }))

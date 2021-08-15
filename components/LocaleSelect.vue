@@ -7,7 +7,6 @@
         p-2
         items-center
         text-center
-        font-medium
         cursor-pointer
         focus:outline-none focus:shadow-outline
         hover:text-accent-default
@@ -18,18 +17,17 @@
       }"
       @click="toggleDropdown()"
     >
-      <div class="flex mx-auto transition-all duration-200 ease-out">
+      <div
+        class="flex items-center mx-auto transition-all duration-200 ease-out"
+      >
         <img
-          class="w-6"
+          class="w-6 mr-2"
           :src="`/flags/${getCountryCodeFromLocale($i18n.locale)}.svg`"
           :alt="`${getCountryCodeFromLocale($i18n.locale)}`"
         />
-        <span
-          v-if="appearance === 'popup'"
-          class="font-medium"
-          :class="{ 'ml-2 font-semibold': appearance === 'popup' }"
-          >{{ $i18n.localeProperties.name }}</span
-        >
+        <span v-if="appearance === 'popup'" class="font-semibold">{{
+          $i18n.localeProperties.name
+        }}</span>
       </div>
     </div>
 
@@ -97,7 +95,7 @@
             @click="navigate"
           >
             <img
-              class="inline-block w-6 mr-1"
+              class="inline-block w-6 mr-2"
               :src="`/flags/${getCountryCodeFromLocale(
                 availableLocale.code
               )}.svg`"
