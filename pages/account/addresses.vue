@@ -192,7 +192,7 @@ export default {
       }
     },
 
-    async createAccountAddress(addr) {
+    async createAccountAddress(address) {
       try {
         this.isCreating = true
 
@@ -206,9 +206,9 @@ export default {
           zip,
           country,
           isDefault,
-        } = addr
+        } = address
 
-        const address = await this.$swell.account.createAddress({
+        const accountAddress = await this.$swell.account.createAddress({
           name: `${firstName.trim()} ${lastName.trim()}`,
           address1,
           address2,
@@ -218,18 +218,14 @@ export default {
           country,
         })
 
-        if (isDefault && address.id) {
+        if (isDefault && accountAddress.id) {
           // Set address as default
           await this.$swell.account.update({
             shipping: {
-              accountAddressId: address.id,
+              accountAddressId: accountAddress.id,
             },
           })
         }
-
-        /* if (this.flow === 'payment') {
-          this.$emit('new-billing-address', address)
-        } */
 
         // Close panel and fetch updated data
         this.isCreating = false
@@ -240,14 +236,16 @@ export default {
         })
         this.$fetch()
       } catch (err) {
-        /* this.$store.dispatch('showNotification', {
+        this.isCreating = false
+        this.editAddressPopupIsActive = false
+        this.$store.dispatch('showNotification', {
           message: this.$t('account.addresses.popup.create.error'),
-          type: 'error'
-        }) */
+          type: 'error',
+        })
       }
     },
 
-    async updateAccountAddress(addr) {
+    async updateAccountAddress(address) {
       try {
         this.isUpdating = true
 
@@ -261,7 +259,7 @@ export default {
           zip,
           country,
           isDefault,
-        } = addr
+        } = address
 
         await this.$swell.account.updateAddress(this.addressToEdit.id, {
           name: `${firstName.trim()} ${lastName.trim()}`,
@@ -306,13 +304,13 @@ export default {
       }
     },
 
-    async deleteAccountAddress(addr) {
+    async deleteAccountAddress(address) {
       try {
         this.isDeleting = true
-        await this.$swell.account.deleteAddress(addr)
+        await this.$swell.account.deleteAddress(address)
 
         // If deleted address is default, detach it from account model.
-        if (this.defaultAddressId === this.addr) {
+        if (this.defaultAddressId === address) {
           await this.$swell.account.update({
             shipping: {
               accountAddressId: null,

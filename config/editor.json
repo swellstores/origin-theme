@@ -1434,6 +1434,13 @@
           "localized": true
         },
         {
+          "id": "lang.account.subscriptions._id.change_delivery",
+          "label": "Change delivery label",
+          "default": "Change delivery details",
+          "type": "short_text",
+          "localized": true
+        },
+        {
           "id": "lang.account.subscriptions._id.payment_method",
           "label": "Payment method title",
           "default": "Payment method",
@@ -2187,6 +2194,20 @@
           "id": "lang.account.addresses.popup.country.required",
           "label": "Country field required message",
           "default": "Please enter your country.",
+          "type": "long_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.addresses.popup.phone.label",
+          "label": "Phone field label",
+          "default": "Phone",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.account.addresses.popup.phone.format",
+          "label": "Phone field format message",
+          "default": "Please enter a phone number.",
           "type": "long_text",
           "localized": true
         },
