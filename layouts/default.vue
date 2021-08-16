@@ -64,7 +64,7 @@ export default {
   watch: {
     $route(to) {
       // Hide cart and search on reroute
-      this.cartIsActive = false
+      this.$store.commit('setState', { key: 'cartIsActive', value: false })
       this.searchIsActive = false
 
       // Hide notification on reroute
