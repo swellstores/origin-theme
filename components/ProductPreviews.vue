@@ -46,6 +46,8 @@
               <div
                 v-if="product.images[1]"
                 class="
+                  hidden
+                  md:block
                   group-hover:opacity-100
                   absolute
                   w-full
