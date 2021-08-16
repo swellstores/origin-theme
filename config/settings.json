@@ -393,6 +393,7 @@
             "label": "Region"
           },
           "city": { "required": "Please enter your city.", "label": "City" },
+          "phone": { "format": "Please enter a valid phone number.", "label": "phone" },
           "address2": { "label": "Apartment / Floor / Suite" },
           "address1": {
             "required": "Please enter your address.",
@@ -550,6 +551,7 @@
           "billing_address": "Billing address",
           "payment_method": "Payment method",
           "delivery_method": "Delivery method",
+          "change_delivery": "Change delivery details",
           "phone_number": "Phone number",
           "delivery_address": "Delivery address",
           "delivery_details": "Delivery details",

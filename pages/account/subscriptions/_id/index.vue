@@ -274,14 +274,14 @@
             </div>
           </div>
 
-          <!-- TODO: Add ability to change shipping address of subscriptions independently. -->
-          <!-- <button
+          <BaseButton
             v-if="status !== 'canceled'"
-            class="btn light w-full md:w-auto"
-            @click="editShippingAddressPopupIsActive = true"
-          >
-            {{ $t('account.subscriptions.id.changeDelivery') }}
-          </button> -->
+            class="mb-8"
+            appearance="light"
+            fit="auto"
+            :label="$t('account.subscriptions.id.changeDelivery')"
+            @click.native="editShippingAddressPopupIsActive = true"
+          />
         </template>
 
         <!-- Payment details -->
@@ -340,13 +340,14 @@
                   {{ billing.name }}<br />
                   {{ billing.address2 }} {{ billing.address1 }},
                   {{ billing.city }} {{ billing.zip }}<br />
-                  {{ billing.state }} {{ billing.country }}
+                  {{ billing.state }} {{ billing.country }}<br />
+                  {{ billing.phone }}
                 </p>
               </div>
 
               <button
                 v-if="status !== 'canceled'"
-                class="pl-6 pr-2 ml-auto mt-auto"
+                class="px-2 ml-auto mt-auto"
                 @click="editBillingAddressPopupIsActive = true"
               >
                 {{ $t('account.subscriptions.id.editBillingAddress') }}
@@ -429,7 +430,9 @@
       v-if="editShippingAddressPopupIsActive"
       type="update"
       :address="shipping"
-      :is-loading="isUpdating"
+      :is-updating="isUpdating"
+      :defaultable="false"
+      :flow="'subscription'"
       @click-close="editShippingAddressPopupIsActive = false"
       @update="updateShippingAddress"
     />
@@ -438,7 +441,9 @@
       v-if="editBillingAddressPopupIsActive"
       type="update"
       :address="billing"
-      :is-loading="isUpdating"
+      :is-updating="isUpdating"
+      :defaultable="false"
+      :flow="'subscription'"
       @click-close="editBillingAddressPopupIsActive = false"
       @update="updateBillingAddress"
     />
@@ -636,36 +641,50 @@ export default {
       return {}
     },
 
-    updateShippingAddress(addr) {
-      this.isUpdating = true
+    async updateShippingAddress(address) {
+      try {
+        this.isUpdating = true
 
-      setTimeout(() => {}, 2000)
+        await this.$swell.subscriptions.update(this.subscription.id, {
+          shipping: address,
+        })
 
-      this.isUpdating = false
-      this.editShippingAddressPopupIsActive = false
-      this.$store.dispatch('showNotification', {
-        message: this.$t(
-          'account.subscriptions.popup.update.shippingAddress.success'
-        ),
-      })
-      this.$fetch()
+        this.isUpdating = false
+        this.editShippingAddressPopupIsActive = false
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.popup.save.success'),
+        })
+        this.$fetch()
+      } catch (err) {
+        this.isUpdating = false
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.popup.save.error'),
+          type: 'error',
+        })
+      }
     },
 
-    async updateBillingAddress(addr) {
-      this.isUpdating = true
+    async updateBillingAddress(address) {
+      try {
+        this.isUpdating = true
 
-      await this.$swell.subscriptions.update(this.subscription.id, {
-        billing: addr,
-      })
+        await this.$swell.subscriptions.update(this.subscription.id, {
+          billing: address,
+        })
 
-      this.isUpdating = false
-      this.editBillingAddressPopupIsActive = false
-      this.$store.dispatch('showNotification', {
-        message: this.$t(
-          'account.subscriptions.popup.update.billingAddress.success'
-        ),
-      })
-      this.$fetch()
+        this.isUpdating = false
+        this.editBillingAddressPopupIsActive = false
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.popup.save.success'),
+        })
+        this.$fetch()
+      } catch (err) {
+        this.isUpdating = false
+        this.$store.dispatch('showNotification', {
+          message: this.$t('account.addresses.popup.save.error'),
+          type: 'error',
+        })
+      }
     },
 
     async pauseSubscription(type) {

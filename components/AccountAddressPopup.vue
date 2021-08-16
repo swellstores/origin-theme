@@ -154,6 +154,7 @@
                     :country="country"
                     :region="state"
                     :disable-placeholder="true"
+                    :usei18n="false"
                   />
 
                   <div>
@@ -213,6 +214,7 @@
                     appearance-none
                   "
                   :country="country"
+                  :usei18n="false"
                   :autocomplete="true"
                 />
 
@@ -231,7 +233,24 @@
               </template>
             </div>
 
-            <div v-if="flow === 'default' || defaultable" class="checkbox">
+            <div class="mb-6">
+              <InputText
+                v-model="phone"
+                class="mb-2"
+                :label="$t('account.addresses.popup.phone.label')"
+                name="phone"
+                autocomplete="tel"
+              />
+              <template v-if="$v.phone.$dirty">
+                <span
+                  v-if="!$v.phone.validPhone"
+                  class="label-sm text-error-default"
+                  >{{ $t('account.addresses.popup.phone.format') }}</span
+                >
+              </template>
+            </div>
+
+            <div v-if="flow === 'default' || defaultable" class="checkbox mb-6">
               <input
                 id="set-default"
                 v-model="setDefault"
@@ -315,8 +334,15 @@
 </template>
 
 <script>
+// Helpers
 import { validationMixin } from 'vuelidate'
-import { required, maxLength } from 'vuelidate/lib/validators'
+import { required, maxLength, helpers } from 'vuelidate/lib/validators'
+
+// Phone number validation
+const validPhone = helpers.regex(
+  'validPhone',
+  /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/
+)
 
 export default {
   mixins: [validationMixin],
@@ -374,6 +400,7 @@ export default {
       city: '',
       zip: '',
       country: '',
+      phone: '',
       setDefault: false,
     }
   },
@@ -403,6 +430,7 @@ export default {
         state,
         zip,
         country,
+        phone,
       } = this
       return {
         firstName,
@@ -413,6 +441,7 @@ export default {
         state,
         zip,
         country,
+        phone,
       }
     },
   },
@@ -428,6 +457,7 @@ export default {
       this.city = this.address.city || ''
       this.zip = this.address.zip || ''
       this.country = this.address.country || ''
+      this.phone = this.address.phone || ''
 
       // Set default check state
       if (this.defaultAddressId === this.address.id) {
@@ -494,6 +524,7 @@ export default {
     state: { required },
     zip: { required },
     country: { required },
+    phone: { validPhone },
   },
 }
 </script>

@@ -110,7 +110,7 @@ export default {
   },
 
   methods: {
-    async createAccountAddress(addr) {
+    async createAccountAddress(address) {
       try {
         this.isCreating = true
 
@@ -124,9 +124,9 @@ export default {
           zip,
           country,
           isDefault,
-        } = addr
+        } = address
 
-        const address = await this.$swell.account.createAddress({
+        const accountAddress = await this.$swell.account.createAddress({
           name: `${firstName.trim()} ${lastName.trim()}`,
           address1,
           address2,
@@ -136,16 +136,16 @@ export default {
           country,
         })
 
-        if (isDefault && address.id) {
+        if (isDefault && accountAddress.id) {
           // Set address as default
           await this.$swell.account.update({
             shipping: {
-              accountAddressId: address.id,
+              accountAddressId: accountAddress.id,
             },
           })
         }
 
-        this.newBillingAddress = address
+        this.newBillingAddress = accountAddress
 
         // Close panel and fetch updated data
         this.isCreating = false
