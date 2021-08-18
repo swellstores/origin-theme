@@ -16,6 +16,7 @@ if (editorMode) {
 
 export default async () => {
   const allSettings = await mergeSettings(settings)
+  const storeId = get('allSettings', 'store.id')
 
   return {
     vue: {
@@ -66,10 +67,27 @@ export default async () => {
           // config: {}
         },
       ],
+
+      /*
+       ** Generates a sitemap.xml
+       *
+       *  Automatically generate or serve dynamic sitemap.xml for Nuxt projects!
+       *  See https://github.com/nuxt-community/sentry-module for all available
+       *  options, defaults, and environment variables.
+       */
+      '@nuxtjs/sitemap',
     ],
 
     buildModules: [
       ['nuxt-i18n'],
+
+      [
+        /*
+         ** Generate dynamic routes for @nuxtjs/sitemap
+         *
+         */
+        '~/modules/swell/utils/generateDynamicRoutes',
+      ],
 
       [
         '@nuxtjs/tailwindcss',
@@ -161,7 +179,19 @@ export default async () => {
 
     i18n: await getLangSettings(allSettings, editorMode),
 
+    sitemap: {
+      hostname: get(
+        allSettings,
+        'store.url',
+        `https://${storeId}.swell.store/`
+      ),
+      gzip: true,
+      i18n: true,
+      exclude: ['/account/**', '/*/account/**'],
+    },
+
     generate: {
+      exclude: [/^\/?([a-z]{2}-?[A-Z]{2}?)?\/account/],
       fallback: true, // Fallback to the generated 404.html
     },
 
