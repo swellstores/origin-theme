@@ -32,8 +32,8 @@ export default (context, inject) => {
 
   // Inject client into nuxt context as $swell
   context.$swell = swell
-  context.$swell.settings.state = settingsJson
-  context.$swell.settings.menuState = menusJson
+  context.$swell.settings.set({ value: settingsJson })
+  context.$swell.settings.set({ model: 'menus', value: menusJson })
 
   inject('swell', swell)
 }
