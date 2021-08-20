@@ -5,7 +5,10 @@ import settingsJson from '~/config/settings.json'
 import menusJson from '~/config/menus.json'
 
 export default (context, inject) => {
-  const settings = settingsJson || {}
+  // eslint-disable-next-line
+  const currentSettings = <%= JSON.stringify(options.currentSettings) %>
+
+  const { settings, menuSettings } = currentSettings
   const storeId = '<%= options.storeId || "" %>' || get(settings, 'store.id')
   const publicKey =
     '<%= options.publicKey || "" %>' || get(settings, 'store.public_key')
@@ -33,8 +36,8 @@ export default (context, inject) => {
 
   // Inject client into nuxt context as $swell
   context.$swell = swell
-  context.$swell.settings.state = toCamel(settingsJson)
-  context.$swell.settings.menuState = toCamel(menusJson)
+  context.$swell.settings.state = settings
+  context.$swell.settings.menuState = menuSettings
 
   inject('swell', swell)
 }

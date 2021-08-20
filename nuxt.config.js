@@ -1,6 +1,8 @@
 import consola from 'consola'
 import get from 'lodash/get'
+import { toCamel } from 'swell-js/dist/utils'
 import settings from './config/settings.json'
+import menuSettings from './config/menus.json'
 import { getGoogleFontConfig } from './modules/swell-editor/utils'
 import { getLangSettings } from './modules/swell-editor/lang/utils'
 import { mergeSettings } from './modules/swell/utils/mergeSettings'
@@ -15,8 +17,9 @@ if (editorMode) {
 }
 
 export default async () => {
-  const allSettings = await mergeSettings(settings)
-  const storeId = get('allSettings', 'store.id')
+  const mergedSettings = await mergeSettings(toCamel(settings))
+  const mergedMenuSettings = await mergeSettings(toCamel(menuSettings))
+  const storeId = get('mergedSettings', 'store.id')
 
   return {
     vue: {
@@ -35,7 +38,7 @@ export default async () => {
     /*
      ** Set the progress-bar color
      */
-    loading: { color: get(allSettings, 'colors.accent'), continuous: true },
+    loading: { color: get(mergedSettings, 'colors.accent'), continuous: true },
 
     /*
      ** Vue plugins to load before mounting the App
@@ -143,6 +146,10 @@ export default async () => {
           publicKey: process.env.SWELL_PUBLIC_KEY,
           previewContent: editorMode,
           storeUrl: process.env.SWELL_STORE_URL,
+          currentSettings: {
+            settings: mergedSettings,
+            menus: mergedMenuSettings,
+          },
         },
       ],
 
@@ -159,14 +166,14 @@ export default async () => {
     ],
 
     gtm: {
-      id: allSettings.analytics.gtmId,
-      enabled: allSettings.analytics.gtmId && isProduction,
+      id: mergedSettings.analytics.gtmId,
+      enabled: mergedSettings.analytics.gtmId && isProduction,
     },
 
     pwa: {
       manifest: false,
       meta: {
-        name: get(allSettings, 'store.name'),
+        name: get(mergedSettings, 'store.name'),
       },
       workbox: {
         runtimeCaching: [
@@ -177,11 +184,11 @@ export default async () => {
       },
     },
 
-    i18n: await getLangSettings(allSettings, editorMode),
+    i18n: await getLangSettings(mergedSettings, editorMode),
 
     sitemap: {
       hostname: get(
-        allSettings,
+        mergedSettings,
         'store.url',
         `https://${storeId}.swell.store/`
       ),
