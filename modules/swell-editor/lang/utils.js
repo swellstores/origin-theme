@@ -57,7 +57,7 @@ export function getLangMessages(defaultLocale, settings) {
 export function getLangSettings(settings, editorMode) {
   const defaultLocale = settings.store.locale
   const localesSettings = settings.store.locales
-  const isMultiLocale = localesSettings?.length > 0
+  const isMultiLocale = localesSettings && localesSettings.length > 0
 
   const locales = isMultiLocale
     ? localesSettings.map(({ code, name }) => ({ code, name }))
