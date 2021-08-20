@@ -1,5 +1,6 @@
 import { get } from 'lodash'
 import swell from 'swell-js'
+import { toCamel } from 'swell-js/dist/utils'
 import settingsJson from '~/config/settings.json'
 import menusJson from '~/config/menus.json'
 
@@ -32,8 +33,8 @@ export default (context, inject) => {
 
   // Inject client into nuxt context as $swell
   context.$swell = swell
-  context.$swell.settings.set({ value: settingsJson })
-  context.$swell.settings.set({ model: 'menus', value: menusJson })
+  context.$swell.settings.state = toCamel(settingsJson)
+  context.$swell.settings.menuState = toCamel(menusJson)
 
   inject('swell', swell)
 }
