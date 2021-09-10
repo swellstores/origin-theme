@@ -23,7 +23,7 @@ export default async () => {
 
   return {
     build: {
-      analyze: true,
+      analyze: !isProduction,
     },
     vue: {
       config: {
