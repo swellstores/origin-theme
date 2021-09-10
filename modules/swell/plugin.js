@@ -1,8 +1,5 @@
-import { get } from 'lodash'
+import get from 'lodash/get'
 import swell from 'swell-js'
-import { toCamel } from 'swell-js/dist/utils'
-import settingsJson from '~/config/settings.json'
-import menusJson from '~/config/menus.json'
 
 export default (context, inject) => {
   // eslint-disable-next-line

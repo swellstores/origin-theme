@@ -28,11 +28,13 @@
           @mouseenter="showQuickAdd(product.id)"
           @mouseleave="hideQuickAdd(product.id)"
         >
+          <!-- TODO: change aria-hidden to aria-label as soon as we support alt text for product images -->
           <NuxtLink
             :to="
               localePath(resolveUrl({ type: 'product', value: product.slug }))
             "
             class="relative block rounded overflow-hidden"
+            aria-hidden="true"
           >
             <div v-if="product.images && product.images.length">
               <!-- Main image -->

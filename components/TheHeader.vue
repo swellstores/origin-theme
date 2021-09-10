@@ -60,6 +60,7 @@
                   :height="header.logoHeight"
                   :style="{ height: header.logoHeight + 'px' }"
                   class="inline-block w-auto"
+                  :alt="storeName"
                 />
                 <span v-else class="text-3xl sm:text-4xl whitespace-no-wrap">{{
                   storeName
@@ -130,12 +131,17 @@
                 appearance="float"
               />
               <!-- Search icon -->
-              <button class="h-10 p-2" @click.prevent="$emit('click-search')">
+              <button
+                :aria-label="$t('navigation.search')"
+                class="h-10 p-2"
+                @click.prevent="$emit('click-search')"
+              >
                 <BaseIcon icon="uil:search" />
               </button>
               <!-- Account icon -->
               <NuxtLink
                 class="hidden h-10 p-2 lg:inline-block"
+                :aria-label="$t('navigation.account')"
                 :to="
                   localePath(
                     customerLoggedIn ? '/account/orders/' : '/account/login/'
@@ -149,6 +155,7 @@
                 class="relative h-10 p-2"
                 data-sw-path="cart"
                 data-sw-click="true"
+                :aria-label="$t('cart.title')"
                 @click.prevent="
                   $store.commit('setState', {
                     key: 'cartIsActive',
@@ -194,6 +201,7 @@
                   lg:hidden
                 "
                 type="button"
+                :aria-label="$t('navigation.menu')"
                 @click="setMobileNavVisibility"
               >
                 <span class="absolute center-xy w-6 h-6">

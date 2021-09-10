@@ -144,17 +144,20 @@
     },
     "email_signup": {
       "email": { "error": "That doesn't look like an email..." },
-      "success": "You're on the list!"
+      "success": "You're on the list!",
+      "placeholder": "E-mail",
+      "send": "Send"
     },
     "notifications": {
       "cookies": {
         "privacy": "Learn more",
-        "message": "We use cookies to improve your shopping experience."
+        "message": "We use cookies to improve your shopping experience.",
+        "close": "Close"
       },
       "cart": "View cart",
       "checkout": "Checkout"
     },
-    "navigation": { "account": "Account", "search": "Search" },
+    "navigation": { "account": "Account", "search": "Search", "menu": "Menu" },
     "search": {
       "info": "Press enter to search",
       "placeholder": "e.g. product model",
@@ -393,7 +396,10 @@
             "label": "Region"
           },
           "city": { "required": "Please enter your city.", "label": "City" },
-          "phone": { "format": "Please enter a valid phone number.", "label": "phone" },
+          "phone": {
+            "format": "Please enter a valid phone number.",
+            "label": "phone"
+          },
           "address2": { "label": "Apartment / Floor / Suite" },
           "address1": {
             "required": "Please enter your address.",

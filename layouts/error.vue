@@ -95,6 +95,13 @@ export default {
           body: true,
         },
       ],
+      link: [
+        {
+          rel: 'preconnect',
+          href: process.env.cdnHost,
+          crossorigin: true,
+        },
+      ],
     }
   },
 

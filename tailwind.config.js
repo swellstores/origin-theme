@@ -1,5 +1,3 @@
-const map = require('lodash/map')
-
 module.exports = {
   mode: 'jit',
   purge: {
@@ -172,13 +170,15 @@ module.exports = {
   },
   plugins: [
     function ({ addUtilities, config, e }) {
-      const rotateUtilities = map(config('theme.rotate'), (value, key) => {
-        return {
-          [`.${e(`rotate-${key}`)}`]: {
-            transform: `rotate(${value})`,
-          },
+      const rotateUtilities = Object.entries(config('theme.rotate')).map(
+        ([key, value]) => {
+          return {
+            [`.${e(`rotate-${key}`)}`]: {
+              transform: `rotate(${value})`,
+            },
+          }
         }
-      })
+      )
 
       addUtilities(rotateUtilities, ['hover'])
     },

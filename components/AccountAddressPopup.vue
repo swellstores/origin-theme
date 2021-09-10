@@ -345,6 +345,17 @@ const validPhone = helpers.regex(
 )
 
 export default {
+  components: {
+    async CountrySelect() {
+      const { CountrySelect } = await import('vue-country-region-select')
+      return CountrySelect
+    },
+    async RegionSelect() {
+      const { RegionSelect } = await import('vue-country-region-select')
+      return RegionSelect
+    },
+  },
+
   mixins: [validationMixin],
 
   props: {

@@ -30,6 +30,7 @@
         <button
           type="button"
           class="w-8 h-8 rounded-full bg-primary-light ml-3 p-1"
+          :aria-label="$t('notifications.cookies.close')"
           @click="acceptCookies"
         >
           <BaseIcon icon="uil:times" />

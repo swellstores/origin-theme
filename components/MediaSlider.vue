@@ -39,15 +39,20 @@
 
 <script>
 // Helpers
-import { Glide, GlideSlide } from 'vue-glide-js'
 import 'vue-glide-js/dist/vue-glide.css'
 
 export default {
   name: 'MediaSlider',
 
   components: {
-    [Glide.name]: Glide,
-    [GlideSlide.name]: GlideSlide,
+    async VueGlide() {
+      const { Glide } = await import('vue-glide-js')
+      return Glide
+    },
+    async VueGlideSlide() {
+      const { GlideSlide } = await import('vue-glide-js')
+      return GlideSlide
+    },
   },
 
   props: {

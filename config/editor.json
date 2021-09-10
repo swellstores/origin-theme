@@ -3398,6 +3398,13 @@
           "default": "Account",
           "type": "short_text",
           "localized": true
+        },
+        {
+          "id": "lang.navigation.menu",
+          "label": "Menu link label",
+          "default": "Menu",
+          "type": "short_text",
+          "localized": true
         }
       ]
     },
@@ -3433,6 +3440,13 @@
           "default": "Learn more",
           "type": "short_text",
           "localized": true
+        },
+        {
+          "id": "lang.notifications.cookies.close",
+          "label": "Close button label",
+          "default": "Close",
+          "type": "short_text",
+          "localized": true
         }
       ]
     },
@@ -3441,6 +3455,13 @@
       "label": "E-mail signup",
       "icon": "envelope",
       "fields": [
+        {
+          "id": "lang.email_signup.placeholder",
+          "label": "E-mail field placeholder",
+          "default": "E-mail",
+          "type": "short_text",
+          "localized": true
+        },
         {
           "id": "lang.email_signup.success",
           "label": "Success message",
@@ -3453,6 +3474,13 @@
           "label": "Invalid e-mail error message",
           "default": "That doesn't look like an email...",
           "type": "long_text",
+          "localized": true
+        },
+        {
+          "id": "lang.email_signup.send",
+          "label": "Send label",
+          "default": "Send",
+          "type": "short_text",
           "localized": true
         }
       ]

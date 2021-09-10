@@ -19,9 +19,12 @@ if (editorMode) {
 export default async () => {
   const mergedSettings = await mergeSettings(toCamel(settings))
   const mergedMenuSettings = await mergeSettings(toCamel(menuSettings))
-  const storeId = get('mergedSettings', 'store.id')
+  const storeId = get(mergedSettings, 'store.id')
 
   return {
+    build: {
+      analyze: true,
+    },
     vue: {
       config: {
         devtools: !isProduction,
@@ -44,7 +47,6 @@ export default async () => {
      ** Vue plugins to load before mounting the App
      */
     plugins: [
-      { src: '~/plugins/vue-country-region-select', mode: 'client' },
       { src: '~/plugins/vue-credit-card-validation', mode: 'client' },
       { src: '~/plugins/directives', mode: 'client' },
       { src: '~/plugins/swell-lang.js' },
@@ -56,20 +58,20 @@ export default async () => {
     modules: [
       ['@nuxtjs/gtm'],
 
-      [
-        '@nuxtjs/sentry',
-        /*
-         ** Logs app errors with Sentry's browser and node SDKs.
-         *
-         *  You can use environment variables or the object below to set config options.
-         *  See https://github.com/nuxt-community/sentry-module for all available
-         *  options, defaults, and environment variables.
-         */
-        {
-          // dsn: '', // or SENTRY_DSN in .env
-          // config: {}
-        },
-      ],
+      // [
+      //   '@nuxtjs/sentry',
+      //   /*
+      //    ** Logs app errors with Sentry's browser and node SDKs.
+      //    *
+      //    *  You can use environment variables or the object below to set config options.
+      //    *  See https://github.com/nuxt-community/sentry-module for all available
+      //    *  options, defaults, and environment variables.
+      //    */
+      //   {
+      //     // dsn: '', // or SENTRY_DSN in .env
+      //     // config: {}
+      //   },
+      // ],
 
       /*
        ** Generates a sitemap.xml
@@ -113,7 +115,7 @@ export default async () => {
          *  See https://github.com/nuxt-community/google-fonts-module if you want
          *  to eject or provide your own config options.
          */
-        getGoogleFontConfig(settings),
+        getGoogleFontConfig(mergedSettings),
       ],
 
       [
@@ -127,6 +129,7 @@ export default async () => {
          */
         {
           useEditorSettings: editorMode,
+          settings: mergedSettings,
         },
       ],
 
@@ -178,7 +181,8 @@ export default async () => {
       workbox: {
         runtimeCaching: [
           {
-            urlPattern: 'https://cdn.schema.io/*',
+            urlPattern:
+              `${process.env.CDN_HOST}/*` || 'https://cdn.schema.io/*',
           },
         ],
       },
@@ -225,6 +229,10 @@ export default async () => {
     server: {
       host: process.env.HOST || 'localhost',
       port: process.env.PORT || 3333,
+    },
+
+    env: {
+      cdnHost: process.env.CDN_HOST || 'https://cdn.schema.io',
     },
   }
 }

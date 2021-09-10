@@ -20,7 +20,7 @@
           transition
           focus:shadow-outline
         "
-        placeholder="Email address"
+        :placeholder="$t('emailSignup.placeholder')"
         @input="delayTouch($v.email)"
       />
       <button
@@ -30,6 +30,7 @@
         }"
         class="btn-icon absolute top-1 right-1"
         type="button"
+        :aria-label="$t('emailSignup.send')"
         @click="subscribe()"
       >
         <div v-if="status === 'COMPLETE'">

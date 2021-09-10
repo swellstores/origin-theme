@@ -76,8 +76,6 @@
 </template>
 
 <script>
-import padStart from 'lodash/padStart'
-
 export default {
   props: {
     card: {
@@ -104,7 +102,7 @@ export default {
     },
 
     expDate() {
-      const mm = padStart(this.card.expMonth, 2, '0')
+      const mm = this.card.expMonth.padStart(2, '0')
       const yy = this.card.expYear.toString().slice(-2)
       return `${mm} / ${yy}`
     },

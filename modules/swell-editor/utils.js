@@ -5,15 +5,16 @@ import kebabCase from 'lodash/kebabCase'
 import range from 'lodash/range'
 import round from 'lodash/round'
 import map from 'lodash/map'
-import snakeCase from 'lodash/snakeCase'
 
 import compose from 'lodash/fp/compose'
 import flatMap from 'lodash/fp/flatMap'
 import fromPairs from 'lodash/fp/fromPairs'
+import cloneDeep from 'lodash/fp/cloneDeep'
 
 import mitt from 'mitt'
 import buildUrl from 'build-url'
-import { cloneDeep } from 'lodash/fp'
+
+import { toCamel } from 'swell-js/dist/utils'
 
 const settingPaths = {
   headingFont: 'typography.headingFont',
@@ -217,38 +218,9 @@ export function generateCssVariables(settings) {
   ].join('\n')
 }
 
-export function normalizeKeys(obj, params) {
-  const options = {
-    case: 'camel',
-    ignoredKeys: ['$cache'],
-    ...params,
-  }
-
-  if (obj && obj.constructor === Object) {
-    Object.keys(obj).forEach((key) => {
-      if (options.ignoredKeys.includes(key)) return
-
-      const value = obj[key]
-      delete obj[key]
-
-      if (options.case === 'camel') {
-        key = camelCase(key)
-      } else if (options.case === 'snake') {
-        key = snakeCase(key)
-      }
-
-      obj[key] = normalizeKeys(value, options)
-    })
-  } else if (obj && obj.constructor === Array) {
-    obj = obj.map((v) => normalizeKeys(v, options))
-  }
-
-  return obj
-}
-
 export function getGoogleFontConfig(settings) {
   // we clone the `settings` object so we do not mutate it
-  const normalizedSettings = normalizeKeys(cloneDeep(settings))
+  const normalizedSettings = toCamel(cloneDeep(settings))
 
   // Extract font config objects
   const fonts = [

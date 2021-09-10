@@ -19,6 +19,7 @@
         },
       ]"
       :type="buttonType"
+      :aria-label="ariaLabel"
     >
       <!-- Loading spinner -->
       <div v-if="loadingLabel" class="absolute center-xy">
@@ -101,6 +102,10 @@ export default {
       default: '',
     },
     label: {
+      type: String,
+      default: '',
+    },
+    ariaLabel: {
       type: String,
       default: '',
     },
