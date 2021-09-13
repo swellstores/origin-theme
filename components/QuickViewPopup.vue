@@ -22,8 +22,7 @@
           md:rounded-md
           bg-primary-lightest
           md:center-xy
-          overflow-scroll
-          hide-scroll
+          overflow-x-auto overflow-y-auto
         "
       >
         <button
@@ -83,7 +82,7 @@
                 </div>
               </template>
 
-              <div class="flex no-wrap overflow-scroll mt-6 hide-scroll">
+              <div class="flex no-wrap mt-6 overflow-x-auto overflow-y-auto">
                 <button
                   v-for="(image, index) in product.images"
                   :key="image.id"
@@ -127,7 +126,7 @@
 
           <!-- Product details -->
           <div class="relative pb-6 md:pb-0 md:ml-5">
-            <div class="relative h-full md:overflow-scroll hide-scroll">
+            <div class="relative h-full md:overflow-y-auto md:overflow-x-auto">
               <div class="relative md:absolute w-full px-1">
                 <h2 class="mb-4 leading-tight">
                   {{ product.name }}
