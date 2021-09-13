@@ -8,6 +8,7 @@
         items-center
         text-center
         cursor-pointer
+        whitespace-nowrap
         focus:outline-none focus:shadow-outline
         hover:text-accent-default
       "
@@ -20,14 +21,24 @@
       <div
         class="flex items-center mx-auto transition-all duration-200 ease-out"
       >
-        <img
-          class="w-6 mr-2"
-          :src="`/flags/${getCountryCodeFromLocale($i18n.locale)}.svg`"
-          :alt="`${getCountryCodeFromLocale($i18n.locale)}`"
-        />
-        <span v-if="appearance === 'popup'" class="font-semibold">{{
-          $i18n.localeProperties.name
-        }}</span>
+        <template v-if="appearance === 'popup'">
+          <img
+            v-if="display === 'flag'"
+            class="w-6 mr-2"
+            :src="`/flags/${getCountryCodeFromLocale($i18n.locale)}.svg`"
+            :alt="`${getCountryCodeFromLocale($i18n.locale)}`"
+          />
+          <span class="font-semibold uppercase">{{ $i18n.locale }}</span>
+        </template>
+        <template v-else>
+          <img
+            v-if="display === 'flag'"
+            class="w-6 mr-2"
+            :src="`/flags/${getCountryCodeFromLocale($i18n.locale)}.svg`"
+            :alt="`${getCountryCodeFromLocale($i18n.locale)}`"
+          />
+          <span v-else class="uppercase">{{ $i18n.locale }}</span>
+        </template>
       </div>
     </div>
 
@@ -58,19 +69,19 @@
           appearance === 'float',
         'w-full max-w-80 mx-auto center-xy fixed': appearance === 'popup',
       }"
-      class="block -mt-px bg-primary-lightest rounded z-40 overflow-scroll"
+      class="block -mt-px bg-primary-lightest rounded z-40"
       role="listbox"
     >
       <NuxtLink
-        v-for="availableLocale in $i18n.locales"
-        :key="availableLocale.code"
+        v-for="locale in locales"
+        :key="locale.code"
         v-slot="{ href, navigate }"
-        :to="switchLocalePath(availableLocale.code)"
+        :to="switchLocalePath(locale.code)"
         custom
       >
         <li
           :class="{
-            'pointer-events-none': availableLocale.code === $i18n.locale,
+            'pointer-events-none': locale.code === $i18n.locale,
           }"
           class="
             mb-0
@@ -87,21 +98,20 @@
         >
           <a
             :href="href"
-            class="w-full m-2"
+            class="w-full p-2"
             :class="{
-              'opacity-25': availableLocale.code === $i18n.locale,
+              'opacity-25': locale.code === $i18n.locale,
               'my-2 mx-auto': appearance === 'popup',
             }"
             @click="navigate"
           >
             <img
+              v-if="!hideFlagOnList"
               class="inline-block w-6 mr-2"
-              :src="`/flags/${getCountryCodeFromLocale(
-                availableLocale.code
-              )}.svg`"
-              :alt="`${getCountryCodeFromLocale(availableLocale.code)}`"
+              :src="`/flags/${getCountryCodeFromLocale(locale.code)}.svg`"
+              :alt="`${getCountryCodeFromLocale(locale.code)}`"
             />
-            {{ availableLocale.name }}
+            {{ locale.name }}
           </a>
         </li>
       </NuxtLink>
@@ -122,8 +132,20 @@ export default {
 
   data() {
     return {
+      locales: null,
+      display: null,
+      hideFlagOnList: false,
       dropdownIsActive: false,
     }
+  },
+
+  fetch() {
+    // Set component data
+    const { $swell } = this
+
+    this.locales = $swell.locale.list()
+    this.display = $swell.settings.get('header.locale.display', 'flag')
+    this.hideFlagOnList = $swell.settings.get('header.locale.hideFlag', false)
   },
 
   mounted() {

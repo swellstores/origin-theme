@@ -391,16 +391,6 @@ export default {
 </script>
 
 <style lang="postcss">
-.hide-scroll::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.hide-scroll {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
 .gradient {
   @apply w-full h-12;
   background: rgb(255, 255, 255);
