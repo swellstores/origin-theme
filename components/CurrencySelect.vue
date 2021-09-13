@@ -8,6 +8,7 @@
         items-center
         text-center
         cursor-pointer
+        whitespace-nowrap
         focus:outline-none focus:shadow-outline
         hover:text-accent-default
       "
@@ -19,13 +20,18 @@
     >
       <div v-if="selected" class="mx-auto transition-all duration-200 ease-out">
         <span
+          v-if="display === 'symbol-code' && selected.symbol !== selected.value"
+          class="font-semibold"
+          >{{ selected.symbol }}</span
+        >
+        <span
           :class="{
             'font-semibold': appearance === 'popup',
             'font-medium': appearance === 'float',
           }"
-          >{{ selected.value }}</span
         >
-        <span class="font-semibold">{{ selected.symbol }}</span>
+          {{ selected.value }}
+        </span>
       </div>
     </div>
 
@@ -56,7 +62,7 @@
           appearance === 'float',
         'w-full max-w-80 mx-auto center-xy fixed': appearance === 'popup',
       }"
-      class="block -mt-px bg-primary-lightest rounded z-40 overflow-scroll"
+      class="block -mt-px bg-primary-lightest rounded z-40"
       role="listbox"
     >
       <li
@@ -69,6 +75,7 @@
         class="
           mb-0
           px-2
+          flex
           items-center
           cursor-pointer
           hover:bg-primary-lighter
@@ -78,15 +85,18 @@
         role="option"
         @click="selectOption(option)"
       >
-        <div
-          class="w-full m-2"
-          :class="{
-            'opacity-25': option.label === selected || option === selected,
-            'my-2 mx-auto': appearance === 'popup',
-          }"
-        >
-          {{ option.value }}
-          <span class="font-semibold">{{ option.symbol }}</span>
+        <div class="w-full p-2">
+          <span v-if="!hideSymbolOnList" class="font-semibold mr-2">{{
+            option.symbol
+          }}</span>
+          <span
+            :class="{
+              'opacity-25': option.label === selected || option === selected,
+              'my-2 mx-auto': appearance === 'popup',
+            }"
+          >
+            {{ option.label }}
+          </span>
         </div>
       </li>
     </ul>
@@ -117,12 +127,27 @@ export default {
       options: [],
       dropdownIsActive: false,
       selected: '',
+      display: null,
+      hideSymbolOnList: false,
     }
   },
 
   fetch() {
     // Set component data
-    this.options = this.getCurrencyOptions()
+    const { $swell } = this
+
+    const options = $swell.currency.list().map((currency) => ({
+      value: currency.code,
+      label: currency.name,
+      symbol: currency.symbol,
+    }))
+
+    this.options = options.length ? options : []
+    this.display = $swell.settings.get('header.currency.display', 'symbol-code')
+    this.hideSymbolOnList = $swell.settings.get(
+      'header.currency.hideSymbol',
+      false
+    )
   },
 
   watch: {
@@ -157,18 +182,6 @@ export default {
   },
 
   methods: {
-    getCurrencyOptions() {
-      const { $swell } = this
-
-      const options = $swell.currency.list().map((currency) => ({
-        value: currency.code,
-        label: `${currency.symbol} ${currency.code}`,
-        symbol: currency.symbol,
-      }))
-
-      return options.length ? options : null
-    },
-
     setDefaultValue() {
       const { value, options } = this
 

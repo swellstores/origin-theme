@@ -258,6 +258,58 @@
           "label": "Hide header when scrolling down",
           "type": "checkbox",
           "default": true
+        },
+        {
+          "type": "heading",
+          "label": "Locale select"
+        },
+        {
+          "id": "header.locale.display",
+          "label": "Display",
+          "type": "select",
+          "default": "flag",
+          "options": [
+            {
+              "value": "flag",
+              "label": "Flag"
+            },
+            {
+              "value": "code",
+              "label": "Locale code"
+            }
+          ]
+        },
+        {
+          "id": "header.locale.hide_flag",
+          "label": "Hide flag on select list",
+          "type": "checkbox",
+          "default": false
+        },
+        {
+          "type": "heading",
+          "label": "Currency select"
+        },
+        {
+          "id": "header.currency.display",
+          "label": "Display",
+          "type": "select",
+          "default": "symbol-code",
+          "options": [
+            {
+              "value": "symbol-code",
+              "label": "Currency symbol and code"
+            },
+            {
+              "value": "code",
+              "label": "Currency code"
+            }
+          ]
+        },
+        {
+          "id": "header.currency.hide_symbol",
+          "label": "Hide currency symbol on select list",
+          "type": "checkbox",
+          "default": false
         }
       ]
     },

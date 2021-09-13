@@ -28,7 +28,15 @@
     "promo_text": "",
     "promo_url": "",
     "hide_on_scroll": true,
-    "favicon": ""
+    "favicon": "",
+    "locale": {
+      "display": "flag",
+      "hide_flag": false
+    },
+    "currency": {
+      "display": "symbol-code",
+      "hide_symbol": false
+    }
   },
   "footer": {
     "menu": "footer",
