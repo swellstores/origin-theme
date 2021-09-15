@@ -188,7 +188,7 @@ export default async () => {
       },
     },
 
-    i18n: await getLangSettings(mergedSettings, editorMode),
+    i18n: getLangSettings(mergedSettings, editorMode),
 
     sitemap: {
       hostname: get(

@@ -126,7 +126,7 @@
               <!-- Currency select -->
               <CurrencySelect
                 v-if="currencyList.length > 1"
-                :currency="currency"
+                :current-currency="currency"
                 class="hidden lg:block"
                 appearance="float"
               />

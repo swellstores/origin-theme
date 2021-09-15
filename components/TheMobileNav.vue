@@ -68,7 +68,7 @@
           />
           <CurrencySelect
             v-if="currency"
-            :currency="currency"
+            :current-currency="currency"
             class="sw-nav-button z-10"
             appearance="popup"
           />

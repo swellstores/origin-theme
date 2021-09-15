@@ -410,6 +410,10 @@ export default {
     },
   },
 
+  watch: {
+    currency: '$fetch',
+  },
+
   methods: {
     // Select attribute component based on type
     getAttributeComponent(type) {
