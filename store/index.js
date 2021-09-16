@@ -252,7 +252,7 @@ export const actions = {
       console.log(error)
     } else {
       // Otherwise log with reporting tool
-      this.$sentry.captureException(error)
+      this.$sentry?.captureException(error)
     }
   },
 }

@@ -141,7 +141,7 @@ export default {
           if (this.isDev) {
             console.log(err)
           } else {
-            this.$sentry.captureException(err)
+            this.$sentry?.captureException(err)
           }
           this.status = 'ERROR'
           this.errors = [err]
