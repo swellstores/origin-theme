@@ -57,7 +57,7 @@ export const actions = {
       commit('setState', { key: 'addedItem', value: item })
 
       if (cart.errors) {
-        dispatch('handleError', cart.errors.items)
+        dispatch('handleModelErrors', cart.errors)
         commit('setState', { key: 'cartIsUpdating', value: false })
         return
       }
@@ -253,6 +253,22 @@ export const actions = {
     } else {
       // Otherwise log with reporting tool
       this.$sentry?.captureException(error)
+    }
+  },
+
+  /**
+   * Handles a model error object which is keyed by field
+   *
+   * @param {error} errors - Model errors object
+   */
+  handleModelErrors({ dispatch }, errors) {
+    if (!errors || typeof errors !== 'object') return
+    // Loop over error keys and handle the first one
+    for (const key of Object.keys(errors)) {
+      if (errors[key] && errors[key].message) {
+        dispatch('handleError', errors[key])
+        return
+      }
     }
   },
 }
