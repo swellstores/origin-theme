@@ -161,69 +161,96 @@
                 </div>
 
                 <!-- Duplicate button element to match fixed button height -->
-                <button
-                  :class="{ loading: cartIsUpdating }"
-                  type="submit"
-                  class="
-                    btn btn--lg
-                    relative
-                    w-full
-                    opacity-0
-                    pointer-events-none
-                  "
-                >
-                  |
-                </button>
+                <div class="opacity-0 pointer-events-none">
+                  <span
+                    v-if="product.stockTracking && !product.stockPurchasable"
+                    class="block mb-3"
+                    >|</span
+                  >
+                  <button
+                    :class="{ loading: cartIsUpdating }"
+                    type="submit"
+                    class="btn btn--lg relative w-full"
+                  >
+                    |
+                  </button>
+                </div>
               </div>
             </div>
-            <!-- Cart button & stock info -->
 
+            <!-- Cart button & stock info -->
             <div
               v-if="variation"
               class="
                 container
                 center-x
                 fixed
+                pt-4
+                bg-primary-lightest
                 md:px-0 md:w-full md:absolute
                 bottom-0
               "
             >
-              <!-- Gradient overlay to cover overflow elements -->
-              <div class="gradient" />
+              <StockStatus
+                v-if="product.stockTracking && !product.stockPurchasable"
+                :status-value="variation.stockStatus"
+              />
 
-              <button
-                :class="{ loading: cartIsUpdating }"
-                type="submit"
-                class="btn btn--lg relative w-full"
-                @click.prevent="addToCart"
-              >
-                <div v-show="!cartIsUpdating">
-                  <span>Add to cart</span>
-                  <span
-                    class="
-                      inline-block
-                      w-5
-                      mx-1
-                      mb-1
-                      border-b border-primary-lightest
-                    "
-                  />
-                  <span>{{ formatMoney(variation.price, currency) }}</span>
-                  <span v-if="billingInterval">{{ billingInterval }}</span>
-                  <span
-                    v-if="variation.origPrice"
-                    class="ml-1 line-through text-primary-med"
-                  >
-                    {{ formatMoney(variation.origPrice, currency) }}
-                  </span>
-                </div>
-                <div v-show="cartIsUpdating" class>
-                  <div class="spinner absolute inset-0 mt-3" />
-                  <span class="absolute inset-0 mt-5">Updating</span>
-                </div>
-              </button>
+              <!-- Quantity -->
+              <div class="flex">
+                <ProductQuantity
+                  v-model="quantity"
+                  :initial-limit="maxQuantity"
+                  :stock-tracking="variation.stockTracking"
+                  :stock-purchasable="variation.stockPurchasable"
+                  :stock-level="variation.stockLevel"
+                />
 
-              <div class="h-6 bg-primary-lighter md:hidden" />
+                <!-- Add to cart -->
+                <button
+                  :class="{
+                    loading: cartIsUpdating,
+                    disabled: !stockAvailable,
+                  }"
+                  type="submit"
+                  class="btn btn--lg relative w-full"
+                  :disabled="!stockAvailable"
+                  @click.prevent="addToCart"
+                >
+                  <div v-show="!cartIsUpdating">
+                    <span>{{ $t('products.slug.addToCart') }}</span>
+                    <span
+                      class="
+                        inline-block
+                        w-5
+                        mx-1
+                        mb-1
+                        border-b border-primary-lightest
+                      "
+                    />
+                    <span>{{
+                      formatMoney(variation.price * quantity, currency)
+                    }}</span>
+                    <span v-if="billingInterval">{{ billingInterval }}</span>
+                    <span
+                      v-if="variation.origPrice"
+                      class="ml-1 line-through text-primary-med"
+                    >
+                      {{
+                        formatMoney(variation.origPrice * quantity, currency)
+                      }}
+                    </span>
+                  </div>
+                  <div v-show="cartIsUpdating" class>
+                    <div class="spinner absolute inset-0 mt-3" />
+                    <span class="absolute inset-0 mt-5">{{
+                      $t('products.slug.updating')
+                    }}</span>
+                  </div>
+                </button>
+              </div>
+
+              <div class="h-6 bg-primary-lightest md:hidden" />
             </div>
           </div>
         </div>
@@ -253,6 +280,8 @@ export default {
   data() {
     return {
       product: null,
+      quantity: 1,
+      maxQuantity: 99,
       pendingState: false,
       optionState: null,
       productPreviewIndex: 0,
@@ -279,6 +308,7 @@ export default {
     // Set component data
     this.product = product
     this.optionState = optionState
+    this.maxQuantity = get(product, 'content.maxQuantity', 99)
   },
 
   computed: {
@@ -288,6 +318,15 @@ export default {
     variation() {
       if (!this.product) return {}
       return this.$swell.products.variation(this.product, this.optionState)
+    },
+
+    stockAvailable() {
+      const { stockStatus, stockTracking, stockPurchasable } = this.variation
+      return (
+        (stockStatus && stockStatus !== 'out_of_stock') ||
+        !stockTracking ||
+        stockPurchasable
+      )
     },
 
     productImages() {
@@ -364,7 +403,7 @@ export default {
       })
       await this.$store.dispatch('addCartItem', {
         productId: this.variation.id,
-        quantity: 1,
+        quantity: this.quantity || 1,
         options: this.optionState,
       })
 

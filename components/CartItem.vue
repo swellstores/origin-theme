@@ -81,28 +81,15 @@
 
         <!-- Quantity adjustment -->
         <div class="flex ml-auto">
-          <button
-            type="button"
-            class="
-              relative
-              inline-block
-              w-9
-              h-9
-              rounded-full
-              bg-primary-light
-              mr-2
+          <ProductQuantity
+            v-model="quantity"
+            :initial-limit="maxQuantity"
+            :stock-tracking="item.product.stockTracking"
+            :stock-purchasable="item.product.stockPurchasable"
+            :stock-level="
+              item.variant ? item.variant.stockLevel : item.product.stockLevel
             "
-            @click.prevent="decrementQuantity()"
-          >
-            <BaseIcon icon="uil:minus" class="absolute center-xy" />
-          </button>
-          <button
-            type="button"
-            class="relative inline-block w-9 h-9 rounded-full bg-primary-light"
-            @click.prevent="incrementQuantity()"
-          >
-            <BaseIcon icon="uil:plus" class="absolute center-xy" />
-          </button>
+          />
         </div>
       </div>
     </div>
@@ -131,7 +118,19 @@ export default {
   data() {
     return {
       itemEditorIsVisible: false,
+      quantity: 1,
+      maxQuantity: 99,
     }
+  },
+
+  async fetch() {
+    const { $swell, item } = this
+
+    // Fetch product
+    const product = await $swell.products.get(item.product.id)
+
+    this.maxQuantity = get(product, 'content.maxQuantity', 99)
+    this.quantity = item.quantity
   },
 
   computed: {
@@ -144,28 +143,22 @@ export default {
     },
   },
 
+  watch: {
+    // Update qty if item has recently been
+    item(val) {
+      this.quantity = val.quantity
+    },
+    quantity(val) {
+      this.$store.dispatch('updateCartItem', {
+        id: this.item.id,
+        fieldsToUpdate: { quantity: val },
+      })
+    },
+  },
+
   methods: {
     removeItem() {
       this.$store.dispatch('removeCartItem', this.item)
-    },
-
-    incrementQuantity() {
-      const oldQuantity = this.item.quantity
-      const newQuantity = oldQuantity + 1
-      this.$store.dispatch('updateCartItem', {
-        id: this.item.id,
-        fieldsToUpdate: { quantity: newQuantity },
-      })
-    },
-
-    decrementQuantity() {
-      if (this.item.quantity - 1 <= 0) return
-      const oldQuantity = this.item.quantity
-      const newQuantity = oldQuantity - 1
-      this.$store.dispatch('updateCartItem', {
-        id: this.item.id,
-        fieldsToUpdate: { quantity: newQuantity },
-      })
     },
   },
 }

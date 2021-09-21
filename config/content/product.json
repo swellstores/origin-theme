@@ -42,6 +42,13 @@
       "id": "enable_social_sharing",
       "label": "Enable social sharing",
       "type": "toggle"
+    },
+    {
+      "id": "max_quantity",
+      "label": "Max product quantity",
+      "hint": "Sets the limit a product can be added to cart at a time.",
+      "default": 99,
+      "type": "number"
     }
   ],
   "source_type": "theme",
