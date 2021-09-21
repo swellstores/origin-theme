@@ -173,43 +173,60 @@
                 v-if="product.stockTracking && !product.stockPurchasable"
                 :status-value="variation.stockStatus"
               />
-              <button
-                :class="{
-                  loading: cartIsUpdating,
-                  disabled: disableOnVariantStockStatus(variation.stockStatus),
-                }"
-                type="submit"
-                class="btn btn--lg relative w-full"
-                :disabled="disableOnVariantStockStatus(variation.stockStatus)"
-                @click.prevent="addToCart"
-              >
-                <div v-show="!cartIsUpdating">
-                  <span>{{ $t('products.slug.addToCart') }}</span>
-                  <span
-                    class="
-                      inline-block
-                      w-5
-                      mx-1
-                      mb-1
-                      border-b border-primary-lightest
-                    "
-                  />
-                  <span>{{ formatMoney(variation.price, currency) }}</span>
-                  <span v-if="billingInterval">{{ billingInterval }}</span>
-                  <span
-                    v-if="variation.origPrice"
-                    class="ml-1 line-through text-primary-med"
-                  >
-                    {{ formatMoney(variation.origPrice, currency) }}
-                  </span>
-                </div>
-                <div v-show="cartIsUpdating" class>
-                  <div class="spinner absolute inset-0 mt-3" />
-                  <span class="absolute inset-0 mt-5">{{
-                    $t('products.slug.updating')
-                  }}</span>
-                </div>
-              </button>
+
+              <!-- Quantity -->
+              <div class="flex">
+                <ProductQuantity
+                  v-model="quantity"
+                  :initial-limit="maxQuantity"
+                  :stock-tracking="variation.stockTracking"
+                  :stock-purchasable="variation.stockPurchasable"
+                  :stock-level="variation.stockLevel"
+                />
+
+                <!-- Add to cart -->
+                <button
+                  :class="{
+                    loading: cartIsUpdating,
+                    disabled: !stockAvailable,
+                  }"
+                  type="submit"
+                  class="btn btn--lg relative w-full"
+                  :disabled="!stockAvailable"
+                  @click.prevent="addToCart"
+                >
+                  <div v-show="!cartIsUpdating">
+                    <span>{{ $t('products.slug.addToCart') }}</span>
+                    <span
+                      class="
+                        inline-block
+                        w-5
+                        mx-1
+                        mb-1
+                        border-b border-primary-lightest
+                      "
+                    />
+                    <span>{{
+                      formatMoney(variation.price * quantity, currency)
+                    }}</span>
+                    <span v-if="billingInterval">{{ billingInterval }}</span>
+                    <span
+                      v-if="variation.origPrice"
+                      class="ml-1 line-through text-primary-med"
+                    >
+                      {{
+                        formatMoney(variation.origPrice * quantity, currency)
+                      }}
+                    </span>
+                  </div>
+                  <div v-show="cartIsUpdating" class>
+                    <div class="spinner absolute inset-0 mt-3" />
+                    <span class="absolute inset-0 mt-5">{{
+                      $t('products.slug.updating')
+                    }}</span>
+                  </div>
+                </button>
+              </div>
             </div>
             <!-- END Purchase form -->
 
@@ -307,6 +324,8 @@ export default {
   data() {
     return {
       product: {},
+      quantity: 1,
+      maxQuantity: 99,
       relatedProducts: [], // TODO
       optionState: null,
       productBenefits: [],
@@ -349,6 +368,7 @@ export default {
     this.relatedProducts = relatedProducts
     this.productBenefits = get(product, 'content.productBenefits', [])
     this.enableSocialSharing = get(product, 'content.enableSocialSharing')
+    this.maxQuantity = get(product, 'content.maxQuantity', 99)
   },
 
   computed: {
@@ -363,6 +383,15 @@ export default {
     productImages() {
       if (!this.product?.images?.length) return null
       return this.product.images
+    },
+
+    stockAvailable() {
+      const { stockStatus, stockTracking, stockPurchasable } = this.variation
+      return (
+        (stockStatus && stockStatus !== 'out_of_stock') ||
+        !stockTracking ||
+        stockPurchasable
+      )
     },
 
     billingInterval() {
@@ -434,15 +463,6 @@ export default {
       this.activeDropdownUID = uid
     },
 
-    // Determine whether to disable Add to Cart button based on the variant's stock status
-    disableOnVariantStockStatus(stockStatus) {
-      return (
-        (stockStatus === 'out_of_stock' || !stockStatus) &&
-        this.product.stockTracking &&
-        !this.product.stockPurchasable
-      )
-    },
-
     // Add product to cart with selected options
     addToCart() {
       // Touch and validate all fields
@@ -450,7 +470,7 @@ export default {
       if (this.$v.$invalid) return // return if invalid
       this.$store.dispatch('addCartItem', {
         productId: this.variation.id,
-        quantity: 1,
+        quantity: this.quantity || 1,
         options: this.optionState,
       })
     },
