@@ -1,7 +1,7 @@
 import swell from 'swell-js'
 import merge from 'deepmerge'
 
-const combineMerge = (target, source, options) => {
+export function combineMerge(target, source, options) {
   const destination = target.slice()
 
   source.forEach((item, index) => {

@@ -3702,7 +3702,6 @@
           "type": "short_text",
           "localized": true
         },
-
         {
           "id": "lang.cart.item.edit",
           "label": "Edit cart item",
