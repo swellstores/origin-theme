@@ -1,6 +1,6 @@
 {
   "name": "swell-origin-theme",
-  "version": "1.0.117",
+  "version": "1.0.118",
   "description": "Origin PWA theme/starter for Swell ecommerce platform",
   "author": "Swell",
   "homepage": "https://www.swell.is/",
@@ -26,7 +26,7 @@
     "nuxt": "2.15.7",
     "nuxt-i18n": "6.22.3",
     "object-scan": "16.0.2",
-    "swell-js": "3.10.0",
+    "swell-js": "3.10.8",
     "vue": "2.6.14",
     "vue-country-region-select": "2.0.16",
     "vue-credit-card-validation": "wuori/vue-credit-card-validation",
