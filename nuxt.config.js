@@ -1,4 +1,3 @@
-import consola from 'consola'
 import get from 'lodash/get'
 import { toCamel } from 'swell-js/dist/utils'
 import settings from './config/settings.json'
@@ -7,14 +6,8 @@ import { getGoogleFontConfig } from './modules/swell-editor/utils'
 import { getLangSettings } from './modules/swell-editor/lang/utils'
 import { mergeSettings } from './modules/swell/utils/mergeSettings'
 
-const logger = consola.withScope('swell-editor')
-
 const isProduction = process.env.NODE_ENV === 'production'
 const editorMode = process.env.SWELL_EDITOR === 'true'
-
-if (editorMode) {
-  logger.info('Swell Editor enabled')
-}
 
 export default async () => {
   const mergedSettings = await mergeSettings(toCamel(settings))
@@ -22,6 +15,7 @@ export default async () => {
   const storeId = get(mergedSettings, 'store.id')
 
   return {
+    target: !editorMode ? 'static' : 'server',
     build: {
       analyze: !isProduction,
     },
