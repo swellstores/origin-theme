@@ -15,7 +15,6 @@ export default async () => {
   const storeId = get(mergedSettings, 'store.id')
 
   return {
-    target: !editorMode ? 'static' : 'server',
     build: {
       analyze: !isProduction,
     },
