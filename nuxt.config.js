@@ -162,8 +162,8 @@ export default async () => {
     ],
 
     gtm: {
-      id: mergedSettings.analytics.gtmId,
-      enabled: mergedSettings.analytics.gtmId && isProduction,
+      id: get(mergedSettings, 'analytics.gtmId'),
+      enabled: get(mergedSettings, 'analytics.gtmId') && isProduction,
     },
 
     pwa: {
@@ -187,7 +187,7 @@ export default async () => {
       hostname: get(
         mergedSettings,
         'store.url',
-        `https://${storeId}.swell.store/`
+        process.env.SWELL_STORE_URL || `https://${storeId}.swell.store/`
       ),
       gzip: true,
       i18n: true,
