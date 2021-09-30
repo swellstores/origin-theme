@@ -1,9 +1,9 @@
 <template>
   <!-- Error/empty state -->
   <SectionUndefined
-    v-if="!features.length"
+    v-if="!heading && !features.length"
     heading="Multiple features"
-    description="No features added"
+    description="No heading or features added"
   />
 
   <section v-else class="text-center px-6 py-16 lg:px-8 xl:px-20">

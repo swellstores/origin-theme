@@ -1,9 +1,9 @@
 <template>
   <!-- Error/empty state -->
   <SectionUndefined
-    v-if="!reviews.length"
+    v-if="!heading && !reviews.length"
     heading="Customer reviews"
-    description="No reviews added"
+    description="No heading or reviews added"
   />
 
   <section v-else class="relative container my-14 lg:my-16">
