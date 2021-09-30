@@ -51,7 +51,17 @@
             >
               {{ item.name }}
             </p>
-            <!-- Standard link -->
+            <!-- URL link -->
+            <a
+              v-else-if="item.type === 'url'"
+              rel="noreferrer noopener"
+              :href="item.value"
+              :target="item.options.target === 'blank' ? '_blank' : '_self'"
+              class="block -mx-1 p-1 leading-tight"
+            >
+              {{ item.name }}
+            </a>
+            <!-- Standard internal link -->
             <NuxtLink
               v-else
               :to="localePath(resolveUrl(item))"
