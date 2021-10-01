@@ -26,7 +26,19 @@
               :key="'mobileNavItem' + index"
               :style="{ '--i': index }"
             >
-              <NuxtLink :to="localePath(resolveUrl(item))" class="sw-nav-link">
+              <a
+                v-if="item.type === 'url'"
+                class="sw-nav-link"
+                rel="noreferrer noopener"
+                :href="item.value"
+                :target="item.options.target === 'blank' ? '_blank' : '_self'"
+                >{{ item.name }}</a
+              >
+              <NuxtLink
+                v-else
+                :to="localePath(resolveUrl(item))"
+                class="sw-nav-link"
+              >
                 {{ item.name }}
               </NuxtLink>
             </li>

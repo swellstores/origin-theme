@@ -76,7 +76,28 @@
                   :key="item.name"
                   class="sw-nav-link-wrapper mb-0"
                 >
+                  <a
+                    v-if="item.type === 'url'"
+                    class="
+                      sw-nav-link
+                      relative
+                      flex
+                      items-center
+                      h-full
+                      px-5
+                      pt-1
+                      rounded-none
+                      border-transparent border-b-4
+                    "
+                    rel="noreferrer noopener"
+                    :href="item.value"
+                    :target="
+                      item.options.target === 'blank' ? '_blank' : '_self'
+                    "
+                    >{{ item.name }}</a
+                  >
                   <NuxtLink
+                    v-else
                     :to="localePath(resolveUrl(item))"
                     :title="item.description"
                     class="

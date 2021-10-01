@@ -90,7 +90,7 @@ export const editor = {
           if (isFontVariable(details.path)) {
             updateGoogleFontsLink(settings)
           }
-        } else if (details.path.includes('lang')) {
+        } else if (details.path && details.path.includes('lang')) {
           const locale = details.path.includes(i18n.locale)
             ? i18n.locale
             : i18n.defaultLocale
