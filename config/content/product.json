@@ -44,11 +44,19 @@
       "type": "toggle"
     },
     {
+      "id": "enable_quantity",
+      "label": "Enable product quantity",
+      "hint": "Allows users to set the quantity of the product to be added to cart.",
+      "default": true,
+      "type": "toggle"
+    },
+    {
       "id": "max_quantity",
       "label": "Max product quantity",
       "hint": "Sets the limit a product can be added to cart at a time.",
       "default": 99,
-      "type": "number"
+      "type": "number",
+      "conditions": { "enable_quantity": true }
     }
   ],
   "source_type": "theme",

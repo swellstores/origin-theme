@@ -177,6 +177,7 @@
               <!-- Quantity -->
               <div class="flex">
                 <ProductQuantity
+                  v-if="enableQuantity"
                   v-model="quantity"
                   :initial-limit="maxQuantity"
                   :stock-tracking="variation.stockTracking"
@@ -325,6 +326,7 @@ export default {
     return {
       product: {},
       quantity: 1,
+      enableQuantity: true,
       maxQuantity: 99,
       relatedProducts: [], // TODO
       optionState: null,
@@ -361,6 +363,13 @@ export default {
 
     // TODO generate related products
     const relatedProducts = []
+    let maxQuantity = get(product, 'content.maxQuantity')
+    maxQuantity = !maxQuantity
+      ? 99
+      : typeof maxQuantity === 'string'
+      ? Number(maxQuantity)
+      : 99
+    maxQuantity = !isNaN(maxQuantity) ? maxQuantity : 99
 
     // Set component data
     this.product = product
@@ -368,7 +377,8 @@ export default {
     this.relatedProducts = relatedProducts
     this.productBenefits = get(product, 'content.productBenefits', [])
     this.enableSocialSharing = get(product, 'content.enableSocialSharing')
-    this.maxQuantity = get(product, 'content.maxQuantity', 99)
+    this.enableQuantity = get(product, 'content.enableQuantity')
+    this.maxQuantity = maxQuantity
   },
 
   computed: {
