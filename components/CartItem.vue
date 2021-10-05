@@ -129,7 +129,15 @@ export default {
     // Fetch product
     const product = await $swell.products.get(item.product.id)
 
-    this.maxQuantity = get(product, 'content.maxQuantity', 99)
+    let maxQuantity = get(product, 'content.maxQuantity')
+    maxQuantity = !maxQuantity
+      ? 99
+      : typeof maxQuantity === 'string'
+      ? Number(maxQuantity)
+      : 99
+    maxQuantity = !isNaN(maxQuantity) ? maxQuantity : 99
+
+    this.maxQuantity = maxQuantity
     this.quantity = item.quantity
   },
 

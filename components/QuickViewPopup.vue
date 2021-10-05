@@ -199,6 +199,7 @@
               <!-- Quantity -->
               <div class="flex">
                 <ProductQuantity
+                  v-if="enableQuantity"
                   v-model="quantity"
                   :initial-limit="maxQuantity"
                   :stock-tracking="variation.stockTracking"
@@ -281,6 +282,7 @@ export default {
     return {
       product: null,
       quantity: 1,
+      enableQuantity: true,
       maxQuantity: 99,
       pendingState: false,
       optionState: null,
@@ -305,10 +307,19 @@ export default {
         return options
       }, {})
 
+    let maxQuantity = get(product, 'content.maxQuantity')
+    maxQuantity = !maxQuantity
+      ? 99
+      : typeof maxQuantity === 'string'
+      ? Number(maxQuantity)
+      : 99
+    maxQuantity = !isNaN(maxQuantity) ? maxQuantity : 99
+
     // Set component data
     this.product = product
     this.optionState = optionState
-    this.maxQuantity = get(product, 'content.maxQuantity', 99)
+    this.enableQuantity = get(product, 'content.enableQuantity')
+    this.maxQuantity = maxQuantity
   },
 
   computed: {
