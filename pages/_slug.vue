@@ -1,8 +1,12 @@
 <template>
   <div v-if="sections.length">
     <transition-group name="page-section">
-      <div v-for="(section, index) in sections" :key="JSON.stringify(section)">
+      <div
+        v-for="(section, index) in sections"
+        :key="`${section.id}.${section.type}`"
+      >
         <SectionAsyncLoader
+          v-if="section"
           :section="section"
           :collection-index="index"
           :fetch-is-pending="!loaded && $fetchState.pending"

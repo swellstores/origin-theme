@@ -26,7 +26,8 @@ export default {
   props: {
     section: {
       type: Object,
-      default: null,
+      default: () => ({}),
+      required: true,
     },
     collectionFieldId: {
       type: String,
@@ -44,8 +45,6 @@ export default {
 
   computed: {
     component() {
-      if (!this.section) return
-
       return () => ({
         component: import(
           `./Section${capitalCase(String(this.section.type))}.vue`
