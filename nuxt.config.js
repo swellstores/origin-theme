@@ -1,18 +1,31 @@
 import get from 'lodash/get'
-import { toCamel } from 'swell-js/dist/utils'
 import settings from './config/settings.json'
 import menuSettings from './config/menus.json'
 import { getGoogleFontConfig } from './modules/swell-editor/utils'
 import { getLangSettings } from './modules/swell-editor/lang/utils'
-import { mergeSettings } from './modules/swell/utils/mergeSettings'
+import {
+  loadSettings,
+  mergeSettings,
+} from './modules/swell/utils/mergeSettings'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const editorMode = process.env.SWELL_EDITOR === 'true'
 
 export default async () => {
-  const mergedSettings = await mergeSettings(toCamel(settings))
-  const mergedMenuSettings = await mergeSettings(toCamel(menuSettings))
-  const storeId = get(mergedSettings, 'store.id')
+  const storeId = process.env.SWELL_STORE_ID || settings.store.id
+  const publicKey = process.env.SWELL_PUBLIC_KEY || settings.store.public_key
+  const storeUrl = process.env.SWELL_STORE_URL || settings.store.url
+
+  const initialSettings = await loadSettings({
+    storeId,
+    publicKey,
+    storeUrl,
+  })
+
+  const mergedSettings = mergeSettings(initialSettings, settings)
+  const mergedMenuSettings = mergeSettings(initialSettings, menuSettings, {
+    model: 'menu',
+  })
 
   return {
     build: {
@@ -138,10 +151,10 @@ export default async () => {
          *  https://github.com/swellstores/swell-theme-origin#configuration
          */
         {
-          storeId: process.env.SWELL_STORE_ID,
-          publicKey: process.env.SWELL_PUBLIC_KEY,
+          storeId,
+          publicKey,
+          storeUrl,
           previewContent: editorMode,
-          storeUrl: process.env.SWELL_STORE_URL,
           currentSettings: {
             settings: mergedSettings,
             menus: mergedMenuSettings,
@@ -163,7 +176,7 @@ export default async () => {
 
     gtm: {
       id: get(mergedSettings, 'analytics.gtmId'),
-      enabled: get(mergedSettings, 'analytics.gtmId') && isProduction,
+      enabled: !!get(mergedSettings, 'analytics.gtmId') && isProduction,
     },
 
     pwa: {
@@ -184,11 +197,7 @@ export default async () => {
     i18n: getLangSettings(mergedSettings, editorMode),
 
     sitemap: {
-      hostname: get(
-        mergedSettings,
-        'store.url',
-        process.env.SWELL_STORE_URL || `https://${storeId}.swell.store/`
-      ),
+      hostname: storeUrl,
       gzip: true,
       i18n: true,
       exclude: ['/account/**', '/*/account/**'],

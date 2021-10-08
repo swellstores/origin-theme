@@ -24,13 +24,6 @@ export default function (moduleOptions) {
   if (useEditorSettings) {
     logger.info('Swell Editor enabled')
 
-    // Load settings and menus
-    this.addPlugin({
-      src: path.resolve(__dirname, './settings-loader.js'),
-      fileName: 'swell-editor-settings-loader.js',
-      options,
-    })
-
     // Add plugin for editor communication and message processing
     this.addPlugin({
       src: path.resolve(__dirname, './plugin.js'),

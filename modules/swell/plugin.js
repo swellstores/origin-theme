@@ -6,6 +6,7 @@ export default (context, inject) => {
   const currentSettings = <%= JSON.stringify(options.currentSettings) %>
 
   const { settings, menus } = currentSettings
+
   const storeId = '<%= options.storeId || "" %>' || get(settings, 'store.id')
   const publicKey =
     '<%= options.publicKey || "" %>' || get(settings, 'store.public_key')
@@ -33,10 +34,12 @@ export default (context, inject) => {
 
   // Inject client into nuxt context as $swell
   context.$swell = swell
+
+  // Inject local state into Swell client state
   context.$swell.settings.state = settings
   context.$swell.settings.menuState = menus
 
-  inject('swell', swell)
+  inject('swell', context.$swell)
 }
 
 function parseCookies(req) {
