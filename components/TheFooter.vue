@@ -71,6 +71,14 @@
                 {{ item.name }}
               </p>
               <!-- Standard link -->
+              <a
+                v-else-if="item.type === 'url'"
+                class="inline-block py-1 leading-tight text-xl"
+                rel="noreferrer noopener"
+                :href="item.value"
+                :target="item.options.target === 'blank' ? '_blank' : '_self'"
+                >{{ item.name }}</a
+              >
               <NuxtLink
                 v-else
                 :to="localePath(resolveUrl(item))"
@@ -128,7 +136,14 @@
             :key="item.name"
             class="inline-block mx-3 mb-0"
           >
-            <NuxtLink :to="localePath(resolveUrl(item))">
+            <a
+              v-if="item.type === 'url'"
+              rel="noreferrer noopener"
+              :href="item.value"
+              :target="item.options.target === 'blank' ? '_blank' : '_self'"
+              >{{ item.name }}</a
+            >
+            <NuxtLink v-else :to="localePath(resolveUrl(item))">
               {{ item.name }}
             </NuxtLink>
           </li>
