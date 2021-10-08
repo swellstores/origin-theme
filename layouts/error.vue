@@ -85,15 +85,6 @@ export default {
           async: true,
           body: true,
         },
-        {
-          type: 'text/javascript',
-          innerHTML: this.$swell.settings.get('scripts.global.head'),
-        },
-        {
-          type: 'text/javascript',
-          innerHTML: this.$swell.settings.get('scripts.global.body'),
-          body: true,
-        },
       ],
       link: [
         {

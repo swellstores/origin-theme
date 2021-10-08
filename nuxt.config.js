@@ -53,6 +53,7 @@ export default async () => {
      ** Vue plugins to load before mounting the App
      */
     plugins: [
+      { src: '~/plugins/global-scripts', mode: 'client' },
       { src: '~/plugins/vue-credit-card-validation', mode: 'client' },
       { src: '~/plugins/directives', mode: 'client' },
       { src: '~/plugins/swell-lang.js' },

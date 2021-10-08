@@ -567,14 +567,14 @@
           "id": "scripts.global.head",
           "label": "Global <head> script",
           "type": "long_text",
-          "placeholder": "Paste code here, excluding <script> tag opening and closing",
+          "placeholder": "Paste code here, including <script> tag opening and closing",
           "hint": "Scripts to be loaded on every page of your store, before closing the <head> tag."
         },
         {
           "id": "scripts.global.body",
           "label": "Global <body> script",
           "type": "long_text",
-          "placeholder": "Paste code here, excluding <script> tag opening and closing",
+          "placeholder": "Paste code here, including <script> tag opening and closing",
           "hint": "Scripts to be loaded on every page of your store, before closing the <body> tag."
         }
       ]
