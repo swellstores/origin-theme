@@ -104,7 +104,11 @@
             >
               <div class="min-w-26 mr-6">
                 <VisualMedia
-                  v-if="item.product.images && item.product.images.length"
+                  v-if="
+                    item.product &&
+                    item.product.images &&
+                    item.product.images.length
+                  "
                   :source="item.product.images[0].file"
                   sizes="120px"
                 />
@@ -119,7 +123,7 @@
 
               <div>
                 <h4 class="pb-2">
-                  {{ item.product.name }}
+                  {{ item.product ? item.product.name : '-' }}
                 </h4>
                 <p v-if="item.quantity > 1" class="text-sm text-primary-darker">
                   {{
@@ -240,7 +244,8 @@
                   }}</strong>
                   <div>
                     <p v-for="item in shipment.items" :key="item.id">
-                      {{ item.quantity }} × {{ item.product.name }}
+                      {{ item.quantity }} ×
+                      {{ item.product ? item.product.name : '-' }}
                     </p>
                   </div>
 
