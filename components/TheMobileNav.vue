@@ -13,17 +13,25 @@
         "
       >
         <!-- Navigation Links -->
-        <div class="flex flex-grow flex-row justify-center items-center">
+        <div
+          class="
+            container
+            flex flex-grow
+            pt-28
+            md:justify-center md:items-center md:max-w-120
+          "
+        >
           <transition-group
             name="nav-menu-link"
             tag="ul"
             appear
-            class="text-center text-4xl font-semibold"
+            class="w-full text-2xl font-semibold"
             :style="{ '--length': menuItems.length }"
           >
             <li
               v-for="(item, index) in menuItems"
               :key="'mobileNavItem' + index"
+              class="mb-6 md:text-center"
               :style="{ '--i': index }"
             >
               <a
@@ -46,44 +54,39 @@
         </div>
 
         <!-- Misc. Links -->
-        <div
-          ref="miscLinks"
-          class="
-            bottom-0
-            w-full
-            flex flex-wrap
-            border-b border-primary-light
-            md:px-10 md:pb-6 md:border-b-0 md:justify-center
-          "
-        >
-          <button class="sw-nav-button" @click.prevent="$emit('click-search')">
-            <BaseIcon icon="uil:search" size="sm" /><span class="ml-3">{{
-              $t('navigation.search')
-            }}</span>
-          </button>
-          <NuxtLink
-            class="sw-nav-button"
-            :to="
-              localePath(
-                customerLoggedIn ? '/account/orders/' : '/account/login/'
-              )
-            "
-          >
-            <BaseIcon icon="uil:user" size="sm" /><span class="ml-3">{{
-              $t('navigation.account')
-            }}</span>
-          </NuxtLink>
-          <LocaleSelect
-            v-if="$i18n.locales.length > 1"
-            class="sw-nav-button"
-            appearance="popup"
-          />
-          <CurrencySelect
-            v-if="currency"
-            :current-currency="currency"
-            class="sw-nav-button z-10"
-            appearance="popup"
-          />
+        <div ref="miscLinks" class="container md:max-w-120">
+          <div class="border-t border-primary-light py-12">
+            <button
+              class="grid-icon-label mb-8"
+              @click.prevent="$emit('click-search')"
+            >
+              <BaseIcon icon="uil:search" size="sm" /><span class="text-left">{{
+                $t('navigation.search')
+              }}</span>
+            </button>
+            <NuxtLink
+              class="grid-icon-label mb-8"
+              :to="
+                localePath(
+                  customerLoggedIn ? '/account/orders/' : '/account/login/'
+                )
+              "
+            >
+              <BaseIcon icon="uil:user" size="sm" /><span>{{
+                $t('navigation.account')
+              }}</span>
+            </NuxtLink>
+            <LocaleSelect
+              v-if="$i18n.locales.length > 1"
+              class="mb-8"
+              appearance="popup"
+            />
+            <CurrencySelect
+              v-if="currency"
+              :current-currency="currency"
+              appearance="popup"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -119,20 +122,9 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-.sw-nav-button {
-  @apply w-1/2 h-14 flex flex-row flex-grow justify-center items-center border-primary-light rounded-none
-         md:w-40 md:border md:flex-grow-0 md:rounded md:m-1;
-
-  &:nth-child(odd) {
-    @apply border-r border-t;
-  }
-
-  &:nth-child(even) {
-    @apply border-t;
-  }
-}
-
 .sw-nav-link {
+  @apply w-full inline-block;
+
   &:focus,
   &.nuxt-link-active {
     @apply shadow-none text-accent-default border-accent-default;

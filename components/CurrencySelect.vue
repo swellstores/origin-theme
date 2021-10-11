@@ -1,40 +1,37 @@
 <template>
-  <div class="relative transition-all duration-300 ease-in-out">
+  <div class="relative cursor-pointer" @click="toggleDropdown()">
     <div
       class="
-        w-full
-        flex
-        p-2
-        items-center
-        text-center
-        cursor-pointer
         whitespace-nowrap
         focus:outline-none focus:shadow-outline
         hover:text-accent-default
+        transition-all
+        duration-300
+        ease-in-out
       "
       :class="{
         'h-full': appearance === 'popup',
-        'rounded bg-primary-lightest': appearance === 'float',
+        'w-full p-2 rounded bg-primary-lightest': appearance === 'float',
       }"
-      @click="toggleDropdown()"
     >
-      <div class="mx-auto transition-all duration-200 ease-out">
+      <div v-if="appearance === 'popup'" class="grid-icon-label font-semibold">
+        <span class="text-center">
+          {{ selectedCurrency.symbol }}
+        </span>
+
+        <span class="uppercase">{{ selectedCurrency.code }}</span>
+      </div>
+      <div v-else class="flex items-center">
         <span
           v-if="
             display === 'symbol-code' &&
             selectedCurrency.symbol !== selectedCurrency.code
           "
-          class="font-semibold"
-          >{{ selectedCurrency.symbol }}</span
+          class="mr-2"
         >
-        <span
-          :class="{
-            'font-semibold': appearance === 'popup',
-            'font-medium': appearance === 'float',
-          }"
-        >
-          {{ selectedCurrency.code }}
+          {{ selectedCurrency.symbol }}
         </span>
+        <span class="uppercase">{{ selectedCurrency.code }}</span>
       </div>
     </div>
 

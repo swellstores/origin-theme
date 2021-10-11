@@ -41,7 +41,13 @@
           { 'transform -translate-y-full': header.hideOnScroll && hideHeader },
         ]"
       >
-        <header class="z-40 shadow-md transition-all duration-300 ease-in-out">
+        <header
+          class="z-40 transition-all duration-300 ease-in-out"
+          :class="{
+            'shadow-md': !mobileNavIsVisible,
+            'border-b border-primary-light': mobileNavIsVisible,
+          }"
+        >
           <ThePromoBar
             v-if="header.showPromo"
             :url="header.promoUrl"
