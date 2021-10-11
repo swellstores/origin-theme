@@ -165,7 +165,7 @@
             </div>
 
             <div
-              v-if="subscriptionOrder.subscriptionDelivery"
+              v-if="subscriptionOrder && subscriptionOrder.subscriptionDelivery"
               class="flex pb-2"
             >
               <span>{{ $t('account.subscriptions.id.shipping') }}</span>
@@ -540,7 +540,7 @@ export default {
         pausePastDue,
       },
       pauseNextSkipThreshold,
-    } = this.$swell.settings.subscriptions()
+    } = await this.$swell.settings.subscriptions()
 
     // Set component data
     this.pauseIndefinitely = pauseIndefinitely
