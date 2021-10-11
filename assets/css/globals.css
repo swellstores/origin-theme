@@ -146,6 +146,11 @@ img {
   }
 }
 
+.grid-icon-label {
+  @apply w-full grid gap-3 items-center md:justify-center;
+  grid-template-columns: 1.25rem auto;
+}
+
 .label-tag {
   @apply ml-1 px-2 py-1 uppercase text-2xs rounded font-semibold leading-tight;
 }

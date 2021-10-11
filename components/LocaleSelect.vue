@@ -1,44 +1,34 @@
 <template>
-  <div class="relative transition-all duration-300 ease-in-out">
+  <div class="relative cursor-pointer" @click="toggleDropdown()">
     <div
       class="
-        w-full
-        flex
-        p-2
-        items-center
-        text-center
-        cursor-pointer
         whitespace-nowrap
         focus:outline-none focus:shadow-outline
         hover:text-accent-default
+        transition-all
+        duration-300
+        ease-in-out
       "
       :class="{
-        'font-semibold h-full': appearance === 'popup',
-        'rounded bg-primary-lightest': appearance === 'float',
+        'h-full': appearance === 'popup',
+        'w-full p-2 rounded bg-primary-lightest': appearance === 'float',
       }"
-      @click="toggleDropdown()"
     >
-      <div
-        class="flex items-center mx-auto transition-all duration-200 ease-out"
-      >
-        <template v-if="appearance === 'popup'">
-          <img
-            v-if="display === 'flag'"
-            class="w-6 mr-2"
-            :src="`/flags/${getCountryCodeFromLocale($i18n.locale)}.svg`"
-            :alt="`${getCountryCodeFromLocale($i18n.locale)}`"
-          />
-          <span class="font-semibold uppercase">{{ $i18n.locale }}</span>
-        </template>
-        <template v-else>
-          <img
-            v-if="display === 'flag'"
-            class="w-6 mr-2"
-            :src="`/flags/${getCountryCodeFromLocale($i18n.locale)}.svg`"
-            :alt="`${getCountryCodeFromLocale($i18n.locale)}`"
-          />
-          <span v-else class="uppercase">{{ $i18n.locale }}</span>
-        </template>
+      <div v-if="appearance === 'popup'" class="grid-icon-label">
+        <img
+          :src="`/flags/${getCountryCodeFromLocale($i18n.locale)}.svg`"
+          :alt="`${getCountryCodeFromLocale($i18n.locale)}`"
+        />
+        <span class="font-semibold uppercase">{{ $i18n.locale }}</span>
+      </div>
+      <div v-else>
+        <img
+          v-if="display === 'flag'"
+          class="w-6"
+          :src="`/flags/${getCountryCodeFromLocale($i18n.locale)}.svg`"
+          :alt="`${getCountryCodeFromLocale($i18n.locale)}`"
+        />
+        <span v-else class="uppercase">{{ $i18n.locale }}</span>
       </div>
     </div>
 
@@ -101,7 +91,7 @@
             class="w-full p-2"
             :class="{
               'opacity-25': locale.code === $i18n.locale,
-              'my-2 mx-auto': appearance === 'popup',
+              'mx-auto': appearance === 'popup',
             }"
             @click="navigate"
           >
