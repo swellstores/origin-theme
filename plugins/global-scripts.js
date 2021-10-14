@@ -8,12 +8,14 @@ function checkScriptTag(content) {
 }
 
 export default function ({ $swell }) {
-  postscribe(
-    document.head,
-    checkScriptTag($swell.settings.get('scripts.global.head'))
-  )
-  postscribe(
-    document.body,
-    checkScriptTag($swell.settings.get('scripts.global.body'))
-  )
+  const headScripts = $swell.settings.get('scripts.global.head')
+  const bodyScripts = $swell.settings.get('scripts.global.body')
+
+  if (headScripts && typeof headScripts === 'string') {
+    postscribe(document.head, checkScriptTag(headScripts))
+  }
+
+  if (bodyScripts && typeof bodyScripts === 'string') {
+    postscribe(document.body, checkScriptTag(bodyScripts))
+  }
 }
