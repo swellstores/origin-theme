@@ -1,40 +1,37 @@
 <template>
   <transition name="popup" :duration="700" appear>
-    <div v-if="product" class="z-40 fixed inset-0">
+    <div v-if="product" class="fixed inset-0 z-40">
       <!-- Overlay -->
       <div
-        class="overlay opacity-50 absolute w-full h-full bg-primary-darker"
+        class="absolute w-full h-full opacity-50 overlay bg-primary-darker"
         @click="$emit('click-close')"
       />
 
       <!-- Panel -->
       <div
         class="
-          panel
+          absolute
+          bottom-0
           w-full
+          overflow-x-auto overflow-y-auto
+          rounded-t
+          panel
           md:w-max
           h-vh-gap
-          md:h-auto md:max-h-80vh
-          absolute
-          md:relative
-          bottom-0
-          rounded-t
-          md:rounded-md
+          md:h-auto md:max-h-80vh md:relative md:rounded-md
           bg-primary-lightest
           md:center-xy
-          overflow-x-auto overflow-y-auto
         "
       >
         <button
           class="
             absolute
+            right-0
+            z-10
+            float-right
             mt-3
             mr-3
-            float-right
-            md:float-none
-            right-0
-            md:mr-6 md:mt-6
-            z-10
+            md:float-none md:mr-6 md:mt-6
           "
           @click.prevent="$emit('click-close')"
         >
@@ -44,24 +41,22 @@
         <div
           class="
             container
-            md:max-w-auto md:overflow-hidden
             grid grid-cols-1
-            md:grid-cols-2
             pt-3
-            md:p-6
+            md:max-w-auto md:overflow-hidden md:grid-cols-2 md:p-6
           "
         >
           <!-- Product image -->
-          <div class="relative h-min mb-5 md:mb-0 md:w-96 lg:w-120">
+          <div class="relative mb-5 h-min md:mb-0 md:w-96 lg:w-120">
             <MediaSlider
               v-if="productImages"
               :media="product.images"
-              class="md:hidden h-0 pb-full"
+              class="h-0 md:hidden pb-full"
             />
             <!-- Fallback image -->
             <div
               v-else
-              class="md:hidden relative bg-primary-lighter rounded pb-full"
+              class="relative rounded md:hidden bg-primary-lighter pb-full"
             >
               <BaseIcon
                 icon="uil:camera-slash"
@@ -82,20 +77,20 @@
                 </div>
               </template>
 
-              <div class="flex no-wrap mt-6 overflow-x-auto overflow-y-auto">
+              <div class="flex mt-6 overflow-x-auto overflow-y-auto no-wrap">
                 <button
                   v-for="(image, index) in product.images"
                   :key="image.id"
                   class="
+                    flex-shrink-0
                     w-20
                     h-20
-                    flex-shrink-0
                     p-2
                     mr-2
-                    rounded
-                    hover:border-primary-med
                     transition
                     duration-300
+                    rounded
+                    hover:border-primary-med
                     ease
                   "
                   :class="{
@@ -115,7 +110,7 @@
               </div>
             </div>
             <!-- Fallback image -->
-            <div v-else class="relative bg-primary-lighter rounded pb-full">
+            <div v-else class="relative rounded bg-primary-lighter pb-full">
               <BaseIcon
                 icon="uil:camera-slash"
                 size="lg"
@@ -127,12 +122,12 @@
           <!-- Product details -->
           <div class="relative pb-6 md:pb-0 md:ml-5">
             <div class="relative h-full md:overflow-y-auto md:overflow-x-auto">
-              <div class="relative md:absolute w-full px-1">
+              <div class="relative w-full px-1 md:absolute">
                 <h2 class="mb-4 leading-tight">
                   {{ product.name }}
                 </h2>
                 <NuxtLink
-                  class="inline-block underline mb-5"
+                  class="inline-block mb-5 underline"
                   :to="
                     localePath(
                       resolveUrl({ type: 'product', value: product.slug })
@@ -160,6 +155,16 @@
                   />
                 </div>
 
+                <ProductPurchaseOptions
+                  v-if="product.purchaseOptions"
+                  v-model="selectedPurchaseOption"
+                  :options="product.purchaseOptions"
+                  :option-state="optionState"
+                  :product="product"
+                  :quantity="quantity"
+                  class="mb-8"
+                />
+
                 <!-- Duplicate button element to match fixed button height -->
                 <div class="opacity-0 pointer-events-none">
                   <span
@@ -170,7 +175,7 @@
                   <button
                     :class="{ loading: cartIsUpdating }"
                     type="submit"
-                    class="btn btn--lg relative w-full"
+                    class="relative w-full btn btn--lg"
                   >
                     |
                   </button>
@@ -183,12 +188,12 @@
               v-if="variation"
               class="
                 container
-                center-x
                 fixed
+                bottom-0
                 pt-4
+                center-x
                 bg-primary-lightest
                 md:px-0 md:w-full md:absolute
-                bottom-0
               "
             >
               <StockStatus
@@ -214,7 +219,7 @@
                     disabled: !stockAvailable,
                   }"
                   type="submit"
-                  class="btn btn--lg relative w-full"
+                  class="relative w-full btn btn--lg"
                   :disabled="!stockAvailable"
                   @click.prevent="addToCart"
                 >
@@ -241,9 +246,19 @@
                         formatMoney(variation.origPrice * quantity, currency)
                       }}
                     </span>
+                    <span
+                      v-if="
+                        selectedPurchaseOption &&
+                        selectedPurchaseOption.type === 'subscription'
+                      "
+                      class="lowercase"
+                    >
+                      /
+                      {{ intervalCount }}{{ subscriptionInterval }}
+                    </span>
                   </div>
                   <div v-show="cartIsUpdating" class>
-                    <div class="spinner absolute inset-0 mt-3" />
+                    <div class="absolute inset-0 mt-3 spinner" />
                     <span class="absolute inset-0 mt-5">{{
                       $t('products.slug.updating')
                     }}</span>
@@ -267,6 +282,7 @@ import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
 import { mapState } from 'vuex'
 import { listVisibleOptions } from '~/modules/swell'
+import { getInitialSelection } from '~/utils/purchaseOptions'
 
 export default {
   mixins: [validationMixin],
@@ -288,6 +304,7 @@ export default {
       optionState: null,
       productPreviewIndex: 0,
       activeDropdownUID: null,
+      selectedPurchaseOption: undefined,
     }
   },
   async fetch() {
@@ -314,6 +331,8 @@ export default {
       ? Number(maxQuantity)
       : 99
     maxQuantity = !isNaN(maxQuantity) ? maxQuantity : 99
+
+    this.selectedPurchaseOption = getInitialSelection(product.purchaseOptions)
 
     // Set component data
     this.product = product
@@ -387,6 +406,37 @@ export default {
 
       return listVisibleOptions(options, optionState).map(({ id }) => id)
     },
+
+    intervalData() {
+      if (
+        !this.selectedPurchaseOption ||
+        this.selectedPurchaseOption.type !== 'subscription'
+      ) {
+        return
+      }
+
+      // Placeholder until swell-js provides interval data inside variation()
+      const currentPlan = this.product.purchaseOptions.subscription.plans.find(
+        (plan) => plan.id === this.selectedPurchaseOption.plan
+      )
+
+      const { interval, intervalCount } = currentPlan.billingSchedule
+
+      return { interval, intervalCount }
+    },
+
+    intervalCount() {
+      if (!this.intervalData) return
+      const { intervalCount } = this.intervalData
+      return intervalCount > 1 ? intervalCount : ''
+    },
+
+    subscriptionInterval() {
+      if (!this.intervalData) return
+      return this.$t(
+        `products.slug.purchaseOptions.interval.${this.intervalData.interval}.short`
+      )
+    },
   },
 
   methods: {
@@ -416,6 +466,7 @@ export default {
         productId: this.variation.id,
         quantity: this.quantity || 1,
         options: this.optionState,
+        purchaseOption: this.selectedPurchaseOption,
       })
 
       // Close popup when product has been added to cart

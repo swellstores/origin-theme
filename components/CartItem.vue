@@ -2,22 +2,22 @@
   <div class="container overflow-hidden">
     <div
       :class="{ 'border-t border-primary-med': index !== 0 }"
-      class="py-6 flex"
+      class="flex py-6"
     >
       <NuxtLink
         :to="
           localePath(resolveUrl({ type: 'product', value: item.product.slug }))
         "
-        class="block w-24 flex-shrink-0"
+        class="flex-shrink-0 block w-24"
       >
         <VisualMedia
           :source="previewImage"
           :widths="[96, 192]"
           sizes="96px"
-          class="rounded overflow-hidden"
+          class="overflow-hidden rounded"
         />
       </NuxtLink>
-      <div class="ml-6 w-full flex flex-col justify-between">
+      <div class="flex flex-col justify-between w-full ml-6">
         <!-- Name + options -->
         <div>
           <NuxtLink
@@ -41,14 +41,18 @@
         </div>
 
         <!-- Price/quantity + item editor toggle -->
-        <div class="mt-3 label-sm-bold leading-none clearfix">
+        <div class="clearfix mt-3 leading-none label-sm-bold">
           <div class="inline-block py-1 -mb-1">
+            <span v-if="item.quantity > 1">{{ item.quantity }} &times; </span>
             <span>{{ formatMoney(item.price, currency) }}</span>
-            <span v-if="item.quantity > 1">&times; {{ item.quantity }}</span>
+            <span v-if="subscriptionInterval"
+              >/ {{ intervalCount > 1 ? intervalCount : ''
+              }}{{ subscriptionInterval }}</span
+            >
           </div>
           <button
             type="button"
-            class="float-right p-1 -mr-1 -mb-1"
+            class="float-right p-1 -mb-1 -mr-1"
             @click.prevent="itemEditorIsVisible = !itemEditorIsVisible"
           >
             {{
@@ -65,7 +69,7 @@
       <div class="flex items-center pb-4 text-sm">
         <button
           type="button"
-          class="flex items-center mr-3 pr-1"
+          class="flex items-center pr-1 mr-3"
           @click.prevent="removeItem()"
         >
           <BaseIcon icon="uil:trash-alt" class="mr-1" />
@@ -148,6 +152,30 @@ export default {
       return (
         get(this, 'item.variant.images.0') || get(this, 'item.product.images.0')
       )
+    },
+
+    billingSchedule() {
+      const { purchaseOption } = this.item
+      if (purchaseOption && purchaseOption.type === 'subscription') {
+        return purchaseOption.billingSchedule
+      }
+      return null
+    },
+
+    intervalCount() {
+      if (this.billingSchedule) {
+        return this.billingSchedule.intervalCount
+      }
+      return null
+    },
+
+    subscriptionInterval() {
+      if (this.billingSchedule) {
+        return this.$t(
+          `products.slug.purchaseOptions.interval.${this.billingSchedule.interval}.short`
+        )
+      }
+      return null
     },
   },
 
