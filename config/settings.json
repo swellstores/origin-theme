@@ -121,7 +121,11 @@
   },
   "lang": {
     "cart": {
-      "item": { "remove": "Remove", "close_edit": "Close", "edit": "Edit" },
+      "item": {
+        "remove": "Remove",
+        "close_edit": "Close",
+        "edit": "Edit"
+      },
       "updating": "Updating",
       "checkout": "Checkout",
       "account_balance": "Account balance",
@@ -151,7 +155,9 @@
       "error_code": "{code} error"
     },
     "email_signup": {
-      "email": { "error": "That doesn't look like an email..." },
+      "email": {
+        "error": "That doesn't look like an email..."
+      },
       "success": "You're on the list!",
       "placeholder": "E-mail",
       "send": "Send"
@@ -165,7 +171,11 @@
       "cart": "View cart",
       "checkout": "Checkout"
     },
-    "navigation": { "account": "Account", "search": "Search", "menu": "Menu" },
+    "navigation": {
+      "account": "Account",
+      "search": "Search",
+      "menu": "Menu"
+    },
     "search": {
       "info": "Press enter to search",
       "placeholder": "e.g. product model",
@@ -176,7 +186,10 @@
         "save": "Save",
         "sale": "Sale",
         "quick_add": {
-          "adding": { "loading_label": "Adding...", "label": "Adding..." },
+          "adding": {
+            "loading_label": "Adding...",
+            "label": "Adding..."
+          },
           "add_to_cart": "Add to cart",
           "quick_add": "Quick add",
           "quick_view": "Quick view"
@@ -191,13 +204,46 @@
           "required": "Please enter a value."
         },
         "stock_status": {
-          "out_of_stock": { "message": "", "label": "Out of stock" },
+          "out_of_stock": {
+            "message": "",
+            "label": "Out of stock"
+          },
           "limited_availability": {
             "message": "Ships in 1–2 days",
             "label": "Low stock"
           },
-          "in_stock": { "message": "Ships in 1–2 days", "label": "In stock" },
-          "custom": { "message": "Ships in 9–16 days", "label": "Custom order" }
+          "in_stock": {
+            "message": "Ships in 1–2 days",
+            "label": "In stock"
+          },
+          "custom": {
+            "message": "Ships in 9–16 days",
+            "label": "Custom order"
+          }
+        },
+        "purchase_options": {
+          "interval": {
+            "daily": {
+              "label": "days | day | days",
+              "short": "day"
+            },
+            "weekly": {
+              "label": "weeks | week | weeks",
+              "short": "wk"
+            },
+            "monthly": {
+              "label": "months | month | months",
+              "short": "mo"
+            },
+            "yearly": {
+              "label": "year | years | year",
+              "short": "yr"
+            },
+            "products_interval": "{count} every {n} {interval}"
+          },
+          "standard": {
+            "default_label": "One-time Purchase"
+          }
         }
       }
     },
@@ -231,12 +277,18 @@
           "delete": {
             "error": "There was an issue deleting this card.",
             "success": "Card deleted.",
-            "button": { "loading_label": "Deleting", "label": "Delete card" }
+            "button": {
+              "loading_label": "Deleting",
+              "label": "Delete card"
+            }
           },
           "save": {
             "error": "There was an issue updating your payment method.",
             "success": "Payment method updated.",
-            "button": { "loading_label": "Saving", "label": "Save card" }
+            "button": {
+              "loading_label": "Saving",
+              "label": "Save card"
+            }
           },
           "create": {
             "error": "There was an issue adding your payment method.",
@@ -249,7 +301,9 @@
           "new_billing_address": "Add a new address",
           "no_billing_address": "You have no existing addresses. Create one below.",
           "billing_address": "Billing address",
-          "card": { "set_as_default": "Use as default card." },
+          "card": {
+            "set_as_default": "Use as default card."
+          },
           "cvc": {
             "format": "Enter a valid card security code.",
             "required": "Please enter your card security code.",
@@ -265,8 +319,12 @@
             "required": "Please enter your card number.",
             "label": "Card number"
           },
-          "edit": { "title": "Edit payment method" },
-          "new": { "title": "Add new payment method" }
+          "edit": {
+            "title": "Edit payment method"
+          },
+          "new": {
+            "title": "Add new payment method"
+          }
         },
         "card": {
           "edit": "Edit",
@@ -281,7 +339,10 @@
       "login": {
         "error": "Your email or password was entered incorrectly.",
         "success": "You’ve succesfully logged in.",
-        "button": { "loading_label": "Logging in", "label": "Log in" },
+        "button": {
+          "loading_label": "Logging in",
+          "label": "Log in"
+        },
         "create_account": "Create account",
         "forgot_password": "Did you forgot your password?",
         "password": {
@@ -323,7 +384,10 @@
         "error": "There was an error resetting your password.",
         "success": "An email has been sent to reset your password.",
         "log_in": "Back to log in",
-        "button": { "loading_label": "Sending...", "label": "Send email" },
+        "button": {
+          "loading_label": "Sending...",
+          "label": "Send email"
+        },
         "email": {
           "format": "Please enter a valid e-mail address.",
           "required": "Please enter your e-mail address.",
@@ -338,7 +402,10 @@
         "already_exists": "An account already exists under this e-mail address. Please log in.",
         "success": "You’ve succesfully created an account.",
         "log_in": "Log in",
-        "button": { "loading_label": "Creating", "label": "Create account" },
+        "button": {
+          "loading_label": "Creating",
+          "label": "Create account"
+        },
         "password": {
           "min_length": "Your password needs to be at least {n} characters.",
           "required": "Please enter your password.",
@@ -403,12 +470,17 @@
             "required": "Please enter your region.",
             "label": "Region"
           },
-          "city": { "required": "Please enter your city.", "label": "City" },
+          "city": {
+            "required": "Please enter your city.",
+            "label": "City"
+          },
           "phone": {
             "format": "Please enter a valid phone number.",
             "label": "phone"
           },
-          "address2": { "label": "Apartment / Floor / Suite" },
+          "address2": {
+            "label": "Apartment / Floor / Suite"
+          },
           "address1": {
             "required": "Please enter your address.",
             "label": "Address"
@@ -423,8 +495,12 @@
             "required": "Please enter your first name.",
             "label": "First name"
           },
-          "edit": { "title": "Edit address" },
-          "new": { "title": "Add new address" }
+          "edit": {
+            "title": "Edit address"
+          },
+          "new": {
+            "title": "Add new address"
+          }
         },
         "edit": "Edit",
         "remove": "Remove",
@@ -504,8 +580,12 @@
               "title": "Cancel subscription"
             },
             "update": {
-              "billing_address": { "success": "Billing address updated." },
-              "shipping_address": { "success": "Shipping address updated." }
+              "billing_address": {
+                "success": "Billing address updated."
+              },
+              "shipping_address": {
+                "success": "Shipping address updated."
+              }
             },
             "pause": {
               "title": "Pause your subscription",
@@ -664,7 +744,9 @@
           "loading_label": "Saving",
           "label": "Save changes"
         },
-        "subscribe": { "label": "Create account" },
+        "subscribe": {
+          "label": "Create account"
+        },
         "confirm_password": {
           "not_match": "Passwords do not match.",
           "placeholder": "Confirm new password"

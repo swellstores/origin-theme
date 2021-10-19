@@ -25,16 +25,16 @@
     />
 
     <!-- Main header -->
-    <div class="z-40 fixed top-0 w-full">
+    <div class="fixed top-0 z-40 w-full">
       <div
         class="
-          w-full
           fixed
+          w-full
+          transition-all
+          duration-200
+          ease-in-out
           transform
           translate-y-0
-          transition-all
-          ease-in-out
-          duration-200
         "
         :class="[
           'bg-primary-lightest',
@@ -55,7 +55,7 @@
             :hidden="header.hideOnScroll && hideHeader"
           />
           <div
-            class="relative container flex justify-between items-stretch z-20"
+            class="container relative z-20 flex items-stretch justify-between"
           >
             <!-- Logo -->
             <div class="py-3 lg:w-1/4">
@@ -68,32 +68,32 @@
                   class="inline-block w-auto"
                   :alt="storeName"
                 />
-                <span v-else class="text-3xl sm:text-4xl whitespace-no-wrap">{{
+                <span v-else class="text-3xl whitespace-no-wrap sm:text-4xl">{{
                   storeName
                 }}</span>
               </NuxtLink>
             </div>
 
             <!-- Main nav menu -->
-            <nav v-if="menu" class="w-full lg:w-auto hidden lg:flex">
+            <nav v-if="menu" class="hidden w-full lg:w-auto lg:flex">
               <ul class="flex justify-center">
                 <li
                   v-for="(item, index) in menu.items"
                   :key="item.name"
-                  class="sw-nav-link-wrapper mb-0"
+                  class="mb-0 sw-nav-link-wrapper"
                 >
                   <a
                     v-if="item.type === 'url'"
                     class="
-                      sw-nav-link
                       relative
                       flex
                       items-center
                       h-full
                       px-5
                       pt-1
+                      border-b-4 border-transparent
                       rounded-none
-                      border-transparent border-b-4
+                      sw-nav-link
                     "
                     rel="noreferrer noopener"
                     :href="item.value"
@@ -107,15 +107,15 @@
                     :to="localePath(resolveUrl(item))"
                     :title="item.description"
                     class="
-                      sw-nav-link
                       relative
                       flex
                       items-center
                       h-full
                       px-5
                       pt-1
+                      border-b-4 border-transparent
                       rounded-none
-                      border-transparent border-b-4
+                      sw-nav-link
                     "
                     @click.native="megaNavIsEnabled = false"
                     @mouseleave.native="hideMegaNav"
@@ -194,21 +194,21 @@
                 <div
                   v-if="cart && cart.itemQuantity"
                   class="
-                    fade-in
                     absolute
-                    left-5
                     top-0
-                    bg-accent-default
-                    rounded-full
+                    flex
+                    items-center
+                    justify-center
                     w-6
                     h-6
-                    flex
-                    justify-center
-                    items-center
+                    rounded-full
+                    fade-in
+                    left-5
+                    bg-accent-default
                     text-primary-lighter
                   "
                 >
-                  <span class="block mt-px text-2xs leading-none">{{
+                  <span class="block mt-px leading-none text-2xs">{{
                     cart.itemQuantity
                   }}</span>
                 </div>
@@ -217,21 +217,21 @@
               <button
                 :class="{ 'is-active': mobileNavIsVisible }"
                 class="
-                  hamburger hamburger--squeeze
-                  outline-none
                   relative
                   w-10
                   h-10
                   p-1
                   ml-2
                   rounded
+                  outline-none
+                  hamburger hamburger--squeeze
                   lg:hidden
                 "
                 type="button"
                 :aria-label="$t('navigation.menu')"
                 @click="setMobileNavVisibility"
               >
-                <span class="absolute center-xy w-6 h-6">
+                <span class="absolute w-6 h-6 center-xy">
                   <span class="hamburger-inner"></span>
                 </span>
               </button>

@@ -7,12 +7,12 @@
         <MediaSlider
           v-if="productImages"
           :media="productImages"
-          class="md:hidden h-0 pb-full"
+          class="h-0 md:hidden pb-full"
         />
         <!-- Fallback image -->
         <div
           v-else
-          class="md:hidden relative bg-primary-lighter rounded pb-full"
+          class="relative rounded md:hidden bg-primary-lighter pb-full"
         >
           <BaseIcon
             icon="uil:camera-slash"
@@ -35,7 +35,7 @@
             </div>
 
             <!-- Fallback image -->
-            <div v-else class="relative bg-primary-lighter rounded pb-full">
+            <div v-else class="relative rounded bg-primary-lighter pb-full">
               <BaseIcon
                 icon="uil:camera-slash"
                 size="lg"
@@ -50,16 +50,16 @@
           href="#"
           class="
             fixed
-            left-6
-            bottom-6
-            rounded-full
-            shadow-md
-            w-9
-            h-9
-            bg-primary-lighter
             flex
             items-center
             justify-center
+            rounded-full
+            shadow-md
+            left-6
+            bottom-6
+            w-9
+            h-9
+            bg-primary-lighter
           "
           @click.prevent="navigateBack"
         >
@@ -74,47 +74,47 @@
             container
             top-0
             pt-10
-            max-w-160
-            md:sticky md:pt-12
             transition-all
             duration-300
             ease-in-out
+            max-w-160
+            md:sticky md:pt-12
           "
           :class="headerIsVisible ? 'top-20' : 'top-0'"
         >
           <!-- Skeleton loader -->
           <div v-if="$fetchState.pending">
-            <div class="loader-el w-32 h-3 mb-4" />
-            <div class="loader-el w-2/3 h-9 mb-7" />
-            <div class="loader-el w-40 h-3 mb-4" />
-            <div class="loader-el w-20 h-4 mb-12" />
+            <div class="w-32 h-3 mb-4 loader-el" />
+            <div class="w-2/3 loader-el h-9 mb-7" />
+            <div class="w-40 h-3 mb-4 loader-el" />
+            <div class="w-20 h-4 mb-12 loader-el" />
             <div
               v-for="index in 7"
               :key="`skeleton-1-${index}`"
               :style="`width: ${100 - Math.random() * 20}%`"
-              class="loader-el h-2 mb-4"
+              class="h-2 mb-4 loader-el"
             />
             <div class="flex justify-between mt-12 mb-4">
-              <div class="loader-el w-24 h-3" />
-              <div class="loader-el w-48 h-3" />
+              <div class="w-24 h-3 loader-el" />
+              <div class="w-48 h-3 loader-el" />
             </div>
-            <div class="loader-el h-12 mb-10" />
+            <div class="h-12 mb-10 loader-el" />
             <div
               v-for="index in 3"
               :key="`skeleton-2-${index}`"
               class="flex items-center mb-2"
             >
-              <div class="loader-el w-5 h-5 mr-2 rounded-full" />
+              <div class="w-5 h-5 mr-2 rounded-full loader-el" />
               <div
                 :style="`width: ${80 - Math.random() * 30}%`"
-                class="loader-el h-2"
+                class="h-2 loader-el"
               />
             </div>
           </div>
 
           <!-- Main content -->
           <div v-else>
-            <!--TODO<div class="label-xs-bold mb-2 text-primary-dark">{{ breadcrumb }}</div>-->
+            <!--TODO<div class="mb-2 label-xs-bold text-primary-dark">{{ breadcrumb }}</div>-->
             <h1 class="mb-4 leading-tight">
               {{ product.name }}
             </h1>
@@ -123,7 +123,7 @@
             <span class="text-sm">{{ reviews.total }} reviews</span>
             -->
             <div
-              class="font-semibold text-lg flex items-center mt-2 mb-5 md:mb-8"
+              class="flex items-center mt-2 mb-5 text-lg font-semibold md:mb-8"
             >
               <span>{{ formatMoney(variation.price, currency) }}</span>
               <span v-if="billingInterval" class="lowercase"
@@ -133,16 +133,16 @@
                 v-if="variation.origPrice"
                 class="
                   inline-block
+                  h-6
+                  px-2
                   ml-3
+                  text-xs
+                  leading-loose
+                  uppercase
                   rounded
                   bg-error-faded
                   -mt-2px
-                  px-2
-                  h-6
-                  leading-loose
                   text-error-default
-                  uppercase
-                  text-xs
                 "
               >
                 {{ $t('products.slug.save') }}
@@ -166,6 +166,15 @@
                 @dropdown-active="setActiveDropdownUID($event)"
               />
             </div>
+            <!-- Purchase options -->
+            <ProductPurchaseOptions
+              v-if="product.purchaseOptions"
+              v-model="selectedPurchaseOption"
+              :options="product.purchaseOptions"
+              :option-state="optionState"
+              :product="product"
+              :quantity="quantity"
+            />
 
             <!-- Cart button & stock info -->
             <div v-if="variation" class="relative my-8">
@@ -192,7 +201,7 @@
                     disabled: !stockAvailable,
                   }"
                   type="submit"
-                  class="btn btn--lg relative w-full"
+                  class="relative w-full btn btn--lg"
                   :disabled="!stockAvailable"
                   @click.prevent="addToCart"
                 >
@@ -219,9 +228,18 @@
                         formatMoney(variation.origPrice * quantity, currency)
                       }}
                     </span>
+                    <span
+                      v-if="
+                        selectedPurchaseOption &&
+                        selectedPurchaseOption.type === 'subscription'
+                      "
+                      class="lowercase"
+                    >
+                      / {{ intervalCount }}{{ subscriptionInterval }}
+                    </span>
                   </div>
                   <div v-show="cartIsUpdating" class>
-                    <div class="spinner absolute inset-0 mt-3" />
+                    <div class="absolute inset-0 mt-3 spinner" />
                     <span class="absolute inset-0 mt-5">{{
                       $t('products.slug.updating')
                     }}</span>
@@ -237,7 +255,7 @@
                 <li
                   v-for="(benefit, index) in productBenefits"
                   :key="'storeProductBenefit' + index"
-                  class="label-sm my-2 flex"
+                  class="flex my-2 label-sm"
                 >
                   <BaseIcon :icon="benefit.icon" size="sm" class="mr-2 -mb-1" />
                   <span>{{ benefit.text }}</span>
@@ -256,11 +274,11 @@
             </div>
 
             <!-- Share product -->
-            <div v-if="enableSocialSharing" class="py-3 flex flex-no-wrap">
-              <strong class="w-1/4 text-primary-darkest pr-6">{{
+            <div v-if="enableSocialSharing" class="flex flex-no-wrap py-3">
+              <strong class="w-1/4 pr-6 text-primary-darkest">{{
                 $t('products.slug.share')
               }}</strong>
-              <div class="w-3/4 flex justify-end">
+              <div class="flex justify-end w-3/4">
                 <SocialShare
                   class="mr-2 cursor-pointer"
                   network="facebook"
@@ -317,6 +335,7 @@ import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
 import pageMeta from '~/mixins/pageMeta'
 import { listVisibleOptions } from '~/modules/swell'
+import { getInitialSelection } from '~/utils/purchaseOptions'
 
 export default {
   name: 'ProductDetailPage',
@@ -330,6 +349,7 @@ export default {
       maxQuantity: 99,
       relatedProducts: [], // TODO
       optionState: null,
+      selectedPurchaseOption: undefined,
       productBenefits: [],
       enableSocialSharing: false,
       activeDropdownUID: null,
@@ -371,6 +391,8 @@ export default {
       : 99
     maxQuantity = !isNaN(maxQuantity) ? maxQuantity : 99
 
+    this.selectedPurchaseOption = getInitialSelection(product.purchaseOptions)
+
     // Set component data
     this.product = product
     this.optionState = optionState
@@ -387,7 +409,11 @@ export default {
     // Resulting combination of selected product options
     variation() {
       if (!this.product) return {}
-      return this.$swell.products.variation(this.product, this.optionState)
+      return this.$swell.products.variation(
+        this.product,
+        this.optionState,
+        this.selectedPurchaseOption
+      )
     },
 
     productImages() {
@@ -406,6 +432,36 @@ export default {
 
     billingInterval() {
       return get(this, 'optionState.Plan')
+    },
+
+    intervalData() {
+      if (
+        !this.selectedPurchaseOption ||
+        this.selectedPurchaseOption.type !== 'subscription'
+      ) {
+        return
+      }
+
+      // Placeholder until swell-js provides interval data inside variation()
+      const currentPlan = this.product.purchaseOptions.subscription.plans.find(
+        (plan) => plan.id === this.selectedPurchaseOption.plan
+      )
+      const { interval, intervalCount } = currentPlan.billingSchedule
+
+      return { interval, intervalCount }
+    },
+
+    intervalCount() {
+      if (!this.intervalData) return
+      const { intervalCount } = this.intervalData
+      return intervalCount > 1 ? intervalCount : ''
+    },
+
+    subscriptionInterval() {
+      if (!this.intervalData) return
+      return this.$t(
+        `products.slug.purchaseOptions.interval.${this.intervalData.interval}.short`
+      )
     },
 
     visibleOptionIds() {
@@ -478,10 +534,12 @@ export default {
       // Touch and validate all fields
       this.$v.$touch()
       if (this.$v.$invalid) return // return if invalid
+
       this.$store.dispatch('addCartItem', {
         productId: this.variation.id,
         quantity: this.quantity || 1,
         options: this.optionState,
+        purchaseOption: this.selectedPurchaseOption,
       })
     },
 
@@ -514,10 +572,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.feature-icon {
-  width: 1.3rem;
-  height: 1.3rem;
-}
-</style>
