@@ -15,6 +15,7 @@ export default async () => {
   swell.init(storeId, publicKey, {
     useCamelCase: true,
     url: storeUrl,
+    previewContent: editorMode || !isProduction,
   })
 
   await swell.settings.load()
