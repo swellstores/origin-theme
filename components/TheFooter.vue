@@ -188,25 +188,25 @@ export default {
     }
   },
 
-  fetch() {
+  async fetch() {
     const { $swell } = this
 
     // Get menu settings
-    const menuId = $swell.settings.get('footer.menu', 'footer')
-    const secondaryMenuId = $swell.settings.get(
+    const menuId = await $swell.settings.get('footer.menu', 'footer')
+    const secondaryMenuId = await $swell.settings.get(
       'footer.secondaryMenu',
       'footer-secondary'
     )
 
     // Set menus
-    this.menu = $swell.settings.menus(menuId)
-    this.secondaryMenu = $swell.settings.menus(secondaryMenuId)
+    this.menu = await $swell.settings.menus(menuId)
+    this.secondaryMenu = await $swell.settings.menus(secondaryMenuId)
 
     // Set component data
-    this.store = $swell.settings.get('store', {})
-    this.footer = $swell.settings.get('footer', {})
-    this.socialLinks = $swell.settings.get('socialLinks', {})
-    this.background = $swell.settings.get('footer.background', 'dark')
+    this.store = await $swell.settings.get('store', {})
+    this.footer = await $swell.settings.get('footer', {})
+    this.socialLinks = await $swell.settings.get('socialLinks', {})
+    this.background = await $swell.settings.get('footer.background', 'dark')
   },
 
   computed: {

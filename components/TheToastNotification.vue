@@ -187,8 +187,8 @@ export default {
     }
 
     // Set component data
-    this.header = $swell.settings.get('header', {})
-    this.logoSrc = $swell.settings.get('header.logo.file.url')
+    this.header = await $swell.settings.get('header')
+    this.logoSrc = await $swell.settings.get('header.logo.file.url')
   },
 
   computed: {

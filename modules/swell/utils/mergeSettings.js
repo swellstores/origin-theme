@@ -1,4 +1,3 @@
-import swell from 'swell-js'
 import { toCamel } from 'swell-js/dist/utils'
 import merge from 'deepmerge'
 
@@ -45,17 +44,6 @@ export function combineMerge(target, originalSource, options) {
   return destination
 }
 
-export async function loadSettings({ storeId, publicKey, storeUrl }) {
-  swell.init(storeId, publicKey, {
-    useCamelCase: true,
-    url: storeUrl,
-  })
-
-  await swell.settings.load()
-
-  return swell.settings
-}
-
 export function mergeSettings(settings, sourceSettings, options = {}) {
   const { model, ...mergeOptions } = options
   const stateName = model ? `${model.replace(/s$/, '')}State` : 'state'
@@ -64,8 +52,6 @@ export function mergeSettings(settings, sourceSettings, options = {}) {
     arrayMerge: combineMerge,
     ...mergeOptions,
   })
-
-  // console.log(JSON.stringify(merged, null, ' '))
 
   return merged
 }

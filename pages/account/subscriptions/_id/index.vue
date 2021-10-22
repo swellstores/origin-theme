@@ -527,7 +527,7 @@ export default {
 
     // Set component data
     this.subscription = subscription
-    this.allowPlanEdit = $swell.settings.get(
+    this.allowPlanEdit = await $swell.settings.get(
       'account.subscriptions.allowPlanEdit',
       true
     )

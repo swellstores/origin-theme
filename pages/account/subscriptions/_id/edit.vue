@@ -210,6 +210,7 @@ export default {
       isUpdating: false,
       allowFrequencyEdit: true,
       allowOptionsEdit: true,
+      supportEmail: '',
     }
   },
 
@@ -227,14 +228,16 @@ export default {
 
     // Set component data
     this.subscription = subscription
-    this.allowFrequencyEdit = $swell.settings.get(
+    this.allowFrequencyEdit = await $swell.settings.get(
       'account.subscriptions.allowFrequencyEdit',
       false
     )
-    this.allowOptionsEdit = $swell.settings.get(
+    this.allowOptionsEdit = await $swell.settings.get(
       'account.subscriptions.allowOptionsEdit',
       false
     )
+
+    this.supportEmail = await $swell.settings.get('store.supportEmail')
 
     // Compute initial values for options
     this.resetOptionValues()
@@ -242,10 +245,6 @@ export default {
 
   computed: {
     ...mapState(['currency']),
-
-    supportEmail() {
-      return this.$swell.settings.get('store.supportEmail')
-    },
 
     subscriptionName() {
       if (!this.subscription) return

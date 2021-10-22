@@ -1,33 +1,44 @@
-import get from 'lodash/get'
+import swell from 'swell-js'
 import settings from './config/settings.json'
-import menuSettings from './config/menus.json'
+import menus from './config/menus.json'
 import { getGoogleFontConfig } from './modules/swell-editor/utils'
-import { getLangSettings } from './modules/swell-editor/lang/utils'
-import {
-  loadSettings,
-  mergeSettings,
-} from './modules/swell/utils/mergeSettings'
+import { getLangSettings } from './modules/swell/lang/utils'
+import { mergeSettings } from './modules/swell/utils/mergeSettings'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const editorMode = process.env.SWELL_EDITOR === 'true'
+const storeId = process.env.SWELL_STORE_ID || settings.store.id
+const publicKey = process.env.SWELL_PUBLIC_KEY || settings.store.public_key
+const storeUrl = process.env.SWELL_STORE_URL || settings.store.url
 
 export default async () => {
-  const storeId = process.env.SWELL_STORE_ID || settings.store.id
-  const publicKey = process.env.SWELL_PUBLIC_KEY || settings.store.public_key
-  const storeUrl = process.env.SWELL_STORE_URL || settings.store.url
-
-  const initialSettings = await loadSettings({
-    storeId,
-    publicKey,
-    storeUrl,
+  swell.init(storeId, publicKey, {
+    useCamelCase: true,
+    url: storeUrl,
   })
 
-  const mergedSettings = mergeSettings(initialSettings, settings)
-  const mergedMenuSettings = mergeSettings(initialSettings, menuSettings, {
-    model: 'menu',
+  await swell.settings.load()
+
+  swell.settings.set({
+    value: mergeSettings(await swell.settings.get(), settings),
   })
+
+  swell.settings.set({
+    model: 'menus',
+    value: mergeSettings(
+      swell.settings.getState('/settings/menus', 'menuState'),
+      menus
+    ),
+  })
+
+  const currentSettings = await swell.settings.get()
+  const loadingColor = await swell.settings.get('colors.accent')
+  const gtmId = await swell.settings.get('analytics.gtmId')
+  const storeName = await swell.settings.get('store.name')
+  const i18n = await getLangSettings(swell)
 
   return {
+    target: isProduction ? 'static' : 'server',
     build: {
       analyze: !isProduction,
     },
@@ -47,7 +58,10 @@ export default async () => {
     /*
      ** Set the progress-bar color
      */
-    loading: { color: get(mergedSettings, 'colors.accent'), continuous: true },
+    loading: {
+      color: loadingColor,
+      continuous: true,
+    },
 
     /*
      ** Vue plugins to load before mounting the App
@@ -91,8 +105,6 @@ export default async () => {
     ],
 
     buildModules: [
-      ['nuxt-i18n'],
-
       [
         /*
          ** Generate dynamic routes for @nuxtjs/sitemap
@@ -122,7 +134,7 @@ export default async () => {
          *  See https://github.com/nuxt-community/google-fonts-module if you want
          *  to eject or provide your own config options.
          */
-        getGoogleFontConfig(mergedSettings),
+        getGoogleFontConfig(currentSettings),
       ],
 
       [
@@ -130,13 +142,10 @@ export default async () => {
         /*
          ** Provides communication and utilitiy functions for interfacing
          *  with Swell's storefront editor and fetching settings/content.
-         *
-         * IMPORTANT: the swell module must come after this one, otherwise everything breaks.
-         * If you aren't using the storefront editor, this module can be safely removed.
          */
         {
           useEditorSettings: editorMode,
-          settings: mergedSettings,
+          settings: currentSettings,
         },
       ],
 
@@ -144,24 +153,17 @@ export default async () => {
         '~/modules/swell',
         /*
          ** Initializes Swell.js SDK and injects it into Nuxt's context.
-         *
-         *  If you've cloned this repository from your store dashboard,
-         *  these settings will already be configured in config/settings.json.
-         *
-         *  You can optionally override them here or using environment variables.
-         *  https://github.com/swellstores/swell-theme-origin#configuration
          */
         {
           storeId,
           publicKey,
           storeUrl,
-          previewContent: editorMode,
-          currentSettings: {
-            settings: mergedSettings,
-            menus: mergedMenuSettings,
-          },
+          previewContent: editorMode || !isProduction,
+          settings: currentSettings,
         },
       ],
+
+      ['@nuxtjs/i18n'],
 
       [
         '@nuxtjs/pwa',
@@ -176,14 +178,14 @@ export default async () => {
     ],
 
     gtm: {
-      id: get(mergedSettings, 'analytics.gtmId'),
-      enabled: !!get(mergedSettings, 'analytics.gtmId') && isProduction,
+      id: gtmId,
+      enabled: !!gtmId && isProduction,
     },
 
     pwa: {
       manifest: false,
       meta: {
-        name: get(mergedSettings, 'store.name'),
+        name: storeName,
       },
       workbox: {
         runtimeCaching: [
@@ -195,7 +197,7 @@ export default async () => {
       },
     },
 
-    i18n: getLangSettings(mergedSettings, editorMode),
+    i18n,
 
     sitemap: {
       hostname: storeUrl,
@@ -206,7 +208,8 @@ export default async () => {
 
     generate: {
       exclude: [/^\/?([a-z]{2}-?[A-Z]{2}?)?\/account/],
-      fallback: true, // Fallback to the generated 404.html
+      fallback: true, // Fallback to the generated 404.html,
+      interval: 25,
     },
 
     /*

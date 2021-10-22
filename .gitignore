@@ -90,3 +90,4 @@ sw.*
 
 # Auto-generated files
 assets/css/variables.css
+static/lang/*.json

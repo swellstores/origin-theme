@@ -129,13 +129,16 @@ export default {
     }
   },
 
-  fetch() {
+  async fetch() {
     // Set component data
     const { $swell } = this
 
-    this.locales = $swell.locale.list()
-    this.display = $swell.settings.get('header.locale.display', 'flag')
-    this.hideFlagOnList = $swell.settings.get('header.locale.hideFlag', false)
+    this.locales = await $swell.locale.list()
+    this.display = await $swell.settings.get('header.locale.display', 'flag')
+    this.hideFlagOnList = await $swell.settings.get(
+      'header.locale.hideFlag',
+      false
+    )
   },
 
   mounted() {

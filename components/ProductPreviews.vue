@@ -189,12 +189,13 @@ export default {
     }
   },
 
-  fetch() {
-    this.aspectRatio = this.$swell.settings.get(
+  async fetch() {
+    const { $swell } = this
+    this.aspectRatio = await $swell.settings.get(
       'productPreviews.aspectRatio',
       '1:1'
     )
-    this.quickAddIsEnabled = this.$swell.settings.get(
+    this.quickAddIsEnabled = await $swell.settings.get(
       'productList.enableQuickAdd'
     )
 

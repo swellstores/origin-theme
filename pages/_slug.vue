@@ -3,7 +3,7 @@
     <transition-group name="page-section">
       <div
         v-for="(section, index) in sections"
-        :key="`${section.id}.${section.type}`"
+        :key="`${index}.${section.type}`"
       >
         <SectionAsyncLoader
           v-if="section"

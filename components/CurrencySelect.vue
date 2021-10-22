@@ -122,26 +122,26 @@ export default {
       dropdownIsActive: false,
       display: null,
       hideSymbolOnList: false,
+      currencyList: [],
     }
   },
 
-  fetch() {
+  async fetch() {
     // Set component data
     const { $swell } = this
 
-    this.display = $swell.settings.get('header.currency.display', 'symbol-code')
-    this.hideSymbolOnList = $swell.settings.get(
+    this.display = await $swell.settings.get(
+      'header.currency.display',
+      'symbol-code'
+    )
+    this.currencyList = await $swell.currency.list()
+    this.hideSymbolOnList = await $swell.settings.get(
       'header.currency.hideSymbol',
       false
     )
   },
 
   computed: {
-    currencyList() {
-      const { $swell } = this
-      return $swell.currency.list()
-    },
-
     selectedCurrency() {
       const { currencyList, currentCurrency } = this
       return currencyList.find((currency) => currency.code === currentCurrency)

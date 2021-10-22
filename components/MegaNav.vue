@@ -31,7 +31,7 @@
               <div class="pt-4">
                 <h4>{{ item.name }}</h4>
                 <p v-if="item.value.price" class="text-primary-darker">
-                  ${{ item.value.price.toFixed(2) }}
+                  {{ formatMoney(item.value.price, currency) }}
                 </p>
               </div>
             </NuxtLink>
@@ -78,6 +78,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'MegaNav',
 
@@ -86,6 +88,9 @@ export default {
       type: Array,
       default: () => [],
     },
+  },
+  computed: {
+    ...mapState(['currency']),
   },
 }
 </script>

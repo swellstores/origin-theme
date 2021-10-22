@@ -53,11 +53,11 @@ export default {
     }
   },
 
-  fetch() {
+  async fetch() {
     // Set page data
     const { $swell } = this
 
-    this.shopLink = $swell.settings.get('cart.shopLink', '/categories/')
+    this.shopLink = await $swell.settings.get('cart.shopLink', '/categories/')
   },
 
   watch: {

@@ -7,9 +7,9 @@ function checkScriptTag(content) {
   return content
 }
 
-export default function ({ $swell }) {
-  const headScripts = $swell.settings.get('scripts.global.head')
-  const bodyScripts = $swell.settings.get('scripts.global.body')
+export default async function ({ $swell }) {
+  const headScripts = await $swell.settings.get('scripts.global.head')
+  const bodyScripts = await $swell.settings.get('scripts.global.body')
 
   if (headScripts && typeof headScripts === 'string') {
     postscribe(document.head, checkScriptTag(headScripts))

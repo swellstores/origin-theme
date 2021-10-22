@@ -1,15 +1,8 @@
-import get from 'lodash/get'
 import swell from 'swell-js'
 
-export default (context, inject) => {
-  // eslint-disable-next-line
-  const currentSettings = <%= JSON.stringify(options.currentSettings) %>
-
-  const { settings, menus } = currentSettings
-
-  const storeId = '<%= options.storeId || "" %>' || get(settings, 'store.id')
-  const publicKey =
-    '<%= options.publicKey || "" %>' || get(settings, 'store.public_key')
+export default async (context, inject) => {
+  const storeId = '<%= options.storeId || "" %>'
+  const publicKey = '<%= options.publicKey || "" %>'
 
   // Bail if options aren't provided
   if (!storeId) {
@@ -21,6 +14,10 @@ export default (context, inject) => {
 
   // Load cookies on server side
   const cookies = parseCookies(context.req)
+  const locale =
+    cookies['swell-locale'] ||
+    context.i18n.localeProperties.code ||
+    '<%= options.settings.store.locale || "" %>'
 
   // Set up swell-js client
   swell.init(storeId, publicKey, {
@@ -28,18 +25,16 @@ export default (context, inject) => {
     previewContent: '<%= options.previewContent %>' === 'true',
     url: '<%= options.storeUrl %>',
     session: cookies['swell-session'],
-    locale: cookies['swell-locale'],
     currency: cookies['swell-currency'],
+    locale,
   })
 
+  await swell.locale.select(locale)
+
+  await swell.settings.load()
+
   // Inject client into nuxt context as $swell
-  context.$swell = swell
-
-  // Inject local state into Swell client state
-  context.$swell.settings.state = settings
-  context.$swell.settings.menuState = menus
-
-  inject('swell', context.$swell)
+  inject('swell', swell)
 }
 
 function parseCookies(req) {

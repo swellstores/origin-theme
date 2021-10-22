@@ -84,7 +84,7 @@ export const editor = {
 
         if (isCssVariable(details.path)) {
           // Regenerate variables if setting is a CSS variable group
-          const settings = $swell.settings.get()
+          const settings = await $swell.settings.get()
           setCssVariables(settings)
 
           if (isFontVariable(details.path)) {
@@ -109,7 +109,7 @@ export const editor = {
           this.isLoaded = true
 
           // Set CSS variables on document root during initial editor connection
-          const settings = $swell.settings.get()
+          const settings = await $swell.settings.get()
           setCssVariables(settings)
           updateGoogleFontsLink(settings)
 

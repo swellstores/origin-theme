@@ -14,12 +14,12 @@ const generateMetaImage = (media) => {
 
 export default {
   computed: {
-    pageMeta() {
+    async pageMeta() {
       const { $swell, $route, category, categories, product, products, page } =
         this
-      const storeName = $swell.settings.get('store.name')
-      const storeUrl = $swell.settings.get('store.url')
-      const faviconUrl = $swell.settings.get('header.favicon.file.url')
+      const storeName = await $swell.settings.get('store.name')
+      const storeUrl = await $swell.settings.get('store.url')
+      const faviconUrl = await $swell.settings.get('header.favicon.file.url')
       const formatTitle = (itemTitle) => itemTitle + ' - ' + storeName
 
       const meta = {

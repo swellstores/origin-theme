@@ -270,18 +270,18 @@ export default {
     }
   },
 
-  fetch() {
+  async fetch() {
     const { $swell } = this
 
     // Get menu ID
-    const menuId = $swell.settings.get('header.menu', 'header')
+    const menuId = await $swell.settings.get('header.menu', 'header')
 
     // Set component data
-    this.header = $swell.settings.get('header', {})
-    this.menu = $swell.settings.menus(menuId)
-    this.storeName = $swell.settings.get('store.name', 'ORIGIN')
-    this.logoSrc = $swell.settings.get('header.logo.file.url')
-    this.currencyList = $swell.currency.list()
+    this.header = await $swell.settings.get('header')
+    this.menu = await $swell.settings.menus(menuId)
+    this.storeName = await $swell.settings.get('store.name', 'ORIGIN')
+    this.logoSrc = await $swell.settings.get('header.logo.file.url')
+    this.currencyList = await $swell.currency.list()
   },
 
   computed: {
@@ -293,6 +293,9 @@ export default {
       // Close mega/mobile nav menu when the page changes
       this.hideHeader = false
       this.setMobileNavVisibility(false)
+    },
+    locale() {
+      this.$fetch()
     },
   },
 
