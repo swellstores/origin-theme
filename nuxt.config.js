@@ -39,7 +39,7 @@ export default async () => {
   const i18n = await getLangSettings(swell)
 
   return {
-    target: isProduction ? 'static' : 'server',
+    target: editorMode ? 'server' : 'static',
     build: {
       analyze: !isProduction,
     },
