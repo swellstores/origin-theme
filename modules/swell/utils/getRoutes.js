@@ -8,6 +8,7 @@ export default async function getRoutes(swell) {
   const pages = (await paginateThrough(swell, 'content', 'pages')).reduce(
     (acc, page) => [
       ...acc,
+      `/${page.slug}`,
       ...localizedRoutesFor(`/${page.slug}`, secondaryLocales),
     ],
     []
@@ -16,6 +17,7 @@ export default async function getRoutes(swell) {
   const categories = (await paginateThrough(swell, 'categories')).reduce(
     (acc, category) => [
       ...acc,
+      `/categories/${category.slug}`,
       ...localizedRoutesFor(`/categories/${category.slug}`, secondaryLocales),
     ],
     []
@@ -28,6 +30,7 @@ export default async function getRoutes(swell) {
   ).reduce(
     (acc, product) => [
       ...acc,
+      `/products/${product.slug}`,
       ...localizedRoutesFor(`/products/${product.slug}`, secondaryLocales),
     ],
     []
