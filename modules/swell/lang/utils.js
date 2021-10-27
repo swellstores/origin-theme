@@ -28,7 +28,7 @@ export async function generateLangFiles(swell, locales) {
   logger.success('Generated language settings files')
 }
 
-export async function getLangSettings(swell) {
+export async function getLocales(swell) {
   const defaultLocale = await swell.settings.get('store.locale', 'en-US')
   const localesSettings = await swell.settings.get('store.locales')
   const isMultiLocale = localesSettings && localesSettings.length > 0
@@ -36,6 +36,12 @@ export async function getLangSettings(swell) {
   const locales = isMultiLocale
     ? localesSettings.map(({ code, name }) => ({ code, name }))
     : [{ code: defaultLocale }]
+
+  return { defaultLocale, locales }
+}
+
+export async function getLangSettings(swell) {
+  const { defaultLocale, locales } = await getLocales(swell)
 
   const fallbackLocale = locales
     .filter(({ code }) => code !== defaultLocale)

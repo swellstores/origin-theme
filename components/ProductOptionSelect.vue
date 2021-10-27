@@ -233,9 +233,16 @@ export default {
     },
 
     initialValue() {
-      // Set initial value for menu dropdownif a current value isn't supplied
+      // Set initial value for menu dropdown if a current value isn't supplied
       if (this.currentValue) return
-      if (!this.option.values && !this.option.values.length) return
+
+      if (
+        !this.option.values ||
+        (this.option.values && !this.option.values.length)
+      ) {
+        return
+      }
+
       return this.option.values[0].name
     },
 

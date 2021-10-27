@@ -4,6 +4,7 @@ import menus from './config/menus.json'
 import { getGoogleFontConfig } from './modules/swell-editor/utils'
 import { getLangSettings } from './modules/swell/lang/utils'
 import { mergeSettings } from './modules/swell/utils/mergeSettings'
+import getRoutes from './modules/swell/utils/getRoutes'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const editorMode = process.env.SWELL_EDITOR === 'true'
@@ -211,6 +212,8 @@ export default async () => {
       exclude: [/^\/?([a-z]{2}-?[A-Z]{2}?)?\/account/],
       fallback: true, // Fallback to the generated 404.html,
       interval: 25,
+      crawler: false,
+      routes: () => getRoutes(swell),
     },
 
     /*
