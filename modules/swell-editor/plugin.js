@@ -64,6 +64,8 @@ export default (context, inject) => {
     }
   }
 
+  editor.processMessage({ data: { type: 'settings.loaded' } }, context)
+
   // Add editor to Nuxt context as $swellEditor
   inject('swellEditor', editor)
 }
