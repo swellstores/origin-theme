@@ -44,6 +44,11 @@
       "type": "toggle"
     },
     {
+      "id": "show_stock_level",
+      "label": "Show stock level",
+      "type": "toggle"
+    },
+    {
       "id": "enable_quantity",
       "label": "Enable product quantity",
       "hint": "Allows users to set the quantity of the product to be added to cart.",

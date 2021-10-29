@@ -225,6 +225,13 @@ export default {
     },
   },
 
+  watch: {
+    // If no added item in notification, hide recently added product
+    addedItem(item) {
+      if (!item) this.product = null
+    }
+  },
+
   mounted() {
     this.onScroll()
     window.addEventListener('scroll', this.onScroll)

@@ -556,6 +556,11 @@
           "type": "short_text",
           "format": "url",
           "placeholder": "/categories/"
+        },
+        {
+          "id": "cart.validate_stock",
+          "label": "Validate stock when adding to cart",
+          "type": "toggle"
         }
       ]
     },
@@ -3187,6 +3192,20 @@
           "localized": true
         },
         {
+          "id": "lang.products._slug.stock_remaining",
+          "label": "Stock remaining",
+          "default": "{n} remaining",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.products._slug.options.required",
+          "label": "Options field required message",
+          "default": "Please enter a value.",
+          "type": "short_text",
+          "localized": true
+        },
+        {
           "id": "lang.products._slug.options.required",
           "label": "Options field required message",
           "default": "Please enter a value.",
@@ -3273,6 +3292,11 @@
           "default": "Adding...",
           "type": "short_text",
           "localized": true
+        },
+        {
+          "id": "lang.products.preview.quick_add.out_of_stock",
+          "label": "Out of stock notification",
+          "default": "This product is out of stock.",
         },
         {
           "label": "Purchase Options: Subscription",
@@ -3778,7 +3802,7 @@
           "default": "Account balance",
           "type": "short_text",
           "localized": true
-        },
+        }, 
         {
           "id": "lang.cart.checkout",
           "label": "Checkout action",
@@ -3790,6 +3814,13 @@
           "id": "lang.cart.updating",
           "label": "Updating cart",
           "default": "Updating",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.cart.exceeds_stock_level",
+          "label": "Cart item stock restriction",
+          "default": "You cannot add more than what is available of this product.",
           "type": "short_text",
           "localized": true
         },

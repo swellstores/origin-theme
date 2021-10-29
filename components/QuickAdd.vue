@@ -37,6 +37,26 @@
       </div>
     </transition>
 
+    <!-- Error messages -->
+    <div v-if="addToCartError" class="relative px-4">
+      <div
+        class="
+          absolute
+          left-0
+          bottom-0
+          w-full
+          px-4
+          py-3
+          bg-primary-lighter
+          rounded
+        "
+      >
+        <span class="w-full label-sm text-error text-center">{{
+          $t('products.preview.quickAdd.outOfStock')
+        }}</span>
+      </div>
+    </div>
+
     <!-- Adding in progress -->
     <div v-if="cartIsUpdating" class="relative px-4">
       <BaseButton
@@ -73,6 +93,7 @@ export default {
       optionState: null,
       quickAddIsActive: false,
       quickAddIndex: 0,
+      addToCartError: null,
     }
   },
 
@@ -189,10 +210,17 @@ export default {
         optionInputs.length === 1 ||
         quickAddIndex + 1 >= optionInputs.length
       ) {
-        this.addToCart()
-
         // Hide options when adding to cart
         this.quickAddIsActive = false
+
+        // Check if product/variant is in stock before adding to cart
+        if (!this.checkHasStock()) {
+          this.addToCartError = 'Out of stock'
+          return
+        }
+
+        // Add to cart
+        this.addToCart()
       } else {
         // Move onto next option if available
         this.quickAddIndex++
@@ -216,19 +244,43 @@ export default {
       }
     },
 
+    // Check if current variation has stock
+    checkHasStock() {
+      const { product, variation } = this
+      return (
+        !product.stockTracking ||
+        product.stockPurchasable ||
+        ((variation.stockStatus !== 'out_of_stock' || variation.stockStatus) &&
+          variation.stockLevel > 0)
+      )
+    },
+
     // Add product to cart with selected options
-    addToCart() {
-      // Emit event to show updating label
-      this.$emit('adding-to-cart')
+    async addToCart() {
+      try {
+        await this.$store.dispatch('addCartItem', {
+          productId: this.variation.id,
+          quantity: 1,
+          options: this.optionState,
+        })
 
-      // Emit event to hide quick add button if keep-alive is active
-      this.$emit('keep-alive', false)
+        // Close popup when product has been added to cart
+        this.$emit('click-close')
+      } catch (err) {
+        let errorMessage
+        switch (err.message) {
+          case 'invalid_stock':
+            errorMessage = this.$t('cart.exceedsStockLevel')
+            break
+          default:
+            break
+        }
 
-      this.$store.dispatch('addCartItem', {
-        productId: this.variation.id,
-        quantity: 1,
-        options: this.optionState,
-      })
+        this.$store.dispatch('showNotification', {
+          message: errorMessage,
+          type: 'error',
+        })
+      }
     },
   },
 

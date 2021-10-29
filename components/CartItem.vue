@@ -96,6 +96,13 @@
           />
         </div>
       </div>
+
+      <!-- Adjustment error -->
+      <div v-if="adjustmentError">
+        <p class="w-full text-error text-right pb-4">
+          {{ $t('cart.exceedsStockLevel') }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -124,6 +131,8 @@ export default {
       itemEditorIsVisible: false,
       quantity: 1,
       maxQuantity: 99,
+      adjustmentError: false,
+      validateCartStock: false,
     }
   },
 
@@ -143,6 +152,7 @@ export default {
 
     this.maxQuantity = maxQuantity
     this.quantity = item.quantity
+    this.validateCartStock = $swell.settings.get('cart.validateStock')
   },
 
   computed: {

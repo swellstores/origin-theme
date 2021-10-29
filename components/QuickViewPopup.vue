@@ -182,7 +182,6 @@
                 </div>
               </div>
             </div>
-
             <!-- Cart button & stock info -->
             <div
               v-if="variation"
@@ -303,6 +302,7 @@ export default {
       pendingState: false,
       optionState: null,
       productPreviewIndex: 0,
+      showStockLevel: true,
       activeDropdownUID: null,
       selectedPurchaseOption: undefined,
     }
@@ -337,6 +337,7 @@ export default {
     // Set component data
     this.product = product
     this.optionState = optionState
+    this.showStockLevel = get(product, 'content.showStockLevel')
     this.enableQuantity = get(product, 'content.enableQuantity')
     this.maxQuantity = maxQuantity
   },
@@ -440,6 +441,15 @@ export default {
   },
 
   methods: {
+    // Determine whether to disable Add to Cart button based on the variant's stock status
+    disableOnVariantStockStatus(stockStatus) {
+      return (
+        (stockStatus === 'out_of_stock' || !stockStatus) &&
+        this.product.stockTracking &&
+        !this.product.stockPurchasable
+      )
+    },
+
     // Update an option value based on user input
     setOptionValue({ option, value }) {
       // Use $set to update the data object because options are dynamic
@@ -455,22 +465,30 @@ export default {
 
     // Add product to cart with selected options
     async addToCart() {
-      // Touch and validate all fields
-      this.$v.$touch()
-      if (this.$v.$invalid) return // return if invalid
-      this.$store.commit('setState', {
-        key: 'addedItem',
-        value: this.variation,
-      })
-      await this.$store.dispatch('addCartItem', {
-        productId: this.variation.id,
-        quantity: this.quantity || 1,
-        options: this.optionState,
-        purchaseOption: this.selectedPurchaseOption,
-      })
+      try {
+        this.$v.$touch()
+        if (this.$v.$invalid) return // return if invalid
+        this.$store.commit('setState', {
+          key: 'addedItem',
+          value: this.variation,
+        })
+        await this.$store.dispatch('addCartItem', {
+          productId: this.variation.id,
+          quantity: this.quantity || 1,
+          options: this.optionState,
+          purchaseOption: this.selectedPurchaseOption,
+        })
 
-      // Close popup when product has been added to cart
-      this.$emit('click-close')
+        // Close popup when product has been added to cart
+        this.$emit('click-close')
+      } catch (err) {
+        if (err.message === 'invalid_stock') {
+          this.$store.dispatch('showNotification', {
+            message: this.$t('cart.exceedsStockLevel'),
+            type: 'error',
+          })
+        }
+      }
     },
   },
 
@@ -492,7 +510,7 @@ export default {
 
 <style lang="postcss">
 .gradient {
-  @apply w-full h-12;
+  @apply w-full absolute top-0 h-6 transform -translate-y-full;
   background: rgb(255, 255, 255);
   background: linear-gradient(
     0deg,

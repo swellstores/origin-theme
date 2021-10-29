@@ -128,7 +128,6 @@
             >Swell</a
           >
         </p>
-
         <!-- Secondary nav menu -->
         <ul v-if="footer.showSecondaryMenu && secondaryMenu" class="my-3">
           <li

@@ -30,6 +30,72 @@ export const actions = {
   },
 
   /**
+   * Check if a product is in stock to be added/modified within the cart
+   * @property {Object} item - The product or cart item
+   * @property {string} id - The cart item id
+   * @property {number} quantityToAdd - The quantity to add to cart
+   */
+  async checkCartItemHasStock({ state }, { item, id }) {
+    // Get cart items
+    const items = state.cart?.items
+
+    let cartItem
+    let stockPurchasable
+    let stockTracking
+    let stockLevel
+    let product
+    let currentQuantity = 0
+
+    const quantityToAdd = item ? item.quantity : 1
+
+    if (item) {
+      product = await this.$swell.products.get(item.productId)
+    } else if (id) {
+      product = await this.$swell.products.get(id)
+    }
+
+    if (!product) throw new Error('Product in cart could not be found.')
+
+    if (items) {
+      let variant
+      // If a product item is provided
+      if (item) variant = this.$swell.products.variation(product, item.options)
+      cartItem = items.find((item) => {
+        if (id) {
+          return item.id === id
+        } else if (item) {
+          return item.variant
+            ? item.variantId === variant?.variantId
+            : item.productId === variant?.id
+        }
+        return null
+      })
+    }
+
+    // Get stock availability of cart item
+    if (cartItem) {
+      stockPurchasable = cartItem.product.stockPurchasable
+      stockTracking = cartItem.product.stockTracking
+      stockLevel = cartItem.product.stockLevel
+      // If variant, get respective stock level
+      if (cartItem.variant) {
+        stockLevel = cartItem.variant.stockLevel
+      }
+      currentQuantity = cartItem.quantity
+    } else {
+      // Get stock availability of product to be added
+      stockPurchasable = product.stockPurchasable
+      stockTracking = product.stockTracking
+      stockLevel = product.stockLevel
+    }
+
+    // If product is purchasable out of stock or doesn't track stock, allow add to cart
+    if (stockPurchasable || !stockTracking) return true
+    if (currentQuantity + quantityToAdd > stockLevel) return false
+    return true
+  },
+
+  /**
    * Product to be added to cart
    * @type {Object} Product
    * @property {string} productId - The product id
@@ -49,6 +115,24 @@ export const actions = {
     commit('setState', { key: 'cartIsUpdating', value: true })
 
     try {
+      // Check if validate stock on add is active
+      const validateCartStock = this.$swell.settings.get('cart.validateStock')
+
+      if (validateCartStock) {
+        try {
+          const cartItemHasStock = await dispatch('checkCartItemHasStock', {
+            item,
+          })
+
+          if (!cartItemHasStock) {
+            commit('setState', { key: 'cartIsUpdating', value: false })
+            throw new Error('invalid_stock')
+          }
+        } catch (err) {
+          throw new Error(err.message)
+        }
+      }
+
       // Make Swell API call
       const cart = await this.$swell.cart.addItem(item)
       // Replace cart state
@@ -82,6 +166,7 @@ export const actions = {
         })
       }
     } catch (err) {
+      if (err.message === 'invalid_stock') throw new Error('invalid_stock')
       dispatch('handleError', err)
     }
 
