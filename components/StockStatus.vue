@@ -8,6 +8,12 @@
       <span class="label-xs-bold text-primary-dark">{{
         $t(status.label)
       }}</span>
+      <span
+        v-if="showStockLevel && stockLevel > 0"
+        class="label-xs-bold text-primary-dark"
+      >
+        • {{ $t('products.slug.stockRemaining', { n: stockLevel }) }}
+      </span>
     </div>
     <div class>
       <a v-if="status.link" href="#" class="label-sm-bold">{{
@@ -53,6 +59,14 @@ export default {
     statusValue: {
       type: String,
       default: 'out_of_stock',
+    },
+    stockLevel: {
+      type: Number,
+      default: 0,
+    },
+    showStockLevel: {
+      type: Boolean,
+      default: false,
     },
   },
 

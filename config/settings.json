@@ -92,7 +92,8 @@
     }
   },
   "cart": {
-    "shop_link": "/categories/"
+    "shop_link": "/categories/",
+    "validate_stock": true
   },
   "typography": {
     "heading_font": {
@@ -138,7 +139,8 @@
       "apply_coupon": "Apply coupon",
       "back_to_products": "Shop now",
       "empty": "Your cart is empty.",
-      "title": "Cart"
+      "title": "Cart",
+      "exceeds_stock_level": "You cannot add more than what is available of this product."
     },
     "errors": {
       "category_not_found": "Category not found",
@@ -192,7 +194,8 @@
           },
           "add_to_cart": "Add to cart",
           "quick_add": "Quick add",
-          "quick_view": "Quick view"
+          "quick_view": "Quick view",
+          "out_of_stock": "This product is out of stock."
         }
       },
       "_slug": {
@@ -200,6 +203,7 @@
         "updating": "Updating",
         "save": "Save",
         "add_to_cart": "Add to cart",
+        "stock_remaining": "{n} remaining",
         "options": {
           "required": "Please enter a value."
         },

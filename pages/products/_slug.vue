@@ -181,6 +181,8 @@
               <StockStatus
                 v-if="product.stockTracking && !product.stockPurchasable"
                 :status-value="variation.stockStatus"
+                :stock-level="variation.stockLevel"
+                :show-stock-level="showStockLevel"
               />
 
               <!-- Quantity -->
@@ -352,6 +354,7 @@ export default {
       selectedPurchaseOption: undefined,
       productBenefits: [],
       enableSocialSharing: false,
+      showStockLevel: false,
       activeDropdownUID: null,
     }
   },
@@ -399,6 +402,7 @@ export default {
     this.relatedProducts = relatedProducts
     this.productBenefits = get(product, 'content.productBenefits', [])
     this.enableSocialSharing = get(product, 'content.enableSocialSharing')
+    this.showStockLevel = get(product, 'content.showStockLevel')
     this.enableQuantity = get(product, 'content.enableQuantity')
     this.maxQuantity = maxQuantity
   },
@@ -530,17 +534,25 @@ export default {
     },
 
     // Add product to cart with selected options
-    addToCart() {
-      // Touch and validate all fields
-      this.$v.$touch()
-      if (this.$v.$invalid) return // return if invalid
-
-      this.$store.dispatch('addCartItem', {
-        productId: this.variation.id,
-        quantity: this.quantity || 1,
-        options: this.optionState,
-        purchaseOption: this.selectedPurchaseOption,
-      })
+    async addToCart() {
+      try {
+        // Touch and validate all fields
+        this.$v.$touch()
+        if (this.$v.$invalid) return // return if invalid
+        await this.$store.dispatch('addCartItem', {
+          productId: this.variation.id,
+          quantity: this.quantity || 1,
+          options: this.optionState,
+          purchaseOption: this.selectedPurchaseOption,
+        })
+      } catch (err) {
+        if (err.message === 'invalid_stock') {
+          this.$store.dispatch('showNotification', {
+            message: this.$t('cart.exceedsStockLevel'),
+            type: 'error',
+          })
+        }
+      }
     },
 
     // Update an option value based on user input
