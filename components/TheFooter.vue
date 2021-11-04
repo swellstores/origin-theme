@@ -16,7 +16,7 @@
         class="lg:w-1/4 lg:pr-6"
       >
         <div v-if="footer.showContactInfo" class="mb-5">
-          <p v-if="footer.contactInfoHeading" class="text-sm mb-4">
+          <p v-if="footer.contactInfoHeading" class="mb-4 text-sm">
             {{ footer.contactInfoHeading }}
           </p>
           <p>
@@ -66,14 +66,14 @@
               <p
                 v-if="item.type === 'heading'"
                 :class="{ 'mt-6': i > 0 }"
-                class="text-sm text-primary-med mb-3"
+                class="mb-3 text-sm text-primary-med"
               >
                 {{ item.name }}
               </p>
               <!-- Standard link -->
               <a
                 v-else-if="item.type === 'url'"
-                class="inline-block py-1 leading-tight text-xl"
+                class="inline-block py-1 text-xl leading-tight"
                 rel="noreferrer noopener"
                 :href="item.value"
                 :target="item.options.target === 'blank' ? '_blank' : '_self'"
@@ -82,7 +82,7 @@
               <NuxtLink
                 v-else
                 :to="localePath(resolveUrl(item))"
-                class="inline-block py-1 leading-tight text-xl"
+                class="inline-block py-1 text-xl leading-tight"
               >
                 {{ item.name }}
               </NuxtLink>
@@ -93,9 +93,9 @@
 
       <!-- Email signup -->
       <template v-if="footer.showEmailSignup">
-        <div class="max-w-96 mx-auto lg:w-1/4 lg:flex-shrink-0">
+        <div class="mx-auto max-w-96 lg:w-1/4 lg:flex-shrink-0">
           <!-- Heading + text -->
-          <p v-if="footer.emailSignupHeading" class="text-sm mb-5">
+          <p v-if="footer.emailSignupHeading" class="mb-5 text-sm">
             {{ footer.emailSignupHeading }}
           </p>
           <div v-if="footer.emailSignupText" v-html="footer.emailSignupText" />
@@ -114,7 +114,7 @@
         'border-primary-darker': background === 'dark',
         'border-primary-med': background === 'light',
       }"
-      class="py-4 border-t border-primary-darker text-sm text-center"
+      class="py-4 text-sm text-center border-t border-primary-darker"
     >
       <div class="container lg:flex lg:flex-no-wrap lg:justify-between">
         <!-- Copyright & Settings -->
@@ -217,6 +217,7 @@ export default {
         'instagram',
         'youtube',
         'vimeo',
+        'whatsapp',
       ]
         .map((id) => ({ id, ...get(this, `socialLinks.${id}`, {}) })) // Get the network's link value from settings
         .filter((link) => link.show && link.url) // Only include if it's switched on and  has a url
