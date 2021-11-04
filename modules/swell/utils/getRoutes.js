@@ -39,13 +39,18 @@ export default async function getRoutes(swell) {
   return [...pages, ...categories, ...products]
 }
 
+// arguments reference for different arity:
+// paginateThrough(swell, model, query)
+// or
+// paginateThrough(swell, module, model, query)
+// module is generally needed for content models
 async function paginateThrough(swell, module, model, query) {
   const initialParams = {
     page: 1,
     window: false,
     fields: 'slug',
     limit: 100,
-    ...(query || model),
+    ...(query || typeof model === 'object' ? model : {}),
   }
 
   const initialFetch = await fetchList(swell, module, model, initialParams)
@@ -61,7 +66,7 @@ async function paginateThrough(swell, module, model, query) {
       Object.keys(pages),
       (pageNumber) => {
         const fetchParams = {
-          ...(query || model),
+          ...(query || typeof model === 'object' ? model : {}),
           page: pageNumber,
         }
 

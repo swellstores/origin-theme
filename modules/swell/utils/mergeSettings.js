@@ -45,12 +45,9 @@ export function combineMerge(target, originalSource, options) {
 }
 
 export function mergeSettings(settings, sourceSettings, options = {}) {
-  const { model, ...mergeOptions } = options
-  const stateName = model ? `${model.replace(/s$/, '')}State` : 'state'
-
-  const merged = merge(settings[stateName], toCamel(sourceSettings), {
+  const merged = merge(settings, toCamel(sourceSettings), {
     arrayMerge: combineMerge,
-    ...mergeOptions,
+    ...options,
   })
 
   return merged
