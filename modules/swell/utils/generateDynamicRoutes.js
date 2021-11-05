@@ -5,7 +5,7 @@ export default function (_moduleOptions) {
       locales.map(({ code }) => `^/${code}`).join('|')
     )
 
-    const sitemapRoutes = context.generatedRoutes.reduce((acc, path) => {
+    const sitemapRoutes = [...context.generatedRoutes].reduce((acc, path) => {
       const match = path.match(localesRegex)
       const basePath = match ? path.replace(match[0], '') : path
 
