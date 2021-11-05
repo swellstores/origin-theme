@@ -1,9 +1,6 @@
 module.exports = {
   mode: 'jit',
   purge: {
-    /* options: {
-      safelist: ['container', /^icon:/, /^bg-/],
-    }, */
     content: ['./tailwind-safelist.txt'],
   },
   theme: {

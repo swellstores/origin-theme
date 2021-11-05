@@ -12,14 +12,10 @@ button {
   }
 }
 
-@responsive {
-  .container {
-    @apply mx-auto px-6 lg:px-8 xl:px-10;
-  }
-}
-
 .btn {
-  @apply relative inline-block h-10 px-5 py-3 rounded bg-primary-light text-sm leading-tight text-center font-semibold tracking-wide uppercase cursor-pointer;
+  @apply relative inline-block h-10 px-5 py-3 
+         rounded bg-primary-light text-sm leading-tight 
+         text-center font-semibold tracking-wide uppercase cursor-pointer;
 
   &:hover {
     @apply bg-primary-darker text-primary-lightest;
@@ -206,4 +202,10 @@ input[type='number']::-webkit-inner-spin-button {
 /* Remove spin buttons for input number (Firefox) */
 input[type='number'] {
   -moz-appearance: textfield;
+}
+
+@responsive {
+  .container {
+    @apply mx-auto px-6 lg:px-8 xl:px-10;
+  }
 }
