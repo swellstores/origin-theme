@@ -211,6 +211,7 @@ export default async () => {
     generate: {
       exclude: [/^\/?([a-z]{2}-?[A-Z]{2}?)?\/account/],
       fallback: true, // Fallback to the generated 404.html,
+      concurrency: 1,
       interval: 25,
       crawler: false,
       routes: () => getRoutes(swell),
