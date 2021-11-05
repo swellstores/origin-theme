@@ -496,6 +496,18 @@
           "type": "short_text",
           "format": "url",
           "placeholder": "https://vimeo.com/mystore"
+        },
+        {
+          "id": "social_links.whatsapp.show",
+          "label": "WhatsApp",
+          "type": "toggle"
+        },
+        {
+          "id": "social_links.whatsapp.url",
+          "label": "WhatsApp Contact URL",
+          "type": "short_text",
+          "format": "url",
+          "placeholder": "https://wa.me/18005551234"
         }
       ]
     },

@@ -79,6 +79,10 @@
     "vimeo": {
       "show": true,
       "url": ""
+    },
+    "whatsapp": {
+      "show": true,
+      "url": ""
     }
   },
   "product_list": {
