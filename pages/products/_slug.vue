@@ -151,7 +151,7 @@
                 }}
               </span>
             </div>
-            <div v-html="product.description" />
+            <div class="markdown" v-html="product.description" />
 
             <!-- Product options -->
             <div v-for="input in optionInputs" :key="input.name" class="my-8">

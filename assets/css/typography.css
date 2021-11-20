@@ -90,3 +90,11 @@ textarea {
 .tracking-inherit {
   letter-spacing: inherit;
 }
+
+.markdown ul {
+  @apply list-inside list-disc;
+}
+
+.markdown ol {
+  @apply list-inside list-decimal;
+}
