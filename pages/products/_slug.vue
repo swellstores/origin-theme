@@ -125,7 +125,7 @@
             <div
               class="flex items-center mt-2 mb-5 text-lg font-semibold md:mb-8"
             >
-              <span>{{ formatMoney(variation.price, currency) }}</span>
+              <span>{{ formatMoney(variation.price, currency, false) }}</span>
               <span v-if="billingInterval" class="lowercase"
                 >&nbsp;{{ billingInterval }}</span
               >
@@ -147,7 +147,11 @@
               >
                 {{ $t('products.slug.save') }}
                 {{
-                  formatMoney(variation.origPrice - variation.price, currency)
+                  formatMoney(
+                    variation.origPrice - variation.price,
+                    currency,
+                    false
+                  )
                 }}
               </span>
             </div>
@@ -219,7 +223,7 @@
                       "
                     />
                     <span>{{
-                      formatMoney(variation.price * quantity, currency)
+                      formatMoney(variation.price * quantity, currency, false)
                     }}</span>
                     <span v-if="billingInterval">{{ billingInterval }}</span>
                     <span
@@ -227,7 +231,11 @@
                       class="ml-1 line-through text-primary-med"
                     >
                       {{
-                        formatMoney(variation.origPrice * quantity, currency)
+                        formatMoney(
+                          variation.origPrice * quantity,
+                          currency,
+                          false
+                        )
                       }}
                     </span>
                     <span
