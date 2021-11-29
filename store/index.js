@@ -135,16 +135,17 @@ export const actions = {
 
       // Make Swell API call
       const cart = await this.$swell.cart.addItem(item)
-      // Replace cart state
-      commit('setState', { key: 'cart', value: cart })
-      // Set item to be displayed in the notification
-      commit('setState', { key: 'addedItem', value: item })
 
       if (cart.errors) {
         dispatch('handleModelErrors', cart.errors)
         commit('setState', { key: 'cartIsUpdating', value: false })
         return
       }
+
+      // Replace cart state
+      commit('setState', { key: 'cart', value: cart })
+      // Set item to be displayed in the notification
+      commit('setState', { key: 'addedItem', value: item })
 
       if (state.notification !== null) {
         // If notification is already visible, close it to show new notification
