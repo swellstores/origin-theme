@@ -1,7 +1,7 @@
 <template>
   <div>
     <BaseButton
-      v-if="!quickAddIsActive && !cartIsUpdating"
+      v-show="!quickAddIsActive && !cartIsUpdating"
       :label="label"
       @click.native="interact"
     />
@@ -231,7 +231,14 @@ export default {
     interact() {
       switch (this.flow) {
         case 'quick-view':
-          this.$emit('open-quick-view')
+          this.$store.commit('setState', {
+            key: 'quickViewIsVisible',
+            value: true,
+          })
+          this.$store.commit('setState', {
+            key: 'quickViewProductId',
+            value: this.product.id,
+          })
           break
         case 'quick-add':
           this.quickAddIsActive = true

@@ -1,7 +1,7 @@
 <template>
   <main>
     <!-- Core product content -->
-    <section class="pb-12 md:flex">
+    <section class="mb-12 md:flex">
       <div class="relative md:w-1/2">
         <!-- Media slider for small screens -->
         <MediaSlider
@@ -334,6 +334,15 @@
         </div>
       </div>
     </section>
+
+    <section v-if="upsellProducts" class="container mb-12">
+      <h2 class="mb-12">{{ $t('products.slug.upSell.title') }}</h2>
+      <ProductPreviews
+        :products="upsellProducts"
+        :slider="true"
+        :column-count="upsellProductCols"
+      />
+    </section>
   </main>
 </template>
 
@@ -361,6 +370,7 @@ export default {
       optionState: null,
       selectedPurchaseOption: undefined,
       productBenefits: [],
+      upsellProductCols: 4,
       enableSocialSharing: false,
       showStockLevel: false,
       activeDropdownUID: null,
@@ -371,7 +381,9 @@ export default {
     const { $swell, $route } = this
 
     // Fetch product
-    const product = await $swell.products.get($route.params.slug)
+    const product = await $swell.products.get($route.params.slug, {
+      expand: ['up_sells.product', 'cross_sells'],
+    })
 
     // Show 404 if product isn't found
     if (!product) {
@@ -412,6 +424,7 @@ export default {
     this.enableSocialSharing = get(product, 'content.enableSocialSharing')
     this.showStockLevel = get(product, 'content.showStockLevel')
     this.enableQuantity = get(product, 'content.enableQuantity')
+    this.upsellProductCols = get(product, 'content.upSellCols') || 4
     this.maxQuantity = maxQuantity
   },
 
@@ -481,6 +494,11 @@ export default {
       const optionState = this.optionState
 
       return listVisibleOptions(options, optionState).map(({ id }) => id)
+    },
+
+    upsellProducts() {
+      if (!this.product?.upSells?.length) return null
+      return this.product.upSells.map((upsell) => upsell.product)
     },
 
     optionInputs() {

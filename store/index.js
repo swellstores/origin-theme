@@ -12,6 +12,8 @@ export const state = () => ({
   headerIsVisible: true,
   headerHeight: 0,
   addedItem: null,
+  quickViewIsVisible: false,
+  quickViewProductId: null,
 })
 
 export const actions = {

@@ -19,6 +19,10 @@
     <TheCookieNotification />
     <TheCart v-show="cartIsActive" />
     <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
+    <QuickViewPopup
+      v-if="quickViewIsVisible"
+      :product-id="quickViewProductId"
+    />
   </div>
 </template>
 
@@ -55,7 +59,13 @@ export default {
   },
 
   computed: {
-    ...mapState(['cartIsActive', 'notification', 'cookiesWereAccepted']),
+    ...mapState([
+      'cartIsActive',
+      'notification',
+      'cookiesWereAccepted',
+      'quickViewIsVisible',
+      'quickViewProductId',
+    ]),
   },
 
   watch: {
