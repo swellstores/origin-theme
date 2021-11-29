@@ -3246,6 +3246,17 @@
           "localized": true
         },
         {
+          "label": "Up-sells",
+          "type": "heading"
+        },
+        {
+          "id": "lang.products._slug.up_sell.title",
+          "label": "Up-sell title",
+          "default": "Other items you may like",
+          "type": "short_text",
+          "localized": true
+        },
+        {
           "label": "Product Preview",
           "type": "heading"
         },

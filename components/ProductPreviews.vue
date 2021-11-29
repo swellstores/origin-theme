@@ -1,158 +1,155 @@
 <template>
-  <section class="-mx-1 flex flex-wrap sm:-mx-2 xl:-mx-3">
-    <article
-      v-for="product in products"
-      :key="product.id"
-      :class="[
-        { 'w-1/2': columnCount === 2 },
-        { 'w-1/2 md:w-1/3': columnCount === 3 },
-        { 'w-1/2 md:w-1/4': columnCount === 4 },
-        { 'w-1/2 md:w-1/5': columnCount === 5 },
-      ]"
-      class="mb-3 px-1 sm:px-2 xl:px-3 xl:mb-4"
-    >
-      <!-- Skeleton loader -->
-      <div v-if="!product.slug" class="pb-5">
-        <div
-          class="loader-el pb-full mb-4"
-          :style="{ paddingBottom: ratioPadding }"
-        />
-        <div class="loader-el w-2/3 h-4 mb-2" />
-        <div v-if="showPrice" class="loader-el w-24 h-3" />
-      </div>
+  <section class="relative flex flex-wrap sm:-mx-2 xl:-mx-3">
+    <template v-if="slider && products.length > columnCount">
+      <VueGlide
+        type="slider"
+        :per-view="columnCount"
+        :options="glideOptions"
+        @glide:run-start="sliderAtStart = true"
+        @glide:run-end="sliderAtEnd = true"
+        @glide:run="
+          () => {
+            ;(sliderAtStart = false), (sliderAtEnd = false)
+          }
+        "
+      >
+        <VueGlideSlide v-for="product in products" :key="product.id">
+          <ProductThumb :product="product" />
+        </VueGlideSlide>
 
-      <div v-else class="relative block h-full rounded">
-        <!-- Preview media -->
+        <template slot="control">
+          <button
+            ref="prevSlide"
+            class="absolute w-0 h-0 invisible"
+            data-glide-dir="<"
+          />
+
+          <button
+            ref="nextSlide"
+            class="absolute w-0 h-0 invisible"
+            data-glide-dir=">"
+          />
+        </template>
+      </VueGlide>
+
+      <!-- Slider controls -->
+      <div class="w-full absolute">
+        <!-- Previous slide -->
         <div
-          class="group relative"
-          @mouseenter="showQuickAdd(product.id)"
-          @mouseleave="hideQuickAdd(product.id)"
+          class="absolute top-0 left-0 px-1 sm:px-2 xl:px-3 pointer-events-none"
+          :class="[
+            { 'w-1/2': columnCount === 2 },
+            { 'w-1/2 md:w-1/3': columnCount === 3 },
+            { 'w-1/2 md:w-1/4': columnCount === 4 },
+            { 'w-1/2 md:w-1/5': columnCount === 5 },
+          ]"
         >
-          <!-- TODO: change aria-hidden to aria-label as soon as we support alt text for product images -->
-          <NuxtLink
-            :to="
-              localePath(resolveUrl({ type: 'product', value: product.slug }))
+          <span class="w-full block" :style="{ paddingBottom: ratioPadding }" />
+          <button
+            v-show="!sliderAtStart"
+            class="
+              absolute
+              top-1/2
+              left-0
+              ml-3
+              rounded-full
+              shadow-md
+              w-10
+              h-10
+              transform
+              -translate-x-1/2 -translate-y-1/2
+              bg-primary-lightest
+              flex
+              items-center
+              justify-center
+              pointer-events-auto
             "
-            class="relative block rounded overflow-hidden"
-            aria-hidden="true"
+            @click="prevSlide"
           >
-            <div v-if="product.images && product.images.length">
-              <!-- Main image -->
-              <VisualMedia
-                :source="product.images[0]"
-                :aspect-ratio="aspectRatio"
-                :sizes="sizes"
-                :widths="widths"
-              />
-              <!-- Hover image -->
-              <div
-                v-if="product.images[1]"
-                class="
-                  hidden
-                  md:block
-                  group-hover:opacity-100
-                  absolute
-                  w-full
-                  h-full
-                  inset-0
-                  opacity-0
-                  transition-opacity
-                  duration-150
-                "
-              >
-                <VisualMedia
-                  :source="product.images[1]"
-                  :aspect-ratio="aspectRatio"
-                  :sizes="sizes"
-                  :widths="widths"
-                />
-              </div>
-            </div>
-
-            <!-- Fallback image -->
-            <div v-else class="relative bg-primary-lighter rounded pb-full">
-              <BaseIcon
-                icon="uil:camera-slash"
-                size="lg"
-                class="absolute center-xy text-primary-med"
-              />
-            </div>
-          </NuxtLink>
-          <div
-            v-if="product.origPrice"
-            class="label-tag label-tag--sale absolute -mt-1 mr-2 top-0 right-0"
-          >
-            {{ $t('products.preview.sale') }}
-          </div>
-
-          <template v-if="quickAddIsEnabled">
-            <transition name="fade-up" :duration="300">
-              <QuickAdd
-                v-if="
-                  (currentProductId === product.id && quickAddIsVisible) ||
-                  (currentProductId === product.id && quickAddKeepAlive)
-                "
-                class="hidden lg:block w-full absolute bottom-0 px-6 mb-5"
-                :product="product"
-                @open-quick-view="openQuickView(product)"
-                @adding-to-cart="productBeingAdded = product.id"
-                @keep-alive="keepQuickAddAlive"
-              />
-            </transition>
-          </template>
+            <BaseIcon icon="uil:angle-left" />
+          </button>
         </div>
-        <!-- Product summary -->
-        <div class="py-3" :class="{ 'text-center': textAlign === 'center' }">
-          <NuxtLink
-            :to="
-              localePath(resolveUrl({ type: 'product', value: product.slug }))
+
+        <!-- Next slide -->
+        <div
+          class="
+            absolute
+            top-0
+            right-0
+            px-1
+            sm:px-2
+            xl:px-3
+            pointer-events-none
+          "
+          :class="[
+            { 'w-1/2': columnCount === 2 },
+            { 'w-1/2 md:w-1/3': columnCount === 3 },
+            { 'w-1/2 md:w-1/4': columnCount === 4 },
+            { 'w-1/2 md:w-1/5': columnCount === 5 },
+          ]"
+        >
+          <span class="w-full block" :style="{ paddingBottom: ratioPadding }" />
+          <button
+            v-show="!sliderAtEnd"
+            class="
+              absolute
+              top-1/2
+              right-0
+              mr-3
+              rounded-full
+              shadow-md
+              w-10
+              h-10
+              transform
+              translate-x-1/2
+              -translate-y-1/2
+              bg-primary-lightest
+              flex
+              items-center
+              justify-center
+              pointer-events-auto
             "
-            class="inline-block"
+            @click="nextSlide"
           >
-            <h4>{{ product.name }}</h4>
-          </NuxtLink>
-          <!-- Sale price -->
-          <template v-if="showPrice">
-            <div v-if="product.origPrice">
-              <span class="text-sm mr-1">{{
-                formatMoney(product.price, currency)
-              }}</span>
-              <span
-                class="uppercase text-xs text-error-default whitespace-no-wrap"
-              >
-                {{
-                  $t('products.preview.save', {
-                    amount: formatMoney(
-                      product.origPrice - product.price,
-                      currency
-                    ),
-                  })
-                }}
-              </span>
-            </div>
-            <!-- Regular price -->
-            <div v-else>
-              <span class="text-sm">{{
-                formatMoney(product.price, currency)
-              }}</span>
-            </div>
-          </template>
+            <BaseIcon icon="uil:angle-right" />
+          </button>
         </div>
       </div>
-    </article>
-    <QuickViewPopup
-      v-if="quickViewIsVisible"
-      :product-id="quickViewProduct.id"
-      @click-close="quickViewIsVisible = false"
-    />
+    </template>
+
+    <template v-else>
+      <ProductThumb
+        v-for="product in products"
+        :key="product.id"
+        :class="[
+          { 'w-1/2': columnCount === 2 },
+          { 'w-1/2 md:w-1/3': columnCount === 3 },
+          { 'w-1/2 md:w-1/4': columnCount === 4 },
+          { 'w-1/2 md:w-1/5': columnCount === 5 },
+        ]"
+        :product="product"
+      />
+    </template>
   </section>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+// Helpers
+import 'vue-glide-js/dist/vue-glide.css'
 
 export default {
   name: 'ProductPreviews',
+
+  components: {
+    async VueGlide() {
+      const { Glide } = await import('vue-glide-js')
+      return Glide
+    },
+    async VueGlideSlide() {
+      const { GlideSlide } = await import('vue-glide-js')
+      return GlideSlide
+    },
+  },
 
   props: {
     products: {
@@ -162,6 +159,10 @@ export default {
     columnCount: {
       type: Number,
       default: 4,
+    },
+    slider: {
+      type: Boolean,
+      default: false,
     },
     textAlign: {
       type: String,
@@ -175,17 +176,24 @@ export default {
 
   data() {
     return {
+      sliderAtStart: true,
+      sliderAtEnd: false,
       aspectRatio: '1:1',
       ratioPadding: null,
-      sizes: null,
-      widths: null,
-      quickAddIsEnabled: false,
-      quickAddKeepAlive: false,
-      quickAddIsVisible: false,
-      currentProductId: null,
-      quickViewIsVisible: false,
-      quickViewProduct: null,
-      productBeingAdded: null,
+      glideOptions: {
+        bound: true,
+        gap: 0,
+        keyboard: false,
+        rewind: false,
+        swipeThreshold: false,
+        dragThreshold: false,
+        animationTimingFunc: 'cubic-bezier(0.6, 0.2, 0, 1)',
+        breakpoints: {
+          768: {
+            perView: 2,
+          },
+        },
+      },
     }
   },
 
@@ -202,54 +210,17 @@ export default {
     // Set ratio padding
     const [x, y] = this.aspectRatio.split(':')
     this.ratioPadding = `${(y / x) * 100}%`
-
-    // Set widths
-    this.widths = [192, 262, 358, 548, 716, 1096]
-
-    // Set srcset sizes
-    switch (this.columnCount) {
-      case 2:
-        this.sizes = '(min-width: 1200px) 548px, 50vw'
-        break
-      case 3:
-        this.sizes = '(min-width: 1200px) 358px, (min-width: 768px) 33vw, 50vw'
-        break
-      case 4:
-        this.sizes = '(min-width: 1200px) 262px, (min-width: 768px) 25vw, 50vw'
-        break
-    }
-  },
-
-  computed: {
-    ...mapState(['currency', 'cartIsUpdating']),
   },
 
   methods: {
-    showQuickAdd(id) {
-      // If keep alive is active, don't hide until same product has been moused over again
-      // This is so that for dropdown option that extend past the original element, the flow isn't lost.
-      if (this.quickAddKeepAlive) {
-        if (this.currentProductId !== id) return
-        this.quickAddKeepAlive = false
-      }
-      this.quickAddIsVisible = true
-      this.currentProductId = id
+    prevSlide() {
+      if (!this.$refs.prevSlide) return
+      this.$refs.prevSlide.click()
     },
 
-    hideQuickAdd(id) {
-      if (this.quickAddKeepAlive) return
-      this.quickAddIsVisible = false
-      this.currentProductId = null
-    },
-
-    openQuickView(product) {
-      if (!product) return
-      this.quickViewProduct = product
-      this.quickViewIsVisible = true
-    },
-
-    keepQuickAddAlive(bool) {
-      this.quickAddKeepAlive = bool
+    nextSlide() {
+      if (!this.$refs.nextSlide) return
+      this.$refs.nextSlide.click()
     },
   },
 }

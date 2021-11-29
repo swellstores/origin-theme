@@ -33,7 +33,12 @@
             mr-3
             md:float-none md:mr-6 md:mt-6
           "
-          @click.prevent="$emit('click-close')"
+          @click.prevent="
+            $store.commit('setState', {
+              key: 'quickViewIsVisible',
+              value: false,
+            })
+          "
         >
           <BaseIcon icon="uil:multiply" size="sm" />
         </button>

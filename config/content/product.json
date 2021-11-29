@@ -62,6 +62,14 @@
       "default": 99,
       "type": "number",
       "conditions": { "enable_quantity": true }
+    },
+    {
+      "id": "up_sell_cols",
+      "label": "Number of upsell products per row",
+      "hint": "The max amount of products that initially show on the cross-sell row.",
+      "type": "select",
+      "options": [2, 3, 4],
+      "default": 4
     }
   ],
   "source_type": "theme",

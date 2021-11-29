@@ -207,6 +207,9 @@
         "updating": "Updating",
         "save": "Save",
         "add_to_cart": "Add to cart",
+        "up_sell": {
+          "title": "Other items you may like"
+        },
         "stock_remaining": "{n} remaining",
         "options": {
           "required": "Please enter a value."
