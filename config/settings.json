@@ -207,6 +207,10 @@
         "updating": "Updating",
         "save": "Save",
         "add_to_cart": "Add to cart",
+        "bundle": {
+          "title": "In this bundle",
+          "out_of_stock": "This product is out of stock."
+        },
         "up_sell": {
           "title": "Other items you may like"
         },
@@ -230,6 +234,10 @@
           "custom": {
             "message": "Ships in 9–16 days",
             "label": "Custom order"
+          },
+          "bundle_items_unavailable": {
+            "message": "",
+            "label": "Bundle item(s) unavailable"
           }
         },
         "purchase_options": {
@@ -714,6 +722,7 @@
           "shipping": "Shipping",
           "subtotal": "Subtotal",
           "quantity": "Qty: {n}",
+          "bundle_includes": "Bundle includes",
           "items": "no items | {n} item | {n} items",
           "order_summary": "Order summary",
           "create_return": "Create a return",

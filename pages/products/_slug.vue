@@ -157,6 +157,45 @@
             </div>
             <div class="markdown" v-html="product.description" />
 
+            <!-- Bundle items -->
+            <template v-if="bundleItems">
+              <div
+                class="my-8 border-b border-primary-med"
+                :class="{ 'hidden md:block': bundleItems.length > 3 }"
+              >
+                <h2 class="text-xl">{{ $t('products.slug.bundle.title') }}</h2>
+
+                <ProductBundleItem
+                  v-for="(item, index) in bundleItems"
+                  ref="bundleItem"
+                  :key="'bundleItem' + index"
+                  class="border-b border-primary-light last:border-b-0"
+                  :item="item"
+                  :option-state="bundleItemsOptionState"
+                  @check-availability="checkBundleItemAvailability"
+                  @value-changed="setBundleItemOptionValue"
+                />
+              </div>
+
+              <div v-if="bundleItems.length > 3" class="block md:hidden">
+                <AccordionItem
+                  ref="bundleItemAccordion"
+                  :heading="$t('products.slug.bundle.title')"
+                >
+                  <ProductBundleItem
+                    v-for="(item, index) in bundleItems"
+                    ref="bundleItem"
+                    :key="'bundleItem' + index"
+                    class="border-b border-primary-light last:border-b-0"
+                    :item="item"
+                    :option-state="bundleItemsOptionState"
+                    @check-availability="checkBundleItemAvailability"
+                    @value-changed="setBundleItemOptionValue"
+                  />
+                </AccordionItem>
+              </div>
+            </template>
+
             <!-- Product options -->
             <div v-for="input in optionInputs" :key="input.name" class="my-8">
               <component
@@ -164,10 +203,8 @@
                 v-if="visibleOptionIds.includes(input.option.id)"
                 :option="input.option"
                 :current-value="optionState[input.option.name]"
-                :active-dropdown-u-i-d="activeDropdownUID"
                 :validation="$v.optionState[input.option.name]"
                 @value-changed="setOptionValue"
-                @dropdown-active="setActiveDropdownUID($event)"
               />
             </div>
             <!-- Purchase options -->
@@ -185,6 +222,7 @@
               <StockStatus
                 v-if="product.stockTracking && !product.stockPurchasable"
                 :status-value="variation.stockStatus"
+                :bundle-items-available="bundleItemsAvailable"
                 :stock-level="variation.stockLevel"
                 :show-stock-level="showStockLevel"
               />
@@ -204,11 +242,11 @@
                 <button
                   :class="{
                     loading: cartIsUpdating,
-                    disabled: !stockAvailable,
+                    disabled: !available,
                   }"
                   type="submit"
-                  class="relative w-full btn btn--lg"
-                  :disabled="!stockAvailable"
+                  class="btn btn--lg relative w-full h-auto"
+                  :disabled="!available"
                   @click.prevent="addToCart"
                 >
                   <div v-show="!cartIsUpdating">
@@ -368,12 +406,13 @@ export default {
       maxQuantity: 99,
       relatedProducts: [], // TODO
       optionState: null,
-      selectedPurchaseOption: undefined,
+      selectedPurchaseOption: null,
+      bundleItemsOptionState: null,
+      bundleItemsAvailable: true,
       productBenefits: [],
       upsellProductCols: 4,
       enableSocialSharing: false,
       showStockLevel: false,
-      activeDropdownUID: null,
     }
   },
 
@@ -403,6 +442,38 @@ export default {
         }
         return options
       }, {})
+
+    if (product.bundle && product.bundleItems?.length) {
+      const bundleItemsOptionState = product.bundleItems.map((item) => {
+        let optionState = []
+        if (item.options?.length) {
+          optionState = item.options.reduce((options, { name, value }) => {
+            options.push({ name, value })
+            return options
+          }, [])
+        } else {
+          optionState = item.product.options.reduce(
+            (options, { name, values, inputType }) => {
+              // Set first available value for select current option
+              let defaultValue = null
+              if (!inputType || inputType === 'select') {
+                defaultValue = get(values, '0.name')
+              }
+              options.push({ name, value: defaultValue })
+              return options
+            },
+            []
+          )
+        }
+
+        return {
+          productId: item.productId,
+          options: optionState,
+        }
+      })
+
+      this.bundleItemsOptionState = bundleItemsOptionState
+    }
 
     // TODO generate related products
     const relatedProducts = []
@@ -441,18 +512,26 @@ export default {
       )
     },
 
-    productImages() {
-      if (!this.product?.images?.length) return null
-      return this.product.images
+    bundleItems() {
+      if (!this.product.bundle && !this.product.bundleItems?.length) return null
+      return this.product.bundleItems
     },
 
-    stockAvailable() {
+    available() {
       const { stockStatus, stockTracking, stockPurchasable } = this.variation
+
+      if (!this.bundleItemsAvailable) return false
+
       return (
         (stockStatus && stockStatus !== 'out_of_stock') ||
         !stockTracking ||
         stockPurchasable
       )
+    },
+
+    productImages() {
+      if (!this.product?.images?.length) return null
+      return this.product.images
     },
 
     billingInterval() {
@@ -539,6 +618,11 @@ export default {
     currency: '$fetch',
   },
 
+  mounted() {
+    // Check bundle item availabbility on mount
+    this.checkBundleItemAvailability()
+  },
+
   methods: {
     // Select attribute component based on type
     getAttributeComponent(type) {
@@ -554,23 +638,43 @@ export default {
       }
     },
 
-    // Set which dropdown is active by UID, so that only one dropdown is active at any time.
-    setActiveDropdownUID(uid) {
-      this.activeDropdownUID = uid
-    },
-
     // Add product to cart with selected options
     async addToCart() {
       try {
         // Touch and validate all fields
         this.$v.$touch()
         if (this.$v.$invalid) return // return if invalid
-        await this.$store.dispatch('addCartItem', {
-          productId: this.variation.id,
-          quantity: this.quantity || 1,
-          options: this.optionState,
-          purchaseOption: this.selectedPurchaseOption,
-        })
+
+        // Validate bundle item fields if they exist
+        if (this.bundleItems && this.$refs.bundleItem?.length) {
+          this.$refs.bundleItem.forEach(({ $v }) => $v.$touch())
+          const bundleItemsValid = this.$refs.bundleItem.every(
+            ({ $v }) => !$v.$invalid
+          )
+
+          // If on smaller device, expand accordion if validation fails
+          const accordion = this.$refs.bundleItemAccordion
+          if (accordion && !accordion.isExpanded) {
+            accordion.toggleExpanded()
+          }
+
+          if (!bundleItemsValid) return
+
+          await this.$store.dispatch('addCartItem', {
+            productId: this.variation.id,
+            quantity: this.quantity || 1,
+            options: this.optionState,
+            purchaseOption: this.selectedPurchaseOption,
+            bundleItems: this.bundleItemsOptionState,
+          })
+        } else {
+          await this.$store.dispatch('addCartItem', {
+            productId: this.variation.id,
+            quantity: this.quantity || 1,
+            options: this.optionState,
+            purchaseOption: this.selectedPurchaseOption,
+          })
+        }
       } catch (err) {
         if (err.message === 'invalid_stock') {
           this.$store.dispatch('showNotification', {
@@ -589,6 +693,33 @@ export default {
       this.$set(this.optionState, option, value)
     },
 
+    // Update a bundle item's option value based on user input
+    setBundleItemOptionValue({ option, value, productId }) {
+      if (!this.bundleItemsOptionState) return null
+
+      const bundleItemOptionState = [...this.bundleItemsOptionState]
+      const itemIndex = bundleItemOptionState.findIndex(
+        (item) => item.productId === productId
+      )
+      const optionIndex = bundleItemOptionState[itemIndex].options.findIndex(
+        (opt) => opt.name === option
+      )
+
+      bundleItemOptionState[itemIndex].options[optionIndex].value = value
+
+      this.bundleItemsOptionState = bundleItemOptionState
+    },
+
+    checkBundleItemAvailability() {
+      if (this.bundleItems && this.$refs.bundleItem) {
+        this.bundleItemsAvailable = this.$refs.bundleItem.every(
+          (item) => item.available
+        )
+        return
+      }
+      this.bundleItemsAvailable = true
+    },
+
     // Go back to previous page
     navigateBack() {
       this.$router.back()
@@ -596,7 +727,9 @@ export default {
   },
 
   validations() {
-    const options = get(this, 'product.options', [])
+    const { product } = this
+    // Product options
+    const options = get(product, 'options', [])
     const fields = options.reduce((obj, option) => {
       if (option.required) {
         obj[option.name] = { required }

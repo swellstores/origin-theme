@@ -125,23 +125,49 @@
                 <h4 class="pb-2">
                   {{ item.product ? item.product.name : '-' }}
                 </h4>
-                <p v-if="item.quantity > 1" class="text-sm text-primary-darker">
-                  {{
-                    $tc('account.orders.id.quantity', item.quantity, {
-                      count: item.quantity,
-                    })
-                  }}
-                </p>
-                <p
-                  v-for="option in item.options"
-                  :key="option.od"
-                  class="text-sm text-primary-darker"
-                >
-                  <span>{{ option.name }}: {{ option.value }}</span>
-                </p>
-                <p class="pt-2 font-semibold text-sm">
-                  {{ formatMoney(item.priceTotal, order.currency) }}
-                </p>
+                <div class="text-sm">
+                  <p v-if="item.quantity > 1">
+                    {{
+                      $tc('account.orders.id.quantity', item.quantity, {
+                        count: item.quantity,
+                      })
+                    }}
+                  </p>
+                  <p v-for="option in item.options" :key="option.id">
+                    <span>{{ option.name }}: {{ option.value }}</span>
+                  </p>
+
+                  <div
+                    v-if="item.bundleItems && item.bundleItems.length"
+                    class="pt-2"
+                  >
+                    <p class="font-semibold">
+                      {{ $t('account.orders.id.bundleIncludes') }}
+                    </p>
+                    <div
+                      v-for="bundleItem in item.bundleItems"
+                      :key="bundleItem.id"
+                    >
+                      <p>
+                        {{ bundleItem.product.name }}
+                        <span v-if="bundleItem.quantity > 1">
+                          × {{ bundleItem.quantity }}
+                        </span>
+                      </p>
+
+                      <p
+                        v-for="option in bundleItem.options"
+                        :key="option.id"
+                        class="pl-4"
+                      >
+                        <span>{{ option.name }}: {{ option.value }}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <p class="pt-2 font-semibold">
+                    {{ formatMoney(item.priceTotal, order.currency) }}
+                  </p>
+                </div>
               </div>
             </div>
           </div>

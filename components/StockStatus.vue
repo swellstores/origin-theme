@@ -9,7 +9,7 @@
         $t(status.label)
       }}</span>
       <span
-        v-if="showStockLevel && stockLevel > 0"
+        v-if="showStockLevel && stockLevel > 0 && bundleItemsAvailable"
         class="label-xs-bold text-primary-dark"
       >
         • {{ $t('products.slug.stockRemaining', { n: stockLevel }) }}
@@ -50,6 +50,11 @@ const statuses = {
     label: 'products.slug.stockStatus.outOfStock.label',
     message: 'products.slug.stockStatus.outOfStock.message',
   },
+  bundle_items_unavailable: {
+    color: 'error',
+    label: 'products.slug.stockStatus.bundleItemsUnavailable.label',
+    message: 'products.slug.stockStatus.bundleItemsUnavailable.message',
+  },
 }
 
 export default {
@@ -59,6 +64,10 @@ export default {
     statusValue: {
       type: String,
       default: 'out_of_stock',
+    },
+    bundleItemsAvailable: {
+      type: Boolean,
+      default: true,
     },
     stockLevel: {
       type: Number,
@@ -72,6 +81,8 @@ export default {
 
   computed: {
     status() {
+      if (!this.bundleItemsAvailable)
+        return get(statuses, 'bundle_items_unavailable', {})
       return get(statuses, this.statusValue || 'out_of_stock', {})
     },
   },
