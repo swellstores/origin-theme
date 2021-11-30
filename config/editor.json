@@ -1052,6 +1052,13 @@
           "localized": true
         },
         {
+          "id": "lang.account.orders._id.bundle_includes",
+          "label": "Bundle includes title",
+          "default": "Bundle includes",
+          "type": "short_text",
+          "localized": true
+        },
+        {
           "id": "lang.account.orders._id.subtotal",
           "label": "Subtotal",
           "default": "Subtotal",
@@ -3204,16 +3211,21 @@
           "localized": true
         },
         {
-          "id": "lang.products._slug.stock_remaining",
-          "label": "Stock remaining",
-          "default": "{n} remaining",
-          "type": "short_text",
+          "id": "lang.products._slug.stock_status.bundle_items_unavailable.label",
+          "label": "Bundle items unavailable status",
+          "default": "Bundle item(s) unavailable",
           "localized": true
         },
         {
-          "id": "lang.products._slug.options.required",
-          "label": "Options field required message",
-          "default": "Please enter a value.",
+          "id": "lang.products._slug.stock_status.bundle_items_unavailable.message",
+          "label": "Bundle items unavailable message",
+          "default": "",
+          "localized": true
+        },
+        {
+          "id": "lang.products._slug.stock_remaining",
+          "label": "Stock remaining",
+          "default": "{n} remaining",
           "type": "short_text",
           "localized": true
         },
@@ -3239,9 +3251,20 @@
           "localized": true
         },
         {
-          "id": "lang.products._slug.share",
-          "label": "Share it",
-          "default": "Share it",
+          "label": "Bundle items",
+          "type": "heading"
+        },
+        {
+          "id": "lang.products._slug.bundle.title",
+          "label": "Bundle items title",
+          "default": "In this bundle",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.products._slug.bundle.out_of_stock",
+          "label": "Bundle items out of stock message",
+          "default": "This product is out of stock.",
           "type": "short_text",
           "localized": true
         },

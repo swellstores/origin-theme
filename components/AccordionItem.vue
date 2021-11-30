@@ -15,7 +15,7 @@
       </div>
 
       <HeightExpansion>
-        <div v-if="isExpanded">
+        <div v-show="isExpanded">
           <slot />
         </div>
       </HeightExpansion>

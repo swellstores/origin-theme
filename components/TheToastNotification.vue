@@ -87,7 +87,7 @@
                 <!-- Price/quantity + item editor toggle -->
                 <div class="label-sm-bold leading-none">
                   <div class="inline-block py-1 -mb-1">
-                    <span>{{ formatMoney(product.price, currency) }}</span>
+                    <span>{{ formattedPrice }}</span>
                     <span v-if="product.quantity > 1"
                       >&times; {{ product.quantity }}</span
                     >
@@ -102,6 +102,7 @@
                 fit="full"
                 :link="cart.checkoutUrl"
                 appearance="dark"
+                target="_self"
                 :label="$t('notifications.checkout')"
               />
 
@@ -178,10 +179,24 @@ export default {
     // Fetch item that has been recently added to the cart
     if (this.addedItem) {
       const baseProduct = await $swell.products.get(this.addedItem.productId)
-      const product = await $swell.products.variation(
-        baseProduct,
-        this.addedItem.options
-      )
+      const { purchaseOption } = this.addedItem
+      let product
+
+      if (purchaseOption.type === 'subscription' && purchaseOption.plan) {
+        product = await $swell.products.variation(
+          baseProduct,
+          this.addedItem.options,
+          {
+            type: 'subscription',
+            plan: purchaseOption.plan,
+          }
+        )
+      } else {
+        product = await $swell.products.variation(
+          baseProduct,
+          this.addedItem.options
+        )
+      }
 
       this.product = product
     }
@@ -207,6 +222,34 @@ export default {
 
       const options = Object.values(this.addedItem.options)
       return options.join(', ')
+    },
+
+    formattedPrice() {
+      const { product, addedItem } = this
+      if (!product) return ''
+
+      const { purchaseOption } = addedItem
+
+      if (purchaseOption.type === 'subscription') {
+        // Get selected subscription billing schedule
+        const plan = product.purchaseOptions.subscription.plans.find((plan) => {
+          return plan.id === purchaseOption.plan
+        })
+
+        if (!plan) return ''
+
+        const { interval, intervalCount } = plan.billingSchedule
+
+        const subscriptionInterval = this.$t(
+          `products.slug.purchaseOptions.interval.${interval}.short`
+        )
+
+        return `${this.formatMoney(product.price, this.currency)}/${
+          intervalCount > 1 ? intervalCount : ''
+        }${subscriptionInterval}`
+      }
+
+      return this.formatMoney(product.price, this.currency)
     },
 
     headerHeightOffset() {

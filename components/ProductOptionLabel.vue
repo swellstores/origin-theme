@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between items-start">
+  <div class="flex justify-between items-start mb-3">
     <div class="relative w-full">
       <div class="mr-6">
         <label

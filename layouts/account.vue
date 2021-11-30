@@ -237,7 +237,6 @@ export default {
 
   watch: {
     $route(to) {
-      this.cartIsActive = false
       this.searchIsActive = false
     },
   },

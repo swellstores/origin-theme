@@ -173,9 +173,10 @@ export default {
   methods: {
     // Sets flow of product purchase + labels
     setFlow() {
-      const { optionInputs } = this
+      const { optionInputs, product } = this
 
       if (
+        product.bundleItems?.length ||
         optionInputs.length > 2 ||
         optionInputs.some(({ option }) =>
           option.inputType ? !option.inputType.includes('select') : false

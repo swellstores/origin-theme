@@ -4,11 +4,7 @@
 
     <!-- Radio input -->
     <!-- The fieldset element doesn't like flexbox, so we're using a div instead https://stackoverflow.com/questions/28078681/why-cant-fieldset-be-flex-containers -->
-    <div
-      v-if="inputType === 'radio'"
-      role="group"
-      class="-ml-1 mt-3 flex flex-wrap"
-    >
+    <div v-if="inputType === 'radio'" role="group" class="-ml-1 flex flex-wrap">
       <div
         v-for="value in option.values"
         :key="value.name"
@@ -59,7 +55,7 @@
     </div>
 
     <!-- Select menu input -->
-    <div v-else class="mt-3">
+    <div v-else>
       <div
         class="
           relative
@@ -80,6 +76,7 @@
             p-2
             items-center
             border border-primary-med
+            bg-primary-lightest
             font-semibold
             cursor-pointer
             rounded
@@ -114,9 +111,9 @@
             block
             -mt-px
             w-full
-            bg-primary-lightest
             py-2
             border border-primary-med
+            bg-primary-lightest
             rounded
             z-10
           "
@@ -183,10 +180,6 @@ export default {
       type: String,
       default: '',
     },
-    activeDropdownUID: {
-      type: Number,
-      default: null,
-    },
     showValueDescription: {
       type: Boolean,
       default: true,
@@ -195,6 +188,10 @@ export default {
       type: Object,
       default: null,
     },
+    appearance: {
+      type: String,
+      default: '',
+    }
   },
 
   data() {
@@ -212,6 +209,7 @@ export default {
       const { values } = this.option
 
       if (!values) return 'menu'
+      if (this.appearance === 'menu') return 'menu'
 
       const valueNamesLength = values.reduce((acc, val) => {
         // Don't count color value names because they're displayed as a swatch,
@@ -260,13 +258,6 @@ export default {
         (value) => value.name === this.currentValue
       )
       return currentValue.color
-    },
-  },
-
-  watch: {
-    // If the active dropdown UID doesn't match current, toggle off.
-    activeDropdownUID(activeUID) {
-      if (activeUID !== this._uid) this.dropdownIsActive = false
     },
   },
 

@@ -6,7 +6,7 @@
       v-if="option.inputType === 'short_text'"
       v-model="value"
       :placeholder="option.inputHint"
-      class="text-input h-12 mt-3"
+      class="text-input h-12 bg-primary-lightest"
       @input="emitValue"
     />
     <!-- Text area -->
@@ -14,7 +14,7 @@
       v-else
       v-model="value"
       :placeholder="option.inputHint"
-      class="text-input mt-3"
+      class="text-input"
       @input="emitValue"
     ></textarea>
 

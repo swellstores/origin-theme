@@ -30,6 +30,26 @@
           >
             <h4>{{ item.product.name }}</h4>
           </NuxtLink>
+
+          <div
+            v-for="bundleItem in bundleItems"
+            :key="bundleItem.id"
+            class="mt-1 text-sm"
+          >
+            <span
+              >{{ bundleItem.product.name }} &times;
+              {{ bundleItem.quantity }}</span
+            >
+
+            <div
+              v-for="option in bundleItem.options"
+              :key="option.name"
+              class="pl-2"
+            >
+              <span v-if="option.value">{{ option.name }}:&nbsp;</span>
+              <span>{{ option.value }}</span>
+            </div>
+          </div>
           <div
             v-for="option in item.options"
             :key="option.name"
@@ -162,6 +182,11 @@ export default {
       return (
         get(this, 'item.variant.images.0') || get(this, 'item.product.images.0')
       )
+    },
+
+    bundleItems() {
+      if (!this.item.bundle && !this.item.bundleItems) return []
+      return this.item.bundleItems
     },
 
     billingSchedule() {
