@@ -182,7 +182,11 @@ export default {
       const { purchaseOption } = this.addedItem
       let product
 
-      if (purchaseOption.type === 'subscription' && purchaseOption.plan) {
+      if (
+        purchaseOption &&
+        purchaseOption.type === 'subscription' &&
+        purchaseOption.plan
+      ) {
         product = await $swell.products.variation(
           baseProduct,
           this.addedItem.options,
@@ -272,7 +276,7 @@ export default {
     // If no added item in notification, hide recently added product
     addedItem(item) {
       if (!item) this.product = null
-    }
+    },
   },
 
   mounted() {
