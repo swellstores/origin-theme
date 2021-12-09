@@ -14,9 +14,9 @@ export function listVisibleOptions(options, optionState) {
       get(optionState, parentOption.id) || get(optionState, parentOption.name)
 
     switch (parentType) {
-      // If this option has a parent toggle option and the current value is true or matches the option name/ID, it should be visible
+      // If this option has a parent toggle option and the current value is true or matches that parent option's name/ID, it should be visible
       case 'toggle':
-        if (matchByToggleValue(option, value)) return true
+        if (matchByToggleValue(parentOption, value)) return true
         break
       // If this option has a parent select option and the current value matches the parent value, it should be visible
       case 'select':
