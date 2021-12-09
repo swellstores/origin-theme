@@ -52,6 +52,22 @@
       "min": 1,
       "max": 16,
       "default": 6
+    },
+    {
+      "id": "pagination_style",
+      "label": "Pagination style",
+      "type": "select",
+      "options": [
+        {
+          "value": "prevNext",
+          "label": "Previous / Next"
+        },
+        {
+          "value": "buttons",
+          "label": "Page Buttons"
+        }
+      ],
+      "default": 4
     }
   ],
   "source_type": "theme",
