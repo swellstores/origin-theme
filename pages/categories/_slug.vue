@@ -25,7 +25,7 @@
         :style="{
           opacity: category.images ? settings.darkenHeroImage / 100 : 1,
         }"
-        class="absolute w-full h-full inset-0 bg-primary-darkest"
+        class="absolute inset-0 w-full h-full bg-primary-darkest"
       />
       <div v-if="category" class="container absolute text-center center-xy">
         <h1
@@ -47,12 +47,12 @@
       </div>
     </section>
 
-    <div class="container pt-7 pb-4">
+    <div class="container pb-4 pt-7">
       <!-- Category name & description -->
       <template v-if="!settings.showHeroImage">
         <div
           v-if="!category && $fetchState.pending"
-          class="loader-el w-64 h-10 mt-2 mb-9"
+          class="w-64 h-10 mt-2 loader-el mb-9"
         />
         <div v-else-if="settings.headingPosition !== 'hero_image'" class="mb-7">
           <h1>{{ category.name }}</h1>
@@ -70,18 +70,9 @@
         >
           <div
             v-show="activeFilterCount"
-            class="
-              w-6
-              h-6
-              flex
-              justify-center
-              items-center
-              text-primary-lighter
-              bg-accent-default
-              rounded-full
-            "
+            class="flex items-center justify-center w-6 h-6 rounded-full  text-primary-lighter bg-accent-default"
           >
-            <span class="block text-2xs leading-none">{{
+            <span class="block leading-none text-2xs">{{
               activeFilterCount
             }}</span>
           </div>
@@ -119,7 +110,7 @@
       />
       <div
         v-else-if="activeFilterCount > 0"
-        class="py-16 bg-primary-lighter text-center rounded"
+        class="py-16 text-center rounded bg-primary-lighter"
       >
         <p>{{ $t('categories.slug.filterProductsNotFound') }}</p>
         <BaseButton
@@ -130,13 +121,17 @@
           @click.native="toggleFilterModal"
         />
       </div>
-      <div v-else class="py-16 bg-primary-lighter text-center rounded">
+      <div v-else class="py-16 text-center rounded bg-primary-lighter">
         <p>{{ $t('categories.slug.categoryProductsNotFound') }}</p>
       </div>
 
       <!-- Category pagination controls -->
       <div v-if="pages" class="py-2 sm:py-4 md:py-6">
-        <PaginationButtons :current-page="page" :pages="pages" />
+        <PaginationButtons
+          :current-page="page"
+          :pages="pages"
+          :appearance="paginationStyle"
+        />
       </div>
     </div>
   </main>
@@ -174,6 +169,7 @@ export default {
       limit: 24,
       sortMode: '',
       filterModalIsVisible: false,
+      paginationStyle: 'prevNext',
     }
   },
 
@@ -216,6 +212,7 @@ export default {
     }
 
     this.setProducts(products)
+    this.paginationStyle = get(category, 'content.paginationStyle')
   },
 
   computed: {
