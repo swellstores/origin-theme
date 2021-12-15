@@ -67,7 +67,7 @@
           "label": "Page Buttons"
         }
       ],
-      "default": 4
+      "default": "prevNext"
     }
   ],
   "source_type": "theme",
