@@ -637,7 +637,7 @@ export default {
         return item.variant.images[0].file
       }
 
-      if (item.product.images.length) {
+      if (item.product && item.product.images && item.product.images.length) {
         return item.product.images[0].file
       }
 
