@@ -245,7 +245,7 @@
                     disabled: !available,
                   }"
                   type="submit"
-                  class="btn btn--lg relative w-full h-auto"
+                  class="relative w-full h-auto btn btn--lg"
                   :disabled="!available"
                   @click.prevent="addToCart"
                 >
@@ -616,6 +616,9 @@ export default {
 
   watch: {
     currency: '$fetch',
+    variation() {
+      this.exposeProduct()
+    },
   },
 
   mounted() {
@@ -723,6 +726,41 @@ export default {
     // Go back to previous page
     navigateBack() {
       this.$router.back()
+    },
+
+    // Make product data available on the Window object,
+    // so that it can be consumed by 3rd party plugins
+    exposeProduct() {
+      if (!window) return
+
+      const existingData = window.Swell
+
+      /**
+       * @type {{ version?: string, theme: { page: { product: { id: string, variation: { id: string, stock: { level: number | undefined, purchasable: boolean, status: string | null, tracking: boolean }}}}}}}
+       */
+      const swellData = {
+        ...existingData,
+        theme: {
+          ...existingData?.theme,
+          page: {
+            ...existingData?.theme?.page,
+            product: {
+              id: this.product.id,
+              variation: {
+                id: this.variation.variantId || this.variation.id,
+                stock: {
+                  status: this.variation.stockStatus,
+                  purchasable: this.variation.stockPurchasable,
+                  tracking: this.variation.stockTracking,
+                  level: this.variation.stockLevel,
+                },
+              },
+            },
+          },
+        },
+      }
+
+      window.Swell = swellData
     },
   },
 
