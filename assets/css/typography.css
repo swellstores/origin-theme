@@ -8,7 +8,11 @@ html {
 }
 
 button {
-  @apply rounded text-primary-darkest font-semibold;
+  @apply rounded font-semibold;
+
+  &:not(.text-inherit) {
+    @apply text-primary-darkest;
+  }
 
   &:hover {
     @apply text-accent-default;
