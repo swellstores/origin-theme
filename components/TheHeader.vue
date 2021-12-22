@@ -160,7 +160,7 @@
               <!-- Search icon -->
               <button
                 :aria-label="$t('navigation.search')"
-                class="h-10 p-2"
+                class="h-10 p-2 text-inherit"
                 @click.prevent="$emit('click-search')"
               >
                 <BaseIcon icon="uil:search" />
@@ -179,7 +179,7 @@
               </NuxtLink>
               <!-- Cart icon -->
               <button
-                class="relative h-10 p-2"
+                class="relative h-10 p-2 text-inherit"
                 data-sw-path="cart"
                 data-sw-click="true"
                 :aria-label="$t('cart.title')"
