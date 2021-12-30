@@ -128,6 +128,7 @@
           { 'w-1/2 md:w-1/5': columnCount === 5 },
         ]"
         :product="product"
+        :show-price="showPrice"
       />
     </template>
   </section>
