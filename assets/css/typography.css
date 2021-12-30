@@ -10,7 +10,7 @@ html {
 button {
   @apply rounded font-semibold;
 
-  &:not(.text-inherit) {
+  &:not(.text-inherit, .btn--lg) {
     @apply text-primary-darkest;
   }
 
