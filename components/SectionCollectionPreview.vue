@@ -11,7 +11,7 @@
       <template v-if="showTitle">
         <div
           v-if="!loaded && $fetchState.pending"
-          class="loader-el w-64 h-8 mb-2 md:h-10"
+          class="w-64 h-8 mb-2 loader-el md:h-10"
         />
         <NuxtLink
           v-else
@@ -31,7 +31,7 @@
       <ProductPreviews
         :products="products"
         :column-count="productCols"
-        :text-align="productTextAlign"
+        :product-text-align="productTextAlign"
         :show-price="showPrice"
       />
     </div>
@@ -88,7 +88,7 @@ export default {
     },
     productTextAlign: {
       type: String,
-      default: 'left',
+      default: null,
     },
   },
 
@@ -118,7 +118,7 @@ export default {
     // Fetch category and products
     const category = await $swell.categories.get(this.categoryId)
     const products = await $swell.products.list({
-      $filters: { category: [this.categoryId] },
+      category: this.categoryId,
       expand: ['variants'],
     })
 

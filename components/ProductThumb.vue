@@ -34,7 +34,18 @@
             <!-- Hover image -->
             <div
               v-if="product.images[1]"
-              class="absolute inset-0 hidden w-full h-full transition-opacity duration-150 opacity-0  md:block group-hover:opacity-100"
+              class="
+                absolute
+                inset-0
+                hidden
+                w-full
+                h-full
+                transition-opacity
+                duration-150
+                opacity-0
+                md:block
+                group-hover:opacity-100
+              "
             >
               <VisualMedia
                 :source="product.images[1]"
@@ -77,7 +88,7 @@
         </template>
       </div>
       <!-- Product summary -->
-      <div class="py-3" :class="{ 'text-center': textAlign === 'center' }">
+      <div class="py-3" :style="{ 'text-align': textAlign }">
         <NuxtLink
           :to="localePath(resolveUrl({ type: 'product', value: product.slug }))"
           class="inline-block"
@@ -106,7 +117,7 @@
           <!-- Regular price -->
           <div v-else>
             <span class="text-sm">{{
-              formatMoney(product.price, currency)
+              formatMoney(getDisplayPrice(product), currency)
             }}</span>
           </div>
         </template>
@@ -216,6 +227,33 @@ export default {
 
     keepQuickAddAlive(bool) {
       this.quickAddKeepAlive = bool
+    },
+
+    getDisplayPrice(product) {
+      if (product.price > 0) {
+        return product.price
+      }
+      /* If the product's price is 0, this could mean that
+      only the options were set a price, so we display the price from
+      the variant with the cheapest in-stock price so the price reads as
+      "starting from X" */
+      if (product.variants) {
+        const cheapestVariantPrice = product.variants.results.reduce(
+          (previousValue, currentValue) => {
+            const isInStock =
+              product.stockPurchasable ||
+              currentValue.stockStatus === 'in_stock'
+            const priceIsLower =
+              currentValue.price < previousValue && currentValue.price > 0
+            if (isInStock && priceIsLower) return currentValue.price
+            return previousValue
+          },
+          Number.MAX_SAFE_INTEGER
+        )
+        if (cheapestVariantPrice !== Number.MAX_SAFE_INTEGER)
+          return cheapestVariantPrice
+      }
+      return 0
     },
   },
 }

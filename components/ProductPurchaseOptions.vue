@@ -119,7 +119,6 @@
           block
           w-full
           -mt-px
-          overflow-scroll
           border
           rounded-md
           max-h-25vh

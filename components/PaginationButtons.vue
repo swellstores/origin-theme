@@ -7,7 +7,7 @@
       <NuxtLink
         :tabindex="prevPage ? 0 : -1"
         :class="{ disabled: !prevPage }"
-        :to="localePath({ query: { page: prevPage } })"
+        :to="localePath({ query: { ...$route.query, page: prevPage } })"
         class="btn sm:w-32"
       >
         {{ $t('categories.slug.pagination.previous') }}
@@ -18,7 +18,7 @@
       <NuxtLink
         :tabindex="nextPage ? 0 : -1"
         :class="{ disabled: !nextPage }"
-        :to="localePath({ query: { page: nextPage } })"
+        :to="localePath({ query: { ...$route.query, page: nextPage } })"
         class="btn sm:w-32"
       >
         {{ $t('categories.slug.pagination.next') }}

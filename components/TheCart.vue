@@ -1,27 +1,27 @@
 <template>
   <transition name="slide-modal-rtl" :duration="700">
-    <div class="z-50 fixed inset-0">
+    <div class="fixed inset-0 z-50">
       <!-- Overlay -->
       <div
         class="
-          overlay
-          opacity-50
           absolute
+          hidden
           w-full
           h-full
+          opacity-50
+          overlay
           bg-primary-darker
-          hidden
           md:block
         "
         @click="closeCart"
       />
 
       <!-- Panel -->
-      <div class="panel absolute w-full h-full right-0 max-w-112">
-        <div class="w-full h-full bg-primary-lightest overflow-y-scroll">
+      <div class="absolute right-0 w-full h-full panel max-w-112">
+        <div class="w-full h-full overflow-y-scroll bg-primary-lightest">
           <!-- Header -->
-          <div class="relative container py-5 border-b border-primary-med">
-            <div class="flex justify-between items-center">
+          <div class="container relative py-5 border-b border-primary-med">
+            <div class="flex items-center justify-between">
               <h3>
                 {{ $t('cart.title') }}
                 <span v-if="cart && cart.itemQuantity"
@@ -61,7 +61,7 @@
           <!-- Footer -->
           <div
             v-if="cart && cart.items && cart.items.length"
-            class="bg-primary-lighter border-t border-primary-med"
+            class="border-t bg-primary-lighter border-primary-med"
           >
             <div class="container py-6 border-b border-primary-med">
               <div class="flex">
@@ -71,14 +71,16 @@
                   placeholder="Add coupon or gift card code"
                   class="
                     w-full
-                    border border-primary-med
-                    rounded
-                    font-medium
-                    bg-primary-lightest
                     px-4
                     py-2
-                    text-sm
                     mr-2
+                    text-sm
+                    font-medium
+                    border
+                    rounded
+                    input-coupon
+                    border-primary-med
+                    bg-primary-lightest
                     focus:outline-none focus:shadow-outline
                   "
                 />
@@ -94,10 +96,10 @@
 
               <!-- Applied discounts -->
               <div v-if="cart">
-                <div v-if="cart.couponCode" class="mt-4 flex items-center">
+                <div v-if="cart.couponCode" class="flex items-center mt-4">
                   <p class="label-xs-bold">{{ cart.couponCode }}</p>
                   <button
-                    class="w-7 h-7 relative rounded-full bg-primary-light ml-3"
+                    class="relative ml-3 rounded-full w-7 h-7 bg-primary-light"
                     @click="removeDiscount()"
                   >
                     <BaseIcon
@@ -112,16 +114,16 @@
                   :key="giftcard.id"
                   class="mt-4"
                 >
-                  <p class="label-xs-bold flex items-center">
+                  <p class="flex items-center label-xs-bold">
                     <span>**** **** **** {{ giftcard.last4 }}</span>
                     <button
                       class="
+                        relative
+                        ml-3
+                        rounded-full
                         w-7
                         h-7
-                        relative
-                        rounded-full
                         bg-primary-light
-                        ml-3
                       "
                       @click="removeDiscount(giftcard.id, currency)"
                     >
@@ -164,7 +166,7 @@
                 <span>{{ $t('cart.taxes') }}</span>
                 <span>{{ formatMoney(cart.taxTotal, currency) }}</span>
               </div>
-              <h3 class="mt-3 flex justify-between text-xl font-semibold">
+              <h3 class="flex justify-between mt-3 text-xl font-semibold">
                 <span>{{ $t('cart.total') }}</span>
                 <span>{{ formatMoney(cart.grandTotal, currency) }}</span>
               </h3>
@@ -173,10 +175,10 @@
                 class="
                   flex
                   justify-between
+                  pt-4
+                  mt-4
                   mb-1
                   border-t border-primary-med
-                  mt-4
-                  pt-4
                 "
               >
                 <span>{{ $t('cart.accountBalance') }}</span>
@@ -253,3 +255,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.input-coupon::placeholder {
+  text-overflow: ellipsis;
+}
+</style>

@@ -110,7 +110,11 @@
                   >
 
                   <span
-                    v-else-if="!$v.cardCVC.integer || !$v.cardCVC.maxLength"
+                    v-else-if="
+                      !$v.cardCVC.integer ||
+                      !$v.cardCVC.minLength ||
+                      !$v.cardCVC.maxLength
+                    "
                     class="label-sm text-error-default"
                     >{{ $t('account.payments.popup.cvc.format') }}</span
                   >
@@ -237,7 +241,12 @@ import isEmpty from 'lodash/isEmpty'
 
 // Validation helper
 import { validationMixin } from 'vuelidate'
-import { required, maxLength, integer } from 'vuelidate/lib/validators'
+import {
+  required,
+  minLength,
+  maxLength,
+  integer,
+} from 'vuelidate/lib/validators'
 
 const validDate = (date) => {
   if (!date.includes('/')) return false
@@ -578,7 +587,12 @@ export default {
   validations: {
     cardNumber: { required, maxLength: maxLength(19) },
     cardExpiry: { required, validDate },
-    cardCVC: { required, integer, maxLength: maxLength(4) },
+    cardCVC: {
+      required,
+      integer,
+      minLength: minLength(3),
+      maxLength: maxLength(4),
+    },
   },
 }
 </script>
