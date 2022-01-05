@@ -4,12 +4,16 @@
 
     <!-- Radio input -->
     <!-- The fieldset element doesn't like flexbox, so we're using a div instead https://stackoverflow.com/questions/28078681/why-cant-fieldset-be-flex-containers -->
-    <div v-if="inputType === 'radio'" role="group" class="-ml-1 flex flex-wrap">
+    <div
+      v-if="inputType === 'radio'"
+      role="group"
+      class="flex flex-wrap mt-3 -ml-1"
+    >
       <div
         v-for="value in option.values"
         :key="value.name"
         :class="{ 'flex-grow': option.values.length <= 2 }"
-        class="radio-selector relative inline-block ml-1 mt-1 text-center"
+        class="relative inline-block mt-1 ml-1 text-center radio-selector"
       >
         <input
           :id="value.id"
@@ -35,11 +39,12 @@
             relative
             block
             w-full
-            rounded
             text-sm
-            border border-primary-med
             font-semibold
+            border
+            rounded
             cursor-pointer
+            border-primary-med
             hover:border-primary-darkest
             focus:shadow-outline
           "
@@ -71,15 +76,15 @@
           :aria-labelledby="`option-${option.id}-label option-${option.id}-button`"
           class="
             relative
-            w-full
             flex
-            p-2
             items-center
-            border border-primary-med
-            bg-primary-lightest
+            w-full
+            p-2
             font-semibold
-            cursor-pointer
+            border
             rounded
+            cursor-pointer
+            border-primary-med
             focus:outline-none focus:shadow-outline
           "
           aria-haspopup="listbox"
@@ -88,13 +93,13 @@
           <span
             v-if="swatchColor"
             :style="`background: ${swatchColor}`"
-            class="inline-block w-7 h-7 mr-1 rounded-sm"
+            class="inline-block mr-1 rounded-sm w-7 h-7"
           />
-          <span class="ml-2 my-1">{{ currentValue || initialValue }}</span>
-          <div v-show="dropdownIsActive" class="absolute right-3 mt-px">
+          <span class="my-1 ml-2">{{ currentValue }}</span>
+          <div v-show="dropdownIsActive" class="absolute mt-px right-3">
             <BaseIcon icon="uil:angle-up" />
           </div>
-          <div v-show="!dropdownIsActive" class="absolute right-3 mt-px">
+          <div v-show="!dropdownIsActive" class="absolute mt-px right-3">
             <BaseIcon icon="uil:angle-down" />
           </div>
         </button>
@@ -105,17 +110,18 @@
           :class="{ 'rounded-t-none': dropdownIsActive }"
           :aria-labelledby="`option-${option.id}-label`"
           class="
-            max-h-25vh
-            overflow-scroll
             absolute
+            z-10
             block
-            -mt-px
             w-full
             py-2
-            border border-primary-med
-            bg-primary-lightest
+            -mt-px
+            overflow-scroll
+            border
             rounded
-            z-10
+            max-h-25vh
+            bg-primary-lightest
+            border-primary-med
           "
           role="listbox"
         >
@@ -124,10 +130,10 @@
             :id="`value-${value.name}`"
             :key="value.name"
             class="
-              mb-0
-              px-2
               flex
               items-center
+              px-2
+              mb-0
               cursor-pointer
               hover:bg-primary-lighter
             "
@@ -138,7 +144,7 @@
             <span
               v-if="value.color"
               :style="`background: ${swatchColor}`"
-              class="inline-block w-7 h-7 mr-1 rounded-sm"
+              class="inline-block mr-1 rounded-sm w-7 h-7"
             />
             <span class="m-2 font-semibold">{{ value.name }}</span>
           </li>
@@ -148,14 +154,14 @@
 
     <span
       v-if="valueDescription && showValueDescription"
-      class="inline-block text-xs font-semibold text-primary-dark mt-4"
+      class="inline-block mt-4 text-xs font-semibold text-primary-dark"
       >{{ valueDescription }}</span
     >
 
     <template v-if="validation">
       <div
         v-if="validation.$dirty && validation.$error"
-        class="text-error-default mt-2"
+        class="mt-2 text-error-default"
       >
         <span v-if="!validation.required" class="label-sm text-error-default">{{
           $t('products.slug.options.required')
@@ -191,7 +197,7 @@ export default {
     appearance: {
       type: String,
       default: '',
-    }
+    },
   },
 
   data() {
@@ -230,20 +236,6 @@ export default {
       }
     },
 
-    initialValue() {
-      // Set initial value for menu dropdown if a current value isn't supplied
-      if (this.currentValue) return
-
-      if (
-        !this.option.values ||
-        (this.option.values && !this.option.values.length)
-      ) {
-        return
-      }
-
-      return this.option.values[0].name
-    },
-
     valueDescription() {
       const matchedValue = (this.option.values || []).find(
         (value) => value.name === this.currentValue
@@ -262,6 +254,13 @@ export default {
   },
 
   mounted() {
+    const { name, values } = this.option
+    if (!this.currentValue && values && values.length) {
+      this.$emit('value-changed', {
+        option: name,
+        value: values[0].name,
+      })
+    }
     // Toggle off dropdown if clicked outside
     window.addEventListener('click', this.clickOutside)
   },

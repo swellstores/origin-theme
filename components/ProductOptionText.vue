@@ -4,7 +4,7 @@
     <!-- Text -->
     <input
       v-if="option.inputType === 'short_text'"
-      v-model="value"
+      :value="value"
       :placeholder="option.inputHint"
       class="text-input h-12 bg-primary-lightest"
       @input="emitValue"
@@ -12,7 +12,7 @@
     <!-- Text area -->
     <textarea
       v-else
-      v-model="value"
+      :value="value"
       :placeholder="option.inputHint"
       class="text-input"
       @input="emitValue"
@@ -21,7 +21,7 @@
     <template v-if="validation">
       <div
         v-if="validation.$dirty && validation.$error"
-        class="text-error-default mt-2"
+        class="mt-2 text-error-default"
       >
         <span v-if="!validation.required" class="label-sm text-error-default">{{
           $t('products.slug.options.required')
@@ -48,26 +48,41 @@ export default {
       type: Object,
       default: null,
     },
+    currentValue: {
+      type: String,
+      default: '',
+    },
   },
 
   data() {
     return {
-      value: null,
+      internalValue: null,
     }
   },
 
+  computed: {
+    value() {
+      return this.emitOnEnter ? this.internalValue : this.currentValue
+    },
+  },
+
   methods: {
-    emitValue() {
-      if (this.emitOnEnter) return
-      this.$emit('value-changed', {
-        option: this.option.name,
-        value: this.value,
-      })
+    emitValue(event) {
+      const { value } = event.target
+      if (this.emitOnEnter) {
+        this.internalValue = value
+      } else {
+        this.$emit('value-changed', {
+          option: this.option.name,
+          value,
+        })
+      }
     },
     emitValueOnEnter() {
+      if (!this.emitOnEnter) return
       this.$emit('value-changed', {
         option: this.option.name,
-        value: this.value,
+        value: this.internalValue,
       })
     },
   },

@@ -200,11 +200,19 @@
             <div v-for="input in optionInputs" :key="input.name" class="my-8">
               <component
                 :is="input.component"
-                v-if="visibleOptionIds.includes(input.option.id)"
+                v-if="
+                  optionState[input.option.id] &&
+                  optionState[input.option.id].isVisible
+                "
                 :option="input.option"
-                :current-value="optionState[input.option.name]"
-                :validation="$v.optionState[input.option.name]"
-                @value-changed="setOptionValue"
+                :current-value="optionState[input.option.id].value"
+                :active-dropdown-u-i-d="activeDropdownUID"
+                :validation="$v.selectedOptions[input.option.name]"
+                @value-changed="
+                  (args) =>
+                    setOptionValue({ ...args, optionId: input.option.id })
+                "
+                @dropdown-active="setActiveDropdownUID($event)"
               />
             </div>
             <!-- Purchase options -->
@@ -212,7 +220,7 @@
               v-if="product.purchaseOptions"
               v-model="selectedPurchaseOption"
               :options="product.purchaseOptions"
-              :option-state="optionState"
+              :option-state="selectedOptions"
               :product="product"
               :quantity="quantity"
             />
@@ -405,14 +413,19 @@ export default {
       enableQuantity: true,
       maxQuantity: 99,
       relatedProducts: [], // TODO
-      optionState: null,
-      selectedPurchaseOption: null,
       bundleItemsOptionState: null,
       bundleItemsAvailable: true,
+      /**
+       * Option state with initial values.
+       * @type { { [id: string]: { name: string, value: string, isVisible: boolean } } }
+       */
+      optionState: {},
+      selectedPurchaseOption: undefined,
       productBenefits: [],
       upsellProductCols: 4,
       enableSocialSharing: false,
       showStockLevel: false,
+      activeDropdownUID: null,
     }
   },
 
@@ -431,17 +444,6 @@ export default {
         message: this.$t('errors.productNotFound'),
       })
     }
-
-    // Compute initial values for options
-    const optionState =
-      this.optionState ||
-      (product.options || []).reduce((options, { name, values, inputType }) => {
-        // Set first available value for select current option
-        if (!inputType || inputType === 'select') {
-          options[name] = get(values, '0.name')
-        }
-        return options
-      }, {})
 
     if (product.bundle && product.bundleItems?.length) {
       const bundleItemsOptionState = product.bundleItems.map((item) => {
@@ -489,7 +491,7 @@ export default {
 
     // Set component data
     this.product = product
-    this.optionState = optionState
+    this.getInitialOptions(product)
     this.relatedProducts = relatedProducts
     this.productBenefits = get(product, 'content.productBenefits', [])
     this.enableSocialSharing = get(product, 'content.enableSocialSharing')
@@ -507,7 +509,7 @@ export default {
       if (!this.product) return {}
       return this.$swell.products.variation(
         this.product,
-        this.optionState,
+        this.selectedOptions,
         this.selectedPurchaseOption
       )
     },
@@ -535,7 +537,7 @@ export default {
     },
 
     billingInterval() {
-      return get(this, 'optionState.Plan')
+      return get(this, 'selectedOptions.Plan')
     },
 
     intervalData() {
@@ -568,11 +570,12 @@ export default {
       )
     },
 
-    visibleOptionIds() {
-      const options = get(this, 'product.options', [])
-      const optionState = this.optionState
-
-      return listVisibleOptions(options, optionState).map(({ id }) => id)
+    /**
+     * Formatted optionState in a swell-js-compatible structure
+     * @type { { [name: string]: string } }
+     */
+    selectedOptions() {
+      return this.normalizeOptions(this.optionState)
     },
 
     upsellProducts() {
@@ -622,7 +625,7 @@ export default {
   },
 
   mounted() {
-    // Check bundle item availabbility on mount
+    // Check bundle item availability on mount
     this.checkBundleItemAvailability()
   },
 
@@ -639,6 +642,11 @@ export default {
         default:
           return 'AttributeShortText'
       }
+    },
+
+    // Set which dropdown is active by UID, so that only one dropdown is active at any time.
+    setActiveDropdownUID(uid) {
+      this.activeDropdownUID = uid
     },
 
     // Add product to cart with selected options
@@ -666,7 +674,7 @@ export default {
           await this.$store.dispatch('addCartItem', {
             productId: this.variation.id,
             quantity: this.quantity || 1,
-            options: this.optionState,
+            options: this.selectedOptions,
             purchaseOption: this.selectedPurchaseOption,
             bundleItems: this.bundleItemsOptionState,
           })
@@ -674,7 +682,7 @@ export default {
           await this.$store.dispatch('addCartItem', {
             productId: this.variation.id,
             quantity: this.quantity || 1,
-            options: this.optionState,
+            options: this.selectedOptions,
             purchaseOption: this.selectedPurchaseOption,
           })
         }
@@ -689,11 +697,22 @@ export default {
     },
 
     // Update an option value based on user input
-    setOptionValue({ option, value }) {
-      // Use $set to update the data object because options are dynamic
-      // and optionState won't be reactive otherwise
-      // TODO in Vue 3 this.optionState[option] = value should work
-      this.$set(this.optionState, option, value)
+    setOptionValue({ optionId, option: name, value }) {
+      // Get the option from optionState whose value is being updated.
+      const option = this.optionState[optionId] || {}
+      // Update its properties based on input
+      const updatedOption = { ...option, name, value }
+      // Create a copy of optionState with this option updated
+      const optionState = { ...this.optionState, [optionId]: updatedOption }
+
+      const productOptions = this.product.options || []
+      const visibleOptions = listVisibleOptions(
+        productOptions,
+        this.normalizeOptions(optionState, false)
+      ).map(({ id }) => id)
+
+      // Update optionState with the updated option and recalculated visibility properties
+      this.optionState = this.markVisibleOptions(optionState, visibleOptions)
     },
 
     // Update a bundle item's option value based on user input
@@ -726,6 +745,66 @@ export default {
     // Go back to previous page
     navigateBack() {
       this.$router.back()
+    },
+
+    getInitialOptions(product) {
+      if (!product) return
+      const productOptions = product.options || []
+
+      /**
+       * Option state with initial values for selects.
+       * @type { { [id: string]: { name: string, value: string, isVisible: boolean } } }
+       */
+      const optionState = productOptions.reduce(
+        (optionsAcc, { id, name, required, values, inputType }) => {
+          const option = { name, required, isVisible: false }
+          if (!inputType || inputType === 'select') {
+            // Use first available value as the default value for selects
+            optionsAcc[id] = { ...option, value: values[0].name }
+          } else {
+            optionsAcc[id] = option
+          }
+          return optionsAcc
+        },
+        {}
+      )
+
+      /**
+       * Normalized optionState in a swell-js-compatible structure
+       * @type { { [name: string]: string } }
+       */
+      const initialSelection = this.normalizeOptions(optionState, false)
+
+      const visibleOptions = listVisibleOptions(
+        productOptions,
+        initialSelection
+      ).map(({ id }) => id)
+
+      // Mark visible options as such
+      this.optionState = this.markVisibleOptions(optionState, visibleOptions)
+    },
+
+    normalizeOptions(optionState, checkVisibility = true) {
+      return Object.values(optionState).reduce(
+        (acc, { name, value, isVisible }) => {
+          if (!checkVisibility || (checkVisibility && isVisible)) {
+            if (name && value) acc[name] = value
+          }
+          return acc
+        },
+        {}
+      )
+    },
+
+    markVisibleOptions(optionState, visibleOptions) {
+      Object.keys(optionState).forEach((key) => {
+        if (visibleOptions.includes(key)) {
+          optionState[key].isVisible = true
+        } else {
+          optionState[key].isVisible = false
+        }
+      })
+      return optionState
     },
 
     // Make product data available on the Window object,
@@ -765,18 +844,15 @@ export default {
   },
 
   validations() {
-    const { product } = this
-    // Product options
-    const options = get(product, 'options', [])
-    const fields = options.reduce((obj, option) => {
-      if (option.required) {
-        obj[option.name] = { required }
+    const fields = Object.values(this.optionState).reduce((acc, option) => {
+      if (option.isVisible && option.required) {
+        acc[option.name] = { required }
       }
-      return obj
+      return acc
     }, {})
 
     return {
-      optionState: fields,
+      selectedOptions: fields,
     }
   },
 }

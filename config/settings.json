@@ -122,7 +122,8 @@
     "scale_ratio": 1.125
   },
   "product_previews": {
-    "aspect_ratio": "1:1"
+    "aspect_ratio": "1:1",
+    "text_align": "left"
   },
   "lang": {
     "cart": {

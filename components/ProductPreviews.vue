@@ -14,29 +14,29 @@
         "
       >
         <VueGlideSlide v-for="product in products" :key="product.id">
-          <ProductThumb :product="product" />
+          <ProductThumb :product="product" :text-align="textAlign" />
         </VueGlideSlide>
 
         <template slot="control">
           <button
             ref="prevSlide"
-            class="absolute w-0 h-0 invisible"
+            class="absolute invisible w-0 h-0"
             data-glide-dir="<"
           />
 
           <button
             ref="nextSlide"
-            class="absolute w-0 h-0 invisible"
+            class="absolute invisible w-0 h-0"
             data-glide-dir=">"
           />
         </template>
       </VueGlide>
 
       <!-- Slider controls -->
-      <div class="w-full absolute">
+      <div class="absolute w-full">
         <!-- Previous slide -->
         <div
-          class="absolute top-0 left-0 px-1 sm:px-2 xl:px-3 pointer-events-none"
+          class="absolute top-0 left-0 px-1 pointer-events-none sm:px-2 xl:px-3"
           :class="[
             { 'w-1/2': columnCount === 2 },
             { 'w-1/2 md:w-1/3': columnCount === 3 },
@@ -44,25 +44,25 @@
             { 'w-1/2 md:w-1/5': columnCount === 5 },
           ]"
         >
-          <span class="w-full block" :style="{ paddingBottom: ratioPadding }" />
+          <span class="block w-full" :style="{ paddingBottom: ratioPadding }" />
           <button
             v-show="!sliderAtStart"
             class="
               absolute
-              top-1/2
               left-0
-              ml-3
-              rounded-full
-              shadow-md
-              w-10
-              h-10
-              transform
-              -translate-x-1/2 -translate-y-1/2
-              bg-primary-lightest
               flex
               items-center
               justify-center
+              w-10
+              h-10
+              ml-3
+              transform
+              -translate-x-1/2 -translate-y-1/2
+              rounded-full
+              shadow-md
               pointer-events-auto
+              top-1/2
+              bg-primary-lightest
             "
             @click="prevSlide"
           >
@@ -77,9 +77,9 @@
             top-0
             right-0
             px-1
+            pointer-events-none
             sm:px-2
             xl:px-3
-            pointer-events-none
           "
           :class="[
             { 'w-1/2': columnCount === 2 },
@@ -88,26 +88,26 @@
             { 'w-1/2 md:w-1/5': columnCount === 5 },
           ]"
         >
-          <span class="w-full block" :style="{ paddingBottom: ratioPadding }" />
+          <span class="block w-full" :style="{ paddingBottom: ratioPadding }" />
           <button
             v-show="!sliderAtEnd"
             class="
               absolute
-              top-1/2
               right-0
-              mr-3
-              rounded-full
-              shadow-md
-              w-10
-              h-10
-              transform
-              translate-x-1/2
-              -translate-y-1/2
-              bg-primary-lightest
               flex
               items-center
               justify-center
+              w-10
+              h-10
+              mr-3
+              transform
+              translate-x-1/2
+              -translate-y-1/2
+              rounded-full
+              shadow-md
               pointer-events-auto
+              top-1/2
+              bg-primary-lightest
             "
             @click="nextSlide"
           >
@@ -128,6 +128,7 @@
           { 'w-1/2 md:w-1/5': columnCount === 5 },
         ]"
         :product="product"
+        :text-align="textAlign"
         :show-price="showPrice"
       />
     </template>
@@ -165,9 +166,9 @@ export default {
       type: Boolean,
       default: false,
     },
-    textAlign: {
+    productTextAlign: {
       type: String,
-      default: 'left',
+      default: null,
     },
     showPrice: {
       type: Boolean,
@@ -181,6 +182,7 @@ export default {
       sliderAtEnd: false,
       aspectRatio: '1:1',
       ratioPadding: null,
+      globalAlignment: 'left',
       glideOptions: {
         bound: true,
         gap: 0,
@@ -204,6 +206,12 @@ export default {
       'productPreviews.aspectRatio',
       '1:1'
     )
+
+    this.globalAlignment = await $swell.settings.get(
+      'productPreviews.textAlign',
+      'left'
+    )
+
     this.quickAddIsEnabled = await $swell.settings.get(
       'productList.enableQuickAdd'
     )
@@ -211,6 +219,12 @@ export default {
     // Set ratio padding
     const [x, y] = this.aspectRatio.split(':')
     this.ratioPadding = `${(y / x) * 100}%`
+  },
+
+  computed: {
+    textAlign() {
+      return this.productTextAlign || this.globalAlignment
+    },
   },
 
   methods: {

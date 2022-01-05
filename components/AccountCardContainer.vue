@@ -1,18 +1,18 @@
 <template>
-  <div class="bg-primary-lightest py-4 rounded shadow-md">
+  <div class="py-4 rounded shadow-md bg-primary-lightest">
     <div class="px-4">
-      <div class="w-full flex pb-6">
+      <div class="flex w-full pb-6">
         <BrandCardIcon :brand="card.brand" />
 
         <div
           v-if="isDefault"
-          class="ml-auto label-xs-bold bg-primary-light rounded p-2"
+          class="p-2 ml-auto rounded label-xs-bold bg-primary-light"
         >
           {{ $t('account.payments.card.default') }}
         </div>
       </div>
 
-      <div class="w-full flex pb-4">
+      <div class="flex w-full pb-4">
         <p v-if="card.brand === 'American Express'">
           <span class="tracking-large"
             >···· ···· ···{{ card.last4.slice(0, 1) }}
@@ -30,10 +30,10 @@
       </p>
     </div>
 
-    <div class="border-t border-primary-med mt-4 pt-4">
-      <div class="w-full flex px-4 text-sm">
+    <div class="pt-4 mt-4 border-t border-primary-med">
+      <div class="flex w-full px-4 text-sm">
         <div>
-          <span class="block label-sm-bold mb-2">{{
+          <span class="block mb-2 label-sm-bold">{{
             $t('account.payments.card.billingAddress')
           }}</span>
           <template v-if="card.billing">
@@ -65,7 +65,7 @@
           </p>
         </div>
 
-        <div class="ml-auto mt-auto">
+        <div class="mt-auto ml-auto">
           <button class="px-2" @click="$emit('click-open')">
             {{ $t('account.payments.card.edit') }}
           </button>
@@ -102,8 +102,9 @@ export default {
     },
 
     expDate() {
-      const mm = this.card.expMonth.padStart(2, '0')
-      const yy = this.card.expYear.toString().slice(-2)
+      const { expMonth, expYear } = this.card
+      const mm = expMonth.toString().padStart(2, '0')
+      const yy = expYear.toString().slice(-2)
       return `${mm} / ${yy}`
     },
   },

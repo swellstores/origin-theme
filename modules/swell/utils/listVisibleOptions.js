@@ -3,30 +3,39 @@ import get from 'lodash/get'
 // Takes options array and optionState object
 // Returns filtered array of options based on state values
 export function listVisibleOptions(options, optionState) {
-  return options.filter((option) => {
-    // If option doesn't have a parent, it's always visible
-    if (!option.parentId) return true
+  return options.filter((option) =>
+    shouldDisplayOption(option, options, optionState)
+  )
+}
 
-    // Find parent and match it with option state to determine visibility
-    const parentOption = options.find(({ id }) => id === option.parentId) || {}
-    const parentType = get(parentOption, 'inputType')
-    const value =
-      get(optionState, parentOption.id) || get(optionState, parentOption.name)
+function shouldDisplayOption(option, options, optionState) {
+  // If option doesn't have a parent, it's always visible
+  if (!option.parentId) return true
 
-    switch (parentType) {
-      // If this option has a parent toggle option and the current value is true or matches that parent option's name/ID, it should be visible
-      case 'toggle':
-        if (matchByToggleValue(parentOption, value)) return true
-        break
-      // If this option has a parent select option and the current value matches the parent value, it should be visible
-      case 'select':
-        if (matchBySelectValueId(option, value)) return true
-        if (matchBySelectValueName(option, parentOption, value)) return true
-        break
-    }
+  // Find parent option
+  const parentOption = options.find(({ id }) => id === option.parentId) || {}
 
-    return false
-  })
+  // Validate that parent is also visible
+  if (!shouldDisplayOption(parentOption, options, optionState)) return false
+
+  // Match parent with option state to determine visibility
+  const parentType = get(parentOption, 'inputType')
+  const value =
+    get(optionState, parentOption.id) || get(optionState, parentOption.name)
+
+  switch (parentType) {
+    // If this option has a parent toggle option and the current value is true or matches that parent option's name/ID, it should be visible
+    case 'toggle':
+      if (matchByToggleValue(parentOption, value)) return true
+      break
+    // If this option has a parent select option and the current value matches the parent value, it should be visible
+    case 'select':
+      if (matchBySelectValueId(option, value)) return true
+      if (matchBySelectValueName(option, parentOption, value)) return true
+      break
+  }
+
+  return false
 }
 
 // Check if option state value is true, or matches the name/ID of the option

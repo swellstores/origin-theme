@@ -18,7 +18,7 @@
             :card="defaultCard"
             :is-default="true"
             :class="{ 'md:mb-0 mb-6': otherCards.length }"
-            @click-open="openEditPopup('update', defaultCard)"
+            @click-open="() => openEditPopup('update', defaultCard)"
           />
 
           <AccountCardContainer
@@ -26,7 +26,7 @@
             :key="`card-${index}`"
             :card="card"
             :class="{ 'md:mb-0 mb-6': index < otherCards.length - 1 }"
-            @click-open="openEditPopup('update', card)"
+            @click-open="() => openEditPopup('update', card)"
           />
         </div>
       </template>
@@ -40,7 +40,7 @@
         fit="auto"
         appearance="light"
         :label="$t('account.payments.addPaymentMethod')"
-        @click.native="openEditPopup('new')"
+        @click.native="() => openEditPopup('new')"
       />
 
       <AccountCardPopup

@@ -2,7 +2,7 @@
   <transition name="fade-up-out" appear>
     <div v-if="type !== 'product' || product" class="sticky top-0">
       <!-- Duplicate header element  -->
-      <div class="absolute w-full top-0 right-0">
+      <div class="absolute top-0 right-0 w-full">
         <div
           :style="{ height: `${headerHeightOffset}px` }"
           class="relative w-full transition-all ease duration-50"
@@ -10,15 +10,15 @@
 
         <div
           class="
-            w-full-px-6
             top-0
             right-0
             mx-auto
-            md:mr-3 md:max-w-max
             mt-3
-            bg-primary-lightest
-            shadow-md
             rounded-md
+            shadow-md
+            w-full-px-6
+            md:mr-3 md:max-w-max
+            bg-primary-lightest
           "
           :class="{
             'md:min-w-96': product,
@@ -36,7 +36,7 @@
             <button
               v-if="product"
               type="button"
-              class="w-8 h-8 rounded-full bg-primary-light ml-auto p-1"
+              class="w-8 h-8 p-1 ml-auto rounded-full bg-primary-light"
               @click="
                 $store.commit('setState', { key: 'notification', value: null })
               "
@@ -55,11 +55,11 @@
                   :widths="[96, 192]"
                   sizes="96px"
                   ratio="1:1"
-                  class="rounded overflow-hidden"
+                  class="overflow-hidden rounded"
                 />
 
                 <!-- Fallback image -->
-                <div v-else class="relative bg-primary-lighter rounded pb-full">
+                <div v-else class="relative rounded bg-primary-lighter pb-full">
                   <BaseIcon
                     icon="uil:camera-slash"
                     size="lg"
@@ -85,18 +85,18 @@
                 </div>
 
                 <!-- Price/quantity + item editor toggle -->
-                <div class="label-sm-bold leading-none">
+                <div class="leading-none label-sm-bold">
                   <div class="inline-block py-1 -mb-1">
                     <span>{{ formattedPrice }}</span>
                     <span v-if="product.quantity > 1"
-                      >&times; {{ product.quantity }}</span
-                    >
+                      >{{ product.quantity }} &times;
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="flex no-wrap p-3">
+            <div class="flex p-3 no-wrap">
               <BaseButton
                 class="w-1/2 mr-2"
                 fit="full"
@@ -118,24 +118,24 @@
                 <div
                   v-if="cart && cart.itemQuantity"
                   class="
-                    fade-in
                     absolute
-                    right-0
                     top-0
-                    bg-accent-default
-                    rounded-full
+                    right-0
+                    flex
+                    items-center
+                    justify-center
                     w-6
                     h-6
-                    flex
-                    justify-center
-                    items-center
-                    text-primary-lighter
                     transform
                     translate-x-1
                     -translate-y-1
+                    rounded-full
+                    fade-in
+                    bg-accent-default
+                    text-primary-lighter
                   "
                 >
-                  <span class="block mt-px text-2xs leading-none">{{
+                  <span class="block mt-px leading-none text-2xs">{{
                     cart.itemQuantity
                   }}</span>
                 </div>
@@ -170,6 +170,7 @@ export default {
       logoSrc: null,
       product: null,
       scrollY: null,
+      billingSchedule: null,
     }
   },
 
@@ -195,6 +196,13 @@ export default {
             plan: purchaseOption.plan,
           }
         )
+        const subscriptionPlan =
+          product.purchaseOptions.subscription.plans.find(
+            (plan) => plan.id === purchaseOption.plan
+          )
+        if (subscriptionPlan) {
+          this.billingSchedule = subscriptionPlan.billingSchedule
+        }
       } else {
         product = await $swell.products.variation(
           baseProduct,
@@ -234,7 +242,7 @@ export default {
 
       const { purchaseOption } = addedItem
 
-      if (purchaseOption.type === 'subscription') {
+      if (purchaseOption && purchaseOption.type === 'subscription') {
         // Get selected subscription billing schedule
         const plan = product.purchaseOptions.subscription.plans.find((plan) => {
           return plan.id === purchaseOption.plan
@@ -269,6 +277,18 @@ export default {
         return this.headerHeight - (this.headerHeight - this.scrollY)
       }
       return this.headerHeight
+    },
+
+    intervalCount() {
+      if (!this.billingSchedule) return null
+      return this.billingSchedule.intervalCount
+    },
+
+    subscriptionInterval() {
+      if (!this.billingSchedule) return null
+      return this.$t(
+        `products.slug.purchaseOptions.interval.${this.billingSchedule.interval}.short`
+      )
     },
   },
 
