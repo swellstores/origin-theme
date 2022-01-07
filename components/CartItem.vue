@@ -58,6 +58,9 @@
             <span v-if="option.value">{{ option.name }}:&nbsp;</span>
             <span>{{ option.value }}</span>
           </div>
+          <p v-if="trialDays" class="text-sm">
+            {{ $tc('cart.item.trialDays', trialDays) }}
+          </p>
         </div>
 
         <!-- Price/quantity + item editor toggle -->
@@ -211,6 +214,11 @@ export default {
         )
       }
       return null
+    },
+
+    trialDays() {
+      if (!this.billingSchedule) return null
+      return this.billingSchedule.trialDays
     },
   },
 

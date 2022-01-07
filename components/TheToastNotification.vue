@@ -81,7 +81,12 @@
                   <h4>{{ product.name }}</h4>
                 </NuxtLink>
                 <div class="mt-1 text-sm">
-                  {{ options }}
+                  <p v-if="options">
+                    {{ options }}
+                  </p>
+                  <p v-if="trialDays">
+                    {{ $tc('cart.item.trialDays', trialDays) }}
+                  </p>
                 </div>
 
                 <!-- Price/quantity + item editor toggle -->
@@ -289,6 +294,11 @@ export default {
       return this.$t(
         `products.slug.purchaseOptions.interval.${this.billingSchedule.interval}.short`
       )
+    },
+
+    trialDays() {
+      if (!this.billingSchedule) return null
+      return this.billingSchedule.trialDays
     },
   },
 

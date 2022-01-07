@@ -97,9 +97,21 @@
         <span class="font-normal">{{
           formatSubscriptionLabel(selectedSubscription)
         }}</span>
-        <span class="inline-block ml-auto mr-2">{{
-          formatSubscriptionPrice(selectedSubscription)
-        }}</span>
+        <div class="ml-auto">
+          <span
+            v-if="selectedSubscription.billingSchedule.trialDays"
+            class="mr-4 font-normal"
+            >{{
+              $tc(
+                'products.slug.purchaseOptions.interval.trialDays',
+                selectedSubscription.billingSchedule.trialDays
+              )
+            }}</span
+          >
+          <span class="font-semibold">{{
+            formatSubscriptionPrice(selectedSubscription)
+          }}</span>
+        </div>
         <div
           v-if="hasManyPlans"
           class="mt-px transition"
@@ -150,9 +162,18 @@
           @click="() => setSubscription(option)"
         >
           <span>{{ formatSubscriptionLabel(option) }}</span>
-          <span class="inline-block ml-auto mr-2 font-semibold">{{
-            formatSubscriptionPrice(option)
-          }}</span>
+
+          <div class="ml-auto">
+            <span v-if="option.billingSchedule.trialDays" class="mr-4">{{
+              $tc(
+                'products.slug.purchaseOptions.interval.trialDays',
+                option.billingSchedule.trialDays
+              )
+            }}</span>
+            <span class="font-semibold">{{
+              formatSubscriptionPrice(option)
+            }}</span>
+          </div>
         </li>
       </ul>
     </div>
@@ -246,14 +267,17 @@ export default {
         plan: plan.id,
       })
     },
+
     setStandardPlan() {
       this.$emit('input', { type: 'standard' })
     },
+
     onClickOutside(e) {
       if (this.dropdownIsActive) {
         this.dropdownIsActive = false
       }
     },
+
     handleSubscriptionClick() {
       if (this.value.type === 'subscription') {
         this.dropdownIsActive = !this.dropdownIsActive
@@ -293,7 +317,7 @@ export default {
       return `${this.formatMoney(
         matchingVariation.price * this.quantity,
         this.currency
-      )}/${intervalCount > 1 ? intervalCount : ''}${subscriptionInterval}`
+      )} / ${intervalCount > 1 ? intervalCount : ''}${subscriptionInterval}`
     },
   },
 }
