@@ -130,7 +130,8 @@
       "item": {
         "remove": "Remove",
         "close_edit": "Close",
-        "edit": "Edit"
+        "edit": "Edit",
+        "trial_days": "Incl. {n} trial day | Incl. {n} trial days"
       },
       "updating": "Updating",
       "checkout": "Checkout",
@@ -259,7 +260,8 @@
               "label": "year | years | year",
               "short": "yr"
             },
-            "products_interval": "{count} every {n} {interval}"
+            "products_interval": "{count} every {n} {interval}",
+            "trial_days": "Includes {n} trial day | Includes {n} trial days"
           },
           "standard": {
             "default_label": "One-time Purchase"

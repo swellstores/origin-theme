@@ -3405,6 +3405,13 @@
           "localized": true
         },
         {
+          "id": "lang.products._slug.purchase_options.interval.trial_days",
+          "label": "Trial days",
+          "default": "Includes {n} trial day | Includes {n} trial days",
+          "type": "short_text",
+          "localized": true
+        },
+        {
           "label": "Purchase Options: Standard",
           "type": "heading"
         },
@@ -3881,6 +3888,13 @@
           "id": "lang.cart.item.remove",
           "label": "Remove cart item",
           "default": "Remove",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.cart.item.trial_days",
+          "label": "Cart item trial days",
+          "default": "Incl. {n} trial day | Incl. {n} trial days",
           "type": "short_text",
           "localized": true
         }
