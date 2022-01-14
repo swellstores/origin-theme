@@ -206,6 +206,6 @@ input[type='number'] {
 
 @responsive {
   .container {
-    @apply mx-auto px-6 lg:px-8 xl:px-10;
+    @apply w-full mx-auto px-6 lg:px-8 xl:px-10;
   }
 }
