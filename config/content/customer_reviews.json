@@ -9,7 +9,7 @@
       "fields": [
         {
           "id": "heading",
-          "label": "Heading",
+          "label": "Heading text",
           "type": "text",
           "localized": true
         },

@@ -9,21 +9,21 @@
       "fields": [
         {
           "id": "label",
-          "label": "Label",
+          "label": "Label text",
           "type": "text",
           "localized": true
         },
         {
           "id": "heading",
-          "label": "Heading",
+          "label": "Heading text",
           "type": "text",
           "required": true,
           "localized": true
         },
         {
-          "id": "text",
-          "label": "Text",
-          "type": "rich_html",
+          "id": "description",
+          "label": "Description text",
+          "type": "basic_html",
           "required": true,
           "localized": true
         }

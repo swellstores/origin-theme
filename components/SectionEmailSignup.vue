@@ -32,12 +32,15 @@
         lg:px-26 lg:py-32
       "
     >
-      <h2 class="mb-3 text-3xl md:text-4xl lg:text-6xl">
+      <h2 v-if="heading" class="mb-3 text-3xl md:text-4xl lg:text-6xl">
         {{ heading }}
       </h2>
-      <p class="mb-6">
-        {{ description }}
-      </p>
+      <div
+        v-balance-text.children
+        v-if="description"
+        v-html="description"
+        class="mb-6"
+      ></div>
       <EmailSignupForm
         :class="{ 'mx-auto': textAlign === 'center' }"
         class="max-w-96"

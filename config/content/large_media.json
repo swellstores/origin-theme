@@ -9,14 +9,14 @@
       "fields": [
         {
           "id": "heading",
-          "label": "Heading",
+          "label": "Heading text",
           "type": "text",
           "localized": true
         },
         {
           "id": "description",
-          "label": "Description",
-          "type": "short_text",
+          "label": "Description text",
+          "type": "basic_html",
           "localized": true
         },
         {

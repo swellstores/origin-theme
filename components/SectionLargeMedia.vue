@@ -15,9 +15,7 @@
       <h2 class="mx-auto px-4 max-w-160">
         {{ heading }}
       </h2>
-      <p>
-        {{ description }}
-      </p>
+      <div v-balance-text.children v-if="description" v-html="description" />
       <div v-if="image" class="relative xl:mx-12">
         <BaseLink v-if="url" :link="url">
           <VisualMedia

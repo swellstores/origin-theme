@@ -18,7 +18,7 @@
         {
           "id": "description",
           "label": "Description text",
-          "type": "textarea",
+          "type": "basic_html",
           "default": "Enter your email address and we'll send you updates.",
           "required": true,
           "localized": true
