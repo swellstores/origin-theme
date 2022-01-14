@@ -1,7 +1,7 @@
 <template>
   <!-- Error/empty state -->
   <SectionUndefined
-    v-if="!heading && !text"
+    v-if="!heading && !description"
     heading="Heading with text"
     description="No heading or text added"
   />
@@ -19,14 +19,14 @@
         }"
         class="max-w-2/3 md:mb-0"
       >
-        <span v-if="label" class="block label-xs-bold mb-4">{{ label }}</span>
+        <span v-if="label" class="block mb-4 label-xs-bold">{{ label }}</span>
         <h2 class="m-0 md:text-5xl xl:text-7xl">
           {{ heading }}
         </h2>
       </div>
 
       <div
-        v-if="text"
+        v-if="description"
         :class="{
           'mx-auto md:w-2/3':
             textColumnWidth === 'compact' && textColumns === 'single',
@@ -37,7 +37,7 @@
             headingPosition === 'left',
         }"
         class="lg:text-lg"
-        v-html="text"
+        v-html="description"
       />
     </div>
   </section>
@@ -64,7 +64,7 @@ export default {
       type: String,
       default: null,
     },
-    text: {
+    description: {
       type: String,
       default: null,
     },
