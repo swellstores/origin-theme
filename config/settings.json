@@ -90,9 +90,9 @@
   },
   "account": {
     "subscriptions": {
-      "allow_plan_edit": false,
-      "allow_frequency_edit": false,
-      "allow_options_edit": false
+      "allow_plan_edit": true,
+      "allow_frequency_edit": true,
+      "allow_options_edit": true
     }
   },
   "cart": {
