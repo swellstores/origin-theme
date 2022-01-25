@@ -1,9 +1,9 @@
 <template>
   <div
     v-if="attribute"
-    class="py-3 flex flex-no-wrap border-b border-primary-med"
+    class="flex-no-wrap flex border-b border-primary-med py-3"
   >
-    <strong class="w-1/4 text-primary-darkest pr-6">{{
+    <strong class="w-1/4 pr-6 text-primary-darkest">{{
       attribute.name
     }}</strong>
     <span v-if="Array.isArray(attribute.value)" class="w-3/4">

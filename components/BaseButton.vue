@@ -22,7 +22,7 @@
       :aria-label="ariaLabel"
     >
       <!-- Loading spinner -->
-      <div v-if="loadingLabel" class="absolute center-xy">
+      <div v-if="loadingLabel" class="center-xy absolute">
         <div v-show="isLoading" class="spinner"></div>
       </div>
 
@@ -30,7 +30,7 @@
       <span
         v-if="label"
         :class="{
-          'absolute center-xy': fit === 'full',
+          'center-xy absolute': fit === 'full',
           'flex items-center justify-center': icon,
         }"
       >
@@ -39,7 +39,7 @@
           v-if="icon"
           :icon="`uil:${icon}`"
           size="sm"
-          class="inline-block mr-2"
+          class="mr-2 inline-block"
         />
 
         <template v-if="isLoading">
@@ -55,7 +55,7 @@
 
 <script>
 export default {
-  name: 'Button',
+  name: 'BaseButton',
 
   props: {
     type: {

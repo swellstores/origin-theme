@@ -9,13 +9,13 @@
   <!-- Skeleton loader -->
   <div
     v-else-if="fetchIsPending"
-    class="py-20 bg-primary-lighter flex flex-col justify-center items-center"
+    class="flex flex-col items-center justify-center bg-primary-lighter py-20"
   >
-    <div class="loader-el w-1/2 h-7 mb-2" />
-    <div class="loader-el w-1/3 h-7 mb-6" />
-    <div class="loader-el w-3/5 h-2 mb-4" />
-    <div class="loader-el w-2/5 h-2 mb-8" />
-    <div class="loader-el w-40 h-10" />
+    <div class="loader-el mb-2 h-7 w-1/2" />
+    <div class="loader-el mb-6 h-7 w-1/3" />
+    <div class="loader-el mb-4 h-2 w-3/5" />
+    <div class="loader-el mb-8 h-2 w-2/5" />
+    <div class="loader-el h-10 w-40" />
   </div>
 
   <!-- Section content -->
@@ -37,7 +37,7 @@
       <!-- Background darkening overlay -->
       <div
         v-if="textColor === 'light'"
-        class="absolute inset w-full h-full bg-primary-darkest"
+        class="inset absolute h-full w-full bg-primary-darkest"
         :style="{ opacity: darkenBg / 100 }"
       />
       <div
@@ -65,7 +65,7 @@
         <div
           :class="{
             'max-w-80 md:max-w-96': alignX === 'left',
-            'mx-auto text-center max-w-112': alignX === 'center',
+            'mx-auto max-w-112 text-center': alignX === 'center',
             'ml-auto max-w-80 md:max-w-96': alignX === 'right',
             'mt-4 mb-24 md:mt-0': innerSpacing === 'md' && alignY === 'top',
             'my-12': innerSpacing === 'md' && alignY === 'center',
@@ -86,11 +86,11 @@
             v-html="description"
           >
           </p>
-          <div class="mt-6 mx-3" :class="{ '-ml-3': alignX !== 'center' }">
+          <div class="mx-3 mt-6" :class="{ '-ml-3': alignX !== 'center' }">
             <BaseButton
               v-for="(link, index) in links"
               :key="id + 'link' + index"
-              class="mt-6 mx-3"
+              class="mx-3 mt-6"
               :type="link.style"
               fit="static"
               :text-color="textColor"

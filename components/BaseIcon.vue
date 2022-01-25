@@ -3,9 +3,9 @@
     <div
       :class="[
         // Duplicate sizing classes to maintain element size while loading
-        { 'w-5 h-5': props.size === 'sm' },
-        { 'w-6 h-6': props.size === 'base' },
-        { 'w-7 h-7': props.size === 'lg' },
+        { 'h-5 w-5': props.size === 'sm' },
+        { 'h-6 w-6': props.size === 'base' },
+        { 'h-7 w-7': props.size === 'lg' },
         // Custom sizing classes
         props.size.length > 3 ? props.size : '',
         // Classes set on component
@@ -15,9 +15,9 @@
       <span
         :class="[
           `iconify icon:${props.icon}`,
-          { 'w-5 h-5': props.size === 'sm' },
-          { 'w-6 h-6': props.size === 'base' },
-          { 'w-7 h-7': props.size === 'lg' },
+          { 'h-5 w-5': props.size === 'sm' },
+          { 'h-6 w-6': props.size === 'base' },
+          { 'h-7 w-7': props.size === 'lg' },
           // Custom sizing classes
           props.size.length > 3 ? props.size : '',
         ]"

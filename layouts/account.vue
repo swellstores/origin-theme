@@ -12,33 +12,19 @@
       <div class="min-h-screen bg-primary-lighter">
         <div
           v-if="customer"
-          class="w-full md:container md:flex relative md:pt-12 pt-6 pb-24"
+          class="relative w-full pt-6 pb-24 md:container md:flex md:pt-12"
         >
           <!-- Header -->
           <div>
             <div
-              class="
-                min-w-56
-                container
-                border-b
-                md:border-b-0 md:border-r
-                border-primary-light
-                md:px-0
-                mb-6
-              "
+              class="container mb-6 min-w-56 border-b border-primary-light md:border-b-0 md:border-r md:px-0"
             >
-              <div class="md:pr-10 pb-6">
+              <div class="pb-6 md:pr-10">
                 <h3>{{ customer.firstName }} {{ customer.lastName }}</h3>
                 <p>{{ customer.email }}</p>
 
                 <button
-                  class="
-                    flex flex-row
-                    whitespace-no-wrap
-                    items-center
-                    mt-2
-                    cursor-pointer
-                  "
+                  class="whitespace-no-wrap mt-2 flex cursor-pointer flex-row items-center"
                   @click="editProfilePopupIsActive = true"
                 >
                   <BaseIcon icon="uil:edit" size="sm" /><span class="ml-2">{{
@@ -48,14 +34,7 @@
 
                 <!-- Log out (Desktop) -->
                 <button
-                  class="
-                    flex flex-row
-                    md:hidden
-                    whitespace-no-wrap
-                    items-center
-                    mt-2
-                    cursor-pointer
-                  "
+                  class="whitespace-no-wrap mt-2 flex cursor-pointer flex-row items-center md:hidden"
                   @click="logoutPopupIsActive = true"
                 >
                   <BaseIcon icon="uil:signout" size="sm" /><span class="ml-2">{{
@@ -66,7 +45,7 @@
 
               <!-- Views (Desktop) -->
               <ul
-                class="hidden md:block border-t border-primary-light text-base"
+                class="hidden border-t border-primary-light text-base md:block"
               >
                 <li
                   v-for="view in localizedViews"
@@ -74,14 +53,7 @@
                   class="last:mb-0"
                 >
                   <NuxtLink
-                    class="
-                      view-link
-                      pl-3
-                      py-4
-                      block
-                      hover:bg-primary-light
-                      rounded-none
-                    "
+                    class="view-link block rounded-none py-4 pl-3 hover:bg-primary-light"
                     :to="localePath(`/account/${view.value}/`)"
                   >
                     {{ view.label }}
@@ -90,15 +62,9 @@
               </ul>
 
               <!-- Log out (Mobile) -->
-              <div class="hidden md:block border-t border-primary-light pt-6">
+              <div class="hidden border-t border-primary-light pt-6 md:block">
                 <button
-                  class="
-                    flex flex-row
-                    whitespace-no-wrap
-                    items-center
-                    mt-2
-                    cursor-pointer
-                  "
+                  class="whitespace-no-wrap mt-2 flex cursor-pointer flex-row items-center"
                   @click="logoutPopupIsActive = true"
                 >
                   <BaseIcon icon="uil:signout" size="sm" /><span class="ml-2">{{
@@ -115,7 +81,7 @@
           />
 
           <!-- Views (Mobile) -->
-          <div v-if="!hideOnRouteRoot" class="block md:hidden pb-6">
+          <div v-if="!hideOnRouteRoot" class="block pb-6 md:hidden">
             <div class="container">
               <InputDropdown
                 :options="localizedViews"
@@ -289,7 +255,7 @@ export default {
 }
 
 .view-link.nuxt-link-active {
-  @apply font-bold bg-primary-light;
+  @apply bg-primary-light font-bold;
 
   &:hover {
     @apply text-primary-darkest;

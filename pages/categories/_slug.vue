@@ -25,9 +25,9 @@
         :style="{
           opacity: category.images ? settings.darkenHeroImage / 100 : 1,
         }"
-        class="absolute inset-0 w-full h-full bg-primary-darkest"
+        class="absolute inset-0 h-full w-full bg-primary-darkest"
       />
-      <div v-if="category" class="container absolute text-center center-xy">
+      <div v-if="category" class="center-xy container absolute text-center">
         <h1
           :class="{
             'text-primary-lightest': settings.textColor === 'light',
@@ -37,7 +37,7 @@
           {{ category.name }}
         </h1>
         <div
-          class="mx-auto text-lg max-w-128"
+          class="mx-auto max-w-128 text-lg"
           :class="{
             'text-primary-lightest': settings.textColor === 'light',
             'text-primary-darkest': settings.textColor === 'dark',
@@ -52,7 +52,7 @@
       <template v-if="!settings.showHeroImage">
         <div
           v-if="!category && $fetchState.pending"
-          class="w-64 h-10 mt-2 loader-el mb-9"
+          class="loader-el mt-2 mb-9 h-10 w-64"
         />
         <div v-else-if="settings.headingPosition !== 'hero_image'" class="mb-7">
           <h1>{{ category.name }}</h1>
@@ -61,7 +61,7 @@
       </template>
 
       <!-- Product filtering & sorting controls -->
-      <aside class="flex items-center mb-6 text-sm">
+      <aside class="mb-6 flex items-center text-sm">
         <!-- Filter -->
         <button
           v-if="filters.length > 0"
@@ -70,9 +70,9 @@
         >
           <div
             v-show="activeFilterCount"
-            class="flex items-center justify-center w-6 h-6 rounded-full  text-primary-lighter bg-accent-default"
+            class="flex h-6 w-6 items-center justify-center rounded-full bg-accent-default text-primary-lighter"
           >
-            <span class="block leading-none text-2xs">{{
+            <span class="block text-2xs leading-none">{{
               activeFilterCount
             }}</span>
           </div>
@@ -81,7 +81,7 @@
           </div>
           <span class="ml-1">{{ $t('categories.slug.filters') }}</span>
         </button>
-        <span class="hidden ml-1 sm:inline">{{
+        <span class="ml-1 hidden sm:inline">{{
           $fetchState.pending
             ? ''
             : $tc('categories.slug.productsCount', productsCount, {
@@ -110,7 +110,7 @@
       />
       <div
         v-else-if="activeFilterCount > 0"
-        class="py-16 text-center rounded bg-primary-lighter"
+        class="rounded bg-primary-lighter py-16 text-center"
       >
         <p>{{ $t('categories.slug.filterProductsNotFound') }}</p>
         <BaseButton
@@ -121,7 +121,7 @@
           @click.native="toggleFilterModal"
         />
       </div>
-      <div v-else class="py-16 text-center rounded bg-primary-lighter">
+      <div v-else class="rounded bg-primary-lighter py-16 text-center">
         <p>{{ $t('categories.slug.categoryProductsNotFound') }}</p>
       </div>
 

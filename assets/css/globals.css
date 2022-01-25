@@ -13,9 +13,9 @@ button {
 }
 
 .btn {
-  @apply relative inline-block h-10 px-5 py-3 
-         rounded bg-primary-light text-sm leading-tight 
-         text-center font-semibold tracking-wide uppercase cursor-pointer;
+  @apply relative inline-block h-10 cursor-pointer rounded 
+         bg-primary-light px-5 py-3 text-center 
+         text-sm font-semibold uppercase leading-tight tracking-wide;
 
   &:hover {
     @apply bg-primary-darker text-primary-lightest;
@@ -27,7 +27,7 @@ button {
 
   &.disabled,
   &.loading {
-    @apply bg-primary-lighter text-primary-med pointer-events-none;
+    @apply pointer-events-none bg-primary-lighter text-primary-med;
 
     &:hover {
       @apply bg-primary-lighter text-primary-med;
@@ -90,7 +90,7 @@ button {
 }
 
 .btn-icon {
-  @apply w-10 h-10 bg-primary-light rounded-sm;
+  @apply h-10 w-10 rounded-sm bg-primary-light;
 
   &:hover {
     @apply bg-primary-darker text-primary-lightest;
@@ -131,24 +131,24 @@ img {
 }
 
 .cta-link {
-  @apply inline-block mb-3 pb-1 border-b rounded-none border-primary-darkest;
+  @apply mb-3 inline-block rounded-none border-b border-primary-darkest pb-1;
 
   &.light {
-    @apply text-primary-lightest border-primary-lightest;
+    @apply border-primary-lightest text-primary-lightest;
   }
 
   &.lighter {
-    @apply text-primary-lighter border-primary-lighter;
+    @apply border-primary-lighter text-primary-lighter;
   }
 }
 
 .grid-icon-label {
-  @apply w-full grid gap-3 items-center md:justify-center;
+  @apply grid w-full items-center gap-3 md:justify-center;
   grid-template-columns: 1.25rem auto;
 }
 
 .label-tag {
-  @apply ml-1 px-2 py-1 uppercase text-2xs rounded font-semibold leading-tight;
+  @apply ml-1 rounded px-2 py-1 text-2xs font-semibold uppercase leading-tight;
 }
 
 .label-tag--sale {
@@ -156,27 +156,27 @@ img {
 }
 
 .loader-el {
-  @apply bg-primary-light rounded-sm animate-pulse;
+  @apply animate-pulse rounded-sm bg-primary-light;
 }
 
 .checkbox {
   @apply flex pb-1;
 
   & input {
-    @apply p-0 m-0 border-0 appearance-none w-0 h-0 invisible;
+    @apply invisible m-0 h-0 w-0 appearance-none border-0 p-0;
   }
 
   & input:checked + label {
     & .indicator {
-      @apply bg-primary-darkest border-primary-darkest;
+      @apply border-primary-darkest bg-primary-darkest;
     }
   }
 
   & label {
-    @apply relative flex items-center appearance-none cursor-pointer;
+    @apply relative flex cursor-pointer appearance-none items-center;
 
     & .indicator {
-      @apply flex justify-center items-center cursor-pointer w-6 h-6 border border-primary-med rounded;
+      @apply flex h-6 w-6 cursor-pointer items-center justify-center rounded border border-primary-med;
       transition: all 0.2s ease;
     }
 

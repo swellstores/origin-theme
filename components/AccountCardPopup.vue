@@ -1,25 +1,15 @@
 <template>
   <transition name="popup" :duration="700" appear>
-    <div class="z-40 fixed inset-0" @keyup.enter="handleEnterKey">
+    <div class="fixed inset-0 z-40" @keyup.enter="handleEnterKey">
       <!-- Overlay -->
       <div
-        class="overlay opacity-50 absolute w-full h-full bg-primary-darker"
+        class="overlay absolute h-full w-full bg-primary-darker opacity-50"
         @click="$emit('click-close')"
       />
 
       <!-- Panel -->
       <div
-        class="
-          panel
-          w-full
-          h-vh-gap
-          absolute
-          bottom-0
-          rounded-t
-          bg-primary-lighter
-          overflow-scroll
-          md:w-128 md:h-auto md:max-h-80vh md:relative md:rounded md:center-xy
-        "
+        class="panel h-vh-gap md:center-xy absolute bottom-0 w-full overflow-scroll rounded-t bg-primary-lighter md:relative md:h-auto md:max-h-80vh md:w-128 md:rounded"
       >
         <div class="container pt-2 pb-4 md:pb-0">
           <div class="flex py-4">
@@ -65,8 +55,8 @@
               </template>
             </div>
 
-            <div class="flex flex-no-wrap mb-6">
-              <div :class="type === 'update' ? 'w-full' : 'w-1/2 mr-3'">
+            <div class="flex-no-wrap mb-6 flex">
+              <div :class="type === 'update' ? 'w-full' : 'mr-3 w-1/2'">
                 <InputText
                   v-model="cardExpiry"
                   v-cardformat:formatCardExpiry
@@ -93,7 +83,7 @@
                 </template>
               </div>
 
-              <div v-if="type === 'new'" class="w-1/2 ml-3">
+              <div v-if="type === 'new'" class="ml-3 w-1/2">
                 <InputText
                   v-model="cardCVC"
                   v-cardformat:formatCardCVC
@@ -142,9 +132,9 @@
           </div>
         </div>
 
-        <div class="container pt-6 pb-4 border-t border-primary-med">
+        <div class="container border-t border-primary-med pt-6 pb-4">
           <div class="mb-6 md:mb-0">
-            <span class="block text-md font-semibold mb-2">{{
+            <span class="text-md mb-2 block font-semibold">{{
               $t('account.payments.popup.billingAddress')
             }}</span>
 
@@ -158,7 +148,7 @@
                   ? formattedDefaultAddress
                   : 'Select an existing address'
               "
-              class="text-sm max-h-48"
+              class="max-h-48 text-sm"
               @change="billingAddress = $event"
             />
             <span v-else class="block text-sm text-primary-dark">{{
@@ -172,7 +162,7 @@
 
           <!-- Duplicate button elements to match fixed content below -->
           <div
-            class="block md:hidden grid gap-y-4 invisible pointer-events-none"
+            class="pointer-events-none invisible block grid gap-y-4 md:hidden"
           >
             <div v-if="type === 'new'" class="btn">|</div>
             <div v-if="type === 'update'" class="btn">|</div>
@@ -182,18 +172,7 @@
 
         <!-- Action buttons -->
         <div
-          class="
-            w-full
-            fixed
-            container
-            center-x
-            bottom-0
-            py-4
-            bg-primary-lighter
-            grid
-            gap-y-4
-            md:transform-none md:sticky md:left-0
-          "
+          class="center-x container fixed bottom-0 grid w-full gap-y-4 bg-primary-lighter py-4 md:sticky md:left-0 md:transform-none"
         >
           <BaseButton
             v-if="type === 'new'"

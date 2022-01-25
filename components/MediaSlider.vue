@@ -14,11 +14,11 @@
     </ClientOnly>
 
     <!-- Slide indicators -->
-    <ul class="absolute flex flex-row justify-center bottom-4 w-full">
+    <ul class="absolute bottom-4 flex w-full flex-row justify-center">
       <li
         v-for="index in media.length"
         :key="index"
-        class="relative p-2 mb-0"
+        class="relative mb-0 p-2"
         @click="setActiveSlide(index - 1)"
       >
         <span
@@ -30,7 +30,7 @@
             'border-primary-lighter': indicatorColor === 'light',
             'border-primary-darkest': indicatorColor === 'dark',
           }"
-          class="transition transition-color block w-2 h-2 border rounded-full"
+          class="transition-color block h-2 w-2 rounded-full border transition"
         />
       </li>
     </ul>

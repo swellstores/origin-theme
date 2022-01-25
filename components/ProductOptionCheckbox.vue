@@ -3,7 +3,7 @@
     <div
       v-for="value in option.values"
       :key="value.name"
-      class="w-full checkbox relative flex cursor-pointer"
+      class="checkbox relative flex w-full cursor-pointer"
     >
       <input
         :id="value.name"
@@ -16,10 +16,10 @@
         "
       />
 
-      <label class="w-full label-xs-bold text-primary-dark" :for="value.name">
+      <label class="label-xs-bold w-full text-primary-dark" :for="value.name">
         <p>{{ value.name }}</p>
 
-        <div class="flex items-center ml-auto">
+        <div class="ml-auto flex items-center">
           <span v-if="value.price" class="mr-2"
             >+{{ formatMoney(value.price, currency) }}</span
           >

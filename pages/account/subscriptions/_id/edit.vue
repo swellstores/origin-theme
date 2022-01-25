@@ -2,9 +2,9 @@
   <div>
     <!-- Fetch loader -->
     <div v-if="$fetchState.pending" class="container">
-      <div class="loader-el w-1/3 h-7 mb-6" />
-      <div class="loader-el w-3/5 h-2 mb-4" />
-      <div class="loader-el w-2/5 h-2 mb-8" />
+      <div class="loader-el mb-6 h-7 w-1/3" />
+      <div class="loader-el mb-4 h-2 w-3/5" />
+      <div class="loader-el mb-8 h-2 w-2/5" />
     </div>
 
     <div v-else>
@@ -12,7 +12,7 @@
         <!-- Breadcrumb -->
         <NuxtLink
           :to="localePath(`/account/subscriptions/${subscription.id}/`)"
-          class="flex items-center cursor-pointer mb-6"
+          class="mb-6 flex cursor-pointer items-center"
         >
           <BaseIcon icon="uil:angle-left" size="sm" /><span class="ml-1">
             {{ $t('account.subscriptions.id.edit.backToSubscription') }}
@@ -21,7 +21,7 @@
         </NuxtLink>
 
         <div class="mb-6">
-          <h2 class="text-2xl mb-2">
+          <h2 class="mb-2 text-2xl">
             {{ $t('account.subscriptions.id.edit.title') }}
           </h2>
 
@@ -56,7 +56,7 @@
             supportEmail
           "
           :href="'mailto:' + supportEmail"
-          class="btn light md:w-auto mb-6"
+          class="btn light mb-6 md:w-auto"
         >
           {{ $t('account.subscriptions.id.edit.contact') }}
         </a>
@@ -72,13 +72,13 @@
         />
 
         <!-- Plan items -->
-        <span class="block label-xs-bold-faded">{{
+        <span class="label-xs-bold-faded block">{{
           $t('account.subscriptions.id.edit.plan')
         }}</span>
 
         <div class="mb-6 border-b border-primary-light">
-          <div class="w-full flex py-6">
-            <div v-if="planThumbnail" class="min-w-26 mr-6">
+          <div class="flex w-full py-6">
+            <div v-if="planThumbnail" class="mr-6 min-w-26">
               <VisualMedia :source="planThumbnail.file" sizes="120px" />
             </div>
 
@@ -110,7 +110,7 @@
             v-if="
               status !== 'canceled' && allowOptionsEdit && planOptions.length
             "
-            class="block mb-6"
+            class="mb-6 block"
             fit="auto"
             appearance="light"
             :label="$t('account.subscriptions.id.edit.changeOptions')"
@@ -121,7 +121,7 @@
         <!-- Cancel subscription -->
         <BaseButton
           v-if="status !== 'canceled'"
-          class="block mb-6"
+          class="mb-6 block"
           fit="auto"
           appearance="light-error"
           :label="$t('account.subscriptions.id.cancelSubscription')"

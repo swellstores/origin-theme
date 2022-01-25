@@ -107,6 +107,10 @@ export default async () => {
     ],
 
     buildModules: [
+      // https://go.nuxtjs.dev/eslint
+      '@nuxtjs/eslint-module',
+      // https://go.nuxtjs.dev/stylelint
+      '@nuxtjs/stylelint-module',
       [
         /*
          ** Generate dynamic routes for @nuxtjs/sitemap
@@ -116,6 +120,7 @@ export default async () => {
       ],
 
       [
+        // https://go.nuxtjs.dev/tailwindcss
         '@nuxtjs/tailwindcss',
         /*
          ** Adds TailwindCSS (including PurgeCSS)

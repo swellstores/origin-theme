@@ -1,6 +1,6 @@
 <template>
   <div class="flex py-4">
-    <div class="w-40 mr-6">
+    <div class="mr-6 w-40">
       <VisualMedia
         v-if="item.product.images.length"
         :source="item.product.images[0]"
@@ -8,11 +8,11 @@
       />
 
       <!-- Fallback image -->
-      <div v-else class="relative bg-primary-lighter rounded pb-full">
+      <div v-else class="relative rounded bg-primary-lighter pb-full">
         <BaseIcon
           icon="uil:camera-slash"
           size="lg"
-          class="absolute center-xy text-primary-med"
+          class="center-xy absolute text-primary-med"
         />
       </div>
     </div>
@@ -58,7 +58,7 @@
 
       <span
         v-if="variation && !available"
-        class="block mt-4 label-sm text-error-default"
+        class="label-sm mt-4 block text-error-default"
       >
         {{ $t('products.slug.bundle.outOfStock') }}
       </span>

@@ -1,18 +1,18 @@
 <template>
   <div class="container md:pr-0">
-    <h1 class="text-4xl hidden md:block mb-8">
+    <h1 class="mb-8 hidden text-4xl md:block">
       {{ $t('account.addresses.title') }}
     </h1>
 
     <div v-if="$fetchState.pending">
-      <div class="loader-el w-1/3 h-7 mb-6 m-auto" />
-      <div class="loader-el w-3/5 h-2 mb-4 m-auto" />
-      <div class="loader-el w-2/5 h-2 mb-8 m-auto" />
+      <div class="loader-el m-auto mb-6 h-7 w-1/3" />
+      <div class="loader-el m-auto mb-4 h-2 w-3/5" />
+      <div class="loader-el m-auto mb-8 h-2 w-2/5" />
     </div>
 
     <template v-else>
       <template v-if="addresses && addresses.length">
-        <div class="grid md:hidden gap-8">
+        <div class="grid gap-8 md:hidden">
           <AccountAddressContainer
             v-if="defaultAddress"
             :address="defaultAddress"
@@ -23,7 +23,7 @@
           <template v-if="otherAddresses && otherAddresses.length">
             <span
               v-if="defaultAddress"
-              class="block md:hidden label-xs-bold-faded"
+              class="label-xs-bold-faded block md:hidden"
               >{{ $t('account.addresses.otherAddresses') }}</span
             >
 
@@ -45,7 +45,7 @@
           </template>
         </div>
 
-        <div class="hidden md:grid md:grid-cols-2 md:auto-rows-fr md:gap-8">
+        <div class="hidden md:grid md:auto-rows-fr md:grid-cols-2 md:gap-8">
           <AccountAddressContainer
             v-for="(address, index) in sortedAddresses"
             :key="`address-${index}`"
@@ -70,7 +70,7 @@
       </p>
 
       <BaseButton
-        class="block mt-10"
+        class="mt-10 block"
         fit="auto"
         appearance="light"
         :label="$t('account.addresses.addAddress')"

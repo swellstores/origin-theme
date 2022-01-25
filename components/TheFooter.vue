@@ -1,9 +1,9 @@
 <template>
   <footer
     :class="{
-      'bg-primary-darkest text-primary-lightest border-primary-darker':
+      'border-primary-darker bg-primary-darkest text-primary-lightest':
         background === 'dark',
-      'bg-primary-lighter border-primary-med': background === 'light',
+      'border-primary-med bg-primary-lighter': background === 'light',
     }"
     class="border-t"
     data-sw-path="footer"
@@ -39,13 +39,13 @@
           <li
             v-for="link of orderedSocialLinks"
             :key="link.id"
-            class="inline-block mb-0"
+            class="mb-0 inline-block"
           >
             <a
               :href="link.url"
               target="_blank"
               :title="`Join us on ${link.id}`"
-              class="block mx-2"
+              class="mx-2 block"
             >
               <BaseIcon :icon="`mdi:${link.id}`" />
             </a>
@@ -58,7 +58,7 @@
         <div
           v-for="(column, index) in menu.items"
           :key="'footerMenuCol' + index"
-          class="my-10 lg:w-1/4 lg:my-0"
+          class="my-10 lg:my-0 lg:w-1/4"
         >
           <ul v-if="column.items">
             <li v-for="(item, i) in column.items" :key="item.name" class="mb-0">
@@ -114,9 +114,9 @@
         'border-primary-darker': background === 'dark',
         'border-primary-med': background === 'light',
       }"
-      class="py-4 text-sm text-center border-t border-primary-darker"
+      class="border-t border-primary-darker py-4 text-center text-sm"
     >
-      <div class="container lg:flex lg:flex-no-wrap lg:justify-between">
+      <div class="lg:flex-no-wrap container lg:flex lg:justify-between">
         <!-- Copyright & Settings -->
         <p class="my-3 text-sm">
           <span>©{{ currentYear }} {{ store.name }}.</span> Powered by
@@ -133,7 +133,7 @@
           <li
             v-for="item in secondaryMenu.items"
             :key="item.name"
-            class="inline-block mx-3 mb-0"
+            class="mx-3 mb-0 inline-block"
           >
             <a
               v-if="item.type === 'url'"

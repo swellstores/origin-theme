@@ -167,8 +167,8 @@ export default {
 
 <style lang="postcss" scoped>
 .custom-dot {
-  @apply w-full h-full bg-primary-lightest rounded-full border border-primary-med;
   transition: all 0.3s;
+  @apply h-full w-full rounded-full border border-primary-med bg-primary-lightest;
 
   &.focus {
     @apply border-primary-darkest;

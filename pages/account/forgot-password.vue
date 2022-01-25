@@ -1,11 +1,11 @@
 <template>
   <div
-    class="relative container pt-6 pb-24 md:max-w-112 md:pt-24"
+    class="container relative pt-6 pb-24 md:max-w-112 md:pt-24"
     @keyup.enter="endPasswordReset"
   >
     <h2 class="pb-6">{{ $t('account.forgotPassword.title') }}</h2>
 
-    <p class="text-sm mb-10">
+    <p class="mb-10 text-sm">
       {{ $t('account.forgotPassword.infoText') }}
     </p>
 

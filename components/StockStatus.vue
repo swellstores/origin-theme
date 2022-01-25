@@ -3,7 +3,7 @@
     <div class="mr-2">
       <span
         :class="`bg-${status.color}-default`"
-        class="inline-block rounded-full w-2 h-2 mr-1"
+        class="mr-1 inline-block h-2 w-2 rounded-full"
       />
       <span class="label-xs-bold text-primary-dark">{{
         $t(status.label)

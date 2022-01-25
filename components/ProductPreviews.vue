@@ -20,13 +20,13 @@
         <template slot="control">
           <button
             ref="prevSlide"
-            class="absolute invisible w-0 h-0"
+            class="invisible absolute h-0 w-0"
             data-glide-dir="<"
           />
 
           <button
             ref="nextSlide"
-            class="absolute invisible w-0 h-0"
+            class="invisible absolute h-0 w-0"
             data-glide-dir=">"
           />
         </template>
@@ -36,7 +36,7 @@
       <div class="absolute w-full">
         <!-- Previous slide -->
         <div
-          class="absolute top-0 left-0 px-1 pointer-events-none sm:px-2 xl:px-3"
+          class="pointer-events-none absolute top-0 left-0 px-1 sm:px-2 xl:px-3"
           :class="[
             { 'w-1/2': columnCount === 2 },
             { 'w-1/2 md:w-1/3': columnCount === 3 },
@@ -47,23 +47,7 @@
           <span class="block w-full" :style="{ paddingBottom: ratioPadding }" />
           <button
             v-show="!sliderAtStart"
-            class="
-              absolute
-              left-0
-              flex
-              items-center
-              justify-center
-              w-10
-              h-10
-              ml-3
-              transform
-              -translate-x-1/2 -translate-y-1/2
-              rounded-full
-              shadow-md
-              pointer-events-auto
-              top-1/2
-              bg-primary-lightest
-            "
+            class="pointer-events-auto absolute left-0 top-1/2 ml-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-primary-lightest shadow-md"
             @click="prevSlide"
           >
             <BaseIcon icon="uil:angle-left" />
@@ -72,15 +56,7 @@
 
         <!-- Next slide -->
         <div
-          class="
-            absolute
-            top-0
-            right-0
-            px-1
-            pointer-events-none
-            sm:px-2
-            xl:px-3
-          "
+          class="pointer-events-none absolute top-0 right-0 px-1 sm:px-2 xl:px-3"
           :class="[
             { 'w-1/2': columnCount === 2 },
             { 'w-1/2 md:w-1/3': columnCount === 3 },
@@ -91,24 +67,7 @@
           <span class="block w-full" :style="{ paddingBottom: ratioPadding }" />
           <button
             v-show="!sliderAtEnd"
-            class="
-              absolute
-              right-0
-              flex
-              items-center
-              justify-center
-              w-10
-              h-10
-              mr-3
-              transform
-              translate-x-1/2
-              -translate-y-1/2
-              rounded-full
-              shadow-md
-              pointer-events-auto
-              top-1/2
-              bg-primary-lightest
-            "
+            class="pointer-events-auto absolute right-0 top-1/2 mr-3 flex h-10 w-10 translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-primary-lightest shadow-md"
             @click="nextSlide"
           >
             <BaseIcon icon="uil:angle-right" />

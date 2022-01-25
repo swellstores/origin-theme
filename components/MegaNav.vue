@@ -1,14 +1,14 @@
 <template>
   <div
-    class="w-full bg-primary-lightest shadow-md border-primary-light border-t"
+    class="w-full border-t border-primary-light bg-primary-lightest shadow-md"
   >
     <div class="container">
-      <div class="flex flex-wrap items-stretch pt-6 -mx-4">
+      <div class="-mx-4 flex flex-wrap items-stretch pt-6">
         <!-- Columns -->
         <ul
           v-for="(column, index) in items"
           :key="'megaNavCol' + index"
-          class="flex-initial px-4 mb-6 w-1/4 min-w-48"
+          class="mb-6 w-1/4 min-w-48 flex-initial px-4"
         >
           <li
             v-for="(item, i) in column.items"
@@ -19,7 +19,7 @@
             <NuxtLink
               v-if="item.type === 'product' && typeof item.value === 'object'"
               :to="localePath(resolveUrl(item))"
-              class="block mt-1"
+              class="mt-1 block"
               @click.native="$emit('click')"
             >
               <VisualMedia
@@ -57,7 +57,7 @@
               rel="noreferrer noopener"
               :href="item.value"
               :target="item.options.target === 'blank' ? '_blank' : '_self'"
-              class="block -mx-1 p-1 leading-tight"
+              class="-mx-1 block p-1 leading-tight"
             >
               {{ item.name }}
             </a>
@@ -65,7 +65,7 @@
             <NuxtLink
               v-else
               :to="localePath(resolveUrl(item))"
-              class="block -mx-1 p-1 leading-tight"
+              class="-mx-1 block p-1 leading-tight"
               @click.native="$emit('click')"
             >
               {{ item.name }}

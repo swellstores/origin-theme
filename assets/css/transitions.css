@@ -14,7 +14,7 @@
 
 /* Loading spinner */
 .spinner {
-  @apply w-8 h-8 mx-auto bg-primary-dark rounded-full;
+  @apply mx-auto h-8 w-8 rounded-full bg-primary-dark;
   -webkit-animation: sk-scaleout 1s infinite ease-in-out;
   animation: sk-scaleout 1s infinite ease-in-out;
 }
@@ -52,7 +52,7 @@
 
 .fade-up-enter,
 .fade-up-leave-to {
-  @apply transform translate-y-2 opacity-0;
+  @apply translate-y-2 transform opacity-0;
 }
 
 /* Vue fade-up and out transition */
@@ -65,7 +65,7 @@
 }
 
 .fade-up-out-enter {
-  @apply transform translate-y-4 opacity-0;
+  @apply translate-y-4 transform opacity-0;
 }
 
 .fade-up-out-leave-to {

@@ -1,11 +1,11 @@
 <template>
   <div
     v-if="attribute"
-    class="py-3 flex flex-no-wrap border-b border-primary-med"
+    class="flex-no-wrap flex border-b border-primary-med py-3"
   >
     <!-- Multiple files -->
     <template v-if="Array.isArray(attribute.value)">
-      <strong class="w-1/4 text-primary-darkest pr-6">{{
+      <strong class="w-1/4 pr-6 text-primary-darkest">{{
         attribute.name
       }}</strong>
       <div>
@@ -13,7 +13,7 @@
           v-for="{ file } in attribute.value"
           :key="file.id"
           :href="file.url"
-          class="flex items-center font-normal mb-2 last:mb-0"
+          class="mb-2 flex items-center font-normal last:mb-0"
           download
         >
           <BaseIcon
@@ -28,7 +28,7 @@
 
     <!-- Single file -->
     <template v-else>
-      <strong class="w-1/4 text-primary-darkest pr-6">{{
+      <strong class="w-1/4 pr-6 text-primary-darkest">{{
         attribute.name
       }}</strong>
       <a

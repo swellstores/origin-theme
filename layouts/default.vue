@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div
-      class="flex flex-col min-h-screen"
+      class="min-h-screen flex flex-col"
       :class="{ 'overflow-y-hidden': searchIsActive || cartIsActive }"
     >
       <TheHeader @click-search="searchIsActive = true" />
@@ -11,7 +11,7 @@
         :message="notification.message"
         :type="notification.type"
       />
-      <div class="flex flex-col flex-grow">
+      <div class="flex flex-grow flex-col">
         <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
       </div>
       <TheFooter />

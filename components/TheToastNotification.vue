@@ -5,30 +5,20 @@
       <div class="absolute top-0 right-0 w-full">
         <div
           :style="{ height: `${headerHeightOffset}px` }"
-          class="relative w-full transition-all ease duration-50"
+          class="ease duration-50 relative w-full transition-all"
         />
 
         <div
-          class="
-            top-0
-            right-0
-            mx-auto
-            mt-3
-            rounded-md
-            shadow-md
-            w-full-px-6
-            md:mr-3 md:max-w-max
-            bg-primary-lightest
-          "
+          class="w-full-px-6 top-0 right-0 mx-auto mt-3 rounded-md bg-primary-lightest shadow-md md:mr-3 md:max-w-max"
           :class="{
             'md:min-w-96': product,
             'bg-error-faded text-error-default': type === 'error',
-            'bg-ok-faded text-lightest': type === 'success',
+            'text-lightest bg-ok-faded': type === 'success',
           }"
         >
           <div
-            class="flex items-center p-3 border-primary-light rounded-t-md"
-            :class="{ 'border-b mb-3': product }"
+            class="flex items-center rounded-t-md border-primary-light p-3"
+            :class="{ 'mb-3 border-b': product }"
           >
             <BaseIcon v-if="type !== 'error'" class="mr-1" icon="uil:check" />
             <BaseIcon v-if="type === 'error'" class="mr-1" icon="uil:times" />
@@ -36,7 +26,7 @@
             <button
               v-if="product"
               type="button"
-              class="w-8 h-8 p-1 ml-auto rounded-full bg-primary-light"
+              class="ml-auto h-8 w-8 rounded-full bg-primary-light p-1"
               @click="
                 $store.commit('setState', { key: 'notification', value: null })
               "
@@ -48,7 +38,7 @@
           <!-- Added product -->
           <template v-if="product">
             <div class="flex px-3">
-              <div class="w-24 mr-3">
+              <div class="mr-3 w-24">
                 <VisualMedia
                   v-if="product.images && product.images.length"
                   :source="product.images[0]"
@@ -63,7 +53,7 @@
                   <BaseIcon
                     icon="uil:camera-slash"
                     size="lg"
-                    class="absolute center-xy text-primary-med"
+                    class="center-xy absolute text-primary-med"
                   />
                 </div>
               </div>
@@ -90,8 +80,8 @@
                 </div>
 
                 <!-- Price/quantity + item editor toggle -->
-                <div class="leading-none label-sm-bold">
-                  <div class="inline-block py-1 -mb-1">
+                <div class="label-sm-bold leading-none">
+                  <div class="-mb-1 inline-block py-1">
                     <span>{{ formattedPrice }}</span>
                     <span v-if="product.quantity > 1"
                       >{{ product.quantity }} &times;
@@ -101,9 +91,9 @@
               </div>
             </div>
 
-            <div class="flex p-3 no-wrap">
+            <div class="no-wrap flex p-3">
               <BaseButton
-                class="w-1/2 mr-2"
+                class="mr-2 w-1/2"
                 fit="full"
                 :link="cart.checkoutUrl"
                 appearance="dark"
@@ -122,25 +112,9 @@
 
                 <div
                   v-if="cart && cart.itemQuantity"
-                  class="
-                    absolute
-                    top-0
-                    right-0
-                    flex
-                    items-center
-                    justify-center
-                    w-6
-                    h-6
-                    transform
-                    translate-x-1
-                    -translate-y-1
-                    rounded-full
-                    fade-in
-                    bg-accent-default
-                    text-primary-lighter
-                  "
+                  class="fade-in absolute top-0 right-0 flex h-6 w-6 translate-x-1 -translate-y-1 transform items-center justify-center rounded-full bg-accent-default text-primary-lighter"
                 >
-                  <span class="block mt-px leading-none text-2xs">{{
+                  <span class="mt-px block text-2xs leading-none">{{
                     cart.itemQuantity
                   }}</span>
                 </div>

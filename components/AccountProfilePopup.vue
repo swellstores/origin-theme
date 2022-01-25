@@ -1,25 +1,15 @@
 <template>
   <transition name="popup" :duration="700" appear>
-    <div class="z-40 fixed inset-0" @keyup.enter="updateProfile">
+    <div class="fixed inset-0 z-40" @keyup.enter="updateProfile">
       <!-- Overlay -->
       <div
-        class="overlay opacity-50 absolute w-full h-full bg-primary-darker"
+        class="overlay absolute h-full w-full bg-primary-darker opacity-50"
         @click="$emit('click-close')"
       />
 
       <!-- Panel -->
       <div
-        class="
-          panel
-          w-full
-          h-vh-gap
-          absolute
-          bottom-0
-          rounded-t
-          bg-primary-lighter
-          overflow-scroll
-          md:w-128 md:h-auto md:max-h-80vh md:relative md:rounded md:center-xy
-        "
+        class="panel h-vh-gap md:center-xy absolute bottom-0 w-full overflow-scroll rounded-t bg-primary-lighter md:relative md:h-auto md:max-h-80vh md:w-128 md:rounded"
       >
         <div class="container pt-2 pb-4 md:pb-0">
           <div class="flex py-4">
@@ -160,7 +150,7 @@
             </div>
 
             <!-- Duplicate button elements to match fixed content below -->
-            <div class="block md:hidden invisible pointer-events-none">
+            <div class="pointer-events-none invisible block md:hidden">
               <div class="btn">|</div>
             </div>
           </div>
@@ -168,18 +158,7 @@
 
         <!-- Action buttons -->
         <div
-          class="
-            w-full
-            fixed
-            container
-            center-x
-            bottom-0
-            py-4
-            bg-primary-lighter
-            grid
-            gap-y-4
-            md:transform-none md:sticky md:left-0
-          "
+          class="center-x container fixed bottom-0 grid w-full gap-y-4 bg-primary-lighter py-4 md:sticky md:left-0 md:transform-none"
         >
           <BaseButton
             appearance="dark"

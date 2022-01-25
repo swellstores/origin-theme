@@ -1,8 +1,8 @@
 <template>
-  <div class="flex items-center mr-4">
+  <div class="mr-4 flex items-center">
     <button
       type="button"
-      class="relative inline-block w-6 h-6 rounded-full bg-primary-darkest mr-1"
+      class="relative mr-1 inline-block h-6 w-6 rounded-full bg-primary-darkest"
       :class="{
         'cursor-not-allowed opacity-25':
           !stockAvailable || value === 1 || cartIsUpdating,
@@ -13,12 +13,12 @@
       <BaseIcon
         icon="uil:minus"
         size="sm"
-        class="absolute center-xy text-primary-lightest"
+        class="center-xy absolute text-primary-lightest"
       />
     </button>
 
     <input
-      class="w-8 p-1 text-xl text-center md:w-10 md:p-2 md:text-2xl"
+      class="w-8 p-1 text-center text-xl md:w-10 md:p-2 md:text-2xl"
       type="number"
       min="1"
       :max="limit"
@@ -28,7 +28,7 @@
 
     <button
       type="button"
-      class="relative inline-block w-6 h-6 rounded-full bg-primary-darkest ml-1"
+      class="relative ml-1 inline-block h-6 w-6 rounded-full bg-primary-darkest"
       :class="{
         'cursor-not-allowed opacity-25':
           !stockAvailable || value === limit || cartIsUpdating,
@@ -39,7 +39,7 @@
       <BaseIcon
         icon="uil:plus"
         size="sm"
-        class="absolute center-xy text-primary-lightest"
+        class="center-xy absolute text-primary-lightest"
       />
     </button>
   </div>

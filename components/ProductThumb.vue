@@ -1,19 +1,19 @@
 <template>
-  <article class="px-1 mb-3 sm:px-2 xl:px-3 xl:mb-4">
+  <article class="mb-3 px-1 sm:px-2 xl:mb-4 xl:px-3">
     <!-- Skeleton loader -->
     <div v-if="!product.slug" class="pb-5">
       <div
-        class="mb-4 loader-el pb-full"
+        class="loader-el mb-4 pb-full"
         :style="{ paddingBottom: ratioPadding }"
       />
-      <div class="w-2/3 h-4 mb-2 loader-el" />
-      <div v-if="showPrice" class="w-24 h-3 loader-el" />
+      <div class="loader-el mb-2 h-4 w-2/3" />
+      <div v-if="showPrice" class="loader-el h-3 w-24" />
     </div>
 
     <div v-else class="relative block h-full rounded">
       <!-- Preview media -->
       <div
-        class="relative group"
+        class="group relative"
         @mouseenter="showQuickAdd(product.id)"
         @mouseleave="hideQuickAdd(product.id)"
       >
@@ -34,18 +34,7 @@
             <!-- Hover image -->
             <div
               v-if="product.images[1]"
-              class="
-                absolute
-                inset-0
-                hidden
-                w-full
-                h-full
-                transition-opacity
-                duration-150
-                opacity-0
-                md:block
-                group-hover:opacity-100
-              "
+              class="absolute inset-0 hidden h-full w-full opacity-0 transition-opacity duration-150 group-hover:opacity-100 md:block"
             >
               <VisualMedia
                 :source="product.images[1]"
@@ -61,13 +50,13 @@
             <BaseIcon
               icon="uil:camera-slash"
               size="lg"
-              class="absolute center-xy text-primary-med"
+              class="center-xy absolute text-primary-med"
             />
           </div>
         </NuxtLink>
         <div
           v-if="product.origPrice"
-          class="absolute top-0 right-0 mr-2 -mt-1 label-tag label-tag--sale"
+          class="label-tag label-tag--sale absolute top-0 right-0 mr-2 -mt-1"
         >
           {{ $t('products.preview.sale') }}
         </div>
@@ -79,7 +68,7 @@
                 (currentProductId === product.id && quickAddIsVisible) ||
                 (currentProductId === product.id && quickAddKeepAlive)
               "
-              class="absolute bottom-0 hidden w-full px-6 mb-5 lg:block"
+              class="absolute bottom-0 mb-5 hidden w-full px-6 lg:block"
               :product="product"
               @adding-to-cart="productBeingAdded = product.id"
               @keep-alive="keepQuickAddAlive"
@@ -102,7 +91,7 @@
               formatMoney(product.price, currency)
             }}</span>
             <span
-              class="text-xs uppercase whitespace-no-wrap text-error-default"
+              class="whitespace-no-wrap text-xs uppercase text-error-default"
             >
               {{
                 $t('products.preview.save', {

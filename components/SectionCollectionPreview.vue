@@ -11,7 +11,7 @@
       <template v-if="showTitle">
         <div
           v-if="!loaded && $fetchState.pending"
-          class="w-64 h-8 mb-2 loader-el md:h-10"
+          class="loader-el mb-2 h-8 w-64 md:h-10"
         />
         <NuxtLink
           v-else

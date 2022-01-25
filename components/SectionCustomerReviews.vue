@@ -6,16 +6,16 @@
     description="No heading or reviews added"
   />
 
-  <section v-else class="relative container my-14 lg:my-16">
+  <section v-else class="container relative my-14 lg:my-16">
     <!-- Reviews -->
-    <div class="flex justify-center flex-col">
-      <h2 v-if="heading" class="text-center lg:text-4xl mb-12">
+    <div class="flex flex-col justify-center">
+      <h2 v-if="heading" class="mb-12 text-center lg:text-4xl">
         {{ heading }}
       </h2>
       <div
         v-if="currentReview"
         ref="quote"
-        class="relative w-full transition-all ease-in-out duration-300"
+        class="relative w-full transition-all duration-300 ease-in-out"
       >
         <!-- Arrows -->
         <div
@@ -24,7 +24,7 @@
         >
           <button
             title="Previous review"
-            class="p-2 rounded-full bg-primary-lighter"
+            class="rounded-full bg-primary-lighter p-2"
             @click.prevent="prevReview"
           >
             <BaseIcon icon="uil:angle-left" size="lg" />
@@ -32,7 +32,7 @@
 
           <button
             title="Next review"
-            class="p-2 rounded-full bg-primary-lighter"
+            class="rounded-full bg-primary-lighter p-2"
             @click.prevent="nextReview"
           >
             <BaseIcon icon="uil:angle-right" size="lg" />
@@ -59,16 +59,7 @@
         >
           <div ref="quoteContent" :key="currentReview.id">
             <div
-              class="
-                flex
-                justify-center
-                items-center
-                flex-col
-                text-center
-                px-16
-                md:px-28
-                lg:px-48
-              "
+              class="flex flex-col items-center justify-center px-16 text-center md:px-28 lg:px-48"
             >
               <ReviewStars
                 v-if="currentReview.score"

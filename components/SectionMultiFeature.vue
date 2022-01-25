@@ -6,11 +6,11 @@
     description="No heading or features added"
   />
 
-  <section v-else class="text-center px-6 py-16 lg:px-8 xl:px-20">
+  <section v-else class="px-6 py-16 text-center lg:px-8 xl:px-20">
     <h3 class="mx-auto mt-6">
       {{ heading }}
     </h3>
-    <div class="flex flex-wrap justify-center mt-6">
+    <div class="mt-6 flex flex-wrap justify-center">
       <div
         v-for="(feature, index) in features"
         :key="id + 'multiFeature' + index"
@@ -19,11 +19,11 @@
       >
         <div
           v-if="feature"
-          class="relative rounded-full bg-primary-light mx-auto w-16 h-16"
+          class="relative mx-auto h-16 w-16 rounded-full bg-primary-light"
         >
-          <BaseIcon :icon="feature.icon" size="lg" class="absolute center-xy" />
+          <BaseIcon :icon="feature.icon" size="lg" class="center-xy absolute" />
         </div>
-        <p v-if="feature" class="text-lg mt-4">
+        <p v-if="feature" class="mt-4 text-lg">
           {{ feature.label }}
         </p>
       </div>

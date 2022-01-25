@@ -1,15 +1,7 @@
 <template>
   <transition name="fade" appear>
     <div
-      class="
-        z-40
-        fixed
-        inset-0
-        w-full
-        h-full
-        bg-primary-lightest
-        overflow-y-scroll
-      "
+      class="fixed inset-0 z-40 h-full w-full overflow-y-scroll bg-primary-lightest"
     >
       <transition name="fade-up-out">
         <TheToastNotification
@@ -21,7 +13,7 @@
         />
       </transition>
       <div class="container py-10">
-        <div class="relative flex justify-between items-center mb-5">
+        <div class="relative mb-5 flex items-center justify-between">
           <h3>{{ $t('search.title') }}</h3>
           <button @click.prevent="$emit('click-close')">
             <BaseIcon icon="uil:multiply" size="lg" />
@@ -32,15 +24,7 @@
           v-model="inputValue"
           type="text"
           :placeholder="placeholder || $t('search.placeholder')"
-          class="
-            w-full
-            px-4
-            py-2
-            rounded
-            bg-primary-lighter
-            text-primary-darkest text-3xl
-            focus:outline-none focus:shadow-outline
-          "
+          class="focus:outline-none w-full rounded bg-primary-lighter px-4 py-2 text-3xl text-primary-darkest focus:shadow-outline"
           @keydown.enter="$fetch"
         />
         <p class="mt-2 mb-16 text-sm">

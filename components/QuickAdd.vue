@@ -12,16 +12,7 @@
     <transition name="fade" :duration="200">
       <div
         v-if="quickAddIsActive"
-        class="
-          bottom-0
-          z-10
-          w-full
-          px-4
-          py-3
-          rounded
-          shadow-md
-          bg-primary-lighter
-        "
+        class="bottom-0 z-10 w-full rounded bg-primary-lighter px-4 py-3 shadow-md"
       >
         <!-- Product options -->
         <div v-for="(input, index) in optionInputs" :key="input.name">
@@ -47,18 +38,9 @@
     <!-- Error messages -->
     <div v-if="addToCartError" class="relative px-4">
       <div
-        class="
-          absolute
-          bottom-0
-          left-0
-          w-full
-          px-4
-          py-3
-          rounded
-          bg-primary-lighter
-        "
+        class="absolute bottom-0 left-0 w-full rounded bg-primary-lighter px-4 py-3"
       >
-        <span class="w-full text-center label-sm text-error">{{
+        <span class="label-sm text-error w-full text-center">{{
           $t('products.preview.quickAdd.outOfStock')
         }}</span>
       </div>

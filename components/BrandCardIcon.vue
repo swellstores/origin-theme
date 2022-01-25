@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="brandName === 'american-express'" class="w-auto h-6">
+    <div v-if="brandName === 'american-express'" class="h-6 w-auto">
       <img
         class="h-full"
         src="~/assets/icons/american-express.svg"
@@ -8,7 +8,7 @@
       />
     </div>
 
-    <div v-else-if="brandName === 'diners-club'" class="w-auto h-6">
+    <div v-else-if="brandName === 'diners-club'" class="h-6 w-auto">
       <img
         class="h-full"
         src="~/assets/icons/diners-club.svg"
@@ -16,15 +16,15 @@
       />
     </div>
 
-    <div v-else-if="brandName === 'discover'" class="w-auto h-3">
+    <div v-else-if="brandName === 'discover'" class="h-3 w-auto">
       <img class="h-full" src="~/assets/icons/discover.svg" alt="Discover" />
     </div>
 
-    <div v-else-if="brandName === 'jcb'" class="w-auto h-3">
+    <div v-else-if="brandName === 'jcb'" class="h-3 w-auto">
       <img class="h-full" src="~/assets/icons/jcb.svg" alt="JCB" />
     </div>
 
-    <div v-else-if="brandName === 'mastercard'" class="w-auto h-6">
+    <div v-else-if="brandName === 'mastercard'" class="h-6 w-auto">
       <img
         class="h-full"
         src="~/assets/icons/mastercard.svg"
@@ -32,7 +32,7 @@
       />
     </div>
 
-    <div v-else-if="brandName === 'visa'" class="w-auto h-4">
+    <div v-else-if="brandName === 'visa'" class="h-4 w-auto">
       <img class="h-full" src="~/assets/icons/visa.svg" alt="Visa" />
     </div>
 

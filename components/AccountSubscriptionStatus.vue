@@ -2,7 +2,7 @@
   <!-- Active -->
   <div class="flex">
     <div
-      class="relative flex-shrink-0 w-6 h-6 mr-2 bg-ok-default rounded-full"
+      class="relative mr-2 h-6 w-6 flex-shrink-0 rounded-full bg-ok-default"
       :class="{
         'bg-ok-default': status === 'active',
         'bg-primary-dark': status === 'canceled',
@@ -10,7 +10,7 @@
       }"
     >
       <BaseIcon
-        class="absolute text-primary-lightest center-xy"
+        class="center-xy absolute text-primary-lightest"
         :icon="`uil:${icon}`"
         size="w-4 h-4"
       />

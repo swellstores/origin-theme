@@ -1,35 +1,17 @@
 <template>
   <transition name="slide-modal-ltr" :duration="700">
-    <div class="z-50 fixed inset-0">
+    <div class="fixed inset-0 z-50">
       <!-- Overlay -->
       <div
-        class="
-          overlay
-          absolute
-          w-full
-          h-full
-          bg-primary-darker
-          opacity-50
-          hidden
-          md:block
-        "
+        class="overlay absolute hidden h-full w-full bg-primary-darker opacity-50 md:block"
         @click="$emit('click-close')"
       />
 
       <!-- Filter Panel -->
       <div
-        class="
-          panel
-          absolute
-          w-full
-          h-full
-          left-0
-          bg-primary-lightest
-          overflow-scroll
-          md:max-w-112
-        "
+        class="panel absolute left-0 h-full w-full overflow-scroll bg-primary-lightest md:max-w-112"
       >
-        <div class="flex items-center p-6 border-b border-primary-light">
+        <div class="flex items-center border-b border-primary-light p-6">
           <h3>{{ $t('categories.slug.refine') }}</h3>
           <button class="ml-auto" @click="$emit('click-close')">
             <BaseIcon icon="uil:times" size="lg" />
@@ -39,14 +21,7 @@
         <!-- Active Filters -->
         <div
           v-show="activeFilters.length"
-          class="
-            py-4
-            px-6
-            bg-primary-lighter
-            border-b border-primary-light
-            text-sm
-            overflow-hidden
-          "
+          class="overflow-hidden border-b border-primary-light bg-primary-lighter py-4 px-6 text-sm"
         >
           <div class="flex items-center justify-between">
             <span class="text-primary-dark">{{ activeFilterCountLabel }}</span>
@@ -55,7 +30,7 @@
             </button>
           </div>
 
-          <ul class="w-full flex flex-wrap pt-3">
+          <ul class="flex w-full flex-wrap pt-3">
             <li
               v-for="filter in activeFilters"
               :key="'activefilter' + filter.id"
@@ -64,16 +39,7 @@
                 <div
                   v-for="option in filter.options"
                   :key="'activeFilterOption' + option.label"
-                  class="
-                    inline-flex
-                    items-center
-                    bg-primary-light
-                    px-1
-                    py-1
-                    mb-2
-                    mr-2
-                    rounded
-                  "
+                  class="mb-2 mr-2 inline-flex items-center rounded bg-primary-light px-1 py-1"
                 >
                   <span class="mx-1">{{ option.label }}</span>
                   <button
@@ -85,16 +51,7 @@
               </template>
               <template v-else-if="filter.type === 'range'">
                 <div
-                  class="
-                    inline-flex
-                    items-center
-                    bg-primary-light
-                    px-1
-                    py-1
-                    mb-2
-                    mr-2
-                    rounded
-                  "
+                  class="mb-2 mr-2 inline-flex items-center rounded bg-primary-light px-1 py-1"
                 >
                   <span class="mx-1">{{ activeRangeLabel(filter) }}</span>
                   <button @click="updateFilter({ filter })">
@@ -267,5 +224,3 @@ export default {
   },
 }
 </script>
-
-<style lang="postcss" scoped></style>

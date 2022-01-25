@@ -14,12 +14,12 @@
       <div
         :class="{
           'md:w-1/3': headingPosition === 'left',
-          'text-center mx-auto': headingPosition === 'top-center',
+          'mx-auto text-center': headingPosition === 'top-center',
           'mx-auto': textColumnWidth === 'compact' && textColumns === 'single',
         }"
         class="max-w-2/3 md:mb-0"
       >
-        <span v-if="label" class="block mb-4 label-xs-bold">{{ label }}</span>
+        <span v-if="label" class="label-xs-bold mb-4 block">{{ label }}</span>
         <h2 class="m-0 md:text-5xl xl:text-7xl">
           {{ heading }}
         </h2>
@@ -90,6 +90,7 @@ export default {
 
 <style lang="postcss" scoped>
 .sw-multi-column {
+  /* stylelint-disable at-rule-no-unknown */
   @screen md {
     column-count: 2;
     column-gap: 2rem;

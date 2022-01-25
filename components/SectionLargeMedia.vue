@@ -9,20 +9,20 @@
   <section
     v-else
     :class="[`bg-${bgColor}`]"
-    class="text-center py-16 lg:py-24 xl:py-28"
+    class="py-16 text-center lg:py-24 xl:py-28"
   >
     <div class="container">
-      <h2 class="mx-auto px-4 max-w-160">
+      <h2 class="mx-auto max-w-160 px-4">
         {{ heading }}
       </h2>
-      <div v-balance-text.children v-if="description" v-html="description" />
+      <div v-if="description" v-balance-text.children v-html="description" />
       <div v-if="image" class="relative xl:mx-12">
         <BaseLink v-if="url" :link="url">
           <VisualMedia
             :source="image"
             aspect-ratio="16:9"
             sizes="(min-width: 375px) 80vw, (min-width: 1440px) 70vw, 90vw"
-            class="rounded overflow-hidden"
+            class="overflow-hidden rounded"
             :class="{ 'mt-10 lg:mt-12': description || heading }"
           />
         </BaseLink>
@@ -32,11 +32,11 @@
           :source="image"
           aspect-ratio="16:9"
           sizes="(min-width: 1200px) 1120px, 100vw"
-          class="rounded overflow-hidden"
+          class="overflow-hidden rounded"
           :class="{ 'mt-10 lg:mt-12': description || heading }"
         />
       </div>
-      <span v-if="caption" class="inline-block label-sm mt-3">{{
+      <span v-if="caption" class="label-sm mt-3 inline-block">{{
         caption
       }}</span>
     </div>

@@ -23,23 +23,16 @@
     class="relative flex flex-wrap"
   >
     <div
-      class="
-        relative
-        w-full
-        px-6
-        py-20
-        md:w-1/2 md:px-12 md:py-16
-        lg:px-26 lg:py-32
-      "
+      class="relative w-full px-6 py-20 md:w-1/2 md:px-12 md:py-16 lg:px-26 lg:py-32"
     >
       <h2 v-if="heading" class="mb-3 text-3xl md:text-4xl lg:text-6xl">
         {{ heading }}
       </h2>
       <div
-        v-balance-text.children
         v-if="description"
-        v-html="description"
+        v-balance-text.children
         class="mb-6"
+        v-html="description"
       ></div>
       <EmailSignupForm
         :class="{ 'mx-auto': textAlign === 'center' }"

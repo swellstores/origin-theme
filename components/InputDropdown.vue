@@ -2,24 +2,11 @@
   <div class="relative">
     <div
       ref="dropdown"
-      class="
-        relative
-        w-full
-        flex
-        p-2
-        pr-10
-        items-center
-        bg-primary-lightest
-        border border-primary-med
-        font-semibold
-        cursor-pointer
-        rounded
-        focus:outline-none focus:shadow-outline
-      "
+      class="focus:outline-none relative flex w-full cursor-pointer items-center rounded border border-primary-med bg-primary-lightest p-2 pr-10 font-semibold focus:shadow-outline"
       :class="{ 'rounded-b-none': dropdownIsActive }"
       @click="toggleDropdown()"
     >
-      <span class="ml-2 my-1 whitespace-no-wrap">{{ selectedLabel }}</span>
+      <span class="whitespace-no-wrap my-1 ml-2">{{ selectedLabel }}</span>
       <div v-show="dropdownIsActive" class="absolute right-3 mt-px">
         <BaseIcon icon="uil:angle-up" />
       </div>
@@ -31,31 +18,13 @@
     <ul
       v-show="dropdownIsActive"
       :class="{ 'rounded-t-none': dropdownIsActive, 'max-h-40': compact }"
-      class="
-        absolute
-        block
-        -mt-px
-        w-full
-        bg-primary-lightest
-        py-2
-        border border-primary-med
-        rounded
-        z-40
-        overflow-scroll
-      "
+      class="absolute z-40 -mt-px block w-full overflow-scroll rounded border border-primary-med bg-primary-lightest py-2"
       role="listbox"
     >
       <li
         v-for="(option, index) in options"
         :key="`option-${index}`"
-        class="
-          mb-0
-          px-2
-          py-3
-          items-center
-          cursor-pointer
-          hover:bg-primary-lighter
-        "
+        class="mb-0 cursor-pointer items-center px-2 py-3 hover:bg-primary-lighter"
         role="option"
         @click="selectOption(option)"
       >

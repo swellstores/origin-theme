@@ -6,7 +6,7 @@
       :to="
         localePath(previousOrderRoute ? previousOrderRoute : '/account/orders/')
       "
-      class="flex items-center cursor-pointer mb-6"
+      class="mb-6 flex cursor-pointer items-center"
     >
       <BaseIcon icon="uil:angle-left" size="sm" />
       <span class="ml-1">{{
@@ -23,7 +23,7 @@
 
     <BaseButton
       v-if="previousOrderRoute"
-      class="w-full block mb-6"
+      class="mb-6 block w-full"
       fit="auto"
       appearance="light"
       :label="$tc('account.orders.returns.backToOrders', 2)"
@@ -32,7 +32,7 @@
 
     <BaseButton
       v-if="!previousOrderRoute"
-      class="w-full block"
+      class="block w-full"
       fit="auto"
       appearance="dark"
       icon="shopping-bag"

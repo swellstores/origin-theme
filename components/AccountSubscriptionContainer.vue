@@ -1,10 +1,10 @@
 <template>
-  <div class="bg-primary-lightest md:py-0 py-4 rounded shadow-md">
-    <div class="container md:p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div class="rounded bg-primary-lightest py-4 shadow-md md:py-0">
+    <div class="container grid grid-cols-1 gap-4 md:grid-cols-2 md:p-4">
       <div
-        class="grid md:mb-0 mb-4"
+        class="mb-4 grid md:mb-0"
         :class="{
-          'grid-cols-1 md:grid-cols-2 gap-4': thumbnails.length === 1,
+          'grid-cols-1 gap-4 md:grid-cols-2': thumbnails.length === 1,
           'grid-cols-2 gap-4': thumbnails.length === 2,
           'grid-cols-2 grid-rows-2 gap-4': thumbnails.length > 2,
         }"
@@ -12,7 +12,7 @@
         <div
           v-for="(media, index) in thumbnails"
           :key="`product-media-${index}`"
-          class="relative rounded overflow-hidden"
+          class="relative overflow-hidden rounded"
         >
           <VisualMedia :source="media" size="240px" />
 
@@ -25,13 +25,7 @@
             >
               <div class="overlay" />
               <span
-                class="
-                  absolute
-                  center-xy
-                  text-lg
-                  font-semibold
-                  text-primary-lightest
-                "
+                class="center-xy absolute text-lg font-semibold text-primary-lightest"
               >
                 +{{
                   subscription.product.bundleItems.length - thumbnails.length
@@ -43,7 +37,7 @@
       </div>
 
       <div class="flex flex-col">
-        <h2 class="text-xl mb-1">
+        <h2 class="mb-1 text-xl">
           {{ subscription.product.name }}
         </h2>
 
@@ -147,6 +141,6 @@ export default {
 
 <style lang="postcss" scoped>
 .overlay {
-  @apply opacity-50 absolute top-0 left-0 w-full h-full bg-primary-darker;
+  @apply absolute top-0 left-0 h-full w-full bg-primary-darker opacity-50;
 }
 </style>

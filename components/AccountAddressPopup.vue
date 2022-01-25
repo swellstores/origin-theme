@@ -1,25 +1,15 @@
 <template>
   <transition name="popup" :duration="700" appear>
-    <div class="z-40 fixed inset-0" @keyup.enter="handleEnterKey">
+    <div class="fixed inset-0 z-40" @keyup.enter="handleEnterKey">
       <!-- Overlay -->
       <div
-        class="overlay opacity-50 absolute w-full h-full bg-primary-darker"
+        class="overlay absolute h-full w-full bg-primary-darker opacity-50"
         @click="$emit('click-close')"
       />
 
       <!-- Panel -->
       <div
-        class="
-          panel
-          w-full
-          h-vh-gap
-          absolute
-          bottom-0
-          rounded-t
-          bg-primary-lighter
-          overflow-scroll
-          md:w-128 md:h-auto md:max-h-80vh md:relative md:rounded md:center-xy
-        "
+        class="panel h-vh-gap md:center-xy absolute bottom-0 w-full overflow-scroll rounded-t bg-primary-lighter md:relative md:h-auto md:max-h-80vh md:w-128 md:rounded"
       >
         <div class="container pt-2 pb-4 md:pb-0">
           <div class="flex py-4">
@@ -128,10 +118,10 @@
               </template>
             </div>
 
-            <div class="flex flex-no-wrap mb-6">
-              <div class="w-1/2 mr-3">
+            <div class="flex-no-wrap mb-6 flex">
+              <div class="mr-3 w-1/2">
                 <label
-                  class="label-xs-bold-faded block mb-2"
+                  class="label-xs-bold-faded mb-2 block"
                   for="region-select"
                   >{{ $t('account.addresses.popup.region.label') }}</label
                 >
@@ -140,17 +130,7 @@
                   <region-select
                     id="region-select"
                     v-model="state"
-                    class="
-                      w-full
-                      pl-4
-                      pr-6
-                      py-3
-                      bg-primary-lightest
-                      border border-primary-med
-                      rounded
-                      appearance-none
-                      truncate
-                    "
+                    class="w-full appearance-none truncate rounded border border-primary-med bg-primary-lightest py-3 pl-4 pr-6"
                     :country="country"
                     :region="state"
                     :disable-placeholder="true"
@@ -160,7 +140,7 @@
                   <div>
                     <BaseIcon
                       icon="uil:angle-down"
-                      class="absolute mr-2 right-0 center-y"
+                      class="center-y absolute right-0 mr-2"
                     />
                   </div>
                 </div>
@@ -174,7 +154,7 @@
                 </template>
               </div>
 
-              <div class="w-1/2 ml-3">
+              <div class="ml-3 w-1/2">
                 <InputText
                   v-model="zip"
                   class="mb-2"
@@ -195,7 +175,7 @@
 
             <div class="mb-6">
               <label
-                class="label-xs-bold-faded block mb-2"
+                class="label-xs-bold-faded mb-2 block"
                 for="country-select"
                 >{{ $t('account.addresses.popup.country.label') }}</label
               >
@@ -204,15 +184,7 @@
                 <country-select
                   id="country-select"
                   v-model="country"
-                  class="
-                    w-full
-                    px-4
-                    py-3
-                    bg-primary-lightest
-                    border border-primary-med
-                    rounded
-                    appearance-none
-                  "
+                  class="w-full appearance-none rounded border border-primary-med bg-primary-lightest px-4 py-3"
                   :country="country"
                   :usei18n="false"
                   :autocomplete="true"
@@ -220,7 +192,7 @@
 
                 <BaseIcon
                   icon="uil:angle-down"
-                  class="absolute mr-2 right-0 center-y"
+                  class="center-y absolute right-0 mr-2"
                 />
               </div>
 
@@ -268,7 +240,7 @@
 
             <!-- Duplicate button elements to match fixed content below -->
             <div
-              class="block md:hidden grid gap-y-4 invisible pointer-events-none"
+              class="pointer-events-none invisible block grid gap-y-4 md:hidden"
             >
               <div v-if="type === 'new'" class="btn">|</div>
               <div v-if="type === 'update'" class="btn">|</div>
@@ -279,18 +251,7 @@
 
         <!-- Action buttons -->
         <div
-          class="
-            w-full
-            fixed
-            container
-            center-x
-            bottom-0
-            py-4
-            bg-primary-lighter
-            grid
-            gap-y-4
-            md:transform-none md:sticky md:left-0
-          "
+          class="center-x container fixed bottom-0 grid w-full gap-y-4 bg-primary-lighter py-4 md:sticky md:left-0 md:transform-none"
         >
           <BaseButton
             v-if="type === 'new'"

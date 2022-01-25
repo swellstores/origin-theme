@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label v-if="label" class="label-xs-bold-faded block mb-2">{{
+    <label v-if="label" class="label-xs-bold-faded mb-2 block">{{
       label
     }}</label>
     <input
@@ -14,7 +14,7 @@
       @input="$emit('input', $event.target.value)"
     />
 
-    <span v-if="hint" class="inline-block text-sm text-primary-dark mt-1">{{
+    <span v-if="hint" class="mt-1 inline-block text-sm text-primary-dark">{{
       hint
     }}</span>
   </div>
@@ -65,15 +65,15 @@ export default {
 }
 
 input {
-  @apply w-full px-4 py-3 bg-primary-lightest border border-primary-med rounded transition ease-in-out duration-200;
+  @apply w-full rounded border border-primary-med bg-primary-lightest px-4 py-3 transition duration-200 ease-in-out;
 
   &:focus {
-    @apply outline-none;
     border-bottom: var(--colors-primary-dark) 1px solid;
+    @apply outline-none;
   }
 
   &:disabled {
-    @apply opacity-50 cursor-not-allowed bg-primary-med border-t-0 border-l-0 border-r-0 border-primary-darker;
+    @apply cursor-not-allowed border-t-0 border-l-0 border-r-0 border-primary-darker bg-primary-med opacity-50;
   }
 }
 </style>

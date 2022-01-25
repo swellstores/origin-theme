@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'bg-primary-darkest text-primary-lighter text-sm leading-snug font-semibold text-center',
+      'bg-primary-darkest text-center text-sm font-semibold leading-snug text-primary-lighter',
       { hidden: hidden },
     ]"
   >

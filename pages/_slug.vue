@@ -17,13 +17,13 @@
 
   <div
     v-else-if="$fetchState.pending"
-    class="py-32 flex flex-col justify-center items-center md:container"
+    class="flex flex-col items-center justify-center py-32 md:container"
   >
-    <div class="bg-primary-light w-1/2 h-7 mb-2" />
-    <div class="bg-primary-light w-1/3 h-7 mb-6" />
-    <div class="bg-primary-light w-3/5 h-2 mb-4" />
-    <div class="bg-primary-light w-4/5 h-2 mb-8" />
-    <div class="bg-primary-light w-40 h-10" />
+    <div class="mb-2 h-7 w-1/2 bg-primary-light" />
+    <div class="mb-6 h-7 w-1/3 bg-primary-light" />
+    <div class="mb-4 h-2 w-3/5 bg-primary-light" />
+    <div class="mb-8 h-2 w-4/5 bg-primary-light" />
+    <div class="h-10 w-40 bg-primary-light" />
   </div>
 
   <SectionUndefined

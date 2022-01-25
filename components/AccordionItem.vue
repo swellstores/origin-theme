@@ -2,12 +2,12 @@
   <div class="border-b border-primary-med">
     <div :class="{ container: useContainer }">
       <div
-        class="flex flex-row items-center z-10 cursor-pointer"
+        class="z-10 flex cursor-pointer flex-row items-center"
         @click="toggleExpanded()"
       >
-        <strong class="py-3 text-md">{{ heading }}</strong>
+        <strong class="text-md py-3">{{ heading }}</strong>
         <div
-          class="ml-auto transition-all transition-fast ease-in-out"
+          class="transition-fast ml-auto transition-all ease-in-out"
           :class="{ 'rotate-1/2': isExpanded }"
         >
           <BaseIcon icon="uil:angle-down" size="lg" />
