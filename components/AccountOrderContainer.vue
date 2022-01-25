@@ -1,10 +1,10 @@
 <template>
-  <div class="bg-primary-lightest md:py-0 py-4 rounded shadow-md">
-    <div class="container md:p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div class="rounded bg-primary-lightest py-4 shadow-md md:py-0">
+    <div class="container grid grid-cols-1 gap-4 md:grid-cols-2 md:p-4">
       <div
-        class="grid md:mb-0 mb-4"
+        class="mb-4 grid md:mb-0"
         :class="{
-          'grid-cols-1 md:grid-cols-2 gap-4': thumbnails.length === 1,
+          'grid-cols-1 gap-4 md:grid-cols-2': thumbnails.length === 1,
           'grid-cols-2 gap-4': thumbnails.length === 2,
           'grid-cols-2 grid-rows-2 gap-4': thumbnails.length > 2,
         }"
@@ -12,15 +12,15 @@
         <div
           v-for="(media, index) in thumbnails"
           :key="`product-media-${index}`"
-          class="relative rounded overflow-hidden"
+          class="relative overflow-hidden rounded"
         >
           <VisualMedia v-if="media" :source="media" sizes="120px" />
 
-          <div v-else class="relative bg-primary-lighter rounded pb-full">
+          <div v-else class="relative rounded bg-primary-lighter pb-full">
             <BaseIcon
               icon="uil:camera-slash"
               size="lg"
-              class="absolute center-xy text-primary-med"
+              class="center-xy absolute text-primary-med"
             />
           </div>
 
@@ -32,13 +32,7 @@
             class="overlay text-primary-lightest"
           >
             <span
-              class="
-                absolute
-                center-xy
-                text-lg
-                font-semibold
-                text-primary-lightest
-              "
+              class="center-xy absolute text-lg font-semibold text-primary-lightest"
             >
               +{{ orderProducts.length - thumbnails.length }}
             </span>
@@ -47,12 +41,12 @@
       </div>
 
       <div class="flex flex-col">
-        <div class="hidden md:flex md:items-center mb-3">
-          <h2 class="inline-block mb-0 text-xl">
+        <div class="mb-3 hidden md:flex md:items-center">
+          <h2 class="mb-0 inline-block text-xl">
             {{ statusMessage[1] }}
           </h2>
           <svg
-            class="w-3 h-3 fill-current inline-block ml-2"
+            class="ml-2 inline-block h-3 w-3 fill-current"
             :class="{
               'text-ok-default': order.status === 'complete',
               'text-error-default': order.status === 'canceled',
@@ -70,26 +64,26 @@
           {{ $t('account.orders.order.title') }} #{{ order.number }}
         </h2>
 
-        <p class="text-sm mb-2">
+        <p class="mb-2 text-sm">
           <span class="pr-2">{{ $t('account.orders.order.date') }}</span>
           <span class="font-semibold">{{ formattedDate }}</span>
         </p>
 
-        <p class="text-sm mb-2">
+        <p class="mb-2 text-sm">
           <span class="pr-2">{{ $t('account.orders.order.title') }}</span>
           <span class="font-semibold">#{{ order.number }}</span>
         </p>
 
-        <p class="text-sm mb-2">
+        <p class="mb-2 text-sm">
           <span class="pr-2">{{ $t('account.orders.order.total') }}</span>
           <span class="font-semibold">{{
             formatMoney(order.grandTotal, order.currency)
           }}</span>
         </p>
 
-        <div class="md:hidden mb-10">
+        <div class="mb-10 md:hidden">
           <svg
-            class="w-2 h-2 fill-current inline-block mr-1"
+            class="mr-1 inline-block h-2 w-2 fill-current"
             :class="{
               'text-ok-default': order.status === 'complete',
               'text-error-default': order.status === 'canceled',
@@ -206,6 +200,6 @@ export default {
 
 <style lang="postcss" scoped>
 .overlay {
-  @apply opacity-50 absolute top-0 left-0 w-full h-full bg-primary-darker;
+  @apply absolute top-0 left-0 h-full w-full bg-primary-darker opacity-50;
 }
 </style>

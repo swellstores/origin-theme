@@ -26,14 +26,14 @@
     </aside>
 
     <div v-else class="">
-      <div class="flex justify-center mb-4 gap-x-2">
+      <div class="mb-4 flex justify-center gap-x-2">
         <template v-for="(el, index) in pageButtons">
           <NuxtLink
             v-if="el !== 'break'"
             :key="index"
             :class="{ disabled: currentPage == el }"
             :to="localePath({ query: { page: el } })"
-            class="h-auto px-3 py-2 btn"
+            class="btn h-auto px-3 py-2"
           >
             {{ el }}
           </NuxtLink>

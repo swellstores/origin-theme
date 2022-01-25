@@ -1,17 +1,10 @@
 <template>
   <div class="relative cursor-pointer" @click="toggleDropdown()">
     <div
-      class="
-        whitespace-nowrap
-        focus:outline-none focus:shadow-outline
-        hover:text-accent-default
-        transition-all
-        duration-300
-        ease-in-out
-      "
+      class="focus:outline-none whitespace-nowrap transition-all duration-300 ease-in-out hover:text-accent-default focus:shadow-outline"
       :class="{
         'h-full': appearance === 'popup',
-        'w-full p-2 rounded bg-primary-lightest': appearance === 'float',
+        'w-full rounded bg-primary-lightest p-2': appearance === 'float',
       }"
     >
       <div v-if="appearance === 'popup'" class="grid-icon-label font-semibold">
@@ -39,17 +32,7 @@
     <transition name="popup" appear :duration="500">
       <div v-if="appearance === 'popup' && dropdownIsActive">
         <div
-          class="
-            overlay
-            fixed
-            w-full
-            h-full
-            opacity-50
-            top-0
-            left-0
-            bg-primary-darker
-            z-30
-          "
+          class="overlay fixed top-0 left-0 z-30 h-full w-full bg-primary-darker opacity-50"
           @click="dropdownIsActive = false"
         />
       </div>
@@ -58,11 +41,11 @@
     <ul
       v-show="dropdownIsActive"
       :class="{
-        'w-max shadow-md absolute border border-primary-med center-x':
+        'center-x absolute w-max border border-primary-med shadow-md':
           appearance === 'float',
-        'w-full max-w-80 mx-auto center-xy fixed': appearance === 'popup',
+        'center-xy fixed mx-auto w-full max-w-80': appearance === 'popup',
       }"
-      class="block -mt-px bg-primary-lightest rounded z-40"
+      class="z-40 -mt-px block rounded bg-primary-lightest"
       role="listbox"
     >
       <li
@@ -71,21 +54,12 @@
         :class="{
           'pointer-events-none': currency.code === currentCurrency,
         }"
-        class="
-          mb-0
-          px-2
-          flex
-          items-center
-          cursor-pointer
-          hover:bg-primary-lighter
-          border-b border-primary-light
-          last:border-b-0
-        "
+        class="mb-0 flex cursor-pointer items-center border-b border-primary-light px-2 last:border-b-0 hover:bg-primary-lighter"
         role="option"
         @click="selectCurrency(currency)"
       >
         <div class="w-full p-2">
-          <span v-if="!hideSymbolOnList" class="font-semibold mr-2">{{
+          <span v-if="!hideSymbolOnList" class="mr-2 font-semibold">{{
             currency.symbol
           }}</span>
           <span

@@ -1,34 +1,19 @@
 <template>
   <transition name="popup" :duration="700" appear>
-    <div class="z-40 fixed inset-0">
+    <div class="fixed inset-0 z-40">
       <!-- Overlay -->
       <div
-        class="overlay opacity-50 absolute w-full h-full bg-primary-darker"
+        class="overlay absolute h-full w-full bg-primary-darker opacity-50"
         @click="$emit('click-close')"
       />
 
       <!-- Panel -->
       <div
-        class="
-          panel
-          w-full
-          md:w-128
-          py-6
-          h-auto
-          md:max-h-80vh
-          absolute
-          md:relative
-          bottom-0
-          rounded-t
-          md:rounded
-          bg-primary-lighter
-          overflow-scroll
-          md:center-xy
-        "
+        class="panel md:center-xy absolute bottom-0 h-auto w-full overflow-scroll rounded-t bg-primary-lighter py-6 md:relative md:max-h-80vh md:w-128 md:rounded"
       >
         <div class="container">
           <!-- Title + message -->
-          <div class="flex mb-5">
+          <div class="mb-5 flex">
             <h3>
               {{
                 paused
@@ -50,7 +35,7 @@
 
           <!-- Options -->
           <div class="mb-10">
-            <div class="flex items-center mb-2">
+            <div class="mb-2 flex items-center">
               <input
                 id="now"
                 v-model="interval"
@@ -62,18 +47,10 @@
               />
               <label
                 for="now"
-                class="flex items-center label-sm cursor-pointer"
+                class="label-sm flex cursor-pointer items-center"
               >
                 <span
-                  class="
-                    w-3
-                    h-3
-                    inline-block
-                    mr-2
-                    rounded-full
-                    border border-primary-darkest
-                    flex-no-shrink
-                  "
+                  class="flex-no-shrink mr-2 inline-block h-3 w-3 rounded-full border border-primary-darkest"
                 ></span>
                 {{
                   paused
@@ -96,18 +73,10 @@
               />
               <label
                 for="cycle-time"
-                class="flex items-center label-sm cursor-pointer"
+                class="label-sm flex cursor-pointer items-center"
               >
                 <span
-                  class="
-                    w-3
-                    h-3
-                    inline-block
-                    mr-2
-                    rounded-full
-                    border border-primary-darkest
-                    flex-no-shrink
-                  "
+                  class="flex-no-shrink mr-2 inline-block h-3 w-3 rounded-full border border-primary-darkest"
                 ></span>
                 {{
                   paused
@@ -121,7 +90,7 @@
           <!-- Action buttons -->
           <div class="block md:flex">
             <BaseButton
-              class="md:w-1/2 mb-4 md:ml-4 md:mb-0 md:order-2"
+              class="mb-4 md:order-2 md:ml-4 md:mb-0 md:w-1/2"
               appearance="dark"
               :label="confirmButtonLabel"
               :loading-label="
@@ -134,7 +103,7 @@
             />
 
             <BaseButton
-              class="md:w-1/2 md:mb-0 md:order-1"
+              class="md:order-1 md:mb-0 md:w-1/2"
               appearance="light"
               :label="
                 paused
@@ -210,7 +179,7 @@ input[type='radio']:checked + label {
 }
 
 input[type='radio']:checked + label span {
+  box-shadow: 0 0 0 2px var(--colors-primary-lighter) inset;
   @apply bg-primary-darkest;
-  box-shadow: 0px 0px 0px 2px var(--colors-primary-lighter) inset;
 }
 </style>

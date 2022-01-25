@@ -1,28 +1,18 @@
 <template>
   <transition name="popup" :duration="700" appear>
-    <div class="z-40 fixed inset-0">
+    <div class="fixed inset-0 z-40">
       <!-- Overlay -->
       <div
-        class="overlay opacity-50 absolute w-full h-full bg-primary-darker"
+        class="overlay absolute h-full w-full bg-primary-darker opacity-50"
         @click="$emit('click-close')"
       />
 
       <!-- Panel -->
       <div
-        class="
-          panel
-          w-full
-          h-vh-gap
-          absolute
-          bottom-0
-          rounded-t
-          bg-primary-lighter
-          overflow-scroll
-          md:w-128 md:h-auto md:max-h-80vh md:relative md:rounded md:center-xy
-        "
+        class="panel h-vh-gap md:center-xy absolute bottom-0 w-full overflow-scroll rounded-t bg-primary-lighter md:relative md:h-auto md:max-h-80vh md:w-128 md:rounded"
       >
         <div class="container py-6">
-          <div class="flex mb-5">
+          <div class="mb-5 flex">
             <h3 v-if="heading">
               {{ heading }}
             </h3>
@@ -47,9 +37,9 @@
           </div>
 
           <!-- Action buttons -->
-          <div class="block md:flex mt-16">
+          <div class="mt-16 block md:flex">
             <BaseButton
-              class="md:w-1/2 mb-4 md:ml-4 md:mb-0 md:order-2"
+              class="mb-4 md:order-2 md:ml-4 md:mb-0 md:w-1/2"
               appearance="dark"
               :label="acceptLabel"
               :loading-label="loadingLabel"
@@ -58,7 +48,7 @@
             />
 
             <BaseButton
-              class="md:w-1/2 md:mb-0 md:order-1"
+              class="md:order-1 md:mb-0 md:w-1/2"
               appearance="light"
               :label="refuseLabel"
               @click.native="$emit('click-close')"

@@ -10,7 +10,7 @@
     <div
       v-for="(panel, index) in panels"
       :key="id + 'multiPanel' + index"
-      class="relative w-full min-h-72 md:w-1/2 lg:min-h-96"
+      class="relative min-h-72 w-full md:w-1/2 lg:min-h-96"
       :class="[
         `bg-${bgColor}`,
         {
@@ -25,14 +25,14 @@
       <!-- Empty states -->
       <div
         v-if="!panel.type"
-        class="m-6 py-32 border border-dashed text-center"
+        class="m-6 border border-dashed py-32 text-center"
       >
         <h3>Panel {{ index + 1 }}</h3>
         <p>No type chosen</p>
       </div>
       <div
         v-else-if="!panel.image && !panel.heading"
-        class="m-6 py-32 border border-dashed text-center"
+        class="m-6 border border-dashed py-32 text-center"
       >
         <h3>Panel {{ index + 1 }}</h3>
         <p>No content added</p>
@@ -59,7 +59,7 @@
         <h2>{{ panel.heading }}</h2>
         <div
           v-balance-text.children
-          class="whitespace-pre-line mt-4"
+          class="mt-4 whitespace-pre-line"
           v-html="panel.description"
         />
         <div :class="{ '-ml-3': panel.textAlign !== 'center' }">
@@ -69,7 +69,7 @@
             :class="{ 'inline-block': panel.links.length < 3 }"
           >
             <BaseButton
-              class="inline-block mt-6 mx-3"
+              class="mx-3 mt-6 inline-block"
               :type="link.style"
               :link="link.url"
               :label="link.label"

@@ -2,21 +2,9 @@
   <transition name="fade-up" appear>
     <div
       v-if="showCookieNotification"
-      class="
-        fixed
-        z-20
-        bottom-6
-        inset-x-6
-        px-4
-        py-3
-        bg-primary-lightest
-        border border-primary-light
-        rounded
-        shadow-md
-        sm:left-auto sm:max-w-80
-      "
+      class="fixed inset-x-6 bottom-6 z-20 rounded border border-primary-light bg-primary-lightest px-4 py-3 shadow-md sm:left-auto sm:max-w-80"
     >
-      <div v-if="type === 'compact'" class="flex justify-between items-center">
+      <div v-if="type === 'compact'" class="flex items-center justify-between">
         <p class="text-sm">
           {{ $t('notifications.cookies.message') }}
           <NuxtLink
@@ -29,7 +17,7 @@
         </p>
         <button
           type="button"
-          class="w-8 h-8 rounded-full bg-primary-light ml-3 p-1"
+          class="ml-3 h-8 w-8 rounded-full bg-primary-light p-1"
           :aria-label="$t('notifications.cookies.close')"
           @click="acceptCookies"
         >

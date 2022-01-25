@@ -3,36 +3,16 @@
     <div v-if="product" class="fixed inset-0 z-40">
       <!-- Overlay -->
       <div
-        class="absolute w-full h-full opacity-50 overlay bg-primary-darker"
+        class="overlay absolute h-full w-full bg-primary-darker opacity-50"
         @click="$emit('click-close')"
       />
 
       <!-- Panel -->
       <div
-        class="
-          absolute
-          bottom-0
-          w-full
-          overflow-x-auto overflow-y-auto
-          rounded-t
-          panel
-          md:w-max
-          h-vh-gap
-          md:h-auto md:max-h-80vh md:relative md:rounded-md
-          bg-primary-lightest
-          md:center-xy
-        "
+        class="panel h-vh-gap md:center-xy absolute bottom-0 w-full overflow-x-auto overflow-y-auto rounded-t bg-primary-lightest md:relative md:h-auto md:max-h-80vh md:w-max md:rounded-md"
       >
         <button
-          class="
-            absolute
-            right-0
-            z-10
-            float-right
-            mt-3
-            mr-3
-            md:float-none md:mr-6 md:mt-6
-          "
+          class="absolute right-0 z-10 float-right mt-3 mr-3 md:float-none md:mr-6 md:mt-6"
           @click.prevent="
             $store.commit('setState', {
               key: 'quickViewIsVisible',
@@ -44,29 +24,24 @@
         </button>
 
         <div
-          class="
-            container
-            grid grid-cols-1
-            pt-3
-            md:max-w-auto md:overflow-hidden md:grid-cols-2 md:p-6
-          "
+          class="md:max-w-auto container grid grid-cols-1 pt-3 md:grid-cols-2 md:overflow-hidden md:p-6"
         >
           <!-- Product image -->
           <div class="relative mb-5 h-min md:mb-0 md:w-96 lg:w-120">
             <MediaSlider
               v-if="productImages"
               :media="product.images"
-              class="h-0 md:hidden pb-full"
+              class="h-0 pb-full md:hidden"
             />
             <!-- Fallback image -->
             <div
               v-else
-              class="relative rounded md:hidden bg-primary-lighter pb-full"
+              class="relative rounded bg-primary-lighter pb-full md:hidden"
             >
               <BaseIcon
                 icon="uil:camera-slash"
                 size="lg"
-                class="absolute center-xy text-primary-med"
+                class="center-xy absolute text-primary-med"
               />
             </div>
             <!-- Media stack for large screens -->
@@ -82,22 +57,11 @@
                 </div>
               </template>
 
-              <div class="flex mt-6 overflow-x-auto overflow-y-auto no-wrap">
+              <div class="no-wrap mt-6 flex overflow-x-auto overflow-y-auto">
                 <button
                   v-for="(image, index) in product.images"
                   :key="image.id"
-                  class="
-                    flex-shrink-0
-                    w-20
-                    h-20
-                    p-2
-                    mr-2
-                    transition
-                    duration-300
-                    rounded
-                    hover:border-primary-med
-                    ease
-                  "
+                  class="ease mr-2 h-20 w-20 flex-shrink-0 rounded p-2 transition duration-300 hover:border-primary-med"
                   :class="{
                     'border border-primary-darkest':
                       index === productPreviewIndex,
@@ -119,20 +83,20 @@
               <BaseIcon
                 icon="uil:camera-slash"
                 size="lg"
-                class="absolute center-xy text-primary-med"
+                class="center-xy absolute text-primary-med"
               />
             </div>
           </div>
 
           <!-- Product details -->
-          <div class="relative pb-6 md:pb-0 md:ml-5">
-            <div class="relative h-full md:overflow-y-auto md:overflow-x-auto">
+          <div class="relative pb-6 md:ml-5 md:pb-0">
+            <div class="relative h-full md:overflow-x-auto md:overflow-y-auto">
               <div class="relative w-full px-1 md:absolute">
                 <h2 class="mb-4 leading-tight">
                   {{ product.name }}
                 </h2>
                 <NuxtLink
-                  class="inline-block mb-5 underline"
+                  class="mb-5 inline-block underline"
                   :to="
                     localePath(
                       resolveUrl({ type: 'product', value: product.slug })
@@ -221,16 +185,16 @@
                 />
 
                 <!-- Duplicate button element to match fixed button height -->
-                <div class="opacity-0 pointer-events-none">
+                <div class="pointer-events-none opacity-0">
                   <span
                     v-if="product.stockTracking && !product.stockPurchasable"
-                    class="block mb-3"
+                    class="mb-3 block"
                     >|</span
                   >
                   <button
                     :class="{ loading: cartIsUpdating }"
                     type="submit"
-                    class="relative w-full btn btn--lg"
+                    class="btn btn--lg relative w-full"
                   >
                     |
                   </button>
@@ -240,15 +204,7 @@
             <!-- Cart button & stock info -->
             <div
               v-if="variation"
-              class="
-                container
-                fixed
-                bottom-0
-                pt-4
-                center-x
-                bg-primary-lightest
-                md:px-0 md:w-full md:absolute
-              "
+              class="center-x container fixed bottom-0 bg-primary-lightest pt-4 md:absolute md:w-full md:px-0"
             >
               <StockStatus
                 v-if="product.stockTracking && !product.stockPurchasable"
@@ -276,20 +232,14 @@
                     disabled: !available,
                   }"
                   type="submit"
-                  class="btn btn--lg relative w-full h-auto"
+                  class="btn btn--lg relative h-auto w-full"
                   :disabled="!available"
                   @click.prevent="addToCart"
                 >
                   <div v-show="!cartIsUpdating">
                     <span>{{ $t('products.slug.addToCart') }}</span>
                     <span
-                      class="
-                        inline-block
-                        w-5
-                        mx-1
-                        mb-1
-                        border-b border-primary-lightest
-                      "
+                      class="mx-1 mb-1 inline-block w-5 border-b border-primary-lightest"
                     />
                     <span>{{
                       formatMoney(variation.price * quantity, currency)
@@ -297,7 +247,7 @@
                     <span v-if="billingInterval">{{ billingInterval }}</span>
                     <span
                       v-if="variation.origPrice"
-                      class="ml-1 line-through text-primary-med"
+                      class="ml-1 text-primary-med line-through"
                     >
                       {{
                         formatMoney(variation.origPrice * quantity, currency)
@@ -315,7 +265,7 @@
                     </span>
                   </div>
                   <div v-show="cartIsUpdating" class>
-                    <div class="absolute inset-0 mt-3 spinner" />
+                    <div class="spinner absolute inset-0 mt-3" />
                     <span class="absolute inset-0 mt-5">{{
                       $t('products.slug.updating')
                     }}</span>
@@ -376,17 +326,6 @@ export default {
 
     // Fetch product
     const product = await $swell.products.get(this.productId)
-
-    // Compute initial values for options
-    const optionState =
-      this.optionState ||
-      (product.options || []).reduce((options, { name, values, inputType }) => {
-        // Set first available value for select current option
-        if (!inputType || inputType === 'select') {
-          options[name] = get(values, '0.name')
-        }
-        return options
-      }, {})
 
     if (product.bundle && product.bundleItems?.length) {
       const bundleItemsOptionState = product.bundleItems.map((item) => {
@@ -732,13 +671,13 @@ export default {
 
 <style lang="postcss">
 .gradient {
-  @apply w-full absolute top-0 h-6 transform -translate-y-full;
-  background: rgb(255, 255, 255);
+  background: rgb(255 255 255);
   background: linear-gradient(
     0deg,
     theme('colors.primary.lighter') 0%,
     theme('colors.primary.lighter') 25%,
-    rgba(255, 255, 255, 0) 100%
+    rgba(255 255 255 / 0%) 100%
   );
+  @apply absolute top-0 h-6 w-full -translate-y-full transform;
 }
 </style>

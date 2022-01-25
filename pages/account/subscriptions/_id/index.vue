@@ -4,7 +4,7 @@
       <!-- Breadcrumb -->
       <NuxtLink
         :to="localePath('/account/subscriptions/')"
-        class="flex items-center mb-6 cursor-pointer"
+        class="mb-6 flex cursor-pointer items-center"
       >
         <BaseIcon icon="uil:angle-left" size="sm" /><span class="ml-1">
           {{ $t('account.subscriptions.id.backToSubscriptions') }}
@@ -14,14 +14,14 @@
 
     <!-- Fetch loader -->
     <div v-if="$fetchState.pending" class="container">
-      <div class="w-1/3 mb-6 loader-el h-7" />
-      <div class="w-3/5 h-2 mb-4 loader-el" />
-      <div class="w-2/5 h-2 mb-8 loader-el" />
+      <div class="loader-el mb-6 h-7 w-1/3" />
+      <div class="loader-el mb-4 h-2 w-3/5" />
+      <div class="loader-el mb-8 h-2 w-2/5" />
     </div>
 
     <div v-else>
-      <div class="container pb-10 border-b border-primary-med">
-        <div class="pb-6 mb-6 border-b border-primary-med">
+      <div class="container border-b border-primary-med pb-10">
+        <div class="mb-6 border-b border-primary-med pb-6">
           <h2 class="pb-6 text-2xl">
             {{ subscription.product.name }}
           </h2>
@@ -44,11 +44,11 @@
             $t('account.subscriptions.id.planItems')
           }}</span>
 
-          <div class="mb-6 md:grid md:grid-cols-2 md:col-gap-4">
+          <div class="md:col-gap-4 mb-6 md:grid md:grid-cols-2">
             <div
               v-for="(item, index) in planItems"
               :key="`plan-item-${index}`"
-              class="flex w-full py-6 border-b border-primary-light"
+              class="flex w-full border-b border-primary-light py-6"
             >
               <div class="mr-6 min-w-26">
                 <VisualMedia :source="selectThumbnail(item)" sizes="120px" />
@@ -82,8 +82,8 @@
             $t('account.subscriptions.id.plan')
           }}</span>
 
-          <div class="mb-6 md:grid md:grid-cols-2 md:col-gap-4">
-            <div class="flex w-full py-6 border-b border-primary-light">
+          <div class="md:col-gap-4 mb-6 md:grid md:grid-cols-2">
+            <div class="flex w-full border-b border-primary-light py-6">
               <div
                 v-if="
                   subscription.variant &&
@@ -138,7 +138,7 @@
           </div>
         </template>
 
-        <div class="rounded shadow-md bg-primary-lightest">
+        <div class="rounded bg-primary-lightest shadow-md">
           <div
             class="p-4"
             :class="{ 'border-b border-primary-med': status !== 'canceled' }"
@@ -190,7 +190,7 @@
           </div>
 
           <div v-if="status !== 'canceled'" class="p-4 text-sm">
-            <div class="flex items-center mb-2">
+            <div class="mb-2 flex items-center">
               <BaseIcon icon="uil:calender" size="sm" class="mr-2" />
               <p v-if="status === 'trial'">
                 {{ $t('account.subscriptions.id.trialEnds') }}
@@ -216,7 +216,7 @@
 
             <BaseButton
               v-if="status !== 'canceled' && allowPlanEdit"
-              class="block w-full mt-6"
+              class="mt-6 block w-full"
               fit="auto"
               appearance="dark"
               :label="$t('account.subscriptions.id.editPlan')"
@@ -236,7 +236,7 @@
           </p>
 
           <div class="mb-8">
-            <div class="p-4 text-sm border rounded border-primary-med">
+            <div class="rounded border border-primary-med p-4 text-sm">
               <p class="pb-2 font-semibold">
                 {{ $t('account.subscriptions.id.deliveryAddress') }}
               </p>
@@ -249,7 +249,7 @@
             </div>
             <div
               v-if="shipping.phone"
-              class="p-4 -mt-px text-sm border rounded border-primary-med"
+              class="-mt-px rounded border border-primary-med p-4 text-sm"
             >
               <p class="pb-2 font-semibold">
                 {{ $t('account.subscriptions.id.phoneNumber') }}
@@ -260,7 +260,7 @@
             </div>
             <div
               v-if="shipping && shipping.service"
-              class="p-4 -mt-px text-sm border rounded border-primary-med"
+              class="-mt-px rounded border border-primary-med p-4 text-sm"
             >
               <p class="pb-2 font-semibold">
                 {{ $t('account.subscriptions.id.deliveryMethod') }}
@@ -293,27 +293,21 @@
           </p>
 
           <div
-            class="
-              grid grid-cols-1
-              border
-              rounded
-              md:grid-cols-2
-              border-primary-med
-            "
+            class="grid grid-cols-1 rounded border border-primary-med md:grid-cols-2"
           >
             <!-- Method: Card -->
             <div
               v-if="billing && billing.card"
-              class="p-4 border-b md:border-b-0 md:border-r border-primary-med"
+              class="border-b border-primary-med p-4 md:border-b-0 md:border-r"
             >
-              <div class="flex mb-0 md:mb-4">
+              <div class="mb-0 flex md:mb-4">
                 <BrandCardIcon
                   :brand="billing.card.brand"
                   class="pr-4 md:pr-0"
                 />
 
                 <span
-                  class="pr-4 ml-0 text-sm font-semibold md:ml-auto md:pl-4"
+                  class="ml-0 pr-4 text-sm font-semibold md:ml-auto md:pl-4"
                   >{{ billing.card.brand }}</span
                 >
 
@@ -324,7 +318,7 @@
                 </div>
               </div>
 
-              <div class="hidden mb-4 md:flex">
+              <div class="mb-4 hidden md:flex">
                 <div class="text-base">
                   <span class="tracking-large">···· ····</span>
                   <span>&nbsp;{{ billing.card.last4 }}</span>
@@ -350,7 +344,7 @@
 
               <button
                 v-if="status !== 'canceled'"
-                class="px-2 mt-auto ml-auto"
+                class="mt-auto ml-auto px-2"
                 @click="editBillingAddressPopupIsActive = true"
               >
                 {{ $t('account.subscriptions.id.editBillingAddress') }}
@@ -414,7 +408,7 @@
             <span class="label-sm-bold">{{
               formatDate(order.dateCreated)
             }}</span>
-            <span class="ml-auto label-sm">#{{ order.number }}</span>
+            <span class="label-sm ml-auto">#{{ order.number }}</span>
           </NuxtLink>
         </div>
 

@@ -75,20 +75,20 @@ export default {
 
 <style lang="postcss">
 .box-selector {
-  @apply flex mr-1;
+  @apply mr-1 flex;
+
+  & label {
+    @apply cursor-pointer rounded border border-primary-med px-4 py-2;
+  }
 
   & input {
-    @apply p-0 m-0 border-0 appearance-none w-0 h-0 invisible;
+    @apply invisible m-0 h-0 w-0 appearance-none border-0 p-0;
 
     &:checked {
       & + label {
         @apply border-primary-darkest;
       }
     }
-  }
-
-  & label {
-    @apply cursor-pointer rounded border border-primary-med px-4 py-2;
   }
 }
 </style>

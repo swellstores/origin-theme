@@ -8,7 +8,7 @@
         :to="
           localePath(resolveUrl({ type: 'product', value: item.product.slug }))
         "
-        class="flex-shrink-0 block w-24"
+        class="block w-24 flex-shrink-0"
       >
         <VisualMedia
           :source="previewImage"
@@ -17,7 +17,7 @@
           class="overflow-hidden rounded"
         />
       </NuxtLink>
-      <div class="flex flex-col justify-between w-full ml-6">
+      <div class="ml-6 flex w-full flex-col justify-between">
         <!-- Name + options -->
         <div>
           <NuxtLink
@@ -64,8 +64,8 @@
         </div>
 
         <!-- Price/quantity + item editor toggle -->
-        <div class="clearfix mt-3 leading-none label-sm-bold">
-          <div class="inline-block py-1 -mb-1">
+        <div class="clearfix label-sm-bold mt-3 leading-none">
+          <div class="-mb-1 inline-block py-1">
             <span v-if="item.quantity > 1">{{ item.quantity }} &times; </span>
             <span>{{ formatMoney(item.price, currency) }}</span>
             <span v-if="subscriptionInterval"
@@ -75,7 +75,7 @@
           </div>
           <button
             type="button"
-            class="float-right p-1 -mb-1 -mr-1"
+            class="float-right -mb-1 -mr-1 p-1"
             @click.prevent="itemEditorIsVisible = !itemEditorIsVisible"
           >
             {{
@@ -92,7 +92,7 @@
       <div class="flex items-center pb-4 text-sm">
         <button
           type="button"
-          class="flex items-center pr-1 mr-3"
+          class="mr-3 flex items-center pr-1"
           @click.prevent="removeItem()"
         >
           <BaseIcon icon="uil:trash-alt" class="mr-1" />
@@ -107,7 +107,7 @@
         -->
 
         <!-- Quantity adjustment -->
-        <div class="flex ml-auto">
+        <div class="ml-auto flex">
           <ProductQuantity
             v-model="quantity"
             :initial-limit="maxQuantity"
@@ -122,7 +122,7 @@
 
       <!-- Adjustment error -->
       <div v-if="adjustmentError">
-        <p class="w-full text-error text-right pb-4">
+        <p class="text-error w-full pb-4 text-right">
           {{ $t('cart.exceedsStockLevel') }}
         </p>
       </div>

@@ -1,25 +1,12 @@
 <template>
   <transition name="nav-menu" :duration="500" appear>
-    <div class="z-30 fixed inset-0">
+    <div class="fixed inset-0 z-30">
       <div
-        class="
-          absolute
-          w-full
-          h-screen
-          flex flex-col
-          left-0
-          bg-primary-lightest
-          overflow-y-scroll
-        "
+        class="absolute left-0 flex h-screen w-full flex-col overflow-y-scroll bg-primary-lightest"
       >
         <!-- Navigation Links -->
         <div
-          class="
-            container
-            flex flex-grow
-            pt-28
-            md:justify-center md:items-center md:max-w-120
-          "
+          class="container flex flex-grow pt-28 md:max-w-120 md:items-center md:justify-center"
         >
           <transition-group
             name="nav-menu-link"
@@ -123,11 +110,11 @@ export default {
 
 <style lang="postcss" scoped>
 .sw-nav-link {
-  @apply w-full inline-block;
+  @apply inline-block w-full;
 
   &:focus,
   &.nuxt-link-active {
-    @apply shadow-none text-accent-default border-accent-default;
+    @apply border-accent-default text-accent-default shadow-none;
   }
 }
 
@@ -156,12 +143,12 @@ export default {
 
 .nav-menu-link-enter,
 .nav-menu-link-leave-to {
-  @apply opacity-0 transform translate-y-4;
+  @apply translate-y-4 transform opacity-0;
 }
 
 .nav-menu-link-enter-to,
 .nav-menu-link-leave {
-  @apply opacity-100 transform translate-y-0;
   transition-delay: calc(50ms * var(--i));
+  @apply translate-y-0 transform opacity-100;
 }
 </style>

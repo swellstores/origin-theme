@@ -21,7 +21,7 @@
         />
         <span
           :style="{ backgroundColor: color.hex }"
-          class="w-8 h-8 block rounded"
+          class="block h-8 w-8 rounded"
         />
       </label>
     </div>
@@ -72,11 +72,17 @@ export default {
 
 <style lang="postcss">
 .color-selector {
-  @apply flex mr-1;
+  @apply mr-1 flex;
+
+  & label {
+    & .indicator {
+      transform: translate3d(-50%, -50%, 0) scale(0.8);
+      @apply absolute top-1/2 left-1/2 h-full w-full rounded border;
+    }
+    @apply relative flex h-10 w-10 cursor-pointer items-center justify-center rounded;
+  }
 
   & input {
-    @apply p-0 m-0 border-0 appearance-none w-0 h-0 invisible;
-
     &:checked {
       & + label {
         & .indicator {
@@ -84,15 +90,7 @@ export default {
         }
       }
     }
-  }
-
-  & label {
-    @apply relative cursor-pointer flex justify-center items-center w-10 h-10 rounded;
-
-    & .indicator {
-      @apply absolute w-full h-full rounded border top-1/2 left-1/2;
-      transform: translate3d(-50%, -50%, 0) scale(0.8);
-    }
+    @apply invisible m-0 h-0 w-0 appearance-none border-0 p-0;
   }
 }
 </style>

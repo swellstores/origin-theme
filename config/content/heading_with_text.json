@@ -91,7 +91,10 @@
           "label": "Column width",
           "type": "select",
           "default": "compact",
-          "conditions": { "text_columns": "single", "heading_position": { "$ne": "left" } },
+          "conditions": {
+            "text_columns": "single",
+            "heading_position": { "$ne": "left" }
+          },
           "options": [
             {
               "value": "compact",

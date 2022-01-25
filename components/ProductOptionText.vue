@@ -91,7 +91,7 @@ export default {
 
 <style lang="postcss" scoped>
 .text-input {
-  @apply w-full p-4 text-sm border border-primary-med rounded;
+  @apply w-full rounded border border-primary-med p-4 text-sm;
 
   &:focus {
     @apply shadow-outline;

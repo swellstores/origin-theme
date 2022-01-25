@@ -1,16 +1,9 @@
 <template>
-  <div class="flex flex-grow bg-primary-darkest text-center x-padding py-24">
-    <div class="container mx-auto md:px-40 my-16 content-center">
+  <div class="x-padding flex flex-grow bg-primary-darkest py-24 text-center">
+    <div class="container mx-auto my-16 content-center md:px-40">
       <span
         v-if="error.statusCode"
-        class="
-          mx-auto
-          text-center
-          uppercase
-          label-xs-bold-faded
-          leading-none
-          max-w-128
-        "
+        class="label-xs-bold-faded mx-auto max-w-128 text-center uppercase leading-none"
       >
         {{ $t('errors.errorCode', { code: error.statusCode }) }}
       </span>
@@ -23,7 +16,7 @@
         </p>
         <div class="inline-block">
           <BaseButton
-            class="block mt-6"
+            class="mt-6 block"
             fit="auto"
             :label="$t('errors.returnHome')"
             :link="{ url: localePath('/'), title: 'Home' }"
@@ -32,10 +25,10 @@
       </template>
 
       <template v-else>
-        <h1 class="text-6xl px-10 leading-none">
+        <h1 class="px-10 text-6xl leading-none">
           {{ $t('errors.internal.title') }}
         </h1>
-        <p class="mt-4 mx-auto max-w-80 text-primary-lightest">
+        <p class="mx-auto mt-4 max-w-80 text-primary-lightest">
           {{ $t('errors.internal.message') }}
         </p>
 
@@ -43,16 +36,7 @@
           <a
             href="#"
             title="Reload"
-            class="
-              w-full
-              inline-block
-              mt-6
-              px-6
-              py-3
-              uppercase
-              tracking-wide
-              bg-primary-lighter
-            "
+            class="mt-6 inline-block w-full bg-primary-lighter px-6 py-3 uppercase tracking-wide"
             @click.prevent="reload()"
             >{{ $t('errors.internal.reload') }}</a
           >

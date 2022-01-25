@@ -1,12 +1,12 @@
 <template>
-  <div class="py-4 rounded shadow-md bg-primary-lightest">
+  <div class="rounded bg-primary-lightest py-4 shadow-md">
     <div class="px-4">
       <div class="flex w-full pb-6">
         <BrandCardIcon :brand="card.brand" />
 
         <div
           v-if="isDefault"
-          class="p-2 ml-auto rounded label-xs-bold bg-primary-light"
+          class="label-xs-bold ml-auto rounded bg-primary-light p-2"
         >
           {{ $t('account.payments.card.default') }}
         </div>
@@ -30,10 +30,10 @@
       </p>
     </div>
 
-    <div class="pt-4 mt-4 border-t border-primary-med">
+    <div class="mt-4 border-t border-primary-med pt-4">
       <div class="flex w-full px-4 text-sm">
         <div>
-          <span class="block mb-2 label-sm-bold">{{
+          <span class="label-sm-bold mb-2 block">{{
             $t('account.payments.card.billingAddress')
           }}</span>
           <template v-if="card.billing">

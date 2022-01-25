@@ -1,27 +1,15 @@
 <template>
   <transition name="popup" :duration="700" appear>
-    <div class="z-40 fixed inset-0">
+    <div class="fixed inset-0 z-40">
       <!-- Overlay -->
       <div
-        class="overlay opacity-50 absolute w-full h-full bg-primary-darker"
+        class="overlay absolute h-full w-full bg-primary-darker opacity-50"
         @click="$emit('click-close')"
       />
 
       <!-- Panel -->
       <div
-        class="
-          panel
-          w-full
-          md:w-128
-          py-6
-          h-vh-gap
-          absolute
-          bottom-0
-          rounded-t
-          bg-primary-lighter
-          overflow-scroll
-          md:h-auto md:max-h-80vh md:relative md:rounded md:center-xy
-        "
+        class="panel h-vh-gap md:center-xy absolute bottom-0 w-full overflow-scroll rounded-t bg-primary-lighter py-6 md:relative md:h-auto md:max-h-80vh md:w-128 md:rounded"
       >
         <div class="container h-full">
           <h3 class="pb-2">
@@ -32,7 +20,7 @@
           </p>
 
           <!-- Options -->
-          <label class="label-xs-bold-faded block mb-2">{{
+          <label class="label-xs-bold-faded mb-2 block">{{
             $t('account.subscriptions.id.popup.chooseDate.date.label')
           }}</label>
           <div class="mb-6">
@@ -41,19 +29,9 @@
                 v-model="date"
                 :min="minDate"
                 type="date"
-                class="
-                  w-full
-                  px-4
-                  py-3
-                  bg-primary-lightest
-                  border border-primary-med
-                  rounded
-                  transition
-                  ease-in-out
-                  duration-200
-                "
+                class="w-full rounded border border-primary-med bg-primary-lightest px-4 py-3 transition duration-200 ease-in-out"
               />
-              <div class="absolute right-4 center-y pointer-events-none">
+              <div class="center-y pointer-events-none absolute right-4">
                 <BaseIcon icon="uil:calender" />
               </div>
             </div>
@@ -61,7 +39,7 @@
             <template v-if="$v.date.$dirty">
               <span
                 v-if="!$v.date.required"
-                class="label-sm text-error-default mt-2"
+                class="label-sm mt-2 text-error-default"
                 >{{
                   $t('account.subscriptions.id.popup.chooseDate.date.required')
                 }}</span
@@ -69,7 +47,7 @@
 
               <span
                 v-else-if="!$v.date.validDate"
-                class="label-sm text-error-default mt-2"
+                class="label-sm mt-2 text-error-default"
                 >{{
                   $t('account.subscriptions.id.popup.chooseDate.date.valid')
                 }}</span
@@ -77,7 +55,7 @@
             </template>
           </div>
 
-          <label class="label-xs-bold-faded block mb-2">{{
+          <label class="label-xs-bold-faded mb-2 block">{{
             $t('account.subscriptions.id.popup.chooseDate.time.label')
           }}</label>
           <div class="mb-6">
@@ -85,19 +63,9 @@
               <input
                 v-model="time"
                 type="time"
-                class="
-                  w-full
-                  px-4
-                  py-3
-                  bg-primary-lightest
-                  border border-primary-med
-                  rounded
-                  transition
-                  ease-in-out
-                  duration-200
-                "
+                class="w-full rounded border border-primary-med bg-primary-lightest px-4 py-3 transition duration-200 ease-in-out"
               />
-              <div class="absolute right-4 center-y pointer-events-none">
+              <div class="center-y pointer-events-none absolute right-4">
                 <BaseIcon icon="uil:clock" />
               </div>
             </div>
@@ -105,7 +73,7 @@
             <template v-if="$v.date.$dirty">
               <span
                 v-if="!$v.time.required"
-                class="label-sm text-error-default mt-2"
+                class="label-sm mt-2 text-error-default"
                 >{{
                   $t('account.subscriptions.id.popup.chooseDate.time.required')
                 }}</span
@@ -113,7 +81,7 @@
 
               <span
                 v-else-if="!$v.time.validDateTime"
-                class="label-sm text-error-default mt-2"
+                class="label-sm mt-2 text-error-default"
                 >{{
                   $t('account.subscriptions.id.popup.chooseDate.time.valid')
                 }}</span
@@ -123,14 +91,14 @@
         </div>
 
         <!-- Duplicate button elements to match fixed content below -->
-        <div class="invisible pointer-events-none pb-4">
+        <div class="pointer-events-none invisible pb-4">
           <BaseButton class="mt-4" label="|" />
           <BaseButton class="mt-4" label="|" />
         </div>
 
         <!-- Action buttons -->
         <div
-          class="w-full container fixed left-0 bottom-0 bg-primary-lighter pb-4"
+          class="container fixed left-0 bottom-0 w-full bg-primary-lighter pb-4"
         >
           <BaseButton
             class="mt-4"

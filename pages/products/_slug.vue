@@ -7,17 +7,17 @@
         <MediaSlider
           v-if="productImages"
           :media="productImages"
-          class="h-0 md:hidden pb-full"
+          class="h-0 pb-full md:hidden"
         />
         <!-- Fallback image -->
         <div
           v-else
-          class="relative rounded md:hidden bg-primary-lighter pb-full"
+          class="relative rounded bg-primary-lighter pb-full md:hidden"
         >
           <BaseIcon
             icon="uil:camera-slash"
             size="lg"
-            class="absolute center-xy text-primary-med"
+            class="center-xy absolute text-primary-med"
           />
         </div>
         <!-- Media stack for large screens -->
@@ -39,7 +39,7 @@
               <BaseIcon
                 icon="uil:camera-slash"
                 size="lg"
-                class="absolute center-xy text-primary-med"
+                class="center-xy absolute text-primary-med"
               />
             </div>
           </template>
@@ -48,19 +48,7 @@
         <!-- Back button -->
         <a
           href="#"
-          class="
-            fixed
-            flex
-            items-center
-            justify-center
-            rounded-full
-            shadow-md
-            left-6
-            bottom-6
-            w-9
-            h-9
-            bg-primary-lighter
-          "
+          class="fixed left-6 bottom-6 flex h-9 w-9 items-center justify-center rounded-full bg-primary-lighter shadow-md"
           @click.prevent="navigateBack"
         >
           <BaseIcon icon="uil:angle-left" class="-ml-px" />
@@ -70,44 +58,35 @@
       <!-- Product overview -->
       <div class="md:w-1/2 lg:px-6 xl:px-12">
         <div
-          class="
-            container
-            top-0
-            pt-10
-            transition-all
-            duration-300
-            ease-in-out
-            max-w-160
-            md:sticky md:pt-12
-          "
+          class="container top-0 max-w-160 pt-10 transition-all duration-300 ease-in-out md:sticky md:pt-12"
           :class="headerIsVisible ? 'top-20' : 'top-0'"
         >
           <!-- Skeleton loader -->
           <div v-if="$fetchState.pending">
-            <div class="w-32 h-3 mb-4 loader-el" />
-            <div class="w-2/3 loader-el h-9 mb-7" />
-            <div class="w-40 h-3 mb-4 loader-el" />
-            <div class="w-20 h-4 mb-12 loader-el" />
+            <div class="loader-el mb-4 h-3 w-32" />
+            <div class="loader-el mb-7 h-9 w-2/3" />
+            <div class="loader-el mb-4 h-3 w-40" />
+            <div class="loader-el mb-12 h-4 w-20" />
             <div
               v-for="index in 7"
               :key="`skeleton-1-${index}`"
               :style="`width: ${100 - Math.random() * 20}%`"
-              class="h-2 mb-4 loader-el"
+              class="loader-el mb-4 h-2"
             />
-            <div class="flex justify-between mt-12 mb-4">
-              <div class="w-24 h-3 loader-el" />
-              <div class="w-48 h-3 loader-el" />
+            <div class="mt-12 mb-4 flex justify-between">
+              <div class="loader-el h-3 w-24" />
+              <div class="loader-el h-3 w-48" />
             </div>
-            <div class="h-12 mb-10 loader-el" />
+            <div class="loader-el mb-10 h-12" />
             <div
               v-for="index in 3"
               :key="`skeleton-2-${index}`"
-              class="flex items-center mb-2"
+              class="mb-2 flex items-center"
             >
-              <div class="w-5 h-5 mr-2 rounded-full loader-el" />
+              <div class="loader-el mr-2 h-5 w-5 rounded-full" />
               <div
                 :style="`width: ${80 - Math.random() * 30}%`"
-                class="h-2 loader-el"
+                class="loader-el h-2"
               />
             </div>
           </div>
@@ -123,7 +102,7 @@
             <span class="text-sm">{{ reviews.total }} reviews</span>
             -->
             <div
-              class="flex items-center mt-2 mb-5 text-lg font-semibold md:mb-8"
+              class="mt-2 mb-5 flex items-center text-lg font-semibold md:mb-8"
             >
               <span>{{ formatMoney(variation.price, currency, false) }}</span>
               <span v-if="billingInterval" class="lowercase"
@@ -131,19 +110,7 @@
               >
               <span
                 v-if="variation.origPrice"
-                class="
-                  inline-block
-                  h-6
-                  px-2
-                  ml-3
-                  text-xs
-                  leading-loose
-                  uppercase
-                  rounded
-                  bg-error-faded
-                  -mt-2px
-                  text-error-default
-                "
+                class="ml-3 -mt-2px inline-block h-6 rounded bg-error-faded px-2 text-xs uppercase leading-loose text-error-default"
               >
                 {{ $t('products.slug.save') }}
                 {{
@@ -253,20 +220,14 @@
                     disabled: !available,
                   }"
                   type="submit"
-                  class="relative w-full h-auto btn btn--lg"
+                  class="btn btn--lg relative h-auto w-full"
                   :disabled="!available"
                   @click.prevent="addToCart"
                 >
                   <div v-show="!cartIsUpdating">
                     <span>{{ $t('products.slug.addToCart') }}</span>
                     <span
-                      class="
-                        inline-block
-                        w-5
-                        mx-1
-                        mb-1
-                        border-b border-primary-lightest
-                      "
+                      class="mx-1 mb-1 inline-block w-5 border-b border-primary-lightest"
                     />
                     <span>{{
                       formatMoney(variation.price * quantity, currency, false)
@@ -274,7 +235,7 @@
                     <span v-if="billingInterval">{{ billingInterval }}</span>
                     <span
                       v-if="variation.origPrice"
-                      class="ml-1 line-through text-primary-med"
+                      class="ml-1 text-primary-med line-through"
                     >
                       {{
                         formatMoney(
@@ -295,7 +256,7 @@
                     </span>
                   </div>
                   <div v-show="cartIsUpdating" class>
-                    <div class="absolute inset-0 mt-3 spinner" />
+                    <div class="spinner absolute inset-0 mt-3" />
                     <span class="absolute inset-0 mt-5">{{
                       $t('products.slug.updating')
                     }}</span>
@@ -311,7 +272,7 @@
                 <li
                   v-for="(benefit, index) in productBenefits"
                   :key="'storeProductBenefit' + index"
-                  class="flex my-2 label-sm"
+                  class="label-sm my-2 flex"
                 >
                   <BaseIcon :icon="benefit.icon" size="sm" class="mr-2 -mb-1" />
                   <span>{{ benefit.text }}</span>
@@ -330,11 +291,11 @@
             </div>
 
             <!-- Share product -->
-            <div v-if="enableSocialSharing" class="flex flex-no-wrap py-3">
+            <div v-if="enableSocialSharing" class="flex-no-wrap flex py-3">
               <strong class="w-1/4 pr-6 text-primary-darkest">{{
                 $t('products.slug.share')
               }}</strong>
-              <div class="flex justify-end w-3/4">
+              <div class="flex w-3/4 justify-end">
                 <SocialShare
                   class="mr-2 cursor-pointer"
                   network="facebook"

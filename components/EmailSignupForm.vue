@@ -8,24 +8,13 @@
           'border-primary-med bg-primary-lightest': theme === 'light',
           'border-primary-lightest bg-primary-darkest': theme === 'dark',
         }"
-        class="
-          rounded
-          w-full
-          h-12
-          pl-4
-          pr-14
-          py-2
-          border border-primary-med
-          outline-none
-          transition
-          focus:shadow-outline
-        "
+        class="outline-none h-12 w-full rounded border border-primary-med py-2 pl-4 pr-14 transition focus:shadow-outline"
         :placeholder="$t('emailSignup.placeholder')"
         @input="delayTouch($v.email)"
       />
       <button
         :class="{
-          'text-primary-lightest bg-primary-darker hover:text-accent-default':
+          'bg-primary-darker text-primary-lightest hover:text-accent-default':
             theme === 'dark',
         }"
         class="btn-icon absolute top-1 right-1"
@@ -44,7 +33,7 @@
         </div>
         <div
           v-if="status === 'PENDING'"
-          class="spinner center-xy w-5 h-5 bg-primary-dark"
+          class="spinner center-xy h-5 w-5 bg-primary-dark"
         />
       </button>
     </div>
@@ -52,16 +41,7 @@
     <transition name="fade">
       <div
         v-show="errorMessage"
-        class="
-          absolute
-          mt-1
-          px-3
-          py-1
-          w-full
-          bg-error-faded
-          text-error-default text-sm
-          rounded
-        "
+        class="absolute mt-1 w-full rounded bg-error-faded px-3 py-1 text-sm text-error-default"
       >
         {{ errorMessage }}
       </div>

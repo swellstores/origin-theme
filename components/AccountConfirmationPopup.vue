@@ -1,27 +1,18 @@
 <template>
   <transition name="float" :duration="700" appear>
-    <div class="z-40 fixed flex items-center justify-center inset-0">
+    <div class="fixed inset-0 z-40 flex items-center justify-center">
       <!-- Overlay -->
       <div
-        class="overlay opacity-50 absolute w-full h-full bg-primary-darker z-10"
+        class="overlay absolute z-10 h-full w-full bg-primary-darker opacity-50"
         @click="$emit('click-close')"
       />
 
       <!-- Panel -->
       <div
-        class="
-          panel
-          z-20
-          w-full
-          py-6
-          mx-6
-          rounded
-          bg-primary-lighter
-          md:absolute md:center-xy md:w-128 md:h-auto
-        "
+        class="panel md:center-xy z-20 mx-6 w-full rounded bg-primary-lighter py-6 md:absolute md:h-auto md:w-128"
       >
         <div class="container">
-          <div class="flex mb-5">
+          <div class="mb-5 flex">
             <h3 v-if="heading">
               {{ heading }}
             </h3>
@@ -36,7 +27,7 @@
 
           <div class="block md:mb-0 md:flex">
             <BaseButton
-              class="w-full mb-4 md:w-1/2 md:ml-4 md:mb-0 md:order-2"
+              class="mb-4 w-full md:order-2 md:ml-4 md:mb-0 md:w-1/2"
               appearance="dark"
               :label="acceptLabel"
               :loading-label="loadingLabel"
@@ -45,7 +36,7 @@
             />
 
             <BaseButton
-              class="w-full md:w-1/2 md:mb-0 md:order-1"
+              class="w-full md:order-1 md:mb-0 md:w-1/2"
               appearance="light"
               :label="refuseLabel"
               @click.native="refuse()"

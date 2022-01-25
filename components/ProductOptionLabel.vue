@@ -1,30 +1,17 @@
 <template>
-  <div class="flex justify-between items-start mb-3">
+  <div class="mb-3 flex items-start justify-between">
     <div class="relative w-full">
       <div class="mr-6">
         <label
           :id="`option-${id}-label`"
           :for="name"
-          class="inline-block label-xs-bold text-primary-dark"
+          class="label-xs-bold inline-block text-primary-dark"
           >{{ name }}</label
         >
         <a
           v-if="description"
           href="#"
-          class="
-            relative
-            w-7
-            h-7
-            -mt-1
-            -mb-1
-            ml-2
-            inline-flex
-            items-center
-            justify-center
-            bg-primary-light
-            rounded-full
-            text-center
-          "
+          class="relative -mt-1 -mb-1 ml-2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary-light text-center"
           title="More info"
           @click.prevent="toggleHint"
         >
@@ -34,20 +21,7 @@
       </div>
       <div
         v-show="isHintVisible"
-        class="
-          absolute
-          z-20
-          mt-1
-          -ml-2
-          bg-primary-lightest
-          border border-primary-med
-          rounded
-          px-3
-          py-2
-          w-64
-          text-sm
-          shadow-lg
-        "
+        class="absolute z-20 mt-1 -ml-2 w-64 rounded border border-primary-med bg-primary-lightest px-3 py-2 text-sm shadow-lg"
       >
         {{ description }}
       </div>

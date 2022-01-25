@@ -2,13 +2,13 @@
   <div v-if="value && hasSubscriptionPlans" class="mt-8" role="group">
     <!-- One-time purchase -->
 
-    <div v-if="options.standard" class="relative block mb-2 radio-selector">
+    <div v-if="options.standard" class="radio-selector relative mb-2 block">
       <input
         id="standard"
         type="checkbox"
         name="purchase-option"
         value="standard"
-        class="absolute inset-0 opacity-0 peer"
+        class="peer absolute inset-0 opacity-0"
         :checked="value.type === 'standard'"
         @input="setStandardPlan"
       />
@@ -17,29 +17,13 @@
         :class="{
           'border-primary-darkest': value.type === 'standard',
         }"
-        class="
-          relative
-          flex
-          w-full
-          px-6
-          py-4
-          text-sm
-          transition-all
-          border
-          rounded
-          cursor-pointer
-          focus:shadow-outline
-          border-primary-med
-          hover:border-primary-darkest
-          duration-400
-          peer-checked:border-primary-darkest
-        "
+        class="duration-400 relative flex w-full cursor-pointer rounded border border-primary-med px-6 py-4 text-sm transition-all hover:border-primary-darkest focus:shadow-outline peer-checked:border-primary-darkest"
       >
         <span>{{
           options.standard.name ||
           $t('products.slug.purchaseOptions.standard.defaultLabel')
         }}</span>
-        <span class="inline-block ml-auto font-semibold">
+        <span class="ml-auto inline-block font-semibold">
           <span>
             {{
               formatMoney(
@@ -74,20 +58,7 @@
           'focus:shadow-outline': !dropdownIsActive,
           'border-primary-darkest': value.type === 'subscription',
         }"
-        class="
-          relative
-          flex
-          items-center
-          w-full
-          py-4
-          pl-6
-          pr-5
-          border
-          rounded
-          cursor-pointer
-          hover:text-primary-darkest hover:border-primary-darkest
-          border-primary-med
-        "
+        class="relative flex w-full cursor-pointer items-center rounded border border-primary-med py-4 pl-6 pr-5 hover:border-primary-darkest hover:text-primary-darkest"
         aria-label="Open plan selection dropdown"
         aria-checked="false"
         aria-haspopup="listbox"
@@ -125,35 +96,14 @@
       <ul
         v-show="hasManyPlans && dropdownIsActive"
         :class="{ 'rounded-t-none': dropdownIsActive }"
-        class="
-          absolute
-          z-10
-          block
-          w-full
-          -mt-px
-          border
-          rounded-md
-          max-h-25vh
-          bg-primary-lightest
-          border-primary-med
-        "
+        class="absolute z-10 -mt-px block max-h-25vh w-full rounded-md border border-primary-med bg-primary-lightest"
         aria-role="listbox"
       >
         <li
           v-for="option in options.subscription.plans"
           :id="option.id"
           :key="option.id"
-          class="
-            flex
-            items-center
-            p-2
-            mx-4
-            my-3
-            transition
-            duration-200
-            rounded-md
-            cursor-pointer
-          "
+          class="mx-4 my-3 flex cursor-pointer items-center rounded-md p-2 transition duration-200"
           :class="{
             'text-primary-med': option.id === selectedSubscription.id,
             'hover:bg-primary-light': option.id !== selectedSubscription.id,

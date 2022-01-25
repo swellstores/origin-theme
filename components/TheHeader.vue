@@ -27,18 +27,10 @@
     <!-- Main header -->
     <div class="fixed top-0 z-40 w-full">
       <div
-        class="
-          fixed
-          w-full
-          transition-all
-          duration-200
-          ease-in-out
-          transform
-          translate-y-0
-        "
+        class="fixed w-full translate-y-0 transform transition-all duration-200 ease-in-out"
         :class="[
           'bg-primary-lightest',
-          { 'transform -translate-y-full': header.hideOnScroll && hideHeader },
+          { '-translate-y-full transform': header.hideOnScroll && hideHeader },
         ]"
       >
         <header
@@ -68,33 +60,23 @@
                   class="inline-block w-auto"
                   :alt="storeName"
                 />
-                <span v-else class="text-3xl whitespace-no-wrap sm:text-4xl">{{
+                <span v-else class="whitespace-no-wrap text-3xl sm:text-4xl">{{
                   storeName
                 }}</span>
               </NuxtLink>
             </div>
 
             <!-- Main nav menu -->
-            <nav v-if="menu" class="hidden w-full lg:w-auto lg:flex">
+            <nav v-if="menu" class="hidden w-full lg:flex lg:w-auto">
               <ul class="flex justify-center">
                 <li
                   v-for="(item, index) in menu.items"
                   :key="item.name"
-                  class="mb-0 sw-nav-link-wrapper"
+                  class="sw-nav-link-wrapper mb-0"
                 >
                   <a
                     v-if="item.type === 'url'"
-                    class="
-                      relative
-                      flex
-                      items-center
-                      h-full
-                      px-5
-                      pt-1
-                      border-b-4 border-transparent
-                      rounded-none
-                      sw-nav-link
-                    "
+                    class="sw-nav-link relative flex h-full items-center rounded-none border-b-4 border-transparent px-5 pt-1"
                     rel="noreferrer noopener"
                     :href="item.value"
                     :target="
@@ -106,17 +88,7 @@
                     v-else
                     :to="localePath(resolveUrl(item))"
                     :title="item.description"
-                    class="
-                      relative
-                      flex
-                      items-center
-                      h-full
-                      px-5
-                      pt-1
-                      border-b-4 border-transparent
-                      rounded-none
-                      sw-nav-link
-                    "
+                    class="sw-nav-link relative flex h-full items-center rounded-none border-b-4 border-transparent px-5 pt-1"
                     @click.native="megaNavIsEnabled = false"
                     @mouseleave.native="hideMegaNav"
                     @mouseenter.native="showMegaNav(index)"
@@ -130,7 +102,7 @@
                     <div
                       v-if="megaNavIsActive(item, index)"
                       class="absolute left-0 right-0 min-h-full"
-                      :class="{ 'mega-nav hidden fade-in': !mounted }"
+                      :class="{ 'mega-nav fade-in hidden': !mounted }"
                       @mouseenter="showMegaNav(index)"
                       @mouseleave="hideMegaNav"
                     >
@@ -143,7 +115,7 @@
             <!-- END Main nav menu -->
 
             <!-- Action menu -->
-            <div class="flex flex-row items-center justify-end -mr-2 lg:w-1/4">
+            <div class="-mr-2 flex flex-row items-center justify-end lg:w-1/4">
               <!-- Locale select -->
               <LocaleSelect
                 v-if="$i18n.locales.length > 1"
@@ -160,7 +132,7 @@
               <!-- Search icon -->
               <button
                 :aria-label="$t('navigation.search')"
-                class="h-10 p-2 text-inherit"
+                class="text-inherit h-10 p-2"
                 @click.prevent="$emit('click-search')"
               >
                 <BaseIcon icon="uil:search" />
@@ -179,7 +151,7 @@
               </NuxtLink>
               <!-- Cart icon -->
               <button
-                class="relative h-10 p-2 text-inherit"
+                class="text-inherit relative h-10 p-2"
                 data-sw-path="cart"
                 data-sw-click="true"
                 :aria-label="$t('cart.title')"
@@ -193,22 +165,9 @@
                 <BaseIcon icon="uil:cart" />
                 <div
                   v-if="cart && cart.itemQuantity"
-                  class="
-                    absolute
-                    top-0
-                    flex
-                    items-center
-                    justify-center
-                    w-6
-                    h-6
-                    rounded-full
-                    fade-in
-                    left-5
-                    bg-accent-default
-                    text-primary-lighter
-                  "
+                  class="fade-in absolute top-0 left-5 flex h-6 w-6 items-center justify-center rounded-full bg-accent-default text-primary-lighter"
                 >
-                  <span class="block mt-px leading-none text-2xs">{{
+                  <span class="mt-px block text-2xs leading-none">{{
                     cart.itemQuantity
                   }}</span>
                 </div>
@@ -216,22 +175,12 @@
               <!-- Mobile nav toggle -->
               <button
                 :class="{ 'is-active': mobileNavIsVisible }"
-                class="
-                  relative
-                  w-10
-                  h-10
-                  p-1
-                  ml-2
-                  rounded
-                  outline-none
-                  hamburger hamburger--squeeze
-                  lg:hidden
-                "
+                class="outline-none hamburger hamburger-squeeze relative ml-2 h-10 w-10 rounded p-1 lg:hidden"
                 type="button"
                 :aria-label="$t('navigation.menu')"
                 @click="setMobileNavVisibility"
               >
-                <span class="absolute w-6 h-6 center-xy">
+                <span class="center-xy absolute h-6 w-6">
                   <span class="hamburger-inner"></span>
                 </span>
               </button>
@@ -420,7 +369,7 @@ export default {
 .sw-nav-link {
   &:focus,
   &.nuxt-link-active {
-    @apply shadow-none text-accent-default border-accent-default;
+    @apply border-accent-default text-accent-default shadow-none;
   }
 }
 
@@ -434,52 +383,56 @@ export default {
 }
 
 .hamburger-inner {
-  @apply block -mt-px top-1/2;
+  @apply top-1/2 -mt-px block;
 
   &,
-  &:before,
-  &:after {
-    @apply absolute w-6 h-2px bg-current rounded;
+  &::before,
+  &::after {
+    @apply absolute h-2px w-6 rounded bg-current;
   }
 
-  &:before,
-  &:after {
+  &::before,
+  &::after {
     content: '';
     display: block;
   }
 
-  &:before {
+  &::before {
     top: -8px;
   }
 
-  &:after {
+  &::after {
     bottom: -8px;
   }
 }
 
-.hamburger--squeeze .hamburger-inner {
+.hamburger-squeeze .hamburger-inner {
   transition-duration: 0.075s;
   transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
 }
-.hamburger--squeeze .hamburger-inner::before {
+
+.hamburger-squeeze .hamburger-inner::before {
   transition: top 0.075s 0.12s ease, opacity 0.075s ease;
 }
-.hamburger--squeeze .hamburger-inner::after {
+
+.hamburger-squeeze .hamburger-inner::after {
   transition: bottom 0.075s 0.12s ease,
     transform 0.075s cubic-bezier(0.55, 0.055, 0.675, 0.19);
 }
 
-.hamburger--squeeze.is-active .hamburger-inner {
+.hamburger-squeeze.is-active .hamburger-inner {
   transform: rotate(45deg);
   transition-delay: 0.12s;
   transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
-.hamburger--squeeze.is-active .hamburger-inner::before {
+
+.hamburger-squeeze.is-active .hamburger-inner::before {
   top: 0;
   opacity: 0;
   transition: top 0.075s ease, opacity 0.075s 0.12s ease;
 }
-.hamburger--squeeze.is-active .hamburger-inner::after {
+
+.hamburger-squeeze.is-active .hamburger-inner::after {
   bottom: 0;
   transform: rotate(-90deg);
   transition: bottom 0.075s ease,

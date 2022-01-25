@@ -4,7 +4,7 @@
       <!-- Breadcrumb -->
       <NuxtLink
         :to="localePath('/account/orders/')"
-        class="flex items-center cursor-pointer mb-6"
+        class="mb-6 flex cursor-pointer items-center"
       >
         <BaseIcon icon="uil:angle-left" size="sm" /><span class="ml-1">{{
           $t('account.orders.id.backToOrders')
@@ -14,21 +14,21 @@
 
     <!-- Fetch loader -->
     <div v-if="$fetchState.pending" class="container">
-      <div class="loader-el w-1/3 h-7 mb-6" />
-      <div class="loader-el w-3/5 h-2 mb-4" />
-      <div class="loader-el w-2/5 h-2 mb-8" />
+      <div class="loader-el mb-6 h-7 w-1/3" />
+      <div class="loader-el mb-4 h-2 w-3/5" />
+      <div class="loader-el mb-8 h-2 w-2/5" />
     </div>
 
     <div v-else>
       <div class="container">
-        <div class="pb-6 border-b border-primary-med mb-10">
+        <div class="mb-10 border-b border-primary-med pb-6">
           <h2 class="text-2xl">
             {{ $t('account.orders.id.order') }} #{{ order.number }}
           </h2>
 
           <div class="my-4">
             <svg
-              class="w-2 h-2 fill-current inline-block mr-1"
+              class="mr-1 inline-block h-2 w-2 fill-current"
               :class="{
                 'text-ok-default': order.status === 'complete',
                 'text-error-default': order.status === 'canceled',
@@ -45,15 +45,7 @@
           </div>
 
           <div
-            class="
-              block
-              md:flex md:justify-between
-              text-sm
-              rounded
-              border border-primary-med
-              p-4
-              mb-6
-            "
+            class="mb-6 block rounded border border-primary-med p-4 text-sm md:flex md:justify-between"
           >
             <div class="pb-2 md:pb-0">
               <span>{{ $t('account.orders.id.orderDate') }}</span>
@@ -87,7 +79,7 @@
           />
 
           <!-- Order summary -->
-          <div class="flex font-semibold py-6 border-b border-primary-med">
+          <div class="flex border-b border-primary-med py-6 font-semibold">
             <span>{{ $t('account.orders.id.orderSummary') }}</span>
             <span class="ml-auto">{{
               $tc('account.orders.id.items', order.items.length, {
@@ -96,13 +88,13 @@
             }}</span>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-2 md:gap-4 mb-6">
+          <div class="mb-6 grid grid-cols-1 md:gap-4 lg:grid-cols-2">
             <div
               v-for="item in order.items"
               :key="item.id"
-              class="w-full flex py-6 border-b border-primary-light"
+              class="flex w-full border-b border-primary-light py-6"
             >
-              <div class="min-w-26 mr-6">
+              <div class="mr-6 min-w-26">
                 <VisualMedia
                   v-if="
                     item.product &&
@@ -112,11 +104,11 @@
                   :source="item.product.images[0].file"
                   sizes="120px"
                 />
-                <div v-else class="relative bg-primary-light rounded pb-full">
+                <div v-else class="relative rounded bg-primary-light pb-full">
                   <BaseIcon
                     icon="uil:camera-slash"
                     size="lg"
-                    class="absolute center-xy text-primary-med"
+                    class="center-xy absolute text-primary-med"
                   />
                 </div>
               </div>
@@ -214,13 +206,13 @@
       <!-- Delivery details -->
       <div class="container">
         <template v-if="order.shipmentDelivery">
-          <p class="text-base font-semibold pb-4">
+          <p class="pb-4 text-base font-semibold">
             {{ $t('account.orders.id.deliveryDetails') }}
           </p>
 
           <div class="mb-10">
-            <div class="rounded text-sm border border-primary-med p-4">
-              <p class="font-semibold pb-2">
+            <div class="rounded border border-primary-med p-4 text-sm">
+              <p class="pb-2 font-semibold">
                 {{ $t('account.orders.id.deliveryAddress') }}
               </p>
               <p>
@@ -232,17 +224,17 @@
             </div>
             <div
               v-if="shipping.phone"
-              class="rounded text-sm border border-primary-med p-4 -mt-px"
+              class="-mt-px rounded border border-primary-med p-4 text-sm"
             >
-              <p class="font-semibold pb-2">
+              <p class="pb-2 font-semibold">
                 {{ $t('account.orders.id.phoneNumber') }}
               </p>
               <p>
                 {{ shipping.phone }}
               </p>
             </div>
-            <div class="rounded text-sm border border-primary-med p-4 -mt-px">
-              <p class="font-semibold pb-2">
+            <div class="-mt-px rounded border border-primary-med p-4 text-sm">
+              <p class="pb-2 font-semibold">
                 {{ $t('account.orders.id.deliveryMethod') }}
               </p>
               <p v-if="shipping.serviceName">
@@ -254,9 +246,9 @@
             </div>
             <div
               v-if="shipments"
-              class="rounded text-sm border border-primary-med p-4 -mt-px"
+              class="-mt-px rounded border border-primary-med p-4 text-sm"
             >
-              <p class="font-semibold pb-2">
+              <p class="pb-2 font-semibold">
                 {{ $t('account.orders.id.fulfilledDeliveries') }}
               </p>
               <div
@@ -303,36 +295,27 @@
           <!-- Payment details -->
           <template v-if="order.paid">
             <div class="mb-10">
-              <p class="text-base font-semibold pb-4">
+              <p class="pb-4 text-base font-semibold">
                 {{ $t('account.orders.id.paymentMethod') }}
               </p>
 
               <div
-                class="
-                  grid grid-cols-1
-                  md:grid-cols-2
-                  rounded
-                  border border-primary-med
-                "
+                class="grid grid-cols-1 rounded border border-primary-med md:grid-cols-2"
               >
                 <!-- Method: Card -->
                 <div
                   v-if="billing.card && billing.method === 'card'"
-                  class="
-                    md:border-b-0 md:border-r
-                    border-b border-primary-med
-                    p-4
-                  "
+                  class="border-b border-primary-med p-4 md:border-b-0 md:border-r"
                 >
-                  <div class="flex mb-4">
+                  <div class="mb-4 flex">
                     <BrandCardIcon :brand="billing.card.brand" />
                     <span
-                      class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold"
+                      class="ml-auto text-sm font-semibold md:ml-0 md:pl-4"
                       >{{ billing.card.brand }}</span
                     >
                   </div>
 
-                  <div class="flex mb-4">
+                  <div class="mb-4 flex">
                     <div class="text-base">
                       <span class="tracking-large">···· ····</span>
                       <span>&nbsp;{{ billing.card.last4 }}</span>
@@ -347,16 +330,12 @@
                 <!-- Method: Account Credit -->
                 <div
                   v-else-if="billing.method === 'account'"
-                  class="
-                    md:border-b-0 md:border-r
-                    border-b border-primary-med
-                    p-4
-                  "
+                  class="border-b border-primary-med p-4 md:border-b-0 md:border-r"
                 >
-                  <div class="flex mb-4">
+                  <div class="mb-4 flex">
                     <BaseIcon icon="uil:money-bill" />
                     <span
-                      class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold"
+                      class="ml-auto text-sm font-semibold md:ml-0 md:pl-4"
                       >{{ $t('account.orders.id.accountCredit') }}</span
                     >
                   </div>
@@ -366,28 +345,24 @@
                 <!-- Method: Gift Card -->
                 <div
                   v-else-if="billing.method === 'giftcard' && order.giftcards"
-                  class="
-                    md:border-b-0 md:
-                    border-r border-b border-primary-med
-                    p-4
-                  "
+                  class="md: border-r border-b border-primary-med p-4 md:border-b-0"
                 >
-                  <div class="flex mb-4">
+                  <div class="mb-4 flex">
                     <BaseIcon icon="uil:gift" />
                     <span
-                      class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold"
+                      class="ml-auto text-sm font-semibold md:ml-0 md:pl-4"
                       >{{ $t('account.orders.id.giftCard') }}</span
                     >
                   </div>
 
-                  <p class="text-base tracking-large">
+                  <p class="tracking-large text-base">
                     <span class="tracking-large"
                       >•••• •••• •••• {{ order.giftcards[0].last4 }}</span
                     >
                   </p>
 
-                  <p class="text-sm pt-4">
-                    <span class="font-semibold pr-2">{{
+                  <p class="pt-4 text-sm">
+                    <span class="pr-2 font-semibold">{{
                       $t('account.orders.id.total')
                     }}</span
                     ><span>{{
@@ -399,16 +374,12 @@
                 <!-- Method: Bank Deposit -->
                 <div
                   v-else-if="billing.method === 'bank_deposit'"
-                  class="
-                    md:border-b-0 md:border-r
-                    border-b border-primary-med
-                    p-4
-                  "
+                  class="border-b border-primary-med p-4 md:border-b-0 md:border-r"
                 >
-                  <div class="flex mb-4">
+                  <div class="mb-4 flex">
                     <BaseIcon icon="uil:University" />
                     <span
-                      class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold"
+                      class="ml-auto text-sm font-semibold md:ml-0 md:pl-4"
                       >{{ $t('account.orders.id.bankDeposit') }}</span
                     >
                   </div>
@@ -418,24 +389,20 @@
                 <!-- Method: Cash on delivery -->
                 <div
                   v-else-if="billing.method === 'cash_on_delivery'"
-                  class="
-                    md:border-b-0 md:
-                    border-r border-b border-primary-med
-                    p-4
-                  "
+                  class="md: border-r border-b border-primary-med p-4 md:border-b-0"
                 >
-                  <div class="flex mb-4">
+                  <div class="mb-4 flex">
                     <BaseIcon icon="uil:money-bill" />
                     <span
-                      class="ml-auto md:pl-4 md:ml-0 text-sm font-semibold"
+                      class="ml-auto text-sm font-semibold md:ml-0 md:pl-4"
                       >{{ $t('account.orders.id.cashOnDelivery') }}</span
                     >
                   </div>
                   <p>{{ $t('account.orders.id.cashOnDeliveryMessage') }}</p>
                 </div>
 
-                <div class="text-sm p-4">
-                  <p class="font-semibold pb-2">
+                <div class="p-4 text-sm">
+                  <p class="pb-2 font-semibold">
                     {{ $t('account.orders.id.billingAddress') }}
                   </p>
                   <p>
