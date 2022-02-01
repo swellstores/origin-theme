@@ -238,7 +238,9 @@
               <!-- Quantity -->
               <div class="flex">
                 <ProductQuantity
-                  v-if="enableQuantity"
+                  v-if="
+                    enableQuantity && selectedPurchaseOption.type === 'standard'
+                  "
                   v-model="quantity"
                   :initial-limit="maxQuantity"
                   :stock-tracking="variation.stockTracking"
@@ -619,6 +621,12 @@ export default {
 
   watch: {
     currency: '$fetch',
+
+    // Reset quantity on change of purchase option
+    selectedPurchaseOption() {
+      this.quantity = 1
+    },
+    
     variation() {
       this.exposeProduct()
     },

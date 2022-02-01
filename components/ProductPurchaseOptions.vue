@@ -292,7 +292,7 @@ export default {
       return this.$t(
         'products.slug.purchaseOptions.interval.productsInterval',
         {
-          count: this.quantity,
+          count: 1,
           n,
           interval: this.$tc(intervalLabel, intervalCount),
         }
@@ -314,10 +314,9 @@ export default {
         }
       )
 
-      return `${this.formatMoney(
-        matchingVariation.price * this.quantity,
-        this.currency
-      )} / ${intervalCount > 1 ? intervalCount : ''}${subscriptionInterval}`
+      return `${this.formatMoney(matchingVariation.price, this.currency)}/${
+        intervalCount > 1 ? intervalCount : ''
+      }${subscriptionInterval}`
     },
   },
 }
