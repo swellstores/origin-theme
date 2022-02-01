@@ -3230,6 +3230,20 @@
           "localized": true
         },
         {
+          "id": "lang.products._slug.unavailable_in_currency",
+          "label": "Unavailable in currency",
+          "default": "Unavailable in {currency}",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.products._slug.unavailable_in_currency_add_to_cart",
+          "label": "Unavailable in currency - add to cart",
+          "default": "Unavailable in currency {currency}",
+          "type": "short_text",
+          "localized": true
+        },
+        {
           "id": "lang.products._slug.add_to_cart",
           "label": "Add to cart",
           "default": "Add to cart",
@@ -3336,6 +3350,13 @@
           "id": "lang.products.preview.quick_add.out_of_stock",
           "label": "Out of stock notification",
           "default": "This product is out of stock."
+        },
+        {
+          "id": "lang.products.preview.unavailable_in_currency",
+          "label": "Unavailable in currency",
+          "default": "Unavailable in {currency}",
+          "type": "short_text",
+          "localized": true
         },
         {
           "label": "Purchase Options: Subscription",

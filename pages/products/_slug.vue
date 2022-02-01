@@ -104,7 +104,14 @@
             <div
               class="mt-2 mb-5 flex items-center text-lg font-semibold md:mb-8"
             >
-              <span>{{ formatMoney(variation.price, currency, false) }}</span>
+              <span v-if="variation.price > 0">{{
+                formatMoney(variation.price, currency, false)
+              }}</span>
+              <span v-else>{{
+                $t('products.slug.unavailableInCurrency', {
+                  currency,
+                })
+              }}</span>
               <span v-if="billingInterval" class="lowercase"
                 >&nbsp;{{ billingInterval }}</span
               >
@@ -227,35 +234,50 @@
                   @click.prevent="addToCart"
                 >
                   <div v-show="!cartIsUpdating">
-                    <span>{{ $t('products.slug.addToCart') }}</span>
-                    <span
-                      class="mx-1 mb-1 inline-block w-5 border-b border-primary-lightest"
-                    />
-                    <span>{{
-                      formatMoney(variation.price * quantity, currency, false)
-                    }}</span>
-                    <span v-if="billingInterval">{{ billingInterval }}</span>
-                    <span
-                      v-if="variation.origPrice"
-                      class="ml-1 text-primary-med line-through"
-                    >
-                      {{
-                        formatMoney(
-                          variation.origPrice * quantity,
+                    <template v-if="variation.price > 0">
+                      <span>{{ $t('products.slug.addToCart') }}</span>
+                      <span
+                        class="
+                          inline-block
+                          w-5
+                          mx-1
+                          mb-1
+                          border-b border-primary-lightest
+                        "
+                      />
+                      <span>{{
+                        formatMoney(variation.price * quantity, currency, false)
+                      }}</span>
+                      <span v-if="billingInterval">{{ billingInterval }}</span>
+                      <span
+                        v-if="variation.origPrice"
+                        class="ml-1 line-through text-primary-med"
+                      >
+                        {{
+                          formatMoney(
+                            variation.origPrice * quantity,
+                            currency,
+                            false
+                          )
+                        }}
+                      </span>
+                      <span
+                        v-if="
+                          selectedPurchaseOption &&
+                          selectedPurchaseOption.type === 'subscription'
+                        "
+                        class="lowercase"
+                      >
+                        / {{ intervalCount }}{{ subscriptionInterval }}
+                      </span>
+                    </template>
+                    <template v-else>
+                      <span>{{
+                        $t('products.slug.unavailableInCurrencyAddToCart', {
                           currency,
-                          false
-                        )
-                      }}
-                    </span>
-                    <span
-                      v-if="
-                        selectedPurchaseOption &&
-                        selectedPurchaseOption.type === 'subscription'
-                      "
-                      class="lowercase"
-                    >
-                      / {{ intervalCount }}{{ subscriptionInterval }}
-                    </span>
+                        })
+                      }}</span>
+                    </template>
                   </div>
                   <div v-show="cartIsUpdating" class>
                     <div class="spinner absolute inset-0 mt-3" />
@@ -485,7 +507,7 @@ export default {
     available() {
       const { stockStatus, stockTracking, stockPurchasable } = this.variation
 
-      if (!this.bundleItemsAvailable) return false
+      if (!this.bundleItemsAvailable || this.variation.price <= 0) return false
 
       return (
         (stockStatus && stockStatus !== 'out_of_stock') ||
