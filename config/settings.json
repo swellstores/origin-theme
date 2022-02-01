@@ -193,6 +193,7 @@
       "preview": {
         "save": "Save",
         "sale": "Sale",
+        "unavailable_in_currency": "Unavailable in {currency}",
         "quick_add": {
           "adding": {
             "loading_label": "Adding...",
@@ -209,6 +210,8 @@
         "updating": "Updating",
         "save": "Save",
         "add_to_cart": "Add to cart",
+        "unavailable_in_currency": "Unavailable in {currency}",
+        "unavailable_in_currency_add_to_cart": "Unavailable in currency {currency}",
         "bundle": {
           "title": "In this bundle",
           "out_of_stock": "This product is out of stock."

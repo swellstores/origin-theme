@@ -61,7 +61,7 @@
           {{ $t('products.preview.sale') }}
         </div>
 
-        <template v-if="quickAddIsEnabled">
+        <template v-if="quickAddIsEnabled && product.price !== null">
           <transition name="fade-up" :duration="300">
             <QuickAdd
               v-if="
@@ -86,27 +86,35 @@
         </NuxtLink>
         <!-- Sale price -->
         <template v-if="showPrice">
-          <div v-if="product.origPrice">
-            <span class="mr-1 text-sm">{{
-              formatMoney(product.price, currency)
-            }}</span>
-            <span
-              class="whitespace-no-wrap text-xs uppercase text-error-default"
-            >
-              {{
-                $t('products.preview.save', {
-                  amount: formatMoney(
-                    product.origPrice - product.price,
-                    currency
-                  ),
-                })
-              }}
-            </span>
-          </div>
-          <!-- Regular price -->
+          <template v-if="displayPrice > 0">
+            <div v-if="product.origPrice">
+              <span class="mr-1 text-sm">{{
+                formatMoney(product.price, currency)
+              }}</span>
+              <span
+                class="text-xs uppercase whitespace-no-wrap text-error-default"
+              >
+                {{
+                  $t('products.preview.save', {
+                    amount: formatMoney(
+                      product.origPrice - product.price,
+                      currency
+                    ),
+                  })
+                }}
+              </span>
+            </div>
+            <!-- Regular price -->
+            <div v-else>
+              <span class="text-sm">{{
+                formatMoney(displayPrice, currency)
+              }}</span>
+            </div>
+          </template>
+
           <div v-else>
-            <span class="text-sm">{{
-              formatMoney(getDisplayPrice(product), currency)
+            <span>{{
+              $t('products.preview.unavailableInCurrency', { currency })
             }}</span>
           </div>
         </template>
@@ -188,6 +196,33 @@ export default {
 
   computed: {
     ...mapState(['currency', 'cartIsUpdating']),
+    displayPrice() {
+      if (this.product.price > 0) {
+        return this.product.price
+      }
+      /* If the product's price is 0, this could mean that
+      only the options were set a price, so we display the price from
+      the variant with the cheapest in-stock price so the price reads as
+      "starting from X" */
+      if (this.product.variants) {
+        const cheapestVariantPrice = this.product.variants.results.reduce(
+          (previousValue, currentValue) => {
+            const isInStock =
+              !this.product.stockTracking ||
+              this.product.stockPurchasable ||
+              currentValue.stockStatus === 'in_stock'
+            const priceIsLower =
+              currentValue.price < previousValue && currentValue.price > 0
+            if (isInStock && priceIsLower) return currentValue.price
+            return previousValue
+          },
+          Number.MAX_SAFE_INTEGER
+        )
+        if (cheapestVariantPrice !== Number.MAX_SAFE_INTEGER)
+          return cheapestVariantPrice
+      }
+      return 0
+    },
   },
 
   methods: {
@@ -216,33 +251,6 @@ export default {
 
     keepQuickAddAlive(bool) {
       this.quickAddKeepAlive = bool
-    },
-
-    getDisplayPrice(product) {
-      if (product.price > 0) {
-        return product.price
-      }
-      /* If the product's price is 0, this could mean that
-      only the options were set a price, so we display the price from
-      the variant with the cheapest in-stock price so the price reads as
-      "starting from X" */
-      if (product.variants) {
-        const cheapestVariantPrice = product.variants.results.reduce(
-          (previousValue, currentValue) => {
-            const isInStock =
-              product.stockPurchasable ||
-              currentValue.stockStatus === 'in_stock'
-            const priceIsLower =
-              currentValue.price < previousValue && currentValue.price > 0
-            if (isInStock && priceIsLower) return currentValue.price
-            return previousValue
-          },
-          Number.MAX_SAFE_INTEGER
-        )
-        if (cheapestVariantPrice !== Number.MAX_SAFE_INTEGER)
-          return cheapestVariantPrice
-      }
-      return 0
     },
   },
 }
