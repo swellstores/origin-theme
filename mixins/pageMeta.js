@@ -16,12 +16,10 @@ export default {
   async asyncData({ $swell }) {
     const storeName = await $swell.settings.get('store.name')
     const storeUrl = await $swell.settings.get('store.url')
-    const faviconUrl = await $swell.settings.get('header.favicon.file.url')
 
     return {
       storeName,
       storeUrl,
-      faviconUrl,
     }
   },
 
@@ -36,7 +34,6 @@ export default {
         page,
         storeName,
         storeUrl,
-        faviconUrl,
       } = this
       const formatTitle = (itemTitle) => itemTitle + ' - ' + storeName
 
@@ -47,15 +44,6 @@ export default {
         description: '',
         image: {}, // TODO global fallback image,
         link: [],
-      }
-
-      if (faviconUrl) {
-        const transformation = '?width=64&height=64'
-        meta.link.push({
-          rel: 'icon',
-          type: 'image/x-icon',
-          href: faviconUrl + transformation,
-        })
       }
 
       if (get(this, '$fetchState.pending')) {

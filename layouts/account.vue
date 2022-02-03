@@ -140,6 +140,16 @@ export default {
       editProfilePopupIsActive: false,
       logoutPopupIsActive: false,
       searchIsActive: false,
+      faviconUrl: '',
+    }
+  },
+
+  async fetch() {
+    const faviconUrl = await this.$swell.settings.get('header.favicon.file.url')
+
+    if (faviconUrl) {
+      const faviconImageTransformation = '?width=64&height=64'
+      this.faviconUrl = faviconUrl + faviconImageTransformation
     }
   },
 
@@ -160,6 +170,9 @@ export default {
           href: process.env.cdnHost,
           crossorigin: true,
         },
+        this.faviconUrl
+          ? { rel: 'icon', href: this.faviconUrl, type: 'image/x-icon' }
+          : '',
       ],
     }
   },
