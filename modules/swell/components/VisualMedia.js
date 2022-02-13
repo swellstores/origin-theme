@@ -66,9 +66,20 @@ export default {
       type: String,
       default: '100vw',
     },
+    // Additional classes added to the img element
+    imgClass: {
+      type: String,
+      default: '',
+    },
     // Flag for making the whole component display like
     // a background cover image with no set aspect ratio
     isBackground: {
+      type: Boolean,
+      default: false,
+    },
+    // Flag for using image's native dimensions and
+    // making aspect ratio fixed at all times
+    isFixed: {
       type: Boolean,
       default: false,
     },
@@ -87,7 +98,9 @@ export default {
       quality,
       widths,
       sizes,
+      imgClass,
       isBackground,
+      isFixed,
       lazyLoad,
     } = context.props
 
@@ -121,19 +134,30 @@ export default {
 
     const wrapperClass = isBackground
       ? 'h-full overflow-hidden'
+      : isFixed
+      ? 'w-full relative'
       : 'relative bg-primary-lighter w-full pb-full overflow-hidden'
 
-    const imgClass = isBackground
+    const imageClass = isBackground
       ? 'absolute top-0 left-0 w-full h-full object-cover'
+      : isFixed
+      ? 'relative'
       : 'absolute inset-0 w-full h-full object-cover'
 
     return h(
       'div',
       {
         class: [context.data.class, context.data.staticClass, wrapperClass],
-        style: isBackground ? null : `padding-bottom: ${ratioPadding}`,
+        style:
+          isBackground || isFixed ? null : `padding-bottom: ${ratioPadding}`,
       },
-      [h('img', { attrs: image, style: 'object-fit: cover;', class: imgClass })]
+      [
+        h('img', {
+          attrs: image,
+          style: !isFixed ? 'object-fit: cover;' : '',
+          class: [imageClass, imgClass],
+        }),
+      ]
     )
   },
 }
