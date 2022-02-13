@@ -217,9 +217,11 @@ export default {
 
   computed: {
     ...mapState(['currency']),
+
     settings() {
       return get(this, 'category.content', {})
     },
+
     activeFilterCount() {
       return Object.keys(this.filterState).length
     },
@@ -228,6 +230,11 @@ export default {
   watch: {
     // Call the update method when the URL query changes
     '$route.query': 'updateProductsFiltered',
+  },
+
+  async mounted() {
+    // Fetch filtered products on mount
+    await this.updateProductsFiltered()
   },
 
   created() {
@@ -263,11 +270,13 @@ export default {
         expand: ['variants'],
       })
     },
+
     setProducts(products) {
       this.pages = products.pages
       this.products = products.results
       this.productsCount = products.count
     },
+
     async updateProductsFiltered() {
       const { $route } = this
       // Parse URL query params
@@ -277,19 +286,23 @@ export default {
       const products = await this.fetchProducts(this.filterState, this.filters)
       this.setProducts(products)
     },
+
     toggleFilterModal() {
       this.filterModalIsVisible = !this.filterModalIsVisible
     },
+
     updateFilters(filterState) {
       this.updateRouteQuery(filterState)
       this.toggleFilterModal()
     },
+
     updateSortMode(option) {
       this.updateRouteQuery({
         ...this.filterState,
         sort: typeof option.value === 'undefined' ? option : option.value,
       })
     },
+
     updateRouteQuery(newQuery) {
       const { path, query: currentQuery } = this.$route
       const query = { ...currentQuery, ...newQuery }
