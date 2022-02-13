@@ -14,6 +14,8 @@ export const state = () => ({
   addedItem: null,
   quickViewIsVisible: false,
   quickViewProductId: null,
+  mediaPreviewIsVisible: false,
+  mediaPreview: null,
 })
 
 export const actions = {

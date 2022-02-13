@@ -19,6 +19,7 @@
     <TheCookieNotification />
     <TheCart v-show="cartIsActive" />
     <TheSearch v-if="searchIsActive" @click-close="searchIsActive = false" />
+    <MediaPreview v-if="mediaPreviewIsVisible" />
     <QuickViewPopup
       v-if="quickViewIsVisible"
       :product-id="quickViewProductId"
@@ -78,6 +79,7 @@ export default {
       'cookiesWereAccepted',
       'quickViewIsVisible',
       'quickViewProductId',
+      'mediaPreviewIsVisible',
     ]),
   },
 
