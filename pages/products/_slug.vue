@@ -213,7 +213,9 @@
               <div class="flex">
                 <ProductQuantity
                   v-if="
-                    enableQuantity && selectedPurchaseOption.type === 'standard'
+                    enableQuantity &&
+                    selectedPurchaseOption &&
+                    selectedPurchaseOption.type === 'standard'
                   "
                   v-model="quantity"
                   :initial-limit="maxQuantity"
