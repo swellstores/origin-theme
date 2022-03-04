@@ -213,7 +213,9 @@
               <div class="flex">
                 <ProductQuantity
                   v-if="
-                    enableQuantity && selectedPurchaseOption.type === 'standard'
+                    enableQuantity &&
+                    selectedPurchaseOption &&
+                    selectedPurchaseOption.type === 'standard'
                   "
                   v-model="quantity"
                   :initial-limit="maxQuantity"
@@ -237,13 +239,7 @@
                     <template v-if="variation.price > 0">
                       <span>{{ $t('products.slug.addToCart') }}</span>
                       <span
-                        class="
-                          inline-block
-                          w-5
-                          mx-1
-                          mb-1
-                          border-b border-primary-lightest
-                        "
+                        class="mx-1 mb-1 inline-block w-5 border-b border-primary-lightest"
                       />
                       <span>{{
                         formatMoney(variation.price * quantity, currency, false)
@@ -251,7 +247,7 @@
                       <span v-if="billingInterval">{{ billingInterval }}</span>
                       <span
                         v-if="variation.origPrice"
-                        class="ml-1 line-through text-primary-med"
+                        class="ml-1 text-primary-med line-through"
                       >
                         {{
                           formatMoney(
@@ -609,7 +605,7 @@ export default {
     selectedPurchaseOption() {
       this.quantity = 1
     },
-    
+
     variation() {
       this.exposeProduct()
     },
