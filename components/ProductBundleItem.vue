@@ -2,7 +2,7 @@
   <div class="flex py-4">
     <div class="mr-6 w-40">
       <VisualMedia
-        v-if="item.product.images.length"
+        v-if="item.product.images && item.product.images.length"
         :source="item.product.images[0]"
         sizes="(min-width: 768px) 50vw, 100vw"
       />
