@@ -118,7 +118,7 @@ export default {
     // Fetch category and products
     const category = await $swell.categories.get(this.categoryId)
     const products = await $swell.products.list({
-      $filters: { category: [this.categoryId] },
+      category: this.categoryId,
       expand: ['variants'],
     })
 
