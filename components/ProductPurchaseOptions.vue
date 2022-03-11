@@ -96,7 +96,7 @@
       <ul
         v-show="hasManyPlans && dropdownIsActive"
         :class="{ 'rounded-t-none': dropdownIsActive }"
-        class="absolute z-10 -mt-px block max-h-25vh w-full rounded-md border border-primary-med bg-primary-lightest"
+        class="absolute z-10 -mt-px block max-h-25vh overflow-y-scroll  w-full rounded-md border border-primary-med bg-primary-lightest"
         aria-role="listbox"
       >
         <li
