@@ -174,6 +174,7 @@ export default {
           ? { rel: 'icon', href: this.faviconUrl, type: 'image/x-icon' }
           : '',
       ],
+      title: this.getCurrentRootValue(),
     }
   },
 
@@ -186,17 +187,7 @@ export default {
     ]),
 
     currentRouteValue() {
-      const path = this.$route.path
-
-      const currentRoot = this.views.filter((view) => {
-        return path.includes(view.value)
-      })
-
-      if (currentRoot.length) {
-        return currentRoot[0].value
-      }
-
-      return ''
+      return this.getCurrentRootValue()
     },
 
     hideOnRouteRoot() {
@@ -257,6 +248,20 @@ export default {
           this.$router.replace('/')
         }
       } catch (err) {}
+    },
+
+    getCurrentRootValue() {
+      const path = this.$route.path
+
+      const currentRoot = this.views.filter((view) => {
+        return path.includes(view.value)
+      })
+
+      if (currentRoot.length) {
+        return currentRoot[0].value
+      }
+
+      return ''
     },
   },
 }
