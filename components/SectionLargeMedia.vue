@@ -1,7 +1,7 @@
 <template>
   <!-- Error/empty state -->
   <SectionUndefined
-    v-if="!heading && !description && !Object.entries(image).length"
+    v-if="image && !heading && !description && !Object.entries(image).length"
     heading="Large media"
     description="No heading or description added"
   />
