@@ -237,13 +237,7 @@
                     <template v-if="variation.price > 0">
                       <span>{{ $t('products.slug.addToCart') }}</span>
                       <span
-                        class="
-                          inline-block
-                          w-5
-                          mx-1
-                          mb-1
-                          border-b border-primary-lightest
-                        "
+                        class="mx-1 mb-1 inline-block w-5 border-b border-primary-lightest"
                       />
                       <span>{{
                         formatMoney(variation.price * quantity, currency, false)
@@ -251,7 +245,7 @@
                       <span v-if="billingInterval">{{ billingInterval }}</span>
                       <span
                         v-if="variation.origPrice"
-                        class="ml-1 line-through text-primary-med"
+                        class="ml-1 text-primary-med line-through"
                       >
                         {{
                           formatMoney(
@@ -381,6 +375,7 @@
 // Helpers
 import { mapState } from 'vuex'
 import get from 'lodash/get'
+import flatten from 'lodash/flatten'
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
 import pageMeta from '~/mixins/pageMeta'
@@ -499,6 +494,14 @@ export default {
       )
     },
 
+    activeVariantOptionIds() {
+      if (!this.product?.variants.results.length) return []
+      return this.product?.variants.results.reduce((arr, variant) => {
+        arr.push(variant.optionValueIds)
+        return arr
+      }, [])
+    },
+
     bundleItems() {
       if (!this.product.bundle && !this.product.bundleItems?.length) return null
       return this.product.bundleItems
@@ -570,6 +573,8 @@ export default {
 
     optionInputs() {
       const options = get(this, 'product.options', [])
+      const hasSingleSelectOption =
+        options.length === 1 && options[0].inputType === 'select'
 
       return options.reduce((optionInputs, option) => {
         let componentName
@@ -591,6 +596,14 @@ export default {
         // Don't include subscription plan if there's only one option value available
         if (option.subscription && option.values.length < 2) return optionInputs
 
+        // If this is the only singular option, only show values that will result in an active variant
+        if (hasSingleSelectOption) {
+          const activeValues = option.values.filter((value) =>
+            flatten(this.activeVariantOptionIds).includes(value.id)
+          )
+          option.values = activeValues
+        }
+
         optionInputs.push({
           option,
           component: () =>
@@ -609,7 +622,7 @@ export default {
     selectedPurchaseOption() {
       this.quantity = 1
     },
-    
+
     variation() {
       this.exposeProduct()
     },
@@ -750,8 +763,17 @@ export default {
         (optionsAcc, { id, name, required, values, inputType }) => {
           const option = { name, required, isVisible: false }
           if (!inputType || inputType === 'select') {
-            // Use first available value as the default value for selects
-            optionsAcc[id] = { ...option, value: values[0].name }
+            const isSingleSelectOption = productOptions.length === 1
+            // If this is the only select option, only include values that result in an active variant
+            if (isSingleSelectOption) {
+              const activeValues = values.filter((value) =>
+                flatten(this.activeVariantOptionIds).includes(value.id)
+              )
+              optionsAcc[id] = { ...option, value: activeValues[0].name }
+            } else {
+              // Use first available value as the default value for selects
+              optionsAcc[id] = { ...option, value: values[0].name }
+            }
           } else {
             optionsAcc[id] = option
           }

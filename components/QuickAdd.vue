@@ -60,6 +60,7 @@
 <script>
 // Helpers
 import get from 'lodash/get'
+import flatten from 'lodash/flatten'
 import { mapState } from 'vuex'
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
@@ -105,9 +106,19 @@ export default {
       return this.$swell.products.variation(this.product, this.selectedOptions)
     },
 
+    activeVariantOptionIds() {
+      if (!this.product?.variants.results.length) return []
+      return this.product?.variants.results.reduce((arr, variant) => {
+        arr.push(variant.optionValueIds)
+        return arr
+      }, [])
+    },
+
     optionInputs() {
       if (!this.product) return {}
       const options = get(this, 'product.options', [])
+      const hasSingleSelectOption =
+        options.length === 1 && options[0].inputType === 'select'
 
       return options.reduce((optionInputs, option) => {
         let componentName
@@ -128,6 +139,14 @@ export default {
 
         // Don't include subscription plan if there's only one option value available
         if (option.subscription && option.values.length < 2) return optionInputs
+
+        // If this is the only singular option, only show values that will result in an active variant
+        if (hasSingleSelectOption) {
+          const activeValues = option.values.filter((value) =>
+            flatten(this.activeVariantOptionIds).includes(value.id)
+          )
+          option.values = activeValues
+        }
 
         optionInputs.push({
           option,
