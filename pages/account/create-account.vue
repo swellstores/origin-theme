@@ -139,6 +139,12 @@ export default {
     }
   },
 
+  head() {
+    return {
+      title: this.$t('account.createAccount.title'),
+    }
+  },
+
   activated() {
     this.$v.$reset()
   },

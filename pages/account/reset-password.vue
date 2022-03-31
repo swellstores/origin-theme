@@ -77,6 +77,10 @@ export default {
     }
   },
 
+  head() {
+    return { title: this.$t('account.resetPassword.title') }
+  },
+
   created() {
     // Get password reset key query
     this.resetKey = this.$route.query.key
