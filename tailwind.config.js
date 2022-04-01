@@ -173,11 +173,11 @@ module.exports = {
             [`.${e(`rotate-${key}`)}`]: {
               transform: `rotate(${value})`,
             },
-          }
-        }
-      )
+          };
+        },
+      );
 
-      addUtilities(rotateUtilities, ['hover'])
+      addUtilities(rotateUtilities, ['hover']);
     },
   ],
-}
+};

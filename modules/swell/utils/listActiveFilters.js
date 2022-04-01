@@ -4,36 +4,36 @@ export function listActiveFilters(filters, filterState) {
   // TODO validate params
   // TODO support passing filterState as object ({ id: value }) or array ([{ id, value }])
   return filters.reduce((activeFilters, filter) => {
-    const stateValue = filterState[filter.id]
+    const stateValue = filterState[filter.id];
 
     // Bail if the filter isn't active
-    if (!stateValue) return activeFilters
+    if (!stateValue) return activeFilters;
 
-    let options = filter.options
+    let options = filter.options;
 
     switch (filter.type) {
       case 'select':
         options = options.reduce((activeOptions, option) => {
           if (stateValue.includes(option.value)) {
-            activeOptions.push(option)
+            activeOptions.push(option);
           }
-          return activeOptions
-        }, [])
-        break
+          return activeOptions;
+        }, []);
+        break;
       case 'range':
         options = [
           { value: stateValue[0], label: stateValue[0] },
           { value: stateValue[1], label: stateValue[1] },
-        ]
-        break
+        ];
+        break;
       default:
     }
 
     activeFilters.push({
       ...filter,
       options,
-    })
+    });
 
-    return activeFilters
-  }, [])
+    return activeFilters;
+  }, []);
 }

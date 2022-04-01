@@ -1,9 +1,9 @@
-import pMap from 'p-map'
-import { getLocales } from '../lang/utils'
+import pMap from 'p-map';
+import { getLocales } from '../lang/utils';
 
 export default async function getRoutes(swell) {
-  const { defaultLocale, locales } = await getLocales(swell)
-  const secondaryLocales = locales.filter(({ code }) => code !== defaultLocale)
+  const { defaultLocale, locales } = await getLocales(swell);
+  const secondaryLocales = locales.filter(({ code }) => code !== defaultLocale);
 
   const pages = (await paginateThrough(swell, 'content', 'pages')).reduce(
     (acc, page) => [
@@ -11,8 +11,8 @@ export default async function getRoutes(swell) {
       `/${page.slug}`,
       ...localizedRoutesFor(`/${page.slug}`, secondaryLocales),
     ],
-    []
-  )
+    [],
+  );
 
   const categories = (await paginateThrough(swell, 'categories')).reduce(
     (acc, category) => [
@@ -20,8 +20,8 @@ export default async function getRoutes(swell) {
       `/categories/${category.slug}`,
       ...localizedRoutesFor(`/categories/${category.slug}`, secondaryLocales),
     ],
-    []
-  )
+    [],
+  );
 
   const products = (
     await paginateThrough(swell, 'products', {
@@ -33,10 +33,10 @@ export default async function getRoutes(swell) {
       `/products/${product.slug}`,
       ...localizedRoutesFor(`/products/${product.slug}`, secondaryLocales),
     ],
-    []
-  )
+    [],
+  );
 
-  return [...pages, ...categories, ...products]
+  return [...pages, ...categories, ...products];
 }
 
 // arguments reference for different arity:
@@ -51,14 +51,14 @@ async function paginateThrough(swell, module, model, query) {
     fields: 'slug',
     limit: 100,
     ...(query || typeof model === 'object' ? model : {}),
-  }
+  };
 
-  const initialFetch = await fetchList(swell, module, model, initialParams)
+  const initialFetch = await fetchList(swell, module, model, initialParams);
 
-  const { results, pages } = initialFetch
+  const { results, pages } = initialFetch;
 
   if (!pages) {
-    return results
+    return results;
   }
 
   const pagesResults = (
@@ -68,26 +68,26 @@ async function paginateThrough(swell, module, model, query) {
         const fetchParams = {
           ...(query || typeof model === 'object' ? model : {}),
           page: pageNumber,
-        }
+        };
 
-        return fetchList(swell, module, model, fetchParams)
+        return fetchList(swell, module, model, fetchParams);
       },
       {
         concurrency: 4,
-      }
+      },
     )
-  ).reduce((acc, { results }) => [...acc, ...results], [])
+  ).reduce((acc, { results }) => [...acc, ...results], []);
 
-  return [...results, ...pagesResults]
+  return [...results, ...pagesResults];
 }
 
 function fetchList(swell, module, model, params) {
   return swell[module].list.apply(
     swell[module],
-    typeof model === 'string' ? [model, params] : [params]
-  )
+    typeof model === 'string' ? [model, params] : [params],
+  );
 }
 
 function localizedRoutesFor(path, locales) {
-  return locales.map(({ code }) => `/${code}${path}`)
+  return locales.map(({ code }) => `/${code}${path}`);
 }

@@ -728,4 +728,4 @@ export const getLocaleDefaults = {
   zmi: 'MY',
   zu: 'ZA',
   zza: 'TR',
-}
+};
