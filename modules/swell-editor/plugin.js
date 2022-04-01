@@ -1,6 +1,6 @@
-import Vue from 'vue'
-import middleware from './middleware'
-import { editor } from './swell-editor-utils'
+import Vue from 'vue';
+import middleware from './middleware';
+import { editor } from './swell-editor-utils';
 
 export default (context, inject) => {
   context.i18n = {
@@ -13,18 +13,18 @@ export default (context, inject) => {
     lazy: {
       skipNuxtState: true,
     },
-  }
+  };
 
   if (process.browser) {
     // Initialize data sync plugin
-    Vue.use(SyncPlugin)
+    Vue.use(SyncPlugin);
 
     // Listen for messages and pass to event bus
     window.addEventListener(
       'message',
       (event) => editor.processMessage(event, context),
-      false
-    )
+      false,
+    );
 
     // Tell the editor we exist
     editor.sendMessage({
@@ -32,7 +32,7 @@ export default (context, inject) => {
       details: {
         location: window.location.pathname,
       },
-    })
+    });
 
     // Listen for unload to tell the editor when we're gone
     window.addEventListener(
@@ -43,32 +43,32 @@ export default (context, inject) => {
           details: {
             location: '',
           },
-        })
+        });
         editor.sendMessage({
           type: 'locale.changed',
           details: {
             locale: '',
           },
-        })
+        });
       },
-      false
-    )
+      false,
+    );
 
     // Catch unusual vue $destroy undefined error
     Vue.config.errorHandler = (err, vm, info) => {
       if (String(err.message).includes('$destroy')) {
-        console.warn('Caught $destroy of undefined error')
-        return
+        console.warn('Caught $destroy of undefined error');
+        return;
       }
-      throw err
-    }
+      throw err;
+    };
   }
 
-  editor.processMessage({ data: { type: 'settings.loaded' } }, context)
+  editor.processMessage({ data: { type: 'settings.loaded' } }, context);
 
   // Add editor to Nuxt context as $swellEditor
-  inject('swellEditor', editor)
-}
+  inject('swellEditor', editor);
+};
 
 // Nuxt middleware for updating the editor when the route is changed
 middleware.editorFrame = ({ route }) => {
@@ -78,28 +78,28 @@ middleware.editorFrame = ({ route }) => {
     details: {
       location: route.fullPath,
     },
-  })
-}
+  });
+};
 
 // Vue plugin for watching editor updates and triggering data refetch
 const SyncPlugin = {
   install: (Vue) => {
     Vue.mixin({
       mounted() {
-        editor.enableFetchListener(this)
+        editor.enableFetchListener(this);
       },
 
       activated() {
-        editor.enableFetchListener(this)
+        editor.enableFetchListener(this);
       },
 
       destroyed() {
-        editor.disableFetchListener(this)
+        editor.disableFetchListener(this);
       },
 
       deactivated() {
-        editor.disableFetchListener(this)
+        editor.disableFetchListener(this);
       },
-    })
+    });
   },
-}
+};

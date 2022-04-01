@@ -16,20 +16,20 @@ export const state = () => ({
   quickViewProductId: null,
   mediaPreviewIsVisible: false,
   mediaPreview: null,
-})
+});
 
 export const actions = {
   selectCurrency({ commit, dispatch }, { code } = {}) {
     try {
       if (code) {
-        this.$swell.currency.select(code)
-        commit('setState', { key: 'currency', value: code })
+        this.$swell.currency.select(code);
+        commit('setState', { key: 'currency', value: code });
       } else {
-        const selected = this.$swell.currency.selected()
-        commit('setState', { key: 'currency', value: selected })
+        const selected = this.$swell.currency.selected();
+        commit('setState', { key: 'currency', value: selected });
       }
     } catch (err) {
-      dispatch('handleError', err)
+      dispatch('handleError', err);
     }
   },
 
@@ -41,62 +41,62 @@ export const actions = {
    */
   async checkCartItemHasStock({ state }, { item, id }) {
     // Get cart items
-    const items = state.cart?.items
+    const items = state.cart?.items;
 
-    let cartItem
-    let stockPurchasable
-    let stockTracking
-    let stockLevel
-    let product
-    let currentQuantity = 0
+    let cartItem;
+    let stockPurchasable;
+    let stockTracking;
+    let stockLevel;
+    let product;
+    let currentQuantity = 0;
 
-    const quantityToAdd = item ? item.quantity : 1
+    const quantityToAdd = item ? item.quantity : 1;
 
     if (item) {
-      product = await this.$swell.products.get(item.productId)
+      product = await this.$swell.products.get(item.productId);
     } else if (id) {
-      product = await this.$swell.products.get(id)
+      product = await this.$swell.products.get(id);
     }
 
-    if (!product) throw new Error('Product in cart could not be found.')
+    if (!product) throw new Error('Product in cart could not be found.');
 
     if (items) {
-      let variant
+      let variant;
       // If a product item is provided
-      if (item) variant = this.$swell.products.variation(product, item.options)
+      if (item) variant = this.$swell.products.variation(product, item.options);
       cartItem = items.find((item) => {
         if (id) {
-          return item.id === id
+          return item.id === id;
         } else if (item) {
           return item.variant
             ? item.variantId === variant?.variantId
-            : item.productId === variant?.id
+            : item.productId === variant?.id;
         }
-        return null
-      })
+        return null;
+      });
     }
 
     // Get stock availability of cart item
     if (cartItem) {
-      stockPurchasable = cartItem.product.stockPurchasable
-      stockTracking = cartItem.product.stockTracking
-      stockLevel = cartItem.product.stockLevel
+      stockPurchasable = cartItem.product.stockPurchasable;
+      stockTracking = cartItem.product.stockTracking;
+      stockLevel = cartItem.product.stockLevel;
       // If variant, get respective stock level
       if (cartItem.variant) {
-        stockLevel = cartItem.variant.stockLevel
+        stockLevel = cartItem.variant.stockLevel;
       }
-      currentQuantity = cartItem.quantity
+      currentQuantity = cartItem.quantity;
     } else {
       // Get stock availability of product to be added
-      stockPurchasable = product.stockPurchasable
-      stockTracking = product.stockTracking
-      stockLevel = product.stockLevel
+      stockPurchasable = product.stockPurchasable;
+      stockTracking = product.stockTracking;
+      stockLevel = product.stockLevel;
     }
 
     // If product is purchasable out of stock or doesn't track stock, allow add to cart
-    if (stockPurchasable || !stockTracking) return true
-    if (currentQuantity + quantityToAdd > stockLevel) return false
-    return true
+    if (stockPurchasable || !stockTracking) return true;
+    if (currentQuantity + quantityToAdd > stockLevel) return false;
+    return true;
   },
 
   /**
@@ -114,69 +114,69 @@ export const actions = {
    */
   async addCartItem({ commit, dispatch, state }, item) {
     // Bail if an update is already in progress
-    if (state.cartIsUpdating) return
+    if (state.cartIsUpdating) return;
     // Set flag to show loading indicator
-    commit('setState', { key: 'cartIsUpdating', value: true })
+    commit('setState', { key: 'cartIsUpdating', value: true });
 
     try {
       // Check if validate stock on add is active
-      const validateCartStock = this.$swell.settings.get('cart.validateStock')
+      const validateCartStock = this.$swell.settings.get('cart.validateStock');
 
       if (validateCartStock) {
         try {
           const cartItemHasStock = await dispatch('checkCartItemHasStock', {
             item,
-          })
+          });
 
           if (!cartItemHasStock) {
-            commit('setState', { key: 'cartIsUpdating', value: false })
-            throw new Error('invalid_stock')
+            commit('setState', { key: 'cartIsUpdating', value: false });
+            throw new Error('invalid_stock');
           }
         } catch (err) {
-          throw new Error(err.message)
+          throw new Error(err.message);
         }
       }
 
       // Make Swell API call
-      const cart = await this.$swell.cart.addItem(item)
+      const cart = await this.$swell.cart.addItem(item);
 
       if (cart.errors) {
-        dispatch('handleModelErrors', cart.errors)
-        commit('setState', { key: 'cartIsUpdating', value: false })
-        return
+        dispatch('handleModelErrors', cart.errors);
+        commit('setState', { key: 'cartIsUpdating', value: false });
+        return;
       }
 
       // Replace cart state
-      commit('setState', { key: 'cart', value: cart })
+      commit('setState', { key: 'cart', value: cart });
       // Set item to be displayed in the notification
-      commit('setState', { key: 'addedItem', value: item })
+      commit('setState', { key: 'addedItem', value: item });
 
       if (state.notification !== null) {
         // If notification is already visible, close it to show new notification
-        commit('setState', { key: 'notification', value: null })
+        commit('setState', { key: 'notification', value: null });
 
         window.setTimeout(() => {
           dispatch('showNotification', {
             message: `Added ${item.quantity} item(s) to cart`,
             type: 'product',
             isSticky: true,
-          })
-        }, 200)
+          });
+        }, 200);
       } else {
         // Trigger success confirmation
         dispatch('showNotification', {
           message: `Added ${item.quantity} item(s) to cart`,
           type: 'product',
           isSticky: true,
-        })
+        });
       }
     } catch (err) {
-      if (err.message === 'invalid_stock') throw new Error('invalid_stock')
-      dispatch('handleError', err)
+      if (err.message === 'invalid_stock') throw new Error('invalid_stock');
+      dispatch('handleError', err);
     }
 
     // Reset flag to hide loading indicator
-    commit('setState', { key: 'cartIsUpdating', value: false })
+    commit('setState', { key: 'cartIsUpdating', value: false });
   },
 
   /**
@@ -185,18 +185,18 @@ export const actions = {
    * @param {CartItem} item - Cart item to remove
    */
   async removeCartItem({ commit, dispatch, state }, item) {
-    if (state.cartIsUpdating) return
-    commit('setState', { key: 'cartIsUpdating', value: true })
+    if (state.cartIsUpdating) return;
+    commit('setState', { key: 'cartIsUpdating', value: true });
 
     try {
-      const cart = await this.$swell.cart.removeItem(item.id)
-      commit('setState', { key: 'cart', value: cart })
+      const cart = await this.$swell.cart.removeItem(item.id);
+      commit('setState', { key: 'cart', value: cart });
       // dispatch('showNotification', { message: 'Removed from cart' })
     } catch (err) {
-      dispatch('handleError', err)
+      dispatch('handleError', err);
     }
 
-    commit('setState', { key: 'cartIsUpdating', value: false })
+    commit('setState', { key: 'cartIsUpdating', value: false });
   },
 
   /**
@@ -206,18 +206,18 @@ export const actions = {
    * @param {object} fields - Cart item fields to update in key: value format
    */
   async updateCartItem({ commit, dispatch, state }, { id, fieldsToUpdate }) {
-    if (state.cartIsUpdating) return
-    commit('setState', { key: 'cartIsUpdating', value: true })
+    if (state.cartIsUpdating) return;
+    commit('setState', { key: 'cartIsUpdating', value: true });
 
     try {
-      const cart = await this.$swell.cart.updateItem(id, fieldsToUpdate)
-      commit('setState', { key: 'cart', value: cart })
+      const cart = await this.$swell.cart.updateItem(id, fieldsToUpdate);
+      commit('setState', { key: 'cart', value: cart });
       // dispatch('showNotification', { message: 'Updated cart' })
     } catch (err) {
-      dispatch('handleError', err)
+      dispatch('handleError', err);
     }
 
-    commit('setState', { key: 'cartIsUpdating', value: false })
+    commit('setState', { key: 'cartIsUpdating', value: false });
   },
 
   /**
@@ -226,17 +226,17 @@ export const actions = {
    * @param {string} code - Coupon or gift card code
    */
   async applyDiscount({ commit, dispatch, state }, code) {
-    if (state.cartIsUpdating) return
-    commit('setState', { key: 'cartIsUpdating', value: true })
+    if (state.cartIsUpdating) return;
+    commit('setState', { key: 'cartIsUpdating', value: true });
     try {
-      const cart = await this.$swell.cart.applyCoupon(code)
-      commit('setState', { key: 'cart', value: cart })
+      const cart = await this.$swell.cart.applyCoupon(code);
+      commit('setState', { key: 'cart', value: cart });
       // dispatch('showNotification', { message: `Code ${code.toUpperCase()} applied` })
     } catch (err) {
-      dispatch('handleError', err)
+      dispatch('handleError', err);
     }
 
-    commit('setState', { key: 'cartIsUpdating', value: false })
+    commit('setState', { key: 'cartIsUpdating', value: false });
   },
 
   /**
@@ -245,56 +245,56 @@ export const actions = {
    * @param {string} [giftCardId] - ID of gift card already applied to cart
    */
   async removeDiscount({ commit, dispatch, state }, giftCardId) {
-    if (state.cartIsUpdating) return
-    commit('setState', { key: 'cartIsUpdating', value: true })
+    if (state.cartIsUpdating) return;
+    commit('setState', { key: 'cartIsUpdating', value: true });
 
     try {
-      let cart
+      let cart;
       if (giftCardId) {
-        cart = await this.$swell.cart.removeGiftcard(giftCardId)
+        cart = await this.$swell.cart.removeGiftcard(giftCardId);
         // dispatch('showNotification', { message: `Gift card removed` })
       } else {
-        cart = await this.$swell.cart.removeCoupon()
+        cart = await this.$swell.cart.removeCoupon();
         // dispatch('showNotification', { message: `Coupon removed` })
       }
 
-      commit('setState', { key: 'cart', value: cart })
+      commit('setState', { key: 'cart', value: cart });
     } catch (err) {
-      dispatch('handleError', err)
+      dispatch('handleError', err);
     }
 
-    commit('setState', { key: 'cartIsUpdating', value: false })
+    commit('setState', { key: 'cartIsUpdating', value: false });
   },
 
   async initializeCart({ commit, dispatch, state }, { checkoutId }) {
-    let cart = state.cart
+    let cart = state.cart;
 
     try {
       if (checkoutId) {
         // Recover cart if checkoutId provided
-        cart = await this.$swell.cart.recover(checkoutId)
+        cart = await this.$swell.cart.recover(checkoutId);
       } else {
         // Get cart from session (returns null if nothing in cart)
-        cart = await this.$swell.cart.get()
+        cart = await this.$swell.cart.get();
       }
       // Update cart state
-      commit('setState', { key: 'cart', value: cart })
+      commit('setState', { key: 'cart', value: cart });
     } catch (err) {
-      dispatch('handleError', err)
+      dispatch('handleError', err);
     }
   },
 
   async initializeCustomer({ commit, dispatch }) {
     try {
-      const loggedInCustomer = await this.$swell.account.get()
+      const loggedInCustomer = await this.$swell.account.get();
 
       // Check if customer exists
       if (loggedInCustomer) {
-        commit('setState', { key: 'customer', value: loggedInCustomer })
-        commit('setState', { key: 'customerLoggedIn', value: true })
+        commit('setState', { key: 'customer', value: loggedInCustomer });
+        commit('setState', { key: 'customerLoggedIn', value: true });
       }
     } catch (err) {
-      dispatch('handleError', err)
+      dispatch('handleError', err);
     }
   },
 
@@ -307,21 +307,21 @@ export const actions = {
    */
   showNotification(
     { commit, state },
-    { message, type = 'confirmation', isSticky = false } = {}
+    { message, type = 'confirmation', isSticky = false } = {},
   ) {
     // If non-product notification, set addedItem as null
     if (type !== 'product') {
-      commit('setState', { key: 'addedItem', value: null })
+      commit('setState', { key: 'addedItem', value: null });
     }
 
-    commit('setState', { key: 'notification', value: { message, type } })
+    commit('setState', { key: 'notification', value: { message, type } });
 
     // If sticky setting isn't true, remove the notification after a few seconds
     if (!isSticky) {
       process.client &&
         window.setTimeout(() => {
-          commit('setState', { key: 'notification', value: null })
-        }, 4000)
+          commit('setState', { key: 'notification', value: null });
+        }, 4000);
     }
   },
 
@@ -332,17 +332,17 @@ export const actions = {
    */
   handleError({ dispatch }, error) {
     // Trigger error notification
-    dispatch('showNotification', { message: error.message, type: 'error' })
+    dispatch('showNotification', { message: error.message, type: 'error' });
     // Don't log if param is in ignore list
-    const ignoreParams = ['coupon_code']
-    if (ignoreParams.includes(error.param)) return
+    const ignoreParams = ['coupon_code'];
+    if (ignoreParams.includes(error.param)) return;
 
     if (this.isDev) {
       // Log locally if running in development mode
-      console.log(error)
+      console.log(error);
     } else {
       // Otherwise log with reporting tool
-      this.$sentry?.captureException(error)
+      this.$sentry?.captureException(error);
     }
   },
 
@@ -352,25 +352,25 @@ export const actions = {
    * @param {error} errors - Model errors object
    */
   handleModelErrors({ dispatch }, errors) {
-    if (!errors || typeof errors !== 'object') return
+    if (!errors || typeof errors !== 'object') return;
     // Loop over error keys and handle the first one
     for (const key of Object.keys(errors)) {
       if (errors[key] && errors[key].message) {
-        dispatch('handleError', errors[key])
-        return
+        dispatch('handleError', errors[key]);
+        return;
       }
     }
   },
-}
+};
 
 export const mutations = {
   increment(state, key) {
-    state[key]++
+    state[key]++;
   },
   toggle(state, key) {
-    state[key] = !state[key]
+    state[key] = !state[key];
   },
   setState(state, { key, value }) {
-    state[key] = value
+    state[key] = value;
   },
-}
+};

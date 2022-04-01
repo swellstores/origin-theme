@@ -1,26 +1,26 @@
-import get from 'lodash/get'
+import get from 'lodash/get';
 
 const generateMetaImage = (media) => {
   const src = Array.isArray(media)
     ? get(media, '0.file.url')
-    : get(media, 'file.url')
+    : get(media, 'file.url');
   const size = {
     width: 1200,
     height: 630,
-  }
+  };
 
-  return src ? `${src}?w=${size.width}&h=${size.height}&q=100&fit=fill` : ''
-}
+  return src ? `${src}?w=${size.width}&h=${size.height}&q=100&fit=fill` : '';
+};
 
 export default {
   async asyncData({ $swell }) {
-    const storeName = await $swell.settings.get('store.name')
-    const storeUrl = await $swell.settings.get('store.url')
+    const storeName = await $swell.settings.get('store.name');
+    const storeUrl = await $swell.settings.get('store.url');
 
     return {
       storeName,
       storeUrl,
-    }
+    };
   },
 
   computed: {
@@ -34,8 +34,8 @@ export default {
         page,
         storeName,
         storeUrl,
-      } = this
-      const formatTitle = (itemTitle) => itemTitle + ' - ' + storeName
+      } = this;
+      const formatTitle = (itemTitle) => itemTitle + ' - ' + storeName;
 
       const meta = {
         storeName,
@@ -44,55 +44,55 @@ export default {
         description: '',
         image: {}, // TODO global fallback image,
         link: [],
-      }
+      };
 
       if (get(this, '$fetchState.pending')) {
         // Content is being loaded
-        meta.title = 'Loading...'
+        meta.title = 'Loading...';
       } else if (category) {
         // For a category detail page
-        const title = category.metaTitle || category.name
-        meta.title = formatTitle(title)
-        meta.description = category.metaDescription || ''
-        meta.image = generateMetaImage(category.images)
+        const title = category.metaTitle || category.name;
+        meta.title = formatTitle(title);
+        meta.description = category.metaDescription || '';
+        meta.image = generateMetaImage(category.images);
       } else if (categories) {
         // For a category index page
-        meta.title = formatTitle('Categories')
-        meta.image = generateMetaImage(get(categories, '0.images'))
+        meta.title = formatTitle('Categories');
+        meta.image = generateMetaImage(get(categories, '0.images'));
       } else if (product) {
         // For a product detail page
-        const title = product.metaTitle || product.name
-        meta.title = formatTitle(title)
-        meta.description = product.metaDescription || ''
-        meta.image = generateMetaImage(product.images)
+        const title = product.metaTitle || product.name;
+        meta.title = formatTitle(title);
+        meta.description = product.metaDescription || '';
+        meta.image = generateMetaImage(product.images);
       } else if (products) {
         // For a product index page
-        meta.title = formatTitle('Products')
-        meta.image = generateMetaImage(get(products, '0.images'))
+        meta.title = formatTitle('Products');
+        meta.image = generateMetaImage(get(products, '0.images'));
       } else if (page) {
         // For a standard page
-        const title = page.metaTitle || page.name
-        meta.title = formatTitle(title)
-        meta.description = page.metaDescription || ''
+        const title = page.metaTitle || page.name;
+        meta.title = formatTitle(title);
+        meta.description = page.metaDescription || '';
       }
 
-      return meta
+      return meta;
     },
 
     // Generate schema.org structured data
     structuredData() {
       // Item is a Product
-      const { product } = this
+      const { product } = this;
 
       if (product) {
-        const stockStatus = product.stockStatus || 'inStock'
+        const stockStatus = product.stockStatus || 'inStock';
         const availabilityDefs = {
           inStock: 'InStock',
           limitedAvailability: 'LimitedAvailability',
           preorder: 'PreOrder',
           outOfStock: 'OutOfStock',
           soldOut: 'SoldOut',
-        }
+        };
 
         return {
           '@context': 'http://schema.org',
@@ -106,21 +106,21 @@ export default {
             priceCurrency: product.currency,
             availability: `http://schema.org/${availabilityDefs[stockStatus]}`,
           },
-        }
+        };
       }
     },
   },
 
   head() {
-    const { pageMeta, structuredData } = this
-    const { storeName, url, title, description, image, link } = pageMeta
-    const script = []
+    const { pageMeta, structuredData } = this;
+    const { storeName, url, title, description, image, link } = pageMeta;
+    const script = [];
 
     if (structuredData) {
       script.push({
         innerHTML: JSON.stringify(structuredData),
         type: 'application/ld+json',
-      })
+      });
     }
 
     return {
@@ -178,6 +178,6 @@ export default {
           content: image,
         },
       ],
-    }
+    };
   },
-}
+};

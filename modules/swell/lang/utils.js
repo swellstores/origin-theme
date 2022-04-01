@@ -1,57 +1,57 @@
-import path from 'path'
-import fs from 'fs'
-import consola from 'consola'
-import ruPluralizationRule from './pluralization/ru'
+import path from 'path';
+import fs from 'fs';
+import consola from 'consola';
+import ruPluralizationRule from './pluralization/ru';
 
-const logger = consola.withScope('swell')
+const logger = consola.withScope('swell');
 
 export async function generateLangFiles(swell, locales) {
   await Promise.all(
     locales.map(async ({ code }) => {
-      swell.options.locale = code
-      const localeSettings = await swell.get('/settings')
+      swell.options.locale = code;
+      const localeSettings = await swell.get('/settings');
 
       const langPath = path.resolve(
         __dirname,
         '../../../static/lang',
-        `${code}.json`
-      )
+        `${code}.json`,
+      );
       fs.writeFileSync(
         langPath,
-        JSON.stringify(localeSettings.lang, null, '  ')
-      )
+        JSON.stringify(localeSettings.lang, null, '  '),
+      );
 
-      return localeSettings.lang
-    })
-  )
+      return localeSettings.lang;
+    }),
+  );
 
-  logger.success('Generated language settings files')
+  logger.success('Generated language settings files');
 }
 
 export async function getLocales(swell) {
-  const defaultLocale = await swell.settings.get('store.locale', 'en-US')
-  const localesSettings = await swell.settings.get('store.locales')
-  const isMultiLocale = localesSettings && localesSettings.length > 0
+  const defaultLocale = await swell.settings.get('store.locale', 'en-US');
+  const localesSettings = await swell.settings.get('store.locales');
+  const isMultiLocale = localesSettings && localesSettings.length > 0;
 
   const locales = isMultiLocale
     ? localesSettings.map(({ code, name }) => ({ code, name }))
-    : [{ code: defaultLocale }]
+    : [{ code: defaultLocale }];
 
-  return { defaultLocale, locales }
+  return { defaultLocale, locales };
 }
 
 export async function getLangSettings(swell) {
-  const { defaultLocale, locales } = await getLocales(swell)
+  const { defaultLocale, locales } = await getLocales(swell);
 
   const fallbackLocale = locales
     .filter(({ code }) => code !== defaultLocale)
     .reduce(
       (acc, { code, fallback }) => {
-        acc[code] = [fallback || defaultLocale]
-        return acc
+        acc[code] = [fallback || defaultLocale];
+        return acc;
       },
-      { default: [defaultLocale] }
-    )
+      { default: [defaultLocale] },
+    );
 
   const defaultSettings = {
     defaultLocale,
@@ -70,10 +70,10 @@ export async function getLangSettings(swell) {
       alwaysRedirect: true,
     },
     skipSettingLocaleOnNavigate: true,
-  }
+  };
 
-  await generateLangFiles(swell, locales)
-  swell.options.locale = defaultLocale
+  await generateLangFiles(swell, locales);
+  swell.options.locale = defaultLocale;
 
   return {
     ...defaultSettings,
@@ -83,5 +83,5 @@ export async function getLangSettings(swell) {
     })),
     langDir: '~/static/lang',
     lazy: true,
-  }
+  };
 }

@@ -1,43 +1,43 @@
-import swell from 'swell-js'
-import settings from './config/settings.json'
-import menus from './config/menus.json'
-import { getGoogleFontConfig } from './modules/swell-editor/utils'
-import { getLangSettings } from './modules/swell/lang/utils'
-import { mergeSettings } from './modules/swell/utils/mergeSettings'
-import getRoutes from './modules/swell/utils/getRoutes'
+import swell from 'swell-js';
+import settings from './config/settings.json';
+import menus from './config/menus.json';
+import { getGoogleFontConfig } from './modules/swell-editor/utils';
+import { getLangSettings } from './modules/swell/lang/utils';
+import { mergeSettings } from './modules/swell/utils/mergeSettings';
+import getRoutes from './modules/swell/utils/getRoutes';
 
-const isProduction = process.env.NODE_ENV === 'production'
-const editorMode = process.env.SWELL_EDITOR === 'true'
-const storeId = process.env.SWELL_STORE_ID || settings.store.id
-const publicKey = process.env.SWELL_PUBLIC_KEY || settings.store.public_key
-const storeUrl = process.env.SWELL_STORE_URL || settings.store.url
+const isProduction = process.env.NODE_ENV === 'production';
+const editorMode = process.env.SWELL_EDITOR === 'true';
+const storeId = process.env.SWELL_STORE_ID || settings.store.id;
+const publicKey = process.env.SWELL_PUBLIC_KEY || settings.store.public_key;
+const storeUrl = process.env.SWELL_STORE_URL || settings.store.url;
 
 export default async () => {
   swell.init(storeId, publicKey, {
     useCamelCase: true,
     url: storeUrl,
     previewContent: editorMode || !isProduction,
-  })
+  });
 
-  await swell.settings.load()
+  await swell.settings.load();
 
   swell.settings.set({
     value: mergeSettings(await swell.settings.get(), settings),
-  })
+  });
 
   swell.settings.set({
     model: 'menus',
     value: mergeSettings(
       swell.settings.getState('/settings/menus', 'menuState'),
-      menus
+      menus,
     ),
-  })
+  });
 
-  const currentSettings = await swell.settings.get()
-  const loadingColor = await swell.settings.get('colors.accent')
-  const gtmId = await swell.settings.get('analytics.gtmId')
-  const storeName = await swell.settings.get('store.name')
-  const i18n = await getLangSettings(swell)
+  const currentSettings = await swell.settings.get();
+  const loadingColor = await swell.settings.get('colors.accent');
+  const gtmId = await swell.settings.get('analytics.gtmId');
+  const storeName = await swell.settings.get('store.name');
+  const i18n = await getLangSettings(swell);
 
   return {
     target: editorMode ? 'server' : 'static',
@@ -235,7 +235,7 @@ export default async () => {
           name: 'index',
           path: '/',
           component: resolve(__dirname, 'pages/_slug.vue'),
-        })
+        });
       },
     },
 
@@ -250,5 +250,5 @@ export default async () => {
     env: {
       cdnHost: process.env.CDN_HOST || 'https://cdn.schema.io',
     },
-  }
-}
+  };
+};
