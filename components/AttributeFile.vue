@@ -12,7 +12,7 @@
         <a
           v-for="{ file } in attribute.value"
           :key="file.id"
-          :href="file.url"
+          :href="file && file.url"
           class="mb-2 flex items-center font-normal last:mb-0"
           download
         >
@@ -32,7 +32,7 @@
         attribute.name
       }}</strong>
       <a
-        :href="attribute.value.file.url"
+        :href="attribute.value.file && attribute.value.file.url"
         class="flex items-center font-normal"
         target="_blank"
         download
@@ -42,7 +42,7 @@
           size="sm"
           class="mr-2 inline-block"
         />
-        {{ attribute.value.file.filename }}
+        {{ attribute.value.file && attribute.value.file.filename }}
       </a>
     </template>
   </div>
