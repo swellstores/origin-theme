@@ -1,9 +1,7 @@
 import swell from 'swell-js';
 import settings from './config/settings.json';
-import menus from './config/menus.json';
 import { getGoogleFontConfig } from './modules/swell-editor/utils';
 import { getLangSettings } from './modules/swell/lang/utils';
-import { mergeSettings } from './modules/swell/utils/mergeSettings';
 import getRoutes from './modules/swell/utils/getRoutes';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -20,18 +18,6 @@ export default async () => {
   });
 
   await swell.settings.load();
-
-  swell.settings.set({
-    value: mergeSettings(await swell.settings.get(), settings),
-  });
-
-  swell.settings.set({
-    model: 'menus',
-    value: mergeSettings(
-      swell.settings.getState('/settings/menus', 'menuState'),
-      menus,
-    ),
-  });
 
   const currentSettings = await swell.settings.get();
   const loadingColor = await swell.settings.get('colors.accent');
