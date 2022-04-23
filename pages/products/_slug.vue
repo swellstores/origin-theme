@@ -418,6 +418,14 @@ export default {
       expand: ['up_sells.product', 'cross_sells'],
     })
 
+    const options = product.purchaseOptions
+
+    if (options) {
+      options.subscription.plans = options.subscription.plans.filter(
+        (item) => item && item.price > 0
+      )
+    }
+
     // Show 404 if product isn't found
     if (!product) {
       return this.$nuxt.error({
