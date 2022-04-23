@@ -91,6 +91,10 @@ export default {
     }
   },
 
+  head() {
+    return { title: 'Login' }
+  },
+
   activated() {
     this.$v.$reset()
   },

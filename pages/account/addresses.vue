@@ -142,6 +142,7 @@ export default {
       isUpdating: false,
     }
   },
+
   async fetch() {
     // Set page data
     const { results: addresses } = await this.$swell.account.listAddresses()
@@ -151,6 +152,10 @@ export default {
     }
 
     this.addresses = addresses
+  },
+
+  head() {
+    return { title: this.$t('account.addresses.title') }
   },
 
   computed: {

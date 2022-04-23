@@ -57,5 +57,9 @@ export default {
     this.orders = orders
     this.shopLink = await $swell.settings.get('cart.shopLink', '/categories/')
   },
+
+  head() {
+    return { title: this.$t('account.orders.title') }
+  },
 }
 </script>

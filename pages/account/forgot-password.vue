@@ -63,6 +63,10 @@ export default {
     }
   },
 
+  head() {
+    return { title: this.$t('account.forgotPassword.title') }
+  },
+
   activated() {
     this.$v.$reset()
   },

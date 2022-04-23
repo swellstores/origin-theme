@@ -60,6 +60,10 @@ export default {
     this.shopLink = await $swell.settings.get('cart.shopLink', '/categories/')
   },
 
+  head() {
+    return { title: this.$t('account.subscriptions.title') }
+  },
+
   activated() {
     // Refetch updated data
     this.$fetch()

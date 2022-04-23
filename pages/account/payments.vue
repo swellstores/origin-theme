@@ -86,6 +86,7 @@ export default {
       isCreating: false,
     }
   },
+
   async fetch() {
     // Set page data
     const { results: cards } = await this.$swell.account.listCards()
@@ -93,6 +94,12 @@ export default {
     if (this.customer.billing)
       this.defaultCardId = this.customer.billing.accountCardId
     this.cards = cards
+  },
+
+  head() {
+    return {
+      title: this.$t('account.payments.title'),
+    }
   },
 
   computed: {
