@@ -260,7 +260,7 @@
               "short": "mo"
             },
             "yearly": {
-              "label": "year | years | year",
+              "label": "years | year | years",
               "short": "yr"
             },
             "products_interval": "{count} every {n} {interval}",
