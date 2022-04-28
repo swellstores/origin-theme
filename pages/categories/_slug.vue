@@ -268,6 +268,7 @@ export default {
         categories: slug,
         $filters: filterState,
         expand: ['variants'],
+        $currency: $swell.currency.list().map((currency) => currency.code),
       })
     },
 
