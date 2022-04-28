@@ -197,6 +197,96 @@ export default {
   computed: {
     ...mapState(['currency', 'cartIsUpdating']),
     displayPrice() {
+      const lowestPricesInCurrency = {
+        option: Infinity,
+        variant: Infinity,
+        unpricedOptions: new Set(),
+        unpricedVariants: new Set(),
+        currency: this.currency.toLowerCase(),
+      }
+
+      const variants = this.product.variants.results
+
+      variants.forEach((variant) => {
+        const price = this.getStandardPriceInCurrency(
+          variant,
+          lowestPricesInCurrency.currency
+        )
+
+        if (price > 0) {
+          if (price < lowestPricesInCurrency.variant) {
+            lowestPricesInCurrency.variant = price
+          }
+        } else {
+          lowestPricesInCurrency.unpricedVariants.add(variant.name)
+        }
+      })
+
+      if (
+        lowestPricesInCurrency.variant < Infinity &&
+        lowestPricesInCurrency.unpricedVariants.size === 0
+      ) {
+        // if prices are for all variants, show lowest price for variants
+        return lowestPricesInCurrency.variant
+      }
+
+      const productOptions = this.product.options || []
+
+      productOptions.forEach((option) => {
+        const values = option.values || []
+
+        values.forEach((value) => {
+          const price =
+            value.$currency &&
+            value.$currency[lowestPricesInCurrency.currency] &&
+            value.$currency[lowestPricesInCurrency.currency].price
+          if (price > 0) {
+            if (price < lowestPricesInCurrency.option) {
+              lowestPricesInCurrency.option = price
+            }
+          } else {
+            lowestPricesInCurrency.unpricedOptions.add(value.name)
+          }
+        })
+      })
+
+      const price =
+        this.getStandardPriceInCurrency(
+          this.product,
+          lowestPricesInCurrency.currency
+        ) || 0
+
+      const addedPrice = price + lowestPricesInCurrency.option
+
+      if (
+        addedPrice < Infinity &&
+        lowestPricesInCurrency.unpricedOptions.size === 0 &&
+        lowestPricesInCurrency.unpricedVariants.size === variants.length
+      ) {
+        // if prices are for all options and no prices for variants, show lowest price for options
+        return addedPrice
+      }
+
+      for (const option of lowestPricesInCurrency.unpricedOptions) {
+        if (lowestPricesInCurrency.unpricedVariants.has(option)) {
+          // if there is unpriced variant (no price for it in the options and variants sections), use the standard price for the main product
+          return price
+        }
+      }
+
+      const lowestPrice =
+        addedPrice < lowestPricesInCurrency.variant
+          ? addedPrice
+          : lowestPricesInCurrency.variant
+
+      if (lowestPrice < Infinity) {
+        return lowestPrice
+      }
+
+      if (this.product.currency !== this.currency) {
+        return null
+      }
+
       if (this.product.price > 0) {
         return this.product.price
       }
@@ -251,6 +341,21 @@ export default {
 
     keepQuickAddAlive(bool) {
       this.quickAddKeepAlive = bool
+    },
+
+    getStandardPriceInCurrency(product, currency) {
+      const options = product.purchaseOptions
+
+      const standardCurrency =
+        options && options.standard && options.standard.$currency
+
+      if (standardCurrency) {
+        const price = standardCurrency[currency]
+
+        if (price) {
+          return price.price
+        }
+      }
     },
   },
 }

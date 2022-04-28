@@ -120,6 +120,7 @@ export default {
     const products = await $swell.products.list({
       category: this.categoryId,
       expand: ['variants'],
+      $currency: $swell.currency.list().map((currency) => currency.code),
     })
 
     if (!category) {
