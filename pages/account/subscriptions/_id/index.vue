@@ -149,7 +149,7 @@
                 {{
                   formatMoney(
                     subscription.recurringTotal,
-                    subscription.currency
+                    subscription.currency,
                   )
                 }}</span
               >
@@ -176,7 +176,7 @@
                   ? $t('account.subscriptions.id.freeShipping')
                   : formatMoney(
                       subscriptionOrder.shipmentPrice,
-                      subscriptionOrder.currency
+                      subscriptionOrder.currency,
                     )
               }}</span>
             </div>
@@ -479,9 +479,9 @@
 
 <script>
 // Helpers
-import { mapState } from 'vuex'
-import padStart from 'lodash/padStart'
-import isEmpty from 'lodash/isEmpty'
+import { mapState } from 'vuex';
+import padStart from 'lodash/padStart';
+import isEmpty from 'lodash/isEmpty';
 
 export default {
   name: 'Subscription',
@@ -503,31 +503,31 @@ export default {
       selectDateTimePopupIsActive: false,
       cancelPopupIsActive: false,
       isUpdating: false,
-    }
+    };
   },
 
   async fetch() {
-    const { $swell } = this
+    const { $swell } = this;
 
     // Fetch subscription
     const subscription = await this.$swell.subscriptions.get(
       this.$route.params.id,
       {
         expand: ['product', 'variant', 'orders'],
-      }
-    )
+      },
+    );
 
     // Show 404 if subscription data isn't found
     if (!subscription) {
-      return this.$nuxt.error({ statusCode: 404 })
+      return this.$nuxt.error({ statusCode: 404 });
     }
 
     // Set component data
-    this.subscription = subscription
+    this.subscription = subscription;
     this.allowPlanEdit = await $swell.settings.get(
       'account.subscriptions.allowPlanEdit',
-      true
-    )
+      true,
+    );
     // Fetch subscription settings
     const {
       features: {
@@ -537,31 +537,31 @@ export default {
         pausePastDue,
       },
       pauseNextSkipThreshold,
-    } = await this.$swell.settings.subscriptions()
+    } = await this.$swell.settings.subscriptions();
 
     // Set component data
-    this.pauseIndefinitely = pauseIndefinitely
-    this.pauseSkipNext = pauseSkipNext
-    this.pauseDuringTrial = pauseDuringTrial
-    this.pausePastDue = pausePastDue
+    this.pauseIndefinitely = pauseIndefinitely;
+    this.pauseSkipNext = pauseSkipNext;
+    this.pauseDuringTrial = pauseDuringTrial;
+    this.pausePastDue = pausePastDue;
 
     if (subscription.orderId) {
       const subscriptionOrder = await $swell.account.getOrder(
-        subscription.orderId
-      )
-      if (subscriptionOrder) this.subscriptionOrder = subscriptionOrder
+        subscription.orderId,
+      );
+      if (subscriptionOrder) this.subscriptionOrder = subscriptionOrder;
     }
 
     // Determine if subscription cycle can be skipped
     if (pauseSkipNext) {
-      const currentDate = new Date()
-      const datePauseEnd = new Date(this.subscription.datePeriodEnd)
+      const currentDate = new Date();
+      const datePauseEnd = new Date(this.subscription.datePeriodEnd);
 
       const pauseNextSkipThresholdDate = new Date(
-        datePauseEnd.setDate(datePauseEnd.getDate() - pauseNextSkipThreshold)
-      )
+        datePauseEnd.setDate(datePauseEnd.getDate() - pauseNextSkipThreshold),
+      );
 
-      this.cycleSkippable = currentDate < pauseNextSkipThresholdDate
+      this.cycleSkippable = currentDate < pauseNextSkipThresholdDate;
     }
   },
 
@@ -569,8 +569,8 @@ export default {
     ...mapState(['currency']),
 
     status() {
-      if (!this.subscription) return ''
-      return this.subscription.status
+      if (!this.subscription) return '';
+      return this.subscription.status;
     },
 
     pausable() {
@@ -579,171 +579,171 @@ export default {
           return (
             this.pauseIndefinitely ||
             (this.pauseSkipNext && this.cycleSkippable)
-          )
+          );
         case 'trial':
-          return this.pauseDuringTrial
+          return this.pauseDuringTrial;
         case 'pastdue':
-          return this.pausePastDue
+          return this.pausePastDue;
         case 'canceled':
-          return false
+          return false;
         case 'paused':
-          return true
+          return true;
         default:
-          return false
+          return false;
       }
     },
 
     orders() {
-      if (isEmpty(this.subscription.orders)) return []
-      return this.subscription.orders.results
+      if (isEmpty(this.subscription.orders)) return [];
+      return this.subscription.orders.results;
     },
 
     shipping() {
-      if (isEmpty(this.subscription.shipping)) return null
-      return this.subscription.shipping
+      if (isEmpty(this.subscription.shipping)) return null;
+      return this.subscription.shipping;
     },
 
     billing() {
-      if (isEmpty(this.subscription.billing)) return null
-      return this.subscription.billing
+      if (isEmpty(this.subscription.billing)) return null;
+      return this.subscription.billing;
     },
 
     cardExpDate() {
-      const mm = padStart(this.billing.card.expMonth, 2, '0')
-      const yy = this.billing.card.expYear.toString().slice(-2)
-      return `${mm} / ${yy}`
+      const mm = padStart(this.billing.card.expMonth, 2, '0');
+      const yy = this.billing.card.expYear.toString().slice(-2);
+      return `${mm} / ${yy}`;
     },
 
     planItems() {
-      if (!this.subscription.product.bundle) return null
-      return this.subscription.product.bundleItems
+      if (!this.subscription.product.bundle) return null;
+      return this.subscription.product.bundleItems;
     },
   },
 
   activated() {
     // Refetch updated data
-    this.$fetch()
+    this.$fetch();
   },
 
   methods: {
     selectThumbnail(item) {
       if (item.variant && item.variant.images && item.variant.images.length) {
-        return item.variant.images[0].file
+        return item.variant.images[0].file;
       }
 
       if (item.product && item.product.images && item.product.images.length) {
-        return item.product.images[0].file
+        return item.product.images[0].file;
       }
 
-      return {}
+      return {};
     },
 
     async updateShippingAddress(address) {
       try {
-        this.isUpdating = true
+        this.isUpdating = true;
 
         await this.$swell.subscriptions.update(this.subscription.id, {
           shipping: address,
-        })
+        });
 
-        this.isUpdating = false
-        this.editShippingAddressPopupIsActive = false
+        this.isUpdating = false;
+        this.editShippingAddressPopupIsActive = false;
         this.$store.dispatch('showNotification', {
           message: this.$t('account.addresses.popup.save.success'),
-        })
-        this.$fetch()
+        });
+        this.$fetch();
       } catch (err) {
-        this.isUpdating = false
+        this.isUpdating = false;
         this.$store.dispatch('showNotification', {
           message: this.$t('account.addresses.popup.save.error'),
           type: 'error',
-        })
+        });
       }
     },
 
     async updateBillingAddress(address) {
       try {
-        this.isUpdating = true
+        this.isUpdating = true;
 
         await this.$swell.subscriptions.update(this.subscription.id, {
           billing: address,
-        })
+        });
 
-        this.isUpdating = false
-        this.editBillingAddressPopupIsActive = false
+        this.isUpdating = false;
+        this.editBillingAddressPopupIsActive = false;
         this.$store.dispatch('showNotification', {
           message: this.$t('account.addresses.popup.save.success'),
-        })
-        this.$fetch()
+        });
+        this.$fetch();
       } catch (err) {
-        this.isUpdating = false
+        this.isUpdating = false;
         this.$store.dispatch('showNotification', {
           message: this.$t('account.addresses.popup.save.error'),
           type: 'error',
-        })
+        });
       }
     },
 
     async pauseSubscription(type) {
-      const { subscription, $swell } = this
+      const { subscription, $swell } = this;
       try {
-        this.isUpdating = true
+        this.isUpdating = true;
         if (type === 'skip-cycle') {
           // Skip cycle
           await $swell.subscriptions.update(subscription.id, {
             paused: true,
             date_pause_end: subscription.datePeriodEnd,
-          })
+          });
 
           this.$store.dispatch('showNotification', {
             message: this.$t(
-              'account.subscriptions.id.popup.pause.skipCycleSuccess'
+              'account.subscriptions.id.popup.pause.skipCycleSuccess',
             ),
             type: 'success',
-          })
+          });
         } else {
           // Pause immediately
           await $swell.subscriptions.update(subscription.id, {
             paused: true,
             date_pause_end: null,
-          })
+          });
 
           this.$store.dispatch('showNotification', {
             message: this.$t('account.subscriptions.id.popup.pause.success'),
             type: 'success',
-          })
+          });
         }
 
-        this.isUpdating = false
-        this.pauseResumeSubscriptionPopupIsActive = false
-        this.$fetch()
+        this.isUpdating = false;
+        this.pauseResumeSubscriptionPopupIsActive = false;
+        this.$fetch();
       } catch (err) {
-        this.isUpdating = false
-        this.$store.dispatch('handleError', err)
+        this.isUpdating = false;
+        this.$store.dispatch('handleError', err);
       }
     },
 
     async resumeSubscription(date) {
-      const { subscription, $swell } = this
+      const { subscription, $swell } = this;
       try {
-        this.isUpdating = true
+        this.isUpdating = true;
         if (date) {
           // Resume on date
           await $swell.subscriptions.update(subscription.id, {
             paused: true,
             date_pause_end: date,
-          })
+          });
         } else {
           // Resume immediately
           await $swell.subscriptions.update(subscription.id, {
             paused: false,
             date_pause_end: null,
-          })
+          });
         }
 
-        this.isUpdating = false
-        this.pauseResumeSubscriptionPopupIsActive = false
-        this.selectDateTimePopupIsActive = false
+        this.isUpdating = false;
+        this.pauseResumeSubscriptionPopupIsActive = false;
+        this.selectDateTimePopupIsActive = false;
         this.$store.dispatch('showNotification', {
           message: date
             ? this.$t('account.subscriptions.id.popup.chooseDate.success', {
@@ -751,35 +751,35 @@ export default {
               })
             : this.$t('account.subscriptions.id.popup.resume.success'),
           type: 'success',
-        })
-        this.$fetch()
+        });
+        this.$fetch();
       } catch (err) {
-        this.isUpdating = false
-        this.$store.dispatch('handleError', err)
+        this.isUpdating = false;
+        this.$store.dispatch('handleError', err);
       }
     },
 
     async cancelSubscription() {
       try {
-        this.isUpdating = true
+        this.isUpdating = true;
 
         await this.$swell.subscriptions.update(this.subscription.id, {
           canceled: true,
-        })
+        });
 
-        this.isUpdating = false
-        this.cancelPopupIsActive = false
+        this.isUpdating = false;
+        this.cancelPopupIsActive = false;
 
         this.$store.dispatch('showNotification', {
           message: this.$t('account.subscriptions.id.popup.cancel.success'),
           type: 'success',
-        })
-        this.$fetch()
+        });
+        this.$fetch();
       } catch (err) {
-        this.isUpdating = false
-        this.$store.dispatch('handleError', err)
+        this.isUpdating = false;
+        this.$store.dispatch('handleError', err);
       }
     },
   },
-}
+};
 </script>

@@ -57,36 +57,36 @@ export default {
   data() {
     return {
       internalValue: null,
-    }
+    };
   },
 
   computed: {
     value() {
-      return this.emitOnEnter ? this.internalValue : this.currentValue
+      return this.emitOnEnter ? this.internalValue : this.currentValue;
     },
   },
 
   methods: {
     emitValue(event) {
-      const { value } = event.target
+      const { value } = event.target;
       if (this.emitOnEnter) {
-        this.internalValue = value
+        this.internalValue = value;
       } else {
         this.$emit('value-changed', {
           option: this.option.name,
           value,
-        })
+        });
       }
     },
     emitValueOnEnter() {
-      if (!this.emitOnEnter) return
+      if (!this.emitOnEnter) return;
       this.$emit('value-changed', {
         option: this.option.name,
         value: this.internalValue,
-      })
+      });
     },
   },
-}
+};
 </script>
 
 <style lang="postcss" scoped>

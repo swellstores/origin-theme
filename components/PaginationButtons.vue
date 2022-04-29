@@ -73,9 +73,9 @@ export default {
 
   computed: {
     pageButtons() {
-      const pages = [...Array(this.pagesCount).keys()].map((x) => ++x)
+      const pages = [...Array(this.pagesCount).keys()].map((x) => ++x);
 
-      if (this.pagesCount <= 5) return pages
+      if (this.pagesCount <= 5) return pages;
 
       if (this.currentPage - 2 > 1 && this.currentPage + 2 < pages.length) {
         return [
@@ -84,28 +84,28 @@ export default {
           ...pages.slice(this.currentPage - 2, this.currentPage + 1),
           'break',
           pages[pages.length - 1],
-        ]
+        ];
       }
 
       if (this.currentPage - 3 <= 0) {
-        return [...pages.slice(0, 4), 'break', pages[pages.length - 1]]
+        return [...pages.slice(0, 4), 'break', pages[pages.length - 1]];
       }
 
       if (this.currentPage + 3 > pages.length) {
-        return [pages[0], 'break', ...pages.slice(-4)]
+        return [pages[0], 'break', ...pages.slice(-4)];
       }
 
-      return pages
+      return pages;
     },
     pagesCount() {
-      return Object.keys(this.pages).length
+      return Object.keys(this.pages).length;
     },
     prevPage() {
-      return this.currentPage > 1 ? this.currentPage - 1 : 0
+      return this.currentPage > 1 ? this.currentPage - 1 : 0;
     },
     nextPage() {
-      return this.currentPage < this.pagesCount ? this.currentPage + 1 : 0
+      return this.currentPage < this.pagesCount ? this.currentPage + 1 : 0;
     },
   },
-}
+};
 </script>

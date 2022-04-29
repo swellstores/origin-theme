@@ -122,8 +122,13 @@
 
 <script>
 // Helpers
-import { validationMixin } from 'vuelidate'
-import { required, email, minLength, maxLength } from 'vuelidate/lib/validators'
+import { validationMixin } from 'vuelidate';
+import {
+  required,
+  email,
+  minLength,
+  maxLength,
+} from 'vuelidate/lib/validators';
 
 export default {
   mixins: [validationMixin],
@@ -136,28 +141,28 @@ export default {
       lastName: '',
       isProcessing: false,
       errorMessage: '',
-    }
+    };
   },
 
   head() {
     return {
       title: this.$t('account.createAccount.title'),
-    }
+    };
   },
 
   activated() {
-    this.$v.$reset()
+    this.$v.$reset();
   },
 
   methods: {
     async createAccount() {
       try {
-        this.$v.$touch()
-        if (this.$v.$invalid) return
+        this.$v.$touch();
+        if (this.$v.$invalid) return;
 
-        this.isProcessing = true
+        this.isProcessing = true;
 
-        const { email, firstName, lastName, password } = this
+        const { email, firstName, lastName, password } = this;
 
         const account = await this.$swell.account.create({
           email,
@@ -165,31 +170,31 @@ export default {
           lastName,
           password,
           emailOptin: true,
-        })
+        });
 
-        this.isProcessing = false
+        this.isProcessing = false;
 
         if (account.id) {
-          this.isProcessing = false
+          this.isProcessing = false;
           this.$store.commit('setState', {
             key: 'customerLoggedIn',
             value: true,
-          })
+          });
           this.$store.dispatch('showNotification', {
             message: this.$t('account.createAccount.success'),
-          })
-          this.$router.push(this.localePath('/account/orders/'))
+          });
+          this.$router.push(this.localePath('/account/orders/'));
         } else if (account.email && account.email.code === 'UNIQUE') {
           this.$store.dispatch('showNotification', {
             message: this.$t('account.createAccount.alreadyExists'),
             type: 'error',
-          })
+          });
         }
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: err.message || this.$t('account.createAccount.error'),
           type: 'error',
-        })
+        });
       }
     },
   },
@@ -200,5 +205,5 @@ export default {
     email: { required, email },
     password: { required, minLength: minLength(6) },
   },
-}
+};
 </script>

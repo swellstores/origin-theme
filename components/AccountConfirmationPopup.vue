@@ -80,12 +80,12 @@ export default {
 
   methods: {
     accept() {
-      this.$emit('accept')
+      this.$emit('accept');
     },
 
     refuse() {
-      this.$emit('click-close')
+      this.$emit('click-close');
     },
   },
-}
+};
 </script>

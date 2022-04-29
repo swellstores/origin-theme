@@ -62,8 +62,8 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, minLength, sameAs } from 'vuelidate/lib/validators'
+import { validationMixin } from 'vuelidate';
+import { required, minLength, sameAs } from 'vuelidate/lib/validators';
 
 export default {
   mixins: [validationMixin],
@@ -74,51 +74,51 @@ export default {
       password: null,
       confirmPassword: null,
       isProcessing: false,
-    }
+    };
   },
 
   head() {
-    return { title: this.$t('account.resetPassword.title') }
+    return { title: this.$t('account.resetPassword.title') };
   },
 
   created() {
     // Get password reset key query
-    this.resetKey = this.$route.query.key
+    this.resetKey = this.$route.query.key;
 
     // If no key is set, route to homepage.
-    if (!this.resetKey) this.$router.push(this.localePath('/'))
+    if (!this.resetKey) this.$router.push(this.localePath('/'));
   },
   methods: {
     async changePassword() {
       // Validate fields
-      this.$v.$touch()
-      if (this.$v.$invalid) return
+      this.$v.$touch();
+      if (this.$v.$invalid) return;
 
-      this.isProcessing = true
+      this.isProcessing = true;
 
       try {
-        const { resetKey, password } = this
+        const { resetKey, password } = this;
 
         const res = await this.$swell.account.recover({
           resetKey,
           password,
-        })
+        });
 
-        this.isProcessing = false
+        this.isProcessing = false;
 
         if (res.success) {
           this.$store.dispatch('showNotification', {
             message: this.$t('account.resetPassword.success'),
-          })
-          this.$router.push(this.localePath('/'))
+          });
+          this.$router.push(this.localePath('/'));
         }
       } catch (err) {
-        this.isProcessing = false
+        this.isProcessing = false;
 
         this.$store.dispatch('showNotification', {
           message: this.$t('account.resetPassword.error'),
           type: 'error',
-        })
+        });
       }
     },
   },
@@ -127,5 +127,5 @@ export default {
     password: { required, minLength: minLength(6) },
     confirmPassword: { required, sameAsPassword: sameAs('password') },
   },
-}
+};
 </script>

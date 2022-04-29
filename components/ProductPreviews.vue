@@ -9,7 +9,7 @@
         @glide:run-end="sliderAtEnd = true"
         @glide:run="
           () => {
-            ;(sliderAtStart = false), (sliderAtEnd = false)
+            (sliderAtStart = false), (sliderAtEnd = false);
           }
         "
       >
@@ -96,19 +96,19 @@
 
 <script>
 // Helpers
-import 'vue-glide-js/dist/vue-glide.css'
+import 'vue-glide-js/dist/vue-glide.css';
 
 export default {
   name: 'ProductPreviews',
 
   components: {
     async VueGlide() {
-      const { Glide } = await import('vue-glide-js')
-      return Glide
+      const { Glide } = await import('vue-glide-js');
+      return Glide;
     },
     async VueGlideSlide() {
-      const { GlideSlide } = await import('vue-glide-js')
-      return GlideSlide
+      const { GlideSlide } = await import('vue-glide-js');
+      return GlideSlide;
     },
   },
 
@@ -156,46 +156,46 @@ export default {
           },
         },
       },
-    }
+    };
   },
 
   async fetch() {
-    const { $swell } = this
+    const { $swell } = this;
     this.aspectRatio = await $swell.settings.get(
       'productPreviews.aspectRatio',
-      '1:1'
-    )
+      '1:1',
+    );
 
     this.globalAlignment = await $swell.settings.get(
       'productPreviews.textAlign',
-      'left'
-    )
+      'left',
+    );
 
     this.quickAddIsEnabled = await $swell.settings.get(
-      'productList.enableQuickAdd'
-    )
+      'productList.enableQuickAdd',
+    );
 
     // Set ratio padding
-    const [x, y] = this.aspectRatio.split(':')
-    this.ratioPadding = `${(y / x) * 100}%`
+    const [x, y] = this.aspectRatio.split(':');
+    this.ratioPadding = `${(y / x) * 100}%`;
   },
 
   computed: {
     textAlign() {
-      return this.productTextAlign || this.globalAlignment
+      return this.productTextAlign || this.globalAlignment;
     },
   },
 
   methods: {
     prevSlide() {
-      if (!this.$refs.prevSlide) return
-      this.$refs.prevSlide.click()
+      if (!this.$refs.prevSlide) return;
+      this.$refs.prevSlide.click();
     },
 
     nextSlide() {
-      if (!this.$refs.nextSlide) return
-      this.$refs.nextSlide.click()
+      if (!this.$refs.nextSlide) return;
+      this.$refs.nextSlide.click();
     },
   },
-}
+};
 </script>

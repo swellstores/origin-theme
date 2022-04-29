@@ -171,5 +171,5 @@ export default {
       default: 'primary-lightest',
     },
   },
-}
+};
 </script>

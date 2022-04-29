@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   name: 'OptionInputCheckbox',
@@ -52,5 +52,5 @@ export default {
   computed: {
     ...mapState(['currency']),
   },
-}
+};
 </script>

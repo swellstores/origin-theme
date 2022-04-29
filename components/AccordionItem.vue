@@ -45,13 +45,13 @@ export default {
   data() {
     return {
       isExpanded: false,
-    }
+    };
   },
 
   methods: {
     toggleExpanded() {
-      this.isExpanded = !this.isExpanded
+      this.isExpanded = !this.isExpanded;
     },
   },
-}
+};
 </script>

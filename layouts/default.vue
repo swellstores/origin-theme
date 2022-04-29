@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   data() {
@@ -36,15 +36,17 @@ export default {
       searchIsActive: false,
       faviconUrl: '',
       cookieNotificationIsActive: false, // TODO set true,
-    }
+    };
   },
 
   async fetch() {
-    const faviconUrl = await this.$swell.settings.get('header.favicon.file.url')
+    const faviconUrl = await this.$swell.settings.get(
+      'header.favicon.file.url',
+    );
 
     if (faviconUrl) {
-      const faviconImageTransformation = '?width=64&height=64'
-      this.faviconUrl = faviconUrl + faviconImageTransformation
+      const faviconImageTransformation = '?width=64&height=64';
+      this.faviconUrl = faviconUrl + faviconImageTransformation;
     }
   },
 
@@ -69,7 +71,7 @@ export default {
           ? { rel: 'icon', href: this.faviconUrl, type: 'image/x-icon' }
           : '',
       ],
-    }
+    };
   },
 
   computed: {
@@ -86,11 +88,11 @@ export default {
   watch: {
     $route(to) {
       // Hide cart and search on reroute
-      this.$store.commit('setState', { key: 'cartIsActive', value: false })
-      this.searchIsActive = false
+      this.$store.commit('setState', { key: 'cartIsActive', value: false });
+      this.searchIsActive = false;
 
       // Hide notification on reroute
-      this.$store.commit('setState', { key: 'notification', value: null })
+      this.$store.commit('setState', { key: 'notification', value: null });
     },
   },
 
@@ -100,23 +102,23 @@ export default {
       this.$store.commit('setState', {
         key: 'cookiesWereAccepted',
         value: true,
-      })
+      });
     }
 
     // Initialize customer (if logged in, set customer state)
-    this.$store.dispatch('initializeCustomer')
+    this.$store.dispatch('initializeCustomer');
   },
 
   methods: {
     getCookie(name) {
-      const pattern = RegExp(name + '=.[^;]*')
-      const matched = document.cookie.match(pattern)
+      const pattern = RegExp(name + '=.[^;]*');
+      const matched = document.cookie.match(pattern);
       if (matched) {
-        const cookie = matched[0].split('=')
-        return cookie[1]
+        const cookie = matched[0].split('=');
+        return cookie[1];
       }
-      return false
+      return false;
     },
   },
-}
+};
 </script>

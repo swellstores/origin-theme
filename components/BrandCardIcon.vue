@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import kebabCase from 'lodash/kebabCase'
+import kebabCase from 'lodash/kebabCase';
 
 export default {
   props: {
@@ -53,8 +53,8 @@ export default {
 
   computed: {
     brandName() {
-      return kebabCase(this.brand)
+      return kebabCase(this.brand);
     },
   },
-}
+};
 </script>

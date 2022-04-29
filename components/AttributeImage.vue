@@ -76,27 +76,27 @@ export default {
   data() {
     return {
       previewImage: null,
-    }
+    };
   },
 
   computed: {
     images() {
-      if (!this.attribute?.value) return []
+      if (!this.attribute?.value) return [];
       if (Array.isArray(this.attribute.value)) {
-        return this.attribute.value.map((value) => value.file)
+        return this.attribute.value.map((value) => value.file);
       }
-      return [this.attribute.value.file]
+      return [this.attribute.value.file];
     },
   },
 
   methods: {
     openPreview(image) {
-      this.$store.commit('setState', { key: 'mediaPreview', value: image })
+      this.$store.commit('setState', { key: 'mediaPreview', value: image });
       this.$store.commit('setState', {
         key: 'mediaPreviewIsVisible',
         value: true,
-      })
+      });
     },
   },
-}
+};
 </script>

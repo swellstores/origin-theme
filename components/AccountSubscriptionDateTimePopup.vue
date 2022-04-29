@@ -125,24 +125,24 @@
 
 <script>
 // Helpers
-import { validationMixin } from 'vuelidate'
-import { required } from 'vuelidate/lib/validators'
+import { validationMixin } from 'vuelidate';
+import { required } from 'vuelidate/lib/validators';
 
 // Custom validation
 const validDate = (value) => {
   // check if date is today or in the future
-  const date = new Date(value)
-  return new Date(date.toDateString()) >= new Date(new Date().toDateString())
-}
+  const date = new Date(value);
+  return new Date(date.toDateString()) >= new Date(new Date().toDateString());
+};
 
 const validDateTime = (param) => (value) => {
   // check if date and time is in the future
-  const date = new Date(param)
-  const selectedDateTime = new Date(`${param} ${value}`)
+  const date = new Date(param);
+  const selectedDateTime = new Date(`${param} ${value}`);
   return new Date(date.toDateString()) > new Date(new Date().toDateString())
     ? true
-    : selectedDateTime > new Date()
-}
+    : selectedDateTime > new Date();
+};
 
 export default {
   mixins: [validationMixin],
@@ -158,32 +158,32 @@ export default {
     return {
       date: null,
       time: '12:00',
-    }
+    };
   },
 
   computed: {
     minDate() {
-      return new Date().toISOString().split('T')[0]
+      return new Date().toISOString().split('T')[0];
     },
   },
 
   methods: {
     resumeOnDate() {
-      this.$v.$touch() // Validate fields
-      if (this.$v.$invalid) return
-      const dateAndTime = new Date(`${this.date} ${this.time}`)
-      this.$emit('resume-subscription', dateAndTime)
+      this.$v.$touch(); // Validate fields
+      if (this.$v.$invalid) return;
+      const dateAndTime = new Date(`${this.date} ${this.time}`);
+      this.$emit('resume-subscription', dateAndTime);
     },
   },
 
   validations() {
-    const { date } = this
+    const { date } = this;
     return {
       date: { required, validDate },
       time: { required, validDateTime: validDateTime(date) },
-    }
+    };
   },
-}
+};
 </script>
 
 <style>

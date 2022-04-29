@@ -57,5 +57,5 @@ export default {
       default: 'sm',
     },
   },
-}
+};
 </script>

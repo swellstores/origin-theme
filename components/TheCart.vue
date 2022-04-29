@@ -168,7 +168,7 @@
 
 <script>
 // Helpers
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   name: 'TheCart',
@@ -177,47 +177,47 @@ export default {
     return {
       couponCode: null,
       shopLink: null,
-    }
+    };
   },
 
   async fetch() {
     // Set component data
-    const { $swell } = this
-    this.shopLink = await $swell.settings.get('cart.shopLink', '/categories/')
+    const { $swell } = this;
+    this.shopLink = await $swell.settings.get('cart.shopLink', '/categories/');
   },
 
   computed: {
     ...mapState(['cart', 'cartIsUpdating', 'currency']),
 
     account() {
-      if (!this.cart.account) return
-      return this.cart.account
+      if (!this.cart.account) return;
+      return this.cart.account;
     },
   },
 
   mounted() {
     // Pass a checkout ID as a query string param to recover a specific cart
-    const { checkout: checkoutId } = this.$route.query
-    this.$store.dispatch('initializeCart', { checkoutId })
+    const { checkout: checkoutId } = this.$route.query;
+    this.$store.dispatch('initializeCart', { checkoutId });
   },
 
   methods: {
     closeCart() {
-      this.$store.commit('setState', { key: 'cartIsActive', value: false })
+      this.$store.commit('setState', { key: 'cartIsActive', value: false });
     },
 
     async applyDiscount() {
       // Try to apply a coupon or gift card code
-      await this.$store.dispatch('applyDiscount', this.couponCode)
+      await this.$store.dispatch('applyDiscount', this.couponCode);
       // Reset the coupon input
-      this.couponCode = null
+      this.couponCode = null;
     },
 
     removeDiscount(id) {
-      this.$store.dispatch('removeDiscount', id)
+      this.$store.dispatch('removeDiscount', id);
     },
   },
-}
+};
 </script>
 
 <style scoped>

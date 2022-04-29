@@ -11,14 +11,14 @@
 
 <script>
 // Helpers
-import camelCase from 'lodash/camelCase'
+import camelCase from 'lodash/camelCase';
 
 // Components
-import SectionLoader from '~/components/SectionLoader'
-import SectionError from '~/components/SectionError'
+import SectionLoader from '~/components/SectionLoader';
+import SectionError from '~/components/SectionError';
 
 const capitalCase = (str) =>
-  str.charAt(0).toUpperCase() + camelCase(str.slice(1))
+  str.charAt(0).toUpperCase() + camelCase(str.slice(1));
 
 export default {
   name: 'SectionAsyncLoader',
@@ -51,8 +51,8 @@ export default {
         ),
         loading: SectionLoader,
         error: SectionError,
-      })
+      });
     },
   },
-}
+};
 </script>

@@ -30,7 +30,7 @@
                 options.standard.sale
                   ? standardVariation.salePrice
                   : standardVariation.price,
-                currency
+                currency,
               )
             }}
           </span>
@@ -75,7 +75,7 @@
             >{{
               $tc(
                 'products.slug.purchaseOptions.interval.trialDays',
-                selectedSubscription.billingSchedule.trialDays
+                selectedSubscription.billingSchedule.trialDays,
               )
             }}</span
           >
@@ -96,7 +96,7 @@
       <ul
         v-show="hasManyPlans && dropdownIsActive"
         :class="{ 'rounded-t-none': dropdownIsActive }"
-        class="absolute z-10 -mt-px block max-h-25vh overflow-y-scroll  w-full rounded-md border border-primary-med bg-primary-lightest"
+        class="absolute z-10 -mt-px block max-h-25vh w-full overflow-y-scroll rounded-md border border-primary-med bg-primary-lightest"
         aria-role="listbox"
       >
         <li
@@ -117,7 +117,7 @@
             <span v-if="option.billingSchedule.trialDays" class="mr-4">{{
               $tc(
                 'products.slug.purchaseOptions.interval.trialDays',
-                option.billingSchedule.trialDays
+                option.billingSchedule.trialDays,
               )
             }}</span>
             <span class="font-semibold">{{
@@ -132,7 +132,7 @@
 
 <script>
 // Helpers
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   props: {
@@ -164,45 +164,45 @@ export default {
     return {
       dropdownIsActive: false,
       selectedSubscription: null,
-    }
+    };
   },
 
   computed: {
     ...mapState(['currency']),
     hasSubscriptionPlans() {
-      const { subscription } = this.options
-      return subscription && subscription.plans.length
+      const { subscription } = this.options;
+      return subscription && subscription.plans.length;
     },
     hasManyPlans() {
       return (
         this.hasSubscriptionPlans && this.options.subscription.plans.length > 1
-      )
+      );
     },
     standardVariation() {
       return this.$swell.products.variation(this.product, this.optionState, {
         type: 'standard',
-      })
+      });
     },
   },
 
   watch: {
     selectedSubscription() {
-      this.dropdownIsActive = false
+      this.dropdownIsActive = false;
       if (this.$refs.toggleDropdown) {
-        this.$refs.toggleDropdown.focus()
+        this.$refs.toggleDropdown.focus();
       }
     },
     value: {
       handler(option) {
-        if (!option || option.type !== 'subscription') return
+        if (!option || option.type !== 'subscription') return;
         if (
           !this.selectedSubscription ||
           this.selectedSubscription.id !== option.plan
         ) {
           const plan = this.options.subscription.plans.find(
-            (plan) => plan.id === option.plan
-          )
-          this.selectedSubscription = plan
+            (plan) => plan.id === option.plan,
+          );
+          this.selectedSubscription = plan;
         }
       },
       immediate: true,
@@ -211,49 +211,49 @@ export default {
 
   methods: {
     setSubscription(plan) {
-      this.selectedSubscription = plan
+      this.selectedSubscription = plan;
       this.$emit('input', {
         type: 'subscription',
         plan: plan.id,
-      })
+      });
     },
 
     setStandardPlan() {
-      this.$emit('input', { type: 'standard' })
+      this.$emit('input', { type: 'standard' });
     },
 
     onClickOutside(e) {
       if (this.dropdownIsActive) {
-        this.dropdownIsActive = false
+        this.dropdownIsActive = false;
       }
     },
 
     handleSubscriptionClick() {
       if (this.value.type === 'subscription') {
-        this.dropdownIsActive = !this.dropdownIsActive
+        this.dropdownIsActive = !this.dropdownIsActive;
       }
-      this.setSubscription(this.selectedSubscription)
+      this.setSubscription(this.selectedSubscription);
     },
 
     formatSubscriptionLabel(option) {
-      const { interval, intervalCount } = option.billingSchedule
-      const intervalLabel = `products.slug.purchaseOptions.interval.${interval}.label`
-      const n = intervalCount > 1 ? intervalCount : undefined
+      const { interval, intervalCount } = option.billingSchedule;
+      const intervalLabel = `products.slug.purchaseOptions.interval.${interval}.label`;
+      const n = intervalCount > 1 ? intervalCount : undefined;
       return this.$t(
         'products.slug.purchaseOptions.interval.productsInterval',
         {
           count: 1,
           n,
           interval: this.$tc(intervalLabel, intervalCount),
-        }
-      )
+        },
+      );
     },
 
     formatSubscriptionPrice(option) {
-      const { interval, intervalCount } = option.billingSchedule
+      const { interval, intervalCount } = option.billingSchedule;
       const subscriptionInterval = this.$t(
-        `products.slug.purchaseOptions.interval.${interval}.short`
-      )
+        `products.slug.purchaseOptions.interval.${interval}.short`,
+      );
 
       const matchingVariation = this.$swell.products.variation(
         this.product,
@@ -261,13 +261,13 @@ export default {
         {
           type: 'subscription',
           plan: option.id,
-        }
-      )
+        },
+      );
 
       return `${this.formatMoney(matchingVariation.price, this.currency)}/${
         intervalCount > 1 ? intervalCount : ''
-      }${subscriptionInterval}`
+      }${subscriptionInterval}`;
     },
   },
-}
+};
 </script>

@@ -124,7 +124,7 @@
                   formatMoney(
                     variation.origPrice - variation.price,
                     currency,
-                    false
+                    false,
                   )
                 }}
               </span>
@@ -253,7 +253,7 @@
                           formatMoney(
                             variation.origPrice * quantity,
                             currency,
-                            false
+                            false,
                           )
                         }}
                       </span>
@@ -375,14 +375,14 @@
 
 <script>
 // Helpers
-import { mapState } from 'vuex'
-import get from 'lodash/get'
-import flatten from 'lodash/flatten'
-import { validationMixin } from 'vuelidate'
-import { required } from 'vuelidate/lib/validators'
-import pageMeta from '~/mixins/pageMeta'
-import { listVisibleOptions } from '~/modules/swell'
-import { getInitialSelection } from '~/utils/purchaseOptions'
+import { mapState } from 'vuex';
+import get from 'lodash/get';
+import flatten from 'lodash/flatten';
+import { validationMixin } from 'vuelidate';
+import { required } from 'vuelidate/lib/validators';
+import pageMeta from '~/mixins/pageMeta';
+import { listVisibleOptions } from '~/modules/swell';
+import { getInitialSelection } from '~/utils/purchaseOptions';
 
 export default {
   name: 'ProductDetailPage',
@@ -408,23 +408,23 @@ export default {
       enableSocialSharing: false,
       showStockLevel: false,
       activeDropdownUID: null,
-    }
+    };
   },
 
   async fetch() {
-    const { $swell, $route } = this
+    const { $swell, $route } = this;
 
     // Fetch product
     const product = await $swell.products.get($route.params.slug, {
       expand: ['up_sells.product', 'cross_sells'],
-    })
+    });
 
-    const options = product.purchaseOptions
+    const options = product.purchaseOptions;
 
     if (options) {
       options.subscription.plans = options.subscription.plans.filter(
-        (item) => item && item.price > 0
-      )
+        (item) => item && item.price > 0,
+      );
     }
 
     // Show 404 if product isn't found
@@ -432,63 +432,63 @@ export default {
       return this.$nuxt.error({
         statusCode: 404,
         message: this.$t('errors.productNotFound'),
-      })
+      });
     }
 
     if (product.bundle && product.bundleItems?.length) {
       const bundleItemsOptionState = product.bundleItems.map((item) => {
-        let optionState = []
+        let optionState = [];
         if (item.options?.length) {
           optionState = item.options.reduce((options, { name, value }) => {
-            options.push({ name, value })
-            return options
-          }, [])
+            options.push({ name, value });
+            return options;
+          }, []);
         } else {
           optionState = item.product.options.reduce(
             (options, { name, values, inputType }) => {
               // Set first available value for select current option
-              let defaultValue = null
+              let defaultValue = null;
               if (!inputType || inputType === 'select') {
-                defaultValue = get(values, '0.name')
+                defaultValue = get(values, '0.name');
               }
-              options.push({ name, value: defaultValue })
-              return options
+              options.push({ name, value: defaultValue });
+              return options;
             },
-            []
-          )
+            [],
+          );
         }
 
         return {
           productId: item.productId,
           options: optionState,
-        }
-      })
+        };
+      });
 
-      this.bundleItemsOptionState = bundleItemsOptionState
+      this.bundleItemsOptionState = bundleItemsOptionState;
     }
 
     // TODO generate related products
-    const relatedProducts = []
-    let maxQuantity = get(product, 'content.maxQuantity')
+    const relatedProducts = [];
+    let maxQuantity = get(product, 'content.maxQuantity');
     maxQuantity = !maxQuantity
       ? 99
       : typeof maxQuantity === 'string'
       ? Number(maxQuantity)
-      : 99
-    maxQuantity = !isNaN(maxQuantity) ? maxQuantity : 99
+      : 99;
+    maxQuantity = !isNaN(maxQuantity) ? maxQuantity : 99;
 
-    this.selectedPurchaseOption = getInitialSelection(product.purchaseOptions)
+    this.selectedPurchaseOption = getInitialSelection(product.purchaseOptions);
 
     // Set component data
-    this.product = product
-    this.getInitialOptions(product)
-    this.relatedProducts = relatedProducts
-    this.productBenefits = get(product, 'content.productBenefits', [])
-    this.enableSocialSharing = get(product, 'content.enableSocialSharing')
-    this.showStockLevel = get(product, 'content.showStockLevel')
-    this.enableQuantity = get(product, 'content.enableQuantity')
-    this.upsellProductCols = get(product, 'content.upSellCols') || 4
-    this.maxQuantity = maxQuantity
+    this.product = product;
+    this.getInitialOptions(product);
+    this.relatedProducts = relatedProducts;
+    this.productBenefits = get(product, 'content.productBenefits', []);
+    this.enableSocialSharing = get(product, 'content.enableSocialSharing');
+    this.showStockLevel = get(product, 'content.showStockLevel');
+    this.enableQuantity = get(product, 'content.enableQuantity');
+    this.upsellProductCols = get(product, 'content.upSellCols') || 4;
+    this.maxQuantity = maxQuantity;
   },
 
   computed: {
@@ -496,46 +496,47 @@ export default {
 
     // Resulting combination of selected product options
     variation() {
-      if (!this.product) return {}
+      if (!this.product) return {};
       return this.$swell.products.variation(
         this.product,
         this.selectedOptions,
-        this.selectedPurchaseOption
-      )
+        this.selectedPurchaseOption,
+      );
     },
 
     activeVariantOptionIds() {
-      if (!this.product?.variants.results.length) return []
+      if (!this.product?.variants.results.length) return [];
       return this.product?.variants.results.reduce((arr, variant) => {
-        arr.push(variant.optionValueIds)
-        return arr
-      }, [])
+        arr.push(variant.optionValueIds);
+        return arr;
+      }, []);
     },
 
     bundleItems() {
-      if (!this.product.bundle && !this.product.bundleItems?.length) return null
-      return this.product.bundleItems
+      if (!this.product.bundle && !this.product.bundleItems?.length)
+        return null;
+      return this.product.bundleItems;
     },
 
     available() {
-      const { stockStatus, stockTracking, stockPurchasable } = this.variation
+      const { stockStatus, stockTracking, stockPurchasable } = this.variation;
 
-      if (!this.bundleItemsAvailable || this.variation.price <= 0) return false
+      if (!this.bundleItemsAvailable || this.variation.price <= 0) return false;
 
       return (
         (stockStatus && stockStatus !== 'out_of_stock') ||
         !stockTracking ||
         stockPurchasable
-      )
+      );
     },
 
     productImages() {
-      if (!this.product?.images?.length) return null
-      return this.product.images
+      if (!this.product?.images?.length) return null;
+      return this.product.images;
     },
 
     billingInterval() {
-      return get(this, 'selectedOptions.Plan')
+      return get(this, 'selectedOptions.Plan');
     },
 
     intervalData() {
@@ -543,29 +544,29 @@ export default {
         !this.selectedPurchaseOption ||
         this.selectedPurchaseOption.type !== 'subscription'
       ) {
-        return
+        return;
       }
 
       // Placeholder until swell-js provides interval data inside variation()
       const currentPlan = this.product.purchaseOptions.subscription.plans.find(
-        (plan) => plan.id === this.selectedPurchaseOption.plan
-      )
-      const { interval, intervalCount } = currentPlan.billingSchedule
+        (plan) => plan.id === this.selectedPurchaseOption.plan,
+      );
+      const { interval, intervalCount } = currentPlan.billingSchedule;
 
-      return { interval, intervalCount }
+      return { interval, intervalCount };
     },
 
     intervalCount() {
-      if (!this.intervalData) return
-      const { intervalCount } = this.intervalData
-      return intervalCount > 1 ? intervalCount : ''
+      if (!this.intervalData) return;
+      const { intervalCount } = this.intervalData;
+      return intervalCount > 1 ? intervalCount : '';
     },
 
     subscriptionInterval() {
-      if (!this.intervalData) return
+      if (!this.intervalData) return;
       return this.$t(
-        `products.slug.purchaseOptions.interval.${this.intervalData.interval}.short`
-      )
+        `products.slug.purchaseOptions.interval.${this.intervalData.interval}.short`,
+      );
     },
 
     /**
@@ -573,55 +574,56 @@ export default {
      * @type { { [name: string]: string } }
      */
     selectedOptions() {
-      return this.normalizeOptions(this.optionState)
+      return this.normalizeOptions(this.optionState);
     },
 
     upsellProducts() {
-      if (!this.product?.upSells?.length) return null
-      return this.product.upSells.map((upsell) => upsell.product)
+      if (!this.product?.upSells?.length) return null;
+      return this.product.upSells.map((upsell) => upsell.product);
     },
 
     optionInputs() {
-      const options = get(this, 'product.options', [])
+      const options = get(this, 'product.options', []);
       const hasSingleSelectOption =
-        options.length === 1 && options[0].inputType === 'select'
+        options.length === 1 && options[0].inputType === 'select';
 
       return options.reduce((optionInputs, option) => {
-        let componentName
+        let componentName;
 
         switch (option.inputType) {
           case 'short_text':
-            componentName = 'Text'
-            break
+            componentName = 'Text';
+            break;
           case 'long_text':
-            componentName = 'Text'
-            break
+            componentName = 'Text';
+            break;
           case 'toggle':
-            componentName = 'Checkbox'
-            break
+            componentName = 'Checkbox';
+            break;
           default:
-            componentName = 'Select'
+            componentName = 'Select';
         }
 
         // Don't include subscription plan if there's only one option value available
-        if (option.subscription && option.values.length < 2) return optionInputs
+        if (option.subscription && option.values.length < 2)
+          return optionInputs;
 
         // If this is the only singular option, only show values that will result in an active variant
         if (hasSingleSelectOption) {
           const activeValues = option.values.filter((value) =>
-            flatten(this.activeVariantOptionIds).includes(value.id)
-          )
-          option.values = activeValues
+            flatten(this.activeVariantOptionIds).includes(value.id),
+          );
+          option.values = activeValues;
         }
 
         optionInputs.push({
           option,
           component: () =>
             import(`../../components/ProductOption${componentName}.vue`),
-        })
+        });
 
-        return optionInputs
-      }, [])
+        return optionInputs;
+      }, []);
     },
   },
 
@@ -630,17 +632,17 @@ export default {
 
     // Reset quantity on change of purchase option
     selectedPurchaseOption() {
-      this.quantity = 1
+      this.quantity = 1;
     },
 
     variation() {
-      this.exposeProduct()
+      this.exposeProduct();
     },
   },
 
   mounted() {
     // Check bundle item availability on mount
-    this.checkBundleItemAvailability()
+    this.checkBundleItemAvailability();
   },
 
   methods: {
@@ -649,43 +651,43 @@ export default {
       switch (type) {
         case 'long_text':
         case 'textarea':
-          return 'AttributeLongText'
+          return 'AttributeLongText';
         case 'file':
-          return 'AttributeFile'
+          return 'AttributeFile';
         case 'image':
-          return 'AttributeImage'
+          return 'AttributeImage';
         // TODO: add components for other supported attribute types
         default:
-          return 'AttributeShortText'
+          return 'AttributeShortText';
       }
     },
 
     // Set which dropdown is active by UID, so that only one dropdown is active at any time.
     setActiveDropdownUID(uid) {
-      this.activeDropdownUID = uid
+      this.activeDropdownUID = uid;
     },
 
     // Add product to cart with selected options
     async addToCart() {
       try {
         // Touch and validate all fields
-        this.$v.$touch()
-        if (this.$v.$invalid) return // return if invalid
+        this.$v.$touch();
+        if (this.$v.$invalid) return; // return if invalid
 
         // Validate bundle item fields if they exist
         if (this.bundleItems && this.$refs.bundleItem?.length) {
-          this.$refs.bundleItem.forEach(({ $v }) => $v.$touch())
+          this.$refs.bundleItem.forEach(({ $v }) => $v.$touch());
           const bundleItemsValid = this.$refs.bundleItem.every(
-            ({ $v }) => !$v.$invalid
-          )
+            ({ $v }) => !$v.$invalid,
+          );
 
           // If on smaller device, expand accordion if validation fails
-          const accordion = this.$refs.bundleItemAccordion
+          const accordion = this.$refs.bundleItemAccordion;
           if (accordion && !accordion.isExpanded) {
-            accordion.toggleExpanded()
+            accordion.toggleExpanded();
           }
 
-          if (!bundleItemsValid) return
+          if (!bundleItemsValid) return;
 
           await this.$store.dispatch('addCartItem', {
             productId: this.variation.id,
@@ -693,21 +695,21 @@ export default {
             options: this.selectedOptions,
             purchaseOption: this.selectedPurchaseOption,
             bundleItems: this.bundleItemsOptionState,
-          })
+          });
         } else {
           await this.$store.dispatch('addCartItem', {
             productId: this.variation.id,
             quantity: this.quantity || 1,
             options: this.selectedOptions,
             purchaseOption: this.selectedPurchaseOption,
-          })
+          });
         }
       } catch (err) {
         if (err.message === 'invalid_stock') {
           this.$store.dispatch('showNotification', {
             message: this.$t('cart.exceedsStockLevel'),
             type: 'error',
-          })
+          });
         }
       }
     },
@@ -715,57 +717,57 @@ export default {
     // Update an option value based on user input
     setOptionValue({ optionId, option: name, value }) {
       // Get the option from optionState whose value is being updated.
-      const option = this.optionState[optionId] || {}
+      const option = this.optionState[optionId] || {};
       // Update its properties based on input
-      const updatedOption = { ...option, name, value }
+      const updatedOption = { ...option, name, value };
       // Create a copy of optionState with this option updated
-      const optionState = { ...this.optionState, [optionId]: updatedOption }
+      const optionState = { ...this.optionState, [optionId]: updatedOption };
 
-      const productOptions = this.product.options || []
+      const productOptions = this.product.options || [];
       const visibleOptions = listVisibleOptions(
         productOptions,
-        this.normalizeOptions(optionState, false)
-      ).map(({ id }) => id)
+        this.normalizeOptions(optionState, false),
+      ).map(({ id }) => id);
 
       // Update optionState with the updated option and recalculated visibility properties
-      this.optionState = this.markVisibleOptions(optionState, visibleOptions)
+      this.optionState = this.markVisibleOptions(optionState, visibleOptions);
     },
 
     // Update a bundle item's option value based on user input
     setBundleItemOptionValue({ option, value, productId }) {
-      if (!this.bundleItemsOptionState) return null
+      if (!this.bundleItemsOptionState) return null;
 
-      const bundleItemOptionState = [...this.bundleItemsOptionState]
+      const bundleItemOptionState = [...this.bundleItemsOptionState];
       const itemIndex = bundleItemOptionState.findIndex(
-        (item) => item.productId === productId
-      )
+        (item) => item.productId === productId,
+      );
       const optionIndex = bundleItemOptionState[itemIndex].options.findIndex(
-        (opt) => opt.name === option
-      )
+        (opt) => opt.name === option,
+      );
 
-      bundleItemOptionState[itemIndex].options[optionIndex].value = value
+      bundleItemOptionState[itemIndex].options[optionIndex].value = value;
 
-      this.bundleItemsOptionState = bundleItemOptionState
+      this.bundleItemsOptionState = bundleItemOptionState;
     },
 
     checkBundleItemAvailability() {
       if (this.bundleItems && this.$refs.bundleItem) {
         this.bundleItemsAvailable = this.$refs.bundleItem.every(
-          (item) => item.available
-        )
-        return
+          (item) => item.available,
+        );
+        return;
       }
-      this.bundleItemsAvailable = true
+      this.bundleItemsAvailable = true;
     },
 
     // Go back to previous page
     navigateBack() {
-      this.$router.back()
+      this.$router.back();
     },
 
     getInitialOptions(product) {
-      if (!product) return
-      const productOptions = product.options || []
+      if (!product) return;
+      const productOptions = product.options || [];
 
       /**
        * Option state with initial values for selects.
@@ -773,71 +775,71 @@ export default {
        */
       const optionState = productOptions.reduce(
         (optionsAcc, { id, name, required, values, inputType }) => {
-          const option = { name, required, isVisible: false }
+          const option = { name, required, isVisible: false };
           if (!inputType || inputType === 'select') {
-            const isSingleSelectOption = productOptions.length === 1
+            const isSingleSelectOption = productOptions.length === 1;
             // If this is the only select option, only include values that result in an active variant
             if (isSingleSelectOption) {
               const activeValues = values.filter((value) =>
-                flatten(this.activeVariantOptionIds).includes(value.id)
-              )
-              optionsAcc[id] = { ...option, value: activeValues[0].name }
+                flatten(this.activeVariantOptionIds).includes(value.id),
+              );
+              optionsAcc[id] = { ...option, value: activeValues[0].name };
             } else {
               // Use first available value as the default value for selects
-              optionsAcc[id] = { ...option, value: values[0].name }
+              optionsAcc[id] = { ...option, value: values[0].name };
             }
           } else {
-            optionsAcc[id] = option
+            optionsAcc[id] = option;
           }
-          return optionsAcc
+          return optionsAcc;
         },
-        {}
-      )
+        {},
+      );
 
       /**
        * Normalized optionState in a swell-js-compatible structure
        * @type { { [name: string]: string } }
        */
-      const initialSelection = this.normalizeOptions(optionState, false)
+      const initialSelection = this.normalizeOptions(optionState, false);
 
       const visibleOptions = listVisibleOptions(
         productOptions,
-        initialSelection
-      ).map(({ id }) => id)
+        initialSelection,
+      ).map(({ id }) => id);
 
       // Mark visible options as such
-      this.optionState = this.markVisibleOptions(optionState, visibleOptions)
+      this.optionState = this.markVisibleOptions(optionState, visibleOptions);
     },
 
     normalizeOptions(optionState, checkVisibility = true) {
       return Object.values(optionState).reduce(
         (acc, { name, value, isVisible }) => {
           if (!checkVisibility || (checkVisibility && isVisible)) {
-            if (name && value) acc[name] = value
+            if (name && value) acc[name] = value;
           }
-          return acc
+          return acc;
         },
-        {}
-      )
+        {},
+      );
     },
 
     markVisibleOptions(optionState, visibleOptions) {
       Object.keys(optionState).forEach((key) => {
         if (visibleOptions.includes(key)) {
-          optionState[key].isVisible = true
+          optionState[key].isVisible = true;
         } else {
-          optionState[key].isVisible = false
+          optionState[key].isVisible = false;
         }
-      })
-      return optionState
+      });
+      return optionState;
     },
 
     // Make product data available on the Window object,
     // so that it can be consumed by 3rd party plugins
     exposeProduct() {
-      if (!window) return
+      if (!window) return;
 
-      const existingData = window.Swell
+      const existingData = window.Swell;
 
       /**
        * @type {{ version?: string, theme: { page: { product: { id: string, variation: { id: string, stock: { level: number | undefined, purchasable: boolean, status: string | null, tracking: boolean }}}}}}}
@@ -862,23 +864,23 @@ export default {
             },
           },
         },
-      }
+      };
 
-      window.Swell = swellData
+      window.Swell = swellData;
     },
   },
 
   validations() {
     const fields = Object.values(this.optionState).reduce((acc, option) => {
       if (option.isVisible && option.required) {
-        acc[option.name] = { required }
+        acc[option.name] = { required };
       }
-      return acc
-    }, {})
+      return acc;
+    }, {});
 
     return {
       selectedOptions: fields,
-    }
+    };
   },
-}
+};
 </script>

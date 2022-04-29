@@ -38,7 +38,7 @@
 
 <script>
 // Helpers
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   name: 'TheSearch',
@@ -54,23 +54,23 @@ export default {
     return {
       inputValue: '',
       products: [],
-    }
+    };
   },
 
   async fetch() {
-    const limit = 24
+    const limit = 24;
 
     // Set preload data
-    this.products = [...Array(4).keys()]
+    this.products = [...Array(4).keys()];
 
     const products = await this.$swell.products.list({
       search: this.inputValue,
       limit,
       sort: 'popularity asc',
       expand: ['variants'],
-    })
+    });
 
-    this.products = products.results
+    this.products = products.results;
   },
 
   computed: {
@@ -78,13 +78,13 @@ export default {
   },
 
   mounted() {
-    this.focusInput()
+    this.focusInput();
   },
 
   methods: {
     focusInput() {
-      this.$refs.searchInput.focus()
+      this.$refs.searchInput.focus();
     },
   },
-}
+};
 </script>

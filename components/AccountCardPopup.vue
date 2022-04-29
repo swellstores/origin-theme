@@ -215,45 +215,45 @@
 
 <script>
 // Helpers
-import values from 'lodash/values'
-import isEmpty from 'lodash/isEmpty'
+import values from 'lodash/values';
+import isEmpty from 'lodash/isEmpty';
 
 // Validation helper
-import { validationMixin } from 'vuelidate'
+import { validationMixin } from 'vuelidate';
 import {
   required,
   minLength,
   maxLength,
   integer,
-} from 'vuelidate/lib/validators'
+} from 'vuelidate/lib/validators';
 
 const validDate = (date) => {
-  if (!date.includes('/')) return false
+  if (!date.includes('/')) return false;
 
-  const month = date.split('/')[0].trim()
-  let year = date.split('/')[1].trim()
+  const month = date.split('/')[0].trim();
+  let year = date.split('/')[1].trim();
 
   if (!month || !year || (!year.length === 2 && !year.length === 4))
-    return false
+    return false;
 
   if (year.length === 2) {
-    year = new Date().getFullYear().toString().substring(0, 2) + year
+    year = new Date().getFullYear().toString().substring(0, 2) + year;
   }
 
-  const currMonth = new Date().getMonth() + 1
-  const currYear = new Date().getFullYear()
+  const currMonth = new Date().getMonth() + 1;
+  const currYear = new Date().getFullYear();
 
-  const expMonth = parseInt(month, 10)
-  const expYear = parseInt(year, 10)
+  const expMonth = parseInt(month, 10);
+  const expYear = parseInt(year, 10);
 
-  if (month < 0 || month > 12) return false
+  if (month < 0 || month > 12) return false;
 
   if (expYear > currYear || (expYear === currYear && expMonth >= currMonth)) {
-    return true
+    return true;
   } else {
-    return false
+    return false;
   }
-}
+};
 
 export default {
   mixins: [validationMixin],
@@ -298,18 +298,18 @@ export default {
       isUpdating: false,
       isDeleting: false,
       formattedDefaultAddress: '',
-    }
+    };
   },
 
   async fetch() {
     // Set component data
-    const { results: addresses } = await this.$swell.account.listAddresses()
-    this.addresses = addresses
+    const { results: addresses } = await this.$swell.account.listAddresses();
+    this.addresses = addresses;
   },
 
   computed: {
     formattedAddressOptions() {
-      if (!this.addresses) return
+      if (!this.addresses) return;
       return this.addresses.map((address) => {
         return {
           value: address,
@@ -318,41 +318,41 @@ export default {
           }, ${address.state}, ${address.city} ${address.zip}, ${
             address.country
           }`,
-        }
-      })
+        };
+      });
     },
     expMonth() {
-      if (!this.cardExpiry.includes('/')) return
-      return this.cardExpiry.split('/')[0].trim()
+      if (!this.cardExpiry.includes('/')) return;
+      return this.cardExpiry.split('/')[0].trim();
     },
     expYear() {
-      if (!this.cardExpiry.includes('/')) return
-      const year = this.cardExpiry.split('/')[1].trim()
+      if (!this.cardExpiry.includes('/')) return;
+      const year = this.cardExpiry.split('/')[1].trim();
       // Affix century if year is only two digits
       if (year.length === 2) {
-        return new Date().getFullYear().toString().substring(0, 2) + year
+        return new Date().getFullYear().toString().substring(0, 2) + year;
       }
-      return year
+      return year;
     },
     disableDefaultOption() {
       // Disable if no default card is set and no cards exist
-      if (!this.defaultCardId && !this.cardsLength) return true
+      if (!this.defaultCardId && !this.cardsLength) return true;
       // Disable if current card is the only one and default
       if (this.card) {
         if (this.defaultCardId === this.card.id && this.cardsLength === 1)
-          return true
+          return true;
       }
-      return false
+      return false;
     },
   },
 
   watch: {
     newBillingAddress(address) {
-      if (!address) return
+      if (!address) return;
 
-      this.billingAddress = address
+      this.billingAddress = address;
 
-      const { name, address1, address2, state, city, zip, country } = address
+      const { name, address1, address2, state, city, zip, country } = address;
 
       this.formattedDefaultAddress = `
             ${name},
@@ -360,35 +360,35 @@ export default {
             ${state},
             ${city} ${zip},
             ${country}
-          `
+          `;
     },
   },
 
   created() {
     // Prefill form data for updating existing data
     if (this.card) {
-      this.cardExpiry = `${this.card.expMonth} / ${this.card.expYear}` || ''
+      this.cardExpiry = `${this.card.expMonth} / ${this.card.expYear}` || '';
 
       // Set formatted card number of existing card
-      const { brand, last4 } = this.card
+      const { brand, last4 } = this.card;
       if (brand === 'American Express') {
         this.cardNumber = `••••  ••••   •••${last4.substring(
           0,
-          1
-        )}   ${last4.substring(1, last4.length)}`
+          1,
+        )}   ${last4.substring(1, last4.length)}`;
       } else {
-        this.cardNumber = `••••  ••••   ••••   ${last4}`
+        this.cardNumber = `••••  ••••   ••••   ${last4}`;
       }
 
       // Set default check state
-      if (this.defaultCardId === this.card.id) this.setDefault = true
+      if (this.defaultCardId === this.card.id) this.setDefault = true;
 
       // Set default address
       if (this.card.billing && !values(this.card.billing).every(isEmpty)) {
-        this.billingAddress = this.card.billing
+        this.billingAddress = this.card.billing;
 
         const { name, address1, address2, state, city, zip, country } =
-          this.card.billing
+          this.card.billing;
 
         this.formattedDefaultAddress = `
           ${name},
@@ -396,24 +396,24 @@ export default {
           ${state},
           ${city} ${zip},
           ${country}
-        `
+        `;
       }
     }
 
     // If there's no default card, force set default
     if (!this.defaultCardId && !this.cardsLength && this.type === 'new') {
-      this.setDefault = true
+      this.setDefault = true;
     }
   },
 
   methods: {
     async updateCard() {
       try {
-        this.isUpdating = true
+        this.isUpdating = true;
 
         if (this.billingAddress) {
           const { name, address1, address2, city, state, zip, country } =
-            this.billingAddress
+            this.billingAddress;
 
           await this.$swell.account.updateCard(this.card.id, {
             billing: {
@@ -425,7 +425,7 @@ export default {
               zip,
               country,
             },
-          })
+          });
         }
 
         if (this.setDefault) {
@@ -434,49 +434,49 @@ export default {
             billing: {
               accountCardId: this.card.id,
             },
-          })
+          });
         }
 
         // Close panel and fetch updated data
-        this.isUpdating = false
-        this.$emit('click-close')
-        this.$store.dispatch('initializeCustomer')
+        this.isUpdating = false;
+        this.$emit('click-close');
+        this.$store.dispatch('initializeCustomer');
         this.$store.dispatch('showNotification', {
           message: this.$t('account.payments.popup.save.success'),
-        })
-        this.$emit('refresh')
+        });
+        this.$emit('refresh');
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: this.$t('account.payments.popup.save.error'),
           type: 'error',
-        })
+        });
       }
     },
 
     async createCard() {
       try {
         // Validate fields
-        this.$v.$touch()
-        if (this.$v.$invalid) return
+        this.$v.$touch();
+        if (this.$v.$invalid) return;
 
-        this.isCreating = true
+        this.isCreating = true;
 
         const { token } = await this.$swell.card.createToken({
           number: this.cardNumber,
           exp_month: this.expMonth,
           exp_year: this.expYear,
           cvc: this.cardCVC,
-        })
+        });
 
         if (token) {
-          const card = await this.$swell.account.createCard({ token })
+          const card = await this.$swell.account.createCard({ token });
 
           if (!card)
-            throw new Error(this.$t('account.payments.popup.create.error'))
+            throw new Error(this.$t('account.payments.popup.create.error'));
 
           if (this.billingAddress) {
             const { name, address1, address2, city, state, zip, country } =
-              this.billingAddress
+              this.billingAddress;
 
             await this.$swell.account.updateCard(card.id, {
               billing: {
@@ -488,7 +488,7 @@ export default {
                 zip,
                 country,
               },
-            })
+            });
           }
 
           if (this.setDefault) {
@@ -497,32 +497,32 @@ export default {
               billing: {
                 accountCardId: card.id,
               },
-            })
+            });
           }
 
           // Close panel and fetch updated data
-          this.isCreating = false
-          this.$emit('click-close')
-          this.$store.dispatch('initializeCustomer')
+          this.isCreating = false;
+          this.$emit('click-close');
+          this.$store.dispatch('initializeCustomer');
           this.$store.dispatch('showNotification', {
             message: this.$t('account.payments.popup.create.success'),
-          })
-          this.$emit('refresh')
+          });
+          this.$emit('refresh');
         }
       } catch (err) {
-        this.isCreating = false
+        this.isCreating = false;
         this.$store.dispatch('showNotification', {
           message: this.$t('account.payments.popup.create.error'),
           type: 'error',
-        })
+        });
       }
     },
 
     async deleteCard() {
       try {
-        this.isDeleting = true
+        this.isDeleting = true;
 
-        await this.$swell.account.deleteCard(this.card.id)
+        await this.$swell.account.deleteCard(this.card.id);
 
         // If set as default, reset account's default card ID.
         if (this.defaultCardId === this.card.id) {
@@ -530,34 +530,34 @@ export default {
             billing: {
               accountCardId: null,
             },
-          })
+          });
         }
 
-        this.isDeleting = false
+        this.isDeleting = false;
 
         // Close panel and fetch updated data
-        this.$emit('click-close')
-        this.$store.dispatch('initializeCustomer')
+        this.$emit('click-close');
+        this.$store.dispatch('initializeCustomer');
         this.$store.dispatch('showNotification', {
           message: this.$t('account.payments.popup.delete.success'),
-        })
-        this.$emit('refresh')
+        });
+        this.$emit('refresh');
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: this.$t('account.payments.popup.delete.error'),
           type: 'error',
-        })
+        });
       }
     },
 
     async handleEnterKey() {
       switch (this.type) {
         case 'update':
-          await this.updateCard()
-          break
+          await this.updateCard();
+          break;
         case 'new':
-          await this.createCard()
-          break
+          await this.createCard();
+          break;
         default:
       }
     },
@@ -573,5 +573,5 @@ export default {
       maxLength: maxLength(4),
     },
   },
-}
+};
 </script>

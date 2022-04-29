@@ -56,5 +56,5 @@ export default {
       default: () => {},
     },
   },
-}
+};
 </script>

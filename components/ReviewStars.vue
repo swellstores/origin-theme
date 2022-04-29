@@ -30,14 +30,14 @@ export default {
 
   computed: {
     stars() {
-      const stars = [...Array(Math.floor(this.score)).keys()]
+      const stars = [...Array(Math.floor(this.score)).keys()];
 
       if (this.score - stars.length) {
-        stars.push('half')
+        stars.push('half');
       }
 
-      return stars
+      return stars;
     },
   },
-}
+};
 </script>

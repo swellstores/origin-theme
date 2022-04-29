@@ -56,7 +56,7 @@ export default {
       default: '',
     },
   },
-}
+};
 </script>
 
 <style lang="postcss" scoped>

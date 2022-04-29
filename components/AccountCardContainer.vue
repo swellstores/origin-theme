@@ -90,23 +90,23 @@ export default {
 
   computed: {
     formattedCardNumber() {
-      const { brand, last4 } = this.card
+      const { brand, last4 } = this.card;
       if (brand === 'American Express') {
         return `···· ···· ···${last4.substring(0, 1)} ${last4.substring(
           1,
-          last4.length
-        )}`
+          last4.length,
+        )}`;
       } else {
-        return `···· ···· ···· ${last4}`
+        return `···· ···· ···· ${last4}`;
       }
     },
 
     expDate() {
-      const { expMonth, expYear } = this.card
-      const mm = expMonth.toString().padStart(2, '0')
-      const yy = expYear.toString().slice(-2)
-      return `${mm} / ${yy}`
+      const { expMonth, expYear } = this.card;
+      const mm = expMonth.toString().padStart(2, '0');
+      const yy = expYear.toString().slice(-2);
+      return `${mm} / ${yy}`;
     },
   },
-}
+};
 </script>

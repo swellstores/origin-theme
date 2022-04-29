@@ -19,7 +19,7 @@ export default {
   },
   computed: {
     attributes() {
-      const url = this.resolveUrl(this.link)
+      const url = this.resolveUrl(this.link);
 
       if (url.match(/^(http(s)?|ftp):\/\//)) {
         return {
@@ -27,13 +27,13 @@ export default {
           href: url,
           target: this.target,
           rel: 'noopener',
-        }
+        };
       }
       return {
         is: 'nuxt-link',
         to: this.localePath(url),
-      }
+      };
     },
   },
-}
+};
 </script>

@@ -23,7 +23,7 @@
           <NuxtLink
             :to="
               localePath(
-                resolveUrl({ type: 'product', value: item.product.slug })
+                resolveUrl({ type: 'product', value: item.product.slug }),
               )
             "
             class="inline-block"
@@ -132,8 +132,8 @@
 
 <script>
 // Helpers
-import { mapState } from 'vuex'
-import get from 'lodash/get'
+import { mapState } from 'vuex';
+import get from 'lodash/get';
 
 export default {
   name: 'CartItem',
@@ -156,26 +156,26 @@ export default {
       maxQuantity: 99,
       adjustmentError: false,
       validateCartStock: false,
-    }
+    };
   },
 
   async fetch() {
-    const { $swell, item } = this
+    const { $swell, item } = this;
 
     // Fetch product
-    const product = await $swell.products.get(item.product.id)
+    const product = await $swell.products.get(item.product.id);
 
-    let maxQuantity = get(product, 'content.maxQuantity')
+    let maxQuantity = get(product, 'content.maxQuantity');
     maxQuantity = !maxQuantity
       ? 99
       : typeof maxQuantity === 'string'
       ? Number(maxQuantity)
-      : 99
-    maxQuantity = !isNaN(maxQuantity) ? maxQuantity : 99
+      : 99;
+    maxQuantity = !isNaN(maxQuantity) ? maxQuantity : 99;
 
-    this.maxQuantity = maxQuantity
-    this.quantity = item.quantity
-    this.validateCartStock = $swell.settings.get('cart.validateStock')
+    this.maxQuantity = maxQuantity;
+    this.quantity = item.quantity;
+    this.validateCartStock = $swell.settings.get('cart.validateStock');
   },
 
   computed: {
@@ -184,61 +184,61 @@ export default {
     previewImage() {
       return (
         get(this, 'item.variant.images.0') || get(this, 'item.product.images.0')
-      )
+      );
     },
 
     bundleItems() {
-      if (!this.item.bundle && !this.item.bundleItems) return []
-      return this.item.bundleItems
+      if (!this.item.bundle && !this.item.bundleItems) return [];
+      return this.item.bundleItems;
     },
 
     billingSchedule() {
-      const { purchaseOption } = this.item
+      const { purchaseOption } = this.item;
       if (purchaseOption && purchaseOption.type === 'subscription') {
-        return purchaseOption.billingSchedule
+        return purchaseOption.billingSchedule;
       }
-      return null
+      return null;
     },
 
     intervalCount() {
       if (this.billingSchedule) {
-        return this.billingSchedule.intervalCount
+        return this.billingSchedule.intervalCount;
       }
-      return null
+      return null;
     },
 
     subscriptionInterval() {
       if (this.billingSchedule) {
         return this.$t(
-          `products.slug.purchaseOptions.interval.${this.billingSchedule.interval}.short`
-        )
+          `products.slug.purchaseOptions.interval.${this.billingSchedule.interval}.short`,
+        );
       }
-      return null
+      return null;
     },
 
     trialDays() {
-      if (!this.billingSchedule) return null
-      return this.billingSchedule.trialDays
+      if (!this.billingSchedule) return null;
+      return this.billingSchedule.trialDays;
     },
   },
 
   watch: {
     // Update qty if item has recently been
     item(val) {
-      this.quantity = val.quantity
+      this.quantity = val.quantity;
     },
     quantity(val) {
       this.$store.dispatch('updateCartItem', {
         id: this.item.id,
         fieldsToUpdate: { quantity: val },
-      })
+      });
     },
   },
 
   methods: {
     removeItem() {
-      this.$store.dispatch('removeCartItem', this.item)
+      this.$store.dispatch('removeCartItem', this.item);
     },
   },
-}
+};
 </script>

@@ -51,12 +51,12 @@
 
 <script>
 // Helpers
-import get from 'lodash/get'
-import { validationMixin } from 'vuelidate'
-import { required, email } from 'vuelidate/lib/validators'
+import get from 'lodash/get';
+import { validationMixin } from 'vuelidate';
+import { required, email } from 'vuelidate/lib/validators';
 
 // For validation delay method
-const touchMap = new WeakMap()
+const touchMap = new WeakMap();
 
 export default {
   mixins: [validationMixin],
@@ -73,7 +73,7 @@ export default {
       email: '',
       status: 'READY',
       errors: [],
-    }
+    };
   },
 
   validations: {
@@ -86,12 +86,12 @@ export default {
   computed: {
     errorMessage() {
       if (this.status === 'READY' && this.$v.email.$error) {
-        return this.$t('emailSignup.email.error')
+        return this.$t('emailSignup.email.error');
       } else if (this.errors.length) {
-        return get(this, 'errors[0].message')
+        return get(this, 'errors[0].message');
       }
 
-      return ''
+      return '';
     },
   },
 
@@ -99,7 +99,7 @@ export default {
     async subscribe() {
       // Check input is valid
       if (this.$v.$invalid === false) {
-        this.status = 'PENDING'
+        this.status = 'PENDING';
 
         try {
           const { errors } = await this.$swell.cart.update({
@@ -107,35 +107,35 @@ export default {
               email: this.email,
               emailOptin: true,
             },
-          })
+          });
 
           if (errors) {
-            this.status = 'ERROR'
-            this.errors = errors
+            this.status = 'ERROR';
+            this.errors = errors;
           } else {
-            this.status = 'COMPLETE'
-            this.errors = []
-            this.email = this.$t('emailSignup.success')
+            this.status = 'COMPLETE';
+            this.errors = [];
+            this.email = this.$t('emailSignup.success');
           }
         } catch (err) {
           if (this.isDev) {
-            console.log(err)
+            console.log(err);
           } else {
-            this.$sentry?.captureException(err)
+            this.$sentry?.captureException(err);
           }
-          this.status = 'ERROR'
-          this.errors = [err]
+          this.status = 'ERROR';
+          this.errors = [err];
         }
       }
     },
     // Delay validation until 1s after last input
     delayTouch($v) {
-      $v.$reset()
+      $v.$reset();
       if (touchMap.has($v)) {
-        clearTimeout(touchMap.get($v))
+        clearTimeout(touchMap.get($v));
       }
-      touchMap.set($v, setTimeout($v.$touch, 1000))
+      touchMap.set($v, setTimeout($v.$touch, 1000));
     },
   },
-}
+};
 </script>

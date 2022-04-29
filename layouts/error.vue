@@ -77,13 +77,13 @@ export default {
           crossorigin: true,
         },
       ],
-    }
+    };
   },
 
   methods: {
     reload() {
-      window.location.reload()
+      window.location.reload();
     },
   },
-}
+};
 </script>

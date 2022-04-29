@@ -62,9 +62,9 @@
 
 <script>
 // Helpers
-import { validationMixin } from 'vuelidate'
-import { required } from 'vuelidate/lib/validators'
-import { listVisibleOptions } from '~/modules/swell'
+import { validationMixin } from 'vuelidate';
+import { required } from 'vuelidate/lib/validators';
+import { listVisibleOptions } from '~/modules/swell';
 
 export default {
   mixins: [validationMixin],
@@ -106,68 +106,69 @@ export default {
 
   computed: {
     visibleOptionIds() {
-      const optionState = this.optionState
+      const optionState = this.optionState;
 
-      return listVisibleOptions(this.options, optionState).map(({ id }) => id)
+      return listVisibleOptions(this.options, optionState).map(({ id }) => id);
     },
 
     optionInputs() {
-      if (!this.options) return {}
-      const options = this.options
+      if (!this.options) return {};
+      const options = this.options;
       return options.reduce((optionInputs, option) => {
-        let componentName
+        let componentName;
 
         switch (option.inputType) {
           case 'short_text':
-            componentName = 'Text'
-            break
+            componentName = 'Text';
+            break;
           case 'long_text':
-            componentName = 'Text'
-            break
+            componentName = 'Text';
+            break;
           case 'toggle':
-            componentName = 'Checkbox'
-            break
+            componentName = 'Checkbox';
+            break;
           default:
-            componentName = 'Select'
+            componentName = 'Select';
         }
 
         // Don't include subscription plan if there's only one option value available
-        if (option.subscription && option.values.length < 2) return optionInputs
+        if (option.subscription && option.values.length < 2)
+          return optionInputs;
 
         optionInputs.push({
           option,
           component: () => import(`./ProductOption${componentName}.vue`),
-        })
+        });
 
-        return optionInputs
-      }, [])
+        return optionInputs;
+      }, []);
     },
   },
 
   methods: {
     // Emit value to parent component
     emitValue(value) {
-      this.$emit('value-changed', value)
+      this.$emit('value-changed', value);
     },
 
     // Update an option value based on user input
     update() {
-      this.$emit('update', this.optionState)
+      this.$emit('update', this.optionState);
     },
   },
 
   validations() {
-    const { options } = this
+    const { options } = this;
     const fields = options.reduce((obj, option) => {
       if (option.required) {
-        obj[option.name] = { required }
+        obj[option.name] = { required };
       }
-      return obj
-    }, {})
+      return obj;
+    }, {});
 
     return {
       optionState: fields,
-    }
+    };
   },
-}
+};
 </script>

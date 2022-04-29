@@ -112,8 +112,8 @@
 
 <script>
 // Helpers
-import flatMap from 'lodash/flatMap'
-import get from 'lodash/get'
+import flatMap from 'lodash/flatMap';
+import get from 'lodash/get';
 
 export default {
   props: {
@@ -126,31 +126,31 @@ export default {
   computed: {
     thumbnails() {
       // Get max of 4 images per item of order
-      if (!this.orderProducts.length) return []
+      if (!this.orderProducts.length) return [];
 
       return flatMap(this.orderProducts.slice(0, 4), (item) => {
-        if (!item.images?.length) return null
-        return get(item, 'images[0].file', false)
-      })
+        if (!item.images?.length) return null;
+        return get(item, 'images[0].file', false);
+      });
     },
 
     orderProducts() {
-      if (!this.order.items) return []
+      if (!this.order.items) return [];
 
       return flatMap(this.order.items, (item) => {
-        if (!item.product) return []
-        return item.product
-      })
+        if (!item.product) return [];
+        return item.product;
+      });
     },
 
     formattedDate() {
-      if (!this.order) return
-      const date = new Date(this.order.dateCreated)
+      if (!this.order) return;
+      const date = new Date(this.order.dateCreated);
       return new Intl.DateTimeFormat('default', {
         month: 'long',
         day: '2-digit',
         year: 'numeric',
-      }).format(date)
+      }).format(date);
     },
 
     statusMessage() {
@@ -159,43 +159,43 @@ export default {
           return [
             this.$t('account.orders.order.status.pendingMessage'),
             this.$t('account.orders.order.status.pending'),
-          ]
+          ];
         case 'draft':
           return [
             this.$t('account.orders.order.status.draftMessage'),
             this.$t('account.orders.order.status.draft'),
-          ]
+          ];
         case 'payment_pending':
           return [
             this.$t('account.orders.order.status.pendingPaymentMessage'),
             this.$t('account.orders.order.status.pendingPayment'),
-          ]
+          ];
         case 'delivery_pending':
           return [
             this.$t('account.orders.order.status.pendingDeliveryMessage'),
             this.$t('account.orders.order.status.pendingDelivery'),
-          ]
+          ];
         case 'hold':
           return [
             this.$t('account.orders.order.status.holdMessage'),
             this.$t('account.orders.order.status.hold'),
-          ]
+          ];
         case 'complete':
           return [
             this.$t('account.orders.order.status.completeMessage'),
             this.$t('account.orders.order.status.complete'),
-          ]
+          ];
         case 'canceled':
           return [
             this.$t('account.orders.order.status.canceledMessage'),
             this.$t('account.orders.order.status.canceled'),
-          ]
+          ];
         default:
-          return ['', '']
+          return ['', ''];
       }
     },
   },
-}
+};
 </script>
 
 <style lang="postcss" scoped>

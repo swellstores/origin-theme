@@ -47,7 +47,7 @@
 
 <script>
 // Helpers
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   props: {
@@ -76,7 +76,7 @@ export default {
   data() {
     return {
       limit: 99,
-    }
+    };
   },
 
   computed: {
@@ -87,54 +87,54 @@ export default {
         !this.stockTracking ||
         this.stockPurchasable ||
         (this.stockTracking && this.stockLevel > 0)
-      )
+      );
     },
   },
 
   watch: {
     stockLevel() {
-      this.setLimit()
+      this.setLimit();
     },
   },
 
   created() {
-    this.limit = this.initialLimit
-    this.setLimit()
+    this.limit = this.initialLimit;
+    this.setLimit();
   },
 
   methods: {
     // Set limit depending on variant
     setLimit() {
-      if (!this.stockTracking || this.stockPurchasable) return
-      this.limit = this.stockLevel
-      const newValue = this.value > this.limit ? this.limit : this.value
-      this.setQuantity(newValue)
+      if (!this.stockTracking || this.stockPurchasable) return;
+      this.limit = this.stockLevel;
+      const newValue = this.value > this.limit ? this.limit : this.value;
+      this.setQuantity(newValue);
     },
 
     // Increment quantity
     incrementQuantity() {
-      const newQuantity = this.value + 1
-      this.setQuantity(newQuantity)
+      const newQuantity = this.value + 1;
+      this.setQuantity(newQuantity);
     },
 
     // Decrement quantity
     decrementQuantity() {
-      const newQuantity = this.value - 1
-      this.setQuantity(newQuantity)
+      const newQuantity = this.value - 1;
+      this.setQuantity(newQuantity);
     },
 
     setQuantity(newQuantity) {
       if (isNaN(newQuantity) || +newQuantity <= 0 || !newQuantity) {
-        this.$emit('input', 1)
+        this.$emit('input', 1);
       } else {
         const quantity = Math.min(
           newQuantity % 1 !== 0 ? Math.round(newQuantity) : newQuantity,
-          this.limit
-        )
+          this.limit,
+        );
 
-        this.$emit('input', quantity)
+        this.$emit('input', quantity);
       }
     },
   },
-}
+};
 </script>

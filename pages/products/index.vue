@@ -19,31 +19,31 @@ export default {
       settings: {
         productCols: 3,
       },
-    }
+    };
   },
 
   async fetch() {
-    const { $swell, $route } = this
-    const page = parseInt($route.query.page) || 1
-    const limit = parseInt($route.query.limit) || 24
+    const { $swell, $route } = this;
+    const page = parseInt($route.query.page) || 1;
+    const limit = parseInt($route.query.limit) || 24;
 
     // Set preload data
-    this.products = [...Array(limit).keys()]
+    this.products = [...Array(limit).keys()];
 
     // Fetch all products
-    const products = await $swell.products.list({ page, limit })
+    const products = await $swell.products.list({ page, limit });
 
     // Set component data
     if (products) {
-      this.products = products.results
-      this.productCount = products.count
-      this.pages = products.pages
-      this.currentPage = page
+      this.products = products.results;
+      this.productCount = products.count;
+      this.pages = products.pages;
+      this.currentPage = page;
     }
   },
 
   // Watch URL query for pagination changes (triggers fetch method again)
   // https://nuxtjs.org/api/pages-watchquery/
   watchQuery: ['page'],
-}
+};
 </script>

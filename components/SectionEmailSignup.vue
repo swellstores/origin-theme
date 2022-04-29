@@ -96,5 +96,5 @@ export default {
       default: 'left',
     },
   },
-}
+};
 </script>

@@ -55,7 +55,7 @@
               class="grid-icon-label mb-8"
               :to="
                 localePath(
-                  customerLoggedIn ? '/account/orders/' : '/account/login/'
+                  customerLoggedIn ? '/account/orders/' : '/account/login/',
                 )
               "
             >
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   name: 'TheMobileNav',
@@ -100,12 +100,12 @@ export default {
   methods: {
     checkIfLoggedIn() {
       if (this.customerLoggedIn) {
-        this.$emit('click-close')
-        this.$router.push(this.localePath('/account/'))
+        this.$emit('click-close');
+        this.$router.push(this.localePath('/account/'));
       }
     },
   },
-}
+};
 </script>
 
 <style lang="postcss" scoped>

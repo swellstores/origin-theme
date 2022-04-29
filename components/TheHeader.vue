@@ -143,7 +143,7 @@
                 :aria-label="$t('navigation.account')"
                 :to="
                   localePath(
-                    customerLoggedIn ? '/account/orders/' : '/account/login/'
+                    customerLoggedIn ? '/account/orders/' : '/account/login/',
                   )
                 "
               >
@@ -195,8 +195,8 @@
 
 <script>
 // Helpers
-import { mapState } from 'vuex'
-import debounce from 'lodash/debounce'
+import { mapState } from 'vuex';
+import debounce from 'lodash/debounce';
 
 export default {
   name: 'TheHeader',
@@ -216,21 +216,21 @@ export default {
       isScrolled: false,
       scrollRAF: null,
       currencyList: [],
-    }
+    };
   },
 
   async fetch() {
-    const { $swell } = this
+    const { $swell } = this;
 
     // Get menu ID
-    const menuId = await $swell.settings.get('header.menu', 'header')
+    const menuId = await $swell.settings.get('header.menu', 'header');
 
     // Set component data
-    this.header = await $swell.settings.get('header')
-    this.menu = await $swell.settings.menus(menuId)
-    this.storeName = await $swell.settings.get('store.name', 'ORIGIN')
-    this.logoSrc = await $swell.settings.get('header.logo.file.url')
-    this.currencyList = await $swell.currency.list()
+    this.header = await $swell.settings.get('header');
+    this.menu = await $swell.settings.menus(menuId);
+    this.storeName = await $swell.settings.get('store.name', 'ORIGIN');
+    this.logoSrc = await $swell.settings.get('header.logo.file.url');
+    this.currencyList = await $swell.currency.list();
   },
 
   computed: {
@@ -240,129 +240,132 @@ export default {
   watch: {
     $route() {
       // Close mega/mobile nav menu when the page changes
-      this.hideHeader = false
-      this.setMobileNavVisibility(false)
+      this.hideHeader = false;
+      this.setMobileNavVisibility(false);
     },
     locale() {
-      this.$fetch()
+      this.$fetch();
     },
   },
 
   created() {
     // Attach debounce method, to allow it to be cancelled
-    this.hideMegaNav = debounce(this.hideMegaNav, 200)
-    this.$store.dispatch('selectCurrency')
+    this.hideMegaNav = debounce(this.hideMegaNav, 200);
+    this.$store.dispatch('selectCurrency');
   },
 
   mounted() {
-    this.mounted = true
-    this.setScrollListener(true)
+    this.mounted = true;
+    this.setScrollListener(true);
     this.$store.commit('setState', {
       key: 'headerHeight',
       value: this.$refs.header.offsetHeight,
-    })
+    });
   },
 
   beforeDestroy() {
-    this.setScrollListener(false)
-    cancelAnimationFrame(this.scrollRAF)
+    this.setScrollListener(false);
+    cancelAnimationFrame(this.scrollRAF);
   },
 
   methods: {
     setMobileNavVisibility(value) {
       if (typeof value === 'boolean') {
         // Explicitly set visibility
-        this.mobileNavIsVisible = value
+        this.mobileNavIsVisible = value;
       } else {
         // Toggle visibility
-        this.mobileNavIsVisible = !this.mobileNavIsVisible
+        this.mobileNavIsVisible = !this.mobileNavIsVisible;
       }
 
       // Ensure the header is visible when mobile nav is open
       if (this.mobileNavIsVisible) {
-        this.setScrollListener(false)
+        this.setScrollListener(false);
       } else {
-        this.setScrollListener(true)
+        this.setScrollListener(true);
       }
     },
 
     megaNavIsActive(item, index) {
-      const { items } = item
+      const { items } = item;
 
       // Don't show if there are no items set within the MegaNav
-      if (!item || !items || !items.length) return
+      if (!item || !items || !items.length) return;
 
       // Before mounted, allow for CSS to override and show the MegaNav
-      if (!this.mounted) return true
+      if (!this.mounted) return true;
 
       // Show MegaNav, depending on which nav link is selected
       if (this.megaNavIsEnabled && this.currentMegaNavIndex === index)
-        return true
+        return true;
     },
 
     showMegaNav(index) {
-      this.hideMegaNav.cancel()
-      this.megaNavIsEnabled = true
-      this.currentMegaNavIndex = index
+      this.hideMegaNav.cancel();
+      this.megaNavIsEnabled = true;
+      this.currentMegaNavIndex = index;
     },
 
     hideMegaNav() {
-      this.megaNavIsEnabled = false
-      this.currentMegaNavIndex = null
+      this.megaNavIsEnabled = false;
+      this.currentMegaNavIndex = null;
     },
 
     setHeaderVisibility() {
-      this.isScrolled = false
+      this.isScrolled = false;
       // Check how far page has scrolled
       const currentScrollPosition =
-        window.pageYOffset || document.documentElement.scrollTop
-      if (currentScrollPosition < 0) return
+        window.pageYOffset || document.documentElement.scrollTop;
+      if (currentScrollPosition < 0) return;
 
       // Stop executing this function if the difference between
       // current scroll position and last scroll position is less than some offset
-      if (Math.abs(currentScrollPosition - this.lastScrollPos) < 50) return
+      if (Math.abs(currentScrollPosition - this.lastScrollPos) < 50) return;
 
       if (currentScrollPosition > this.lastScrollPos) {
         // Stop executing if hide header is already true
         if (this.hideHeader) {
-          this.lastScrollPos = currentScrollPosition
-          return
+          this.lastScrollPos = currentScrollPosition;
+          return;
         }
-        this.hideHeader = true
-        this.$store.commit('setState', { key: 'headerIsVisible', value: false })
+        this.hideHeader = true;
+        this.$store.commit('setState', {
+          key: 'headerIsVisible',
+          value: false,
+        });
       } else {
         // Stop executing if hide header is already false
         if (!this.hideHeader) {
-          this.lastScrollPos = currentScrollPosition
-          return
+          this.lastScrollPos = currentScrollPosition;
+          return;
         }
-        this.hideHeader = false
-        this.$store.commit('setState', { key: 'headerIsVisible', value: true })
+        this.hideHeader = false;
+        this.$store.commit('setState', { key: 'headerIsVisible', value: true });
       }
-      this.lastScrollPos = currentScrollPosition
+      this.lastScrollPos = currentScrollPosition;
     },
 
     handleScroll() {
       if (!this.isScrolled) {
-        this.isScrolled = true
-        this.scrollRAF = requestAnimationFrame(this.setHeaderVisibility)
+        this.isScrolled = true;
+        this.scrollRAF = requestAnimationFrame(this.setHeaderVisibility);
       }
     },
 
     setScrollListener(value) {
       // Ignore if hide on scroll is disabled in settings
-      if (!this.header.hideOnScroll) return
+      if (!this.header.hideOnScroll) return;
 
       if (value) {
-        process.client && window.addEventListener('scroll', this.handleScroll)
+        process.client && window.addEventListener('scroll', this.handleScroll);
       } else {
         process.client &&
-          window.removeEventListener('scroll', this.handleScroll)
-        this.hideHeader = false
+          window.removeEventListener('scroll', this.handleScroll);
+        this.hideHeader = false;
       }
     },
   },
-}
+};
 </script>
 
 <style lang="postcss">

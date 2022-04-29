@@ -46,28 +46,28 @@ export default {
   data() {
     return {
       selectedColors: [],
-    }
+    };
   },
 
   computed: {
     val() {
-      const value = []
+      const value = [];
       for (let i = 0; i < this.selectedColors.length; i++) {
         const matchedColor = this.colors.filter(
-          (color) => color.name === this.selectedColors[i]
-        )
-        if (matchedColor.length) value.push(matchedColor[0])
+          (color) => color.name === this.selectedColors[i],
+        );
+        if (matchedColor.length) value.push(matchedColor[0]);
       }
-      return value
+      return value;
     },
   },
 
   watch: {
     value(val) {
-      this.selectedColors = val.map((item) => item.name)
+      this.selectedColors = val.map((item) => item.name);
     },
   },
-}
+};
 </script>
 
 <style lang="postcss">

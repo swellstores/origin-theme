@@ -157,91 +157,91 @@ export default {
         uid: null,
       },
       dropdownIsActive: false,
-    }
+    };
   },
 
   computed: {
     inputType() {
       // Determine what input UI is most suitable
-      const { values } = this.option
+      const { values } = this.option;
 
-      if (!values) return 'menu'
-      if (this.appearance === 'menu') return 'menu'
+      if (!values) return 'menu';
+      if (this.appearance === 'menu') return 'menu';
 
       const valueNamesLength = values.reduce((acc, val) => {
         // Don't count color value names because they're displayed as a swatch,
         // and ignore periods and commas because they're visually small
-        const nameLength = val.color ? 0 : val.name.replace(/[.,]/g, '')
-        return acc + nameLength
-      }, 0)
+        const nameLength = val.color ? 0 : val.name.replace(/[.,]/g, '');
+        return acc + nameLength;
+      }, 0);
 
       if (values.length <= 5) {
         // Use a radio input if there's 1-5 options
-        return 'radio'
+        return 'radio';
       } else if (values.length <= 15 && valueNamesLength < 25) {
         // Or if there's 6-15 options but they're compact (e.g. sizes, colors)
-        return 'radio'
+        return 'radio';
       } else {
         // Otherwise, use a select menu
-        return 'menu'
+        return 'menu';
       }
     },
 
     valueDescription() {
       const matchedValue = (this.option.values || []).find(
-        (value) => value.name === this.currentValue
-      )
-      if (!matchedValue) return
-      return matchedValue.description || ''
+        (value) => value.name === this.currentValue,
+      );
+      if (!matchedValue) return;
+      return matchedValue.description || '';
     },
 
     swatchColor() {
-      if (!this.currentValue) return
+      if (!this.currentValue) return;
       const currentValue = this.option.values.find(
-        (value) => value.name === this.currentValue
-      )
-      return currentValue.color
+        (value) => value.name === this.currentValue,
+      );
+      return currentValue.color;
     },
   },
 
   mounted() {
-    const { name, values } = this.option
+    const { name, values } = this.option;
     if (!this.currentValue && values && values.length) {
       this.$emit('value-changed', {
         option: name,
         value: values[0].name,
-      })
+      });
     }
     // Toggle off dropdown if clicked outside
-    window.addEventListener('click', this.clickOutside)
+    window.addEventListener('click', this.clickOutside);
   },
 
   beforeDestroy() {
     // Remove event listeners
-    window.removeEventListener('click', this.clickOutside)
+    window.removeEventListener('click', this.clickOutside);
   },
 
   methods: {
     toggleDropdown() {
-      this.dropdownIsActive = !this.dropdownIsActive
-      if (this.dropdownIsActive) this.$emit('dropdown-active', this._uid)
+      this.dropdownIsActive = !this.dropdownIsActive;
+      if (this.dropdownIsActive) this.$emit('dropdown-active', this._uid);
     },
 
     selectValue(value) {
       this.$emit('value-changed', {
         option: this.option.name,
         value: value.name,
-      })
-      this.dropdownIsActive = false
+      });
+      this.dropdownIsActive = false;
     },
 
     clickOutside(e) {
       if (!this.$el.contains(e.target)) {
-        this.dropdownIsActive = false
+        this.dropdownIsActive = false;
       }
     },
   },
-}
+};
 </script>
 
 <style lang="postcss">

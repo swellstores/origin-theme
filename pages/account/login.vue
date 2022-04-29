@@ -77,8 +77,8 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, email } from 'vuelidate/lib/validators'
+import { validationMixin } from 'vuelidate';
+import { required, email } from 'vuelidate/lib/validators';
 
 export default {
   mixins: [validationMixin],
@@ -88,44 +88,44 @@ export default {
       email: '',
       password: '',
       isProcessing: false,
-    }
+    };
   },
 
   head() {
-    return { title: 'Login' }
+    return { title: 'Login' };
   },
 
   activated() {
-    this.$v.$reset()
+    this.$v.$reset();
   },
 
   methods: {
     async login() {
       try {
-        this.$v.$touch()
-        if (this.$v.$invalid) return
+        this.$v.$touch();
+        if (this.$v.$invalid) return;
 
-        this.isProcessing = true
+        this.isProcessing = true;
 
-        const { email, password } = this
+        const { email, password } = this;
 
-        const res = await this.$swell.account.login(email, password)
+        const res = await this.$swell.account.login(email, password);
 
-        this.isProcessing = false
+        this.isProcessing = false;
 
         if (!res || res === null) {
-          throw new Error('Error')
+          throw new Error('Error');
         }
 
         this.$store.dispatch('showNotification', {
           message: this.$t('account.login.success'),
-        })
-        this.$router.push(this.localePath('/account/orders/'))
+        });
+        this.$router.push(this.localePath('/account/orders/'));
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: this.$t('account.login.error'),
           type: 'error',
-        })
+        });
       }
     },
   },
@@ -134,5 +134,5 @@ export default {
     email: { required, email },
     password: { required },
   },
-}
+};
 </script>

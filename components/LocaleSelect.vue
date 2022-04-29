@@ -100,41 +100,41 @@ export default {
       display: null,
       hideFlagOnList: false,
       dropdownIsActive: false,
-    }
+    };
   },
 
   async fetch() {
     // Set component data
-    const { $swell } = this
+    const { $swell } = this;
 
-    this.locales = await $swell.locale.list()
-    this.display = await $swell.settings.get('header.locale.display', 'flag')
+    this.locales = await $swell.locale.list();
+    this.display = await $swell.settings.get('header.locale.display', 'flag');
     this.hideFlagOnList = await $swell.settings.get(
       'header.locale.hideFlag',
-      false
-    )
+      false,
+    );
   },
 
   mounted() {
     // Toggle off dropdown if clicked outside
-    window.addEventListener('click', this.clickOutside)
+    window.addEventListener('click', this.clickOutside);
   },
 
   beforeDestroy() {
     // Remove event listeners
-    window.removeEventListener('click', this.clickOutside)
+    window.removeEventListener('click', this.clickOutside);
   },
 
   methods: {
     toggleDropdown() {
-      this.dropdownIsActive = !this.dropdownIsActive
+      this.dropdownIsActive = !this.dropdownIsActive;
     },
 
     clickOutside(e) {
       if (!this.$el.contains(e.target)) {
-        this.dropdownIsActive = false
+        this.dropdownIsActive = false;
       }
     },
   },
-}
+};
 </script>
