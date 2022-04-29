@@ -35,8 +35,8 @@
 
 <script>
 // Helpers
-import get from 'lodash/get'
-import pageMeta from '~/mixins/pageMeta'
+import get from 'lodash/get';
+import pageMeta from '~/mixins/pageMeta';
 
 export default {
   name: 'StandardPage',
@@ -47,25 +47,25 @@ export default {
       page: null,
       sections: [],
       loaded: false,
-    }
+    };
   },
 
   async fetch() {
-    const { $swell, $route } = this
-    const homePage = await $swell.settings.get('store.homePage')
-    const slug = $route.params.slug || homePage || 'home'
+    const { $swell, $route } = this;
+    const homePage = await $swell.settings.get('store.homePage');
+    const slug = $route.params.slug || homePage || 'home';
 
-    const page = await $swell.content.get('pages', slug)
+    const page = await $swell.content.get('pages', slug);
 
     // Show 404 if page data isn't found
     if (!page) {
-      return this.$nuxt.error({ statusCode: 404 })
+      return this.$nuxt.error({ statusCode: 404 });
     }
 
     // Set component data
-    this.setSections(page)
-    this.page = page
-    this.loaded = true
+    this.setSections(page);
+    this.page = page;
+    this.loaded = true;
   },
 
   methods: {
@@ -73,12 +73,12 @@ export default {
     // the transition group works without scrolling to the page top
     // TODO remove in Vue 3 because it shouldn't be needed
     setSections(page) {
-      const newSections = get(page, 'sections')
-      if (!Array.isArray(newSections) || !Array.isArray(this.sections)) return
+      const newSections = get(page, 'sections');
+      if (!Array.isArray(newSections) || !Array.isArray(this.sections)) return;
 
       // We don't want to set sections individually if the array lengths are different,
       // because that means we're either on first load, or a section has been deleted
-      const sectionCountIsEqual = newSections.length === this.sections.length
+      const sectionCountIsEqual = newSections.length === this.sections.length;
 
       if (this.$swellEditor && sectionCountIsEqual) {
         newSections.forEach((section, index) => {
@@ -86,18 +86,18 @@ export default {
             JSON.stringify(section) !== JSON.stringify(this.sections[index])
           ) {
             // Update section if current data isn't identical
-            const cleanSection = { ...section }
-            delete cleanSection.$locale // $locale is not a valid attribute name
-            this.$set(this.sections, index, cleanSection)
+            const cleanSection = { ...section };
+            delete cleanSection.$locale; // $locale is not a valid attribute name
+            this.$set(this.sections, index, cleanSection);
           }
-        })
+        });
       } else {
         // Set the quick way since the editor isn't active
-        this.sections = newSections
+        this.sections = newSections;
       }
     },
   },
-}
+};
 </script>
 
 <style lang="postcss">

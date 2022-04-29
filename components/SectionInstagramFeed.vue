@@ -1,6 +1,6 @@
 <script>
 // Helpers
-import get from 'lodash/get'
+import get from 'lodash/get';
 
 export default {
   name: 'SectionInstagramFeed',
@@ -34,13 +34,13 @@ export default {
   },
 
   render(h, context) {
-    const { heading, username, posts, imageFrame } = context.props
+    const { heading, username, posts, imageFrame } = context.props;
     const frameSpacing = {
       none: 'p-0',
       sm: 'p-1 lg:p-2',
       md: 'p-2 lg:p-4',
-    }
-    const postFrameClass = frameSpacing[imageFrame]
+    };
+    const postFrameClass = frameSpacing[imageFrame];
 
     return (
       <section class="relative">
@@ -65,7 +65,7 @@ export default {
           ))}
         </ul>
       </section>
-    )
+    );
   },
-}
+};
 </script>

@@ -40,7 +40,7 @@
 
 <script>
 // Helpers
-import get from 'lodash/get'
+import get from 'lodash/get';
 
 export default {
   name: 'SectionCollectionPreview',
@@ -98,51 +98,51 @@ export default {
       slug: null,
       products: [],
       loaded: false,
-    }
+    };
   },
 
   async fetch() {
-    const { $swell } = this
+    const { $swell } = this;
 
     // Set preload data
     if (!this.loaded) {
       this.products = [
         ...Array(this.productCols * this.productRows).keys(),
-      ].map(() => ({}))
+      ].map(() => ({}));
     }
 
     if (!this.categoryId) {
-      return
+      return;
     }
 
     // Fetch category and products
-    const category = await $swell.categories.get(this.categoryId)
+    const category = await $swell.categories.get(this.categoryId);
     const products = await $swell.products.list({
       category: this.categoryId,
       expand: ['variants'],
       $currency: $swell.currency.list().map((currency) => currency.code),
-    })
+    });
 
     if (!category) {
-      throw new Error(`Category "${this.categoryId}" inactive or not found`)
+      throw new Error(`Category "${this.categoryId}" inactive or not found`);
     }
 
     // Set component data
-    this.name = this.title || category.name
-    this.slug = category.slug
+    this.name = this.title || category.name;
+    this.slug = category.slug;
     this.products = get(products, 'results', []).slice(
       0,
-      this.productCols * this.productRows
-    )
+      this.productCols * this.productRows,
+    );
 
-    this.loaded = true
+    this.loaded = true;
   },
 
   activated() {
     // Call fetch again if last fetch more than a minute ago
     if (this.$fetchState.timestamp <= Date.now() - 60000) {
-      this.$fetch()
+      this.$fetch();
     }
   },
-}
+};
 </script>

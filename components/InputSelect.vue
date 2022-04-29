@@ -61,16 +61,16 @@ export default {
 
   computed: {
     selectedValues() {
-      return this.filterState[this.filter.id] || []
+      return this.filterState[this.filter.id] || [];
     },
   },
 
   methods: {
     updateValue(optionValue) {
-      this.$emit('change', { filter: this.filter, optionValue })
+      this.$emit('change', { filter: this.filter, optionValue });
     },
   },
-}
+};
 </script>
 
 <style lang="postcss">

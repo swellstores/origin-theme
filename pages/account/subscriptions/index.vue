@@ -46,27 +46,27 @@ export default {
     return {
       subscriptions: null,
       shopLink: null,
-    }
+    };
   },
 
   async fetch() {
     // Set page data
-    const { $swell } = this
+    const { $swell } = this;
     const { results: subscriptions } = await this.$swell.subscriptions.get({
       expand: ['product', 'variant'],
-    })
+    });
 
-    this.subscriptions = subscriptions
-    this.shopLink = await $swell.settings.get('cart.shopLink', '/categories/')
+    this.subscriptions = subscriptions;
+    this.shopLink = await $swell.settings.get('cart.shopLink', '/categories/');
   },
 
   head() {
-    return { title: this.$t('account.subscriptions.title') }
+    return { title: this.$t('account.subscriptions.title') };
   },
 
   activated() {
     // Refetch updated data
-    this.$fetch()
+    this.$fetch();
   },
-}
+};
 </script>

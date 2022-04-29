@@ -92,13 +92,13 @@
                 formatMoney(product.price, currency)
               }}</span>
               <span
-                class="text-xs uppercase whitespace-no-wrap text-error-default"
+                class="whitespace-no-wrap text-xs uppercase text-error-default"
               >
                 {{
                   $t('products.preview.save', {
                     amount: formatMoney(
                       product.origPrice - product.price,
-                      currency
+                      currency,
                     ),
                   })
                 }}
@@ -125,7 +125,7 @@
 
 <script>
 // Helpers
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   props: {
@@ -160,37 +160,37 @@ export default {
       quickViewIsVisible: false,
       quickViewProduct: null,
       productBeingAdded: null,
-    }
+    };
   },
 
   async fetch() {
     this.quickAddIsEnabled = await this.$swell.settings.get(
-      'productList.enableQuickAdd'
-    )
+      'productList.enableQuickAdd',
+    );
 
     this.aspectRatio = await this.$swell.settings.get(
       'productPreviews.aspectRatio',
-      '1:1'
-    )
+      '1:1',
+    );
 
     // Set ratio padding
-    const [x, y] = this.aspectRatio.split(':')
-    this.ratioPadding = `${(y / x) * 100}%`
+    const [x, y] = this.aspectRatio.split(':');
+    this.ratioPadding = `${(y / x) * 100}%`;
 
     // Set widths
-    this.widths = [192, 262, 358, 548, 716, 1096]
+    this.widths = [192, 262, 358, 548, 716, 1096];
 
     // Set srcset sizes
     switch (this.columnCount) {
       case 2:
-        this.sizes = '(min-width: 1200px) 548px, 50vw'
-        break
+        this.sizes = '(min-width: 1200px) 548px, 50vw';
+        break;
       case 3:
-        this.sizes = '(min-width: 1200px) 358px, (min-width: 768px) 33vw, 50vw'
-        break
+        this.sizes = '(min-width: 1200px) 358px, (min-width: 768px) 33vw, 50vw';
+        break;
       case 4:
-        this.sizes = '(min-width: 1200px) 262px, (min-width: 768px) 25vw, 50vw'
-        break
+        this.sizes = '(min-width: 1200px) 262px, (min-width: 768px) 25vw, 50vw';
+        break;
     }
   },
 
@@ -203,60 +203,60 @@ export default {
         unpricedOptions: new Set(),
         unpricedVariants: new Set(),
         currency: this.currency.toLowerCase(),
-      }
+      };
 
-      const variants = this.product.variants.results
+      const variants = this.product.variants.results;
 
       variants.forEach((variant) => {
         const price = this.getStandardPriceInCurrency(
           variant,
-          lowestPricesInCurrency.currency
-        )
+          lowestPricesInCurrency.currency,
+        );
 
         if (price > 0) {
           if (price < lowestPricesInCurrency.variant) {
-            lowestPricesInCurrency.variant = price
+            lowestPricesInCurrency.variant = price;
           }
         } else {
-          lowestPricesInCurrency.unpricedVariants.add(variant.name)
+          lowestPricesInCurrency.unpricedVariants.add(variant.name);
         }
-      })
+      });
 
       if (
         lowestPricesInCurrency.variant < Infinity &&
         lowestPricesInCurrency.unpricedVariants.size === 0
       ) {
         // if prices are for all variants, show lowest price for variants
-        return lowestPricesInCurrency.variant
+        return lowestPricesInCurrency.variant;
       }
 
-      const productOptions = this.product.options || []
+      const productOptions = this.product.options || [];
 
       productOptions.forEach((option) => {
-        const values = option.values || []
+        const values = option.values || [];
 
         values.forEach((value) => {
           const price =
             value.$currency &&
             value.$currency[lowestPricesInCurrency.currency] &&
-            value.$currency[lowestPricesInCurrency.currency].price
+            value.$currency[lowestPricesInCurrency.currency].price;
           if (price > 0) {
             if (price < lowestPricesInCurrency.option) {
-              lowestPricesInCurrency.option = price
+              lowestPricesInCurrency.option = price;
             }
           } else {
-            lowestPricesInCurrency.unpricedOptions.add(value.name)
+            lowestPricesInCurrency.unpricedOptions.add(value.name);
           }
-        })
-      })
+        });
+      });
 
       const price =
         this.getStandardPriceInCurrency(
           this.product,
-          lowestPricesInCurrency.currency
-        ) || 0
+          lowestPricesInCurrency.currency,
+        ) || 0;
 
-      const addedPrice = price + lowestPricesInCurrency.option
+      const addedPrice = price + lowestPricesInCurrency.option;
 
       if (
         addedPrice < Infinity &&
@@ -264,31 +264,31 @@ export default {
         lowestPricesInCurrency.unpricedVariants.size === variants.length
       ) {
         // if prices are for all options and no prices for variants, show lowest price for options
-        return addedPrice
+        return addedPrice;
       }
 
       for (const option of lowestPricesInCurrency.unpricedOptions) {
         if (lowestPricesInCurrency.unpricedVariants.has(option)) {
           // if there is unpriced variant (no price for it in the options and variants sections), use the standard price for the main product
-          return price
+          return price;
         }
       }
 
       const lowestPrice =
         addedPrice < lowestPricesInCurrency.variant
           ? addedPrice
-          : lowestPricesInCurrency.variant
+          : lowestPricesInCurrency.variant;
 
       if (lowestPrice < Infinity) {
-        return lowestPrice
+        return lowestPrice;
       }
 
       if (this.product.currency !== this.currency) {
-        return null
+        return null;
       }
 
       if (this.product.price > 0) {
-        return this.product.price
+        return this.product.price;
       }
       /* If the product's price is 0, this could mean that
       only the options were set a price, so we display the price from
@@ -300,18 +300,18 @@ export default {
             const isInStock =
               !this.product.stockTracking ||
               this.product.stockPurchasable ||
-              currentValue.stockStatus === 'in_stock'
+              currentValue.stockStatus === 'in_stock';
             const priceIsLower =
-              currentValue.price < previousValue && currentValue.price > 0
-            if (isInStock && priceIsLower) return currentValue.price
-            return previousValue
+              currentValue.price < previousValue && currentValue.price > 0;
+            if (isInStock && priceIsLower) return currentValue.price;
+            return previousValue;
           },
-          Number.MAX_SAFE_INTEGER
-        )
+          Number.MAX_SAFE_INTEGER,
+        );
         if (cheapestVariantPrice !== Number.MAX_SAFE_INTEGER)
-          return cheapestVariantPrice
+          return cheapestVariantPrice;
       }
-      return 0
+      return 0;
     },
   },
 
@@ -320,43 +320,43 @@ export default {
       // If keep alive is active, don't hide until same product has been moused over again
       // This is so that for dropdown option that extend past the original element, the flow isn't lost.
       if (this.quickAddKeepAlive) {
-        if (this.currentProductId !== id) return
-        this.quickAddKeepAlive = false
+        if (this.currentProductId !== id) return;
+        this.quickAddKeepAlive = false;
       }
-      this.quickAddIsVisible = true
-      this.currentProductId = id
+      this.quickAddIsVisible = true;
+      this.currentProductId = id;
     },
 
     hideQuickAdd(id) {
-      if (this.quickAddKeepAlive) return
-      this.quickAddIsVisible = false
-      this.currentProductId = null
+      if (this.quickAddKeepAlive) return;
+      this.quickAddIsVisible = false;
+      this.currentProductId = null;
     },
 
     openQuickView(product) {
-      if (!product) return
-      this.quickViewProduct = product
-      this.quickViewIsVisible = true
+      if (!product) return;
+      this.quickViewProduct = product;
+      this.quickViewIsVisible = true;
     },
 
     keepQuickAddAlive(bool) {
-      this.quickAddKeepAlive = bool
+      this.quickAddKeepAlive = bool;
     },
 
     getStandardPriceInCurrency(product, currency) {
-      const options = product.purchaseOptions
+      const options = product.purchaseOptions;
 
       const standardCurrency =
-        options && options.standard && options.standard.$currency
+        options && options.standard && options.standard.$currency;
 
       if (standardCurrency) {
-        const price = standardCurrency[currency]
+        const price = standardCurrency[currency];
 
         if (price) {
-          return price.price
+          return price.price;
         }
       }
     },
   },
-}
+};
 </script>

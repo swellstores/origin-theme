@@ -63,5 +63,5 @@ export default {
       default: false,
     },
   },
-}
+};
 </script>

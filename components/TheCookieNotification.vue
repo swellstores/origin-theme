@@ -53,34 +53,37 @@ export default {
     return {
       type: 'compact',
       showCookieNotification: false,
-    }
+    };
   },
 
   mounted() {
     // Check if cookies were accepted previously.
     if (!this.getCookie('cookiesAccepted')) {
-      this.showCookieNotification = true
+      this.showCookieNotification = true;
     }
   },
 
   methods: {
     getCookie(name) {
-      const pattern = RegExp(name + '=.[^;]*')
-      const matched = document.cookie.match(pattern)
+      const pattern = RegExp(name + '=.[^;]*');
+      const matched = document.cookie.match(pattern);
       if (matched) {
-        const cookie = matched[0].split('=')
-        return cookie[1]
+        const cookie = matched[0].split('=');
+        return cookie[1];
       }
-      return false
+      return false;
     },
     acceptCookies() {
-      this.showCookieNotification = false
-      this.$store.commit('setState', { key: 'cookiesAreAccepted', value: true })
-      const daysToExpire = 365
+      this.showCookieNotification = false;
+      this.$store.commit('setState', {
+        key: 'cookiesAreAccepted',
+        value: true,
+      });
+      const daysToExpire = 365;
       document.cookie = `cookiesAccepted=true; max-age=${
         daysToExpire * 60 * 60 * 1000
-      }; path=/;`
+      }; path=/;`;
     },
   },
-}
+};
 </script>

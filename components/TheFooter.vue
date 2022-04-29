@@ -169,7 +169,7 @@
 
 <script>
 // Helpers
-import get from 'lodash/get'
+import get from 'lodash/get';
 
 export default {
   name: 'TheFooter',
@@ -184,28 +184,28 @@ export default {
       paymentMethods: null,
       currentYear: new Date().getFullYear(),
       background: 'dark',
-    }
+    };
   },
 
   async fetch() {
-    const { $swell } = this
+    const { $swell } = this;
 
     // Get menu settings
-    const menuId = await $swell.settings.get('footer.menu', 'footer')
+    const menuId = await $swell.settings.get('footer.menu', 'footer');
     const secondaryMenuId = await $swell.settings.get(
       'footer.secondaryMenu',
-      'footer-secondary'
-    )
+      'footer-secondary',
+    );
 
     // Set menus
-    this.menu = await $swell.settings.menus(menuId)
-    this.secondaryMenu = await $swell.settings.menus(secondaryMenuId)
+    this.menu = await $swell.settings.menus(menuId);
+    this.secondaryMenu = await $swell.settings.menus(secondaryMenuId);
 
     // Set component data
-    this.store = await $swell.settings.get('store', {})
-    this.footer = await $swell.settings.get('footer', {})
-    this.socialLinks = await $swell.settings.get('socialLinks', {})
-    this.background = await $swell.settings.get('footer.background', 'dark')
+    this.store = await $swell.settings.get('store', {});
+    this.footer = await $swell.settings.get('footer', {});
+    this.socialLinks = await $swell.settings.get('socialLinks', {});
+    this.background = await $swell.settings.get('footer.background', 'dark');
   },
 
   computed: {
@@ -220,8 +220,8 @@ export default {
         'whatsapp',
       ]
         .map((id) => ({ id, ...get(this, `socialLinks.${id}`, {}) })) // Get the network's link value from settings
-        .filter((link) => link.show && link.url) // Only include if it's switched on and  has a url
+        .filter((link) => link.show && link.url); // Only include if it's switched on and  has a url
     },
   },
-}
+};
 </script>

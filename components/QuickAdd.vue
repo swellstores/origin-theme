@@ -59,12 +59,12 @@
 
 <script>
 // Helpers
-import get from 'lodash/get'
-import flatten from 'lodash/flatten'
-import { mapState } from 'vuex'
-import { validationMixin } from 'vuelidate'
-import { required } from 'vuelidate/lib/validators'
-import { listVisibleOptions } from '~/modules/swell'
+import get from 'lodash/get';
+import flatten from 'lodash/flatten';
+import { mapState } from 'vuex';
+import { validationMixin } from 'vuelidate';
+import { required } from 'vuelidate/lib/validators';
+import { listVisibleOptions } from '~/modules/swell';
 
 export default {
   mixins: [validationMixin],
@@ -89,72 +89,73 @@ export default {
       quickAddIsActive: false,
       quickAddIndex: 0,
       addToCartError: null,
-    }
+    };
   },
 
   computed: {
     ...mapState(['cartIsUpdating']),
 
     options() {
-      if (!this.product) return
-      return this.product.options
+      if (!this.product) return;
+      return this.product.options;
     },
 
     // Resulting combination of selected product options
     variation() {
-      if (!this.product) return {}
-      return this.$swell.products.variation(this.product, this.selectedOptions)
+      if (!this.product) return {};
+      return this.$swell.products.variation(this.product, this.selectedOptions);
     },
 
     activeVariantOptionIds() {
-      if (!this.product?.variants.results.length) return []
+      if (!this.product?.variants.results.length) return [];
       return this.product?.variants.results.reduce((arr, variant) => {
-        arr.push(variant.optionValueIds)
-        return arr
-      }, [])
+        arr.push(variant.optionValueIds);
+        return arr;
+      }, []);
     },
 
     optionInputs() {
-      if (!this.product) return {}
-      const options = get(this, 'product.options', [])
+      if (!this.product) return {};
+      const options = get(this, 'product.options', []);
       const hasSingleSelectOption =
-        options.length === 1 && options[0].inputType === 'select'
+        options.length === 1 && options[0].inputType === 'select';
 
       return options.reduce((optionInputs, option) => {
-        let componentName
+        let componentName;
 
         switch (option.inputType) {
           case 'short_text':
-            componentName = 'Text'
-            break
+            componentName = 'Text';
+            break;
           case 'long_text':
-            componentName = 'Text'
-            break
+            componentName = 'Text';
+            break;
           case 'toggle':
-            componentName = 'Checkbox'
-            break
+            componentName = 'Checkbox';
+            break;
           default:
-            componentName = 'Select'
+            componentName = 'Select';
         }
 
         // Don't include subscription plan if there's only one option value available
-        if (option.subscription && option.values.length < 2) return optionInputs
+        if (option.subscription && option.values.length < 2)
+          return optionInputs;
 
         // If this is the only singular option, only show values that will result in an active variant
         if (hasSingleSelectOption) {
           const activeValues = option.values.filter((value) =>
-            flatten(this.activeVariantOptionIds).includes(value.id)
-          )
-          option.values = activeValues
+            flatten(this.activeVariantOptionIds).includes(value.id),
+          );
+          option.values = activeValues;
         }
 
         optionInputs.push({
           option,
           component: () => import(`./ProductOption${componentName}.vue`),
-        })
+        });
 
-        return optionInputs
-      }, [])
+        return optionInputs;
+      }, []);
     },
 
     /**
@@ -162,26 +163,26 @@ export default {
      * @type { { [name: string]: string } }
      */
     selectedOptions() {
-      return this.normalizeOptions(this.optionState)
+      return this.normalizeOptions(this.optionState);
     },
 
     isPurchaseable() {
-      const { stockStatus, stockTracking, stockPurchasable } = this.variation
+      const { stockStatus, stockTracking, stockPurchasable } = this.variation;
 
       return (
         !stockTracking ||
         stockPurchasable ||
         (stockStatus && stockStatus !== 'out_of_stock')
-      )
+      );
     },
   },
 
   created() {
-    this.setFlow()
+    this.setFlow();
   },
 
   mounted() {
-    const productOptions = this.product.options || []
+    const productOptions = this.product.options || [];
 
     /**
      * Option state with initial values for selects.
@@ -189,83 +190,83 @@ export default {
      */
     const optionState = productOptions.reduce(
       (optionsAcc, { id, name, required, values, inputType }) => {
-        const option = { name, required, isVisible: false }
+        const option = { name, required, isVisible: false };
         if (!inputType || inputType === 'select') {
           // Use first available value as the default value for selects
-          optionsAcc[id] = { ...option, value: values[0].name }
+          optionsAcc[id] = { ...option, value: values[0].name };
         } else {
-          optionsAcc[id] = option
+          optionsAcc[id] = option;
         }
-        return optionsAcc
+        return optionsAcc;
       },
-      {}
-    )
+      {},
+    );
 
     /**
      * Normalized optionState in a swell-js-compatible structure
      * @type { { [name: string]: string } }
      */
-    const initialSelection = this.normalizeOptions(optionState, false)
+    const initialSelection = this.normalizeOptions(optionState, false);
 
     const visibleOptions = listVisibleOptions(
       productOptions,
-      initialSelection
-    ).map(({ id }) => id)
+      initialSelection,
+    ).map(({ id }) => id);
 
     // Mark visible options as such
-    this.optionState = this.markVisibleOptions(optionState, visibleOptions)
+    this.optionState = this.markVisibleOptions(optionState, visibleOptions);
   },
 
   methods: {
     // Sets flow of product purchase + labels
     setFlow() {
-      const { optionInputs, product } = this
+      const { optionInputs, product } = this;
 
       if (
         product.bundleItems?.length ||
         optionInputs.length > 2 ||
         optionInputs.some(({ option }) =>
-          option.inputType ? !option.inputType.includes('select') : false
+          option.inputType ? !option.inputType.includes('select') : false,
         )
       ) {
-        this.label = this.$t('products.preview.quickAdd.quickView')
-        this.flow = 'quick-view'
+        this.label = this.$t('products.preview.quickAdd.quickView');
+        this.flow = 'quick-view';
       } else if (!this.isPurchaseable) {
-        this.label = this.$t('products.slug.stockStatus.outOfStock.label')
-        this.flow = 'out-of-stock'
+        this.label = this.$t('products.slug.stockStatus.outOfStock.label');
+        this.flow = 'out-of-stock';
       } else if (optionInputs.length > 0 && optionInputs.length < 3) {
-        this.label = this.$t('products.preview.quickAdd.quickAdd')
-        this.flow = 'quick-add'
+        this.label = this.$t('products.preview.quickAdd.quickAdd');
+        this.flow = 'quick-add';
       } else {
-        this.label = this.$t('products.preview.quickAdd.addToCart')
-        this.flow = 'add-to-cart'
+        this.label = this.$t('products.preview.quickAdd.addToCart');
+        this.flow = 'add-to-cart';
       }
     },
 
     // Update an option value based on user input
     setOptionValue({ optionId, option: name, value }) {
-      const { optionInputs, quickAddIndex } = this
+      const { optionInputs, quickAddIndex } = this;
 
       // Get the option from optionState whose value is being updated.
-      const option = this.optionState[optionId] || {}
+      const option = this.optionState[optionId] || {};
       // Update its properties based on input
-      const updatedOption = { ...option, name, value }
+      const updatedOption = { ...option, name, value };
       // Create a copy of optionState with this option updated
-      const optionState = { ...this.optionState, [optionId]: updatedOption }
+      const optionState = { ...this.optionState, [optionId]: updatedOption };
 
-      const productOptions = this.product.options || []
+      const productOptions = this.product.options || [];
       const visibleOptions = listVisibleOptions(
         productOptions,
-        this.normalizeOptions(optionState, false)
-      ).map(({ id }) => id)
+        this.normalizeOptions(optionState, false),
+      ).map(({ id }) => id);
 
       // Update optionState with the updated option and recalculated visibility properties
-      this.optionState = this.markVisibleOptions(optionState, visibleOptions)
-      this.$emit('keep-alive', true)
+      this.optionState = this.markVisibleOptions(optionState, visibleOptions);
+      this.$emit('keep-alive', true);
 
       // Validate current field
-      this.$v.selectedOptions[name].$touch()
-      if (this.$v.selectedOptions[name].$invalid) return
+      this.$v.selectedOptions[name].$touch();
+      if (this.$v.selectedOptions[name].$invalid) return;
 
       // Add to cart if only one option was available
       if (
@@ -273,19 +274,19 @@ export default {
         quickAddIndex + 1 >= optionInputs.length
       ) {
         // Hide options when adding to cart
-        this.quickAddIsActive = false
+        this.quickAddIsActive = false;
 
         // Check if product/variant is in stock before adding to cart
         if (!this.checkHasStock()) {
-          this.addToCartError = 'Out of stock'
-          return
+          this.addToCartError = 'Out of stock';
+          return;
         }
 
         // Add to cart
-        this.addToCart()
+        this.addToCart();
       } else {
         // Move onto next option if available
-        this.quickAddIndex++
+        this.quickAddIndex++;
       }
     },
 
@@ -296,34 +297,34 @@ export default {
           this.$store.commit('setState', {
             key: 'quickViewIsVisible',
             value: true,
-          })
+          });
           this.$store.commit('setState', {
             key: 'quickViewProductId',
             value: this.product.id,
-          })
-          break
+          });
+          break;
         case 'out-of-stock':
-          break
+          break;
         case 'quick-add':
-          this.quickAddIsActive = true
-          break
+          this.quickAddIsActive = true;
+          break;
         case 'add-to-cart':
-          this.addToCart()
-          break
+          this.addToCart();
+          break;
         default:
-          this.addToCart()
+          this.addToCart();
       }
     },
 
     // Check if current variation has stock
     checkHasStock() {
-      const { product, variation } = this
+      const { product, variation } = this;
       return (
         !product.stockTracking ||
         product.stockPurchasable ||
         ((variation.stockStatus !== 'out_of_stock' || variation.stockStatus) &&
           variation.stockLevel > 0)
-      )
+      );
     },
 
     // Add product to cart with selected options
@@ -333,24 +334,24 @@ export default {
           productId: this.variation.id,
           quantity: 1,
           options: this.selectedOptions,
-        })
+        });
 
         // Close popup when product has been added to cart
-        this.$emit('click-close')
+        this.$emit('click-close');
       } catch (err) {
-        let errorMessage
+        let errorMessage;
         switch (err.message) {
           case 'invalid_stock':
-            errorMessage = this.$t('cart.exceedsStockLevel')
-            break
+            errorMessage = this.$t('cart.exceedsStockLevel');
+            break;
           default:
-            break
+            break;
         }
 
         this.$store.dispatch('showNotification', {
           message: errorMessage,
           type: 'error',
-        })
+        });
       }
     },
 
@@ -358,39 +359,39 @@ export default {
       return Object.values(optionState).reduce(
         (acc, { name, value, isVisible }) => {
           if (!checkVisibility || (checkVisibility && isVisible)) {
-            if (name && value) acc[name] = value
+            if (name && value) acc[name] = value;
           }
-          return acc
+          return acc;
         },
-        {}
-      )
+        {},
+      );
     },
 
     markVisibleOptions(optionState, visibleOptions) {
       Object.keys(optionState).forEach((key) => {
         if (visibleOptions.includes(key)) {
-          optionState[key].isVisible = true
+          optionState[key].isVisible = true;
         } else {
-          optionState[key].isVisible = false
+          optionState[key].isVisible = false;
         }
-      })
-      return optionState
+      });
+      return optionState;
     },
   },
 
   validations() {
     const fields = Object.values(this.optionState).reduce((acc, option) => {
       if (option.isVisible && option.required) {
-        acc[option.name] = { required }
+        acc[option.name] = { required };
       }
-      return acc
-    }, {})
+      return acc;
+    }, {});
 
     return {
       selectedOptions: fields,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="postcss">

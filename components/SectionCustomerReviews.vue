@@ -110,45 +110,45 @@ export default {
     return {
       currentReviewIndex: 0,
       animationDirection: null,
-    }
+    };
   },
 
   computed: {
     currentReview() {
-      return this.reviews[this.currentReviewIndex]
+      return this.reviews[this.currentReviewIndex];
     },
   },
 
   mounted() {
-    this.setMaxElHeight()
+    this.setMaxElHeight();
   },
 
   methods: {
     nextReview() {
-      const { reviews } = this
+      const { reviews } = this;
       if (reviews) {
-        this.animationDirection = 'left'
+        this.animationDirection = 'left';
         this.currentReviewIndex < reviews.length - 1
           ? this.currentReviewIndex++
-          : (this.currentReviewIndex = 0)
+          : (this.currentReviewIndex = 0);
       }
     },
     prevReview() {
-      const { reviews } = this
+      const { reviews } = this;
       if (reviews) {
-        this.animationDirection = 'right'
+        this.animationDirection = 'right';
         this.currentReviewIndex > 0
           ? this.currentReviewIndex--
-          : (this.currentReviewIndex = reviews.length - 1)
+          : (this.currentReviewIndex = reviews.length - 1);
       }
     },
     setMaxElHeight(el) {
       this.$nextTick(() => {
-        const container = this.$refs.quote
-        const content = this.$refs.quoteContent
-        if (content) container.style.height = `${content.offsetHeight}px`
-      })
+        const container = this.$refs.quote;
+        const content = this.$refs.quoteContent;
+        if (content) container.style.height = `${content.offsetHeight}px`;
+      });
     },
   },
-}
+};
 </script>

@@ -174,15 +174,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { validationMixin } from 'vuelidate'
+import { mapState } from 'vuex';
+import { validationMixin } from 'vuelidate';
 import {
   required,
   email,
   maxLength,
   minLength,
   sameAs,
-} from 'vuelidate/lib/validators'
+} from 'vuelidate/lib/validators';
 
 export default {
   mixins: [validationMixin],
@@ -196,7 +196,7 @@ export default {
       confirmPassword: '',
       emailOptin: false,
       isUpdating: false,
-    }
+    };
   },
 
   computed: {
@@ -205,24 +205,24 @@ export default {
 
   created() {
     // Prefill form data for updating existing data
-    if (!this.customer) return
+    if (!this.customer) return;
 
-    this.firstName = this.customer.firstName
-    this.lastName = this.customer.lastName
-    this.email = this.customer.email
-    this.emailOptin = this.customer.emailOptin
+    this.firstName = this.customer.firstName;
+    this.lastName = this.customer.lastName;
+    this.email = this.customer.email;
+    this.emailOptin = this.customer.emailOptin;
   },
 
   methods: {
     async updateProfile() {
       try {
         // Validate fields
-        this.$v.$touch()
-        if (this.$v.$invalid) return
+        this.$v.$touch();
+        if (this.$v.$invalid) return;
 
-        this.isUpdating = true
+        this.isUpdating = true;
 
-        const { email, firstName, lastName, emailOptin, password } = this
+        const { email, firstName, lastName, emailOptin, password } = this;
 
         const res = await this.$swell.account.update({
           email,
@@ -230,22 +230,22 @@ export default {
           lastName,
           emailOptin,
           password,
-        })
+        });
 
         if (res) {
           // Re-initialize the customer to reflect updated data
-          this.isUpdating = false
-          this.$store.dispatch('initializeCustomer')
+          this.isUpdating = false;
+          this.$store.dispatch('initializeCustomer');
           this.$store.dispatch('showNotification', {
             message: this.$t('account.popup.save.success'),
-          })
-          this.$emit('click-close')
+          });
+          this.$emit('click-close');
         }
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: this.$t('account.popup.save.error'),
           type: 'error',
-        })
+        });
       }
     },
   },
@@ -257,5 +257,5 @@ export default {
     password: { minLength: minLength(6) },
     confirmPassword: { sameAsPassword: sameAs('password') },
   },
-}
+};
 </script>

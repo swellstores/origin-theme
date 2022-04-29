@@ -46,20 +46,20 @@ export default {
     return {
       orders: null,
       shopLink: null,
-    }
+    };
   },
 
   async fetch() {
     // Set page data
-    const { $swell } = this
-    const { results: orders } = await $swell.account.listOrders()
+    const { $swell } = this;
+    const { results: orders } = await $swell.account.listOrders();
 
-    this.orders = orders
-    this.shopLink = await $swell.settings.get('cart.shopLink', '/categories/')
+    this.orders = orders;
+    this.shopLink = await $swell.settings.get('cart.shopLink', '/categories/');
   },
 
   head() {
-    return { title: this.$t('account.orders.title') }
+    return { title: this.$t('account.orders.title') };
   },
-}
+};
 </script>

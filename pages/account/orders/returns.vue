@@ -50,20 +50,20 @@ export default {
     return {
       previousOrderRoute: '',
       shopLink: null,
-    }
+    };
   },
 
   async fetch() {
     // Set page data
-    const { $swell } = this
+    const { $swell } = this;
 
-    this.shopLink = await $swell.settings.get('cart.shopLink', '/categories/')
+    this.shopLink = await $swell.settings.get('cart.shopLink', '/categories/');
   },
 
   watch: {
     // If routing from order, set breadcrumb.
     $route(_to, from) {
-      if (from.params.id) this.previousOrderRoute = from.path
+      if (from.params.id) this.previousOrderRoute = from.path;
     },
   },
 
@@ -72,12 +72,12 @@ export default {
       $nuxt: {
         context: { from },
       },
-    } = this
+    } = this;
 
     // If routing from order, set breadcrumb.
     if (from) {
-      this.previousOrderRoute = from.path
+      this.previousOrderRoute = from.path;
     }
   },
-}
+};
 </script>

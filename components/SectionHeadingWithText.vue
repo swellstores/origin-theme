@@ -85,7 +85,7 @@ export default {
       default: 'compact',
     },
   },
-}
+};
 </script>
 
 <style lang="postcss" scoped>

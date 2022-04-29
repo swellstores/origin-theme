@@ -26,7 +26,7 @@
 
 <script>
 // Helpers
-import get from 'lodash/get'
+import get from 'lodash/get';
 
 // TODO: replace this with global settings or singleton content
 const statuses = {
@@ -55,7 +55,7 @@ const statuses = {
     label: 'products.slug.stockStatus.bundleItemsUnavailable.label',
     message: 'products.slug.stockStatus.bundleItemsUnavailable.message',
   },
-}
+};
 
 export default {
   name: 'StockStatus',
@@ -82,9 +82,9 @@ export default {
   computed: {
     status() {
       if (!this.bundleItemsAvailable)
-        return get(statuses, 'bundle_items_unavailable', {})
-      return get(statuses, this.statusValue || 'out_of_stock', {})
+        return get(statuses, 'bundle_items_unavailable', {});
+      return get(statuses, this.statusValue || 'out_of_stock', {});
     },
   },
-}
+};
 </script>

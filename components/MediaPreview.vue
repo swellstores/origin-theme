@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   computed: { ...mapState(['mediaPreview']) },
@@ -33,9 +33,9 @@ export default {
       this.$store.commit('setState', {
         key: 'mediaPreviewIsVisible',
         value: false,
-      })
-      this.$store.commit('setState', { key: 'mediaPreview', value: null })
+      });
+      this.$store.commit('setState', { key: 'mediaPreview', value: null });
     },
   },
-}
+};
 </script>

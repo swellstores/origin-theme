@@ -50,12 +50,12 @@ export default {
   data() {
     return {
       isHintVisible: false,
-    }
+    };
   },
   methods: {
     toggleHint() {
-      this.isHintVisible = !this.isHintVisible
+      this.isHintVisible = !this.isHintVisible;
     },
   },
-}
+};
 </script>

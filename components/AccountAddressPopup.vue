@@ -296,24 +296,24 @@
 
 <script>
 // Helpers
-import { validationMixin } from 'vuelidate'
-import { required, maxLength, helpers } from 'vuelidate/lib/validators'
+import { validationMixin } from 'vuelidate';
+import { required, maxLength, helpers } from 'vuelidate/lib/validators';
 
 // Phone number validation
 const validPhone = helpers.regex(
   'validPhone',
-  /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/
-)
+  /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/,
+);
 
 export default {
   components: {
     async CountrySelect() {
-      const { CountrySelect } = await import('vue-country-region-select')
-      return CountrySelect
+      const { CountrySelect } = await import('vue-country-region-select');
+      return CountrySelect;
     },
     async RegionSelect() {
-      const { RegionSelect } = await import('vue-country-region-select')
-      return RegionSelect
+      const { RegionSelect } = await import('vue-country-region-select');
+      return RegionSelect;
     },
   },
 
@@ -374,22 +374,22 @@ export default {
       country: '',
       phone: '',
       setDefault: false,
-    }
+    };
   },
 
   computed: {
     disableDefaultOption() {
       // Disable if no default address is set and no addresses exist
-      if (!this.defaultAddressId && !this.addressesLength) return true
+      if (!this.defaultAddressId && !this.addressesLength) return true;
       // Disable if current address is the only one and default
       if (this.address) {
         if (
           this.defaultAddressId === this.address.id &&
           this.addressesLength === 1
         )
-          return true
+          return true;
       }
-      return false
+      return false;
     },
 
     addressBody() {
@@ -403,7 +403,7 @@ export default {
         zip,
         country,
         phone,
-      } = this
+      } = this;
       return {
         firstName,
         lastName,
@@ -414,26 +414,26 @@ export default {
         zip,
         country,
         phone,
-      }
+      };
     },
   },
 
   created() {
     // Prefill form data for updating existing
     if (this.address) {
-      this.firstName = this.address.firstName || ''
-      this.lastName = this.address.lastName || ''
-      this.address1 = this.address.address1 || ''
-      this.address2 = this.address.address2 || ''
-      this.state = this.address.state || ''
-      this.city = this.address.city || ''
-      this.zip = this.address.zip || ''
-      this.country = this.address.country || ''
-      this.phone = this.address.phone || ''
+      this.firstName = this.address.firstName || '';
+      this.lastName = this.address.lastName || '';
+      this.address1 = this.address.address1 || '';
+      this.address2 = this.address.address2 || '';
+      this.state = this.address.state || '';
+      this.city = this.address.city || '';
+      this.zip = this.address.zip || '';
+      this.country = this.address.country || '';
+      this.phone = this.address.phone || '';
 
       // Set default check state
       if (this.defaultAddressId === this.address.id) {
-        this.setDefault = true
+        this.setDefault = true;
       }
     }
 
@@ -443,46 +443,46 @@ export default {
       !this.addressesLength &&
       this.type === 'new'
     ) {
-      this.setDefault = true
+      this.setDefault = true;
     }
   },
 
   methods: {
     create() {
       // Validate fields
-      this.$v.$touch()
-      if (this.$v.$invalid) return
+      this.$v.$touch();
+      if (this.$v.$invalid) return;
 
       if (this.flow === 'payment') {
         this.$emit('new-billing-address', {
           ...this.addressBody,
           isDefault: this.setDefault,
-        })
-        return
+        });
+        return;
       }
 
-      this.$emit('new', { ...this.addressBody, isDefault: this.setDefault })
+      this.$emit('new', { ...this.addressBody, isDefault: this.setDefault });
     },
 
     update() {
-      this.$v.$touch()
-      if (this.$v.$invalid) return
+      this.$v.$touch();
+      if (this.$v.$invalid) return;
 
-      this.$emit('update', { ...this.addressBody, isDefault: this.setDefault })
+      this.$emit('update', { ...this.addressBody, isDefault: this.setDefault });
     },
 
     remove() {
-      this.$emit('delete', this.address.id)
+      this.$emit('delete', this.address.id);
     },
 
     async handleEnterKey() {
       switch (this.type) {
         case 'update':
-          await this.update()
-          break
+          await this.update();
+          break;
         case 'new':
-          await this.create()
-          break
+          await this.create();
+          break;
         default:
       }
     },
@@ -498,5 +498,5 @@ export default {
     country: { required },
     phone: { validPhone },
   },
-}
+};
 </script>

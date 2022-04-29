@@ -37,5 +37,5 @@ export default {
       default: () => [],
     },
   },
-}
+};
 </script>

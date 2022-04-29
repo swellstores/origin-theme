@@ -50,8 +50,8 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, email } from 'vuelidate/lib/validators'
+import { validationMixin } from 'vuelidate';
+import { required, email } from 'vuelidate/lib/validators';
 
 export default {
   mixins: [validationMixin],
@@ -60,43 +60,43 @@ export default {
     return {
       email: '',
       isProcessing: false,
-    }
+    };
   },
 
   head() {
-    return { title: this.$t('account.forgotPassword.title') }
+    return { title: this.$t('account.forgotPassword.title') };
   },
 
   activated() {
-    this.$v.$reset()
+    this.$v.$reset();
   },
 
   methods: {
     async sendPasswordReset() {
       try {
-        this.$v.$touch()
-        if (this.$v.$invalid) return
+        this.$v.$touch();
+        if (this.$v.$invalid) return;
 
-        this.isProcessing = true
+        this.isProcessing = true;
 
         const res = await this.$swell.account.recover({
           email: this.email,
           reset_url: `${window.location.origin}/account/reset-password/?key={key}`,
-        })
+        });
 
-        this.isProcessing = false
+        this.isProcessing = false;
 
         if (res.success) {
-          this.flow = 'login'
+          this.flow = 'login';
           this.$store.dispatch('showNotification', {
             message: this.$t('account.forgotPassword.success'),
-          })
+          });
         }
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: this.$t('account.forgotPassword.error'),
           type: 'error',
-        })
+        });
       }
     },
   },
@@ -104,5 +104,5 @@ export default {
   validations: {
     email: { required, email },
   },
-}
+};
 </script>

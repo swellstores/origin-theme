@@ -71,15 +71,15 @@ export default {
     icon() {
       switch (this.status) {
         case 'active':
-          return 'sync'
+          return 'sync';
         case 'paused':
-          return 'pause'
+          return 'pause';
         case 'canceled':
-          return 'sync-slash'
+          return 'sync-slash';
         case 'trial':
-          return 'calender'
+          return 'calender';
         default:
-          return ''
+          return '';
       }
     },
 
@@ -89,7 +89,7 @@ export default {
           return this.$t('account.subscriptions.subscription.status.active', {
             date: this.formatDate(this.datePeriodEnd),
             time: this.formatTime(this.datePeriodEnd),
-          })
+          });
         case 'paused':
           return this.datePauseEnd
             ? this.$t(
@@ -97,22 +97,22 @@ export default {
                 {
                   date: this.formatDate(this.datePauseEnd),
                   time: this.formatTime(this.datePauseEnd),
-                }
+                },
               )
             : this.$t('account.subscriptions.subscription.status.paused', {
                 date: this.formatDate(this.datePaused),
-              })
+              });
         case 'canceled':
           return this.$t('account.subscriptions.subscription.status.canceled', {
             date: this.formatDate(this.dateCanceled),
-          })
+          });
         case 'trial':
           return this.$t('account.subscriptions.subscription.status.trial', {
             date: this.formatDate(this.dateTrialEnd),
             time: this.formatTime(this.dateTrialEnd),
-          })
+          });
         default:
-          return ''
+          return '';
       }
     },
 
@@ -120,37 +120,39 @@ export default {
       switch (this.status) {
         case 'active':
           return this.$t(
-            'account.subscriptions.subscription.status.activeMessage'
-          )
+            'account.subscriptions.subscription.status.activeMessage',
+          );
         case 'paused':
           return this.datePauseEnd
             ? this.$t(
-                'account.subscriptions.subscription.status.pausedResumesMessage'
+                'account.subscriptions.subscription.status.pausedResumesMessage',
               )
-            : this.$t('account.subscriptions.subscription.status.pausedMessage')
+            : this.$t(
+                'account.subscriptions.subscription.status.pausedMessage',
+              );
         case 'canceled':
           return this.$t(
-            'account.subscriptions.subscription.status.canceledMessage'
-          )
+            'account.subscriptions.subscription.status.canceledMessage',
+          );
         case 'trial':
           return `${this.$t(
-            'account.subscriptions.subscription.status.trialMessage'
-          )}`
+            'account.subscriptions.subscription.status.trialMessage',
+          )}`;
         default:
-          return ''
+          return '';
       }
     },
   },
 
   methods: {
     formatTime(date) {
-      const d = new Date(date)
+      const d = new Date(date);
       return d.toLocaleString('en', {
         hour: 'numeric',
         minute: 'numeric',
         hour12: true,
-      })
+      });
     },
   },
-}
+};
 </script>

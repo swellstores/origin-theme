@@ -98,7 +98,7 @@
                 {{
                   formatMoney(
                     subscription.recurringTotal,
-                    subscription.currency
+                    subscription.currency,
                   )
                 }}
               </p>
@@ -190,9 +190,9 @@
 
 <script>
 // Helpers
-import { mapState } from 'vuex'
-import filter from 'lodash/filter'
-import get from 'lodash/get'
+import { mapState } from 'vuex';
+import filter from 'lodash/filter';
+import get from 'lodash/get';
 
 export default {
   name: 'Subscription',
@@ -211,81 +211,81 @@ export default {
       allowFrequencyEdit: true,
       allowOptionsEdit: true,
       supportEmail: '',
-    }
+    };
   },
 
   async fetch() {
-    const { $swell } = this
+    const { $swell } = this;
 
     const subscription = await $swell.subscriptions.get(this.$route.params.id, {
       expand: ['product', 'variant'],
-    })
+    });
 
     // Show 404 if subscription isn't found
     if (!subscription) {
-      return this.$nuxt.error({ statusCode: 404 })
+      return this.$nuxt.error({ statusCode: 404 });
     }
 
     // Set component data
-    this.subscription = subscription
+    this.subscription = subscription;
     this.allowFrequencyEdit = await $swell.settings.get(
       'account.subscriptions.allowFrequencyEdit',
-      false
-    )
+      false,
+    );
     this.allowOptionsEdit = await $swell.settings.get(
       'account.subscriptions.allowOptionsEdit',
-      false
-    )
+      false,
+    );
 
-    this.supportEmail = await $swell.settings.get('store.supportEmail')
+    this.supportEmail = await $swell.settings.get('store.supportEmail');
 
     // Compute initial values for options
-    this.resetOptionValues()
+    this.resetOptionValues();
   },
 
   computed: {
     ...mapState(['currency']),
 
     subscriptionName() {
-      if (!this.subscription) return
-      return this.subscription.product.name
+      if (!this.subscription) return;
+      return this.subscription.product.name;
     },
 
     subscriptionOptions() {
-      return filter(this.subscription.product.options, 'subscription')
+      return filter(this.subscription.product.options, 'subscription');
     },
 
     planOptions() {
       return filter(
         this.subscription.product.options,
-        (option) => !option.subscription
-      )
+        (option) => !option.subscription,
+      );
     },
 
     planThumbnail() {
-      const { subscription } = this
+      const { subscription } = this;
 
       if (subscription.variant?.images?.length) {
-        return get(subscription, 'variant.images[0]')
+        return get(subscription, 'variant.images[0]');
       }
 
-      return get(subscription, 'product.images[0]')
+      return get(subscription, 'product.images[0]');
     },
 
     status() {
-      if (!this.subscription) return
-      return this.subscription.status
+      if (!this.subscription) return;
+      return this.subscription.status;
     },
 
     planItems() {
-      if (this.subscription.product.bundle) return
-      return this.subscription.product.bundleItems
+      if (this.subscription.product.bundle) return;
+      return this.subscription.product.bundleItems;
     },
   },
 
   activated() {
     // Refetch updated data
-    this.$fetch()
+    this.$fetch();
   },
 
   methods: {
@@ -297,20 +297,20 @@ export default {
           // If option has been set, select for current option,
           // otherwise fallback to first available option
           const matched = this.subscription.options?.find(
-            (option) => option.id === id
-          )
-          options[name] = matched ? matched.value : get(values, '0.name')
+            (option) => option.id === id,
+          );
+          options[name] = matched ? matched.value : get(values, '0.name');
 
-          return options
+          return options;
         },
-        {}
-      )
+        {},
+      );
     },
 
     closeAndResetPopups() {
-      this.changeFrequencyPopupisActive = false
-      this.changeOptionsPopupisActive = false
-      this.resetOptionValues()
+      this.changeFrequencyPopupisActive = false;
+      this.changeOptionsPopupisActive = false;
+      this.resetOptionValues();
     },
 
     // Update an option value based on user input
@@ -318,63 +318,63 @@ export default {
       // Use $set to update the data object because options are dynamic
       // and optionState won't be reactive otherwise
       // TODO in Vue 3 this.optionState[option] = value should work
-      this.$set(this.optionState, option, value)
+      this.$set(this.optionState, option, value);
     },
 
     async cancelSubscription() {
       try {
-        this.isCanceling = true
+        this.isCanceling = true;
 
         await this.$swell.subscriptions.update(this.subscription.id, {
           canceled: true,
-        })
+        });
 
-        this.isCanceling = false
-        this.cancelPopupIsActive = false
+        this.isCanceling = false;
+        this.cancelPopupIsActive = false;
 
         this.$store.dispatch('showNotification', {
           message: this.$t('account.subscriptions.id.popup.cancel.success'),
           type: 'success',
-        })
-        this.$fetch()
+        });
+        this.$fetch();
       } catch (err) {
-        this.isCanceling = false
-        this.$store.dispatch('handleError', err)
+        this.isCanceling = false;
+        this.$store.dispatch('handleError', err);
       }
     },
 
     async updatePlan(type = 'options') {
-      this.isUpdating = true
-      const optionState = this.optionState
-      const options = []
+      this.isUpdating = true;
+      const optionState = this.optionState;
+      const options = [];
 
       for (const key in optionState) {
-        const value = optionState[key]
+        const value = optionState[key];
         const { id } = this.subscription.product.options.find(
-          (option) => option.name === key
-        )
-        options.push({ id, value })
+          (option) => option.name === key,
+        );
+        options.push({ id, value });
       }
 
-      await this.$swell.subscriptions.update(this.subscription.id, { options })
+      await this.$swell.subscriptions.update(this.subscription.id, { options });
 
-      this.isUpdating = false
-      this.changeOptionsPopupisActive = false
-      this.changeFrequencyPopupisActive = false
+      this.isUpdating = false;
+      this.changeOptionsPopupisActive = false;
+      this.changeFrequencyPopupisActive = false;
 
       this.$store.dispatch('showNotification', {
         message:
           type === 'frequency'
             ? this.$t(
-                'account.subscriptions.id.edit.popup.changeFrequency.success'
+                'account.subscriptions.id.edit.popup.changeFrequency.success',
               )
             : this.$t(
-                'account.subscriptions.id.edit.popup.changeOptions.success'
+                'account.subscriptions.id.edit.popup.changeOptions.success',
               ),
         type: 'success',
-      })
-      this.$fetch()
+      });
+      this.$fetch();
     },
   },
-}
+};
 </script>

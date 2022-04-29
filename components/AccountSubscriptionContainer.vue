@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import get from 'lodash/get'
+import get from 'lodash/get';
 
 export default {
   props: {
@@ -91,52 +91,52 @@ export default {
   computed: {
     thumbnails() {
       // Determine which images to display
-      const { subscription } = this
+      const { subscription } = this;
 
       // Check for bundle item images
       if (subscription.product.bundle) {
         const bundleThumbnails = subscription.product.bundleItems
           .map((item) => {
             if (item.variant?.images?.length) {
-              return get(item, 'variant.images[0].file', false)
+              return get(item, 'variant.images[0].file', false);
             }
 
             if (item.product?.images?.length) {
-              return get(item, 'product.images[0].file', false)
+              return get(item, 'product.images[0].file', false);
             }
 
-            return false
+            return false;
           })
-          .filter(Boolean)
+          .filter(Boolean);
 
         // Return only first four
-        return bundleThumbnails.slice(0, 4)
+        return bundleThumbnails.slice(0, 4);
       }
 
       // Otherwise use subscription images
       if (subscription.variant?.images?.length) {
-        return [get(subscription, 'variant.images[0]')]
+        return [get(subscription, 'variant.images[0]')];
       }
 
       if (subscription.product.images) {
-        return [get(subscription, 'product.images[0]')]
+        return [get(subscription, 'product.images[0]')];
       }
 
-      return []
+      return [];
     },
 
     options() {
       // Return options excluding plan
-      if (!this.subscription.variant) return
+      if (!this.subscription.variant) return;
 
-      const options = this.subscription.variant.name.split(', ')
+      const options = this.subscription.variant.name.split(', ');
 
-      if (options.length < 2) return
+      if (options.length < 2) return;
 
-      return options.slice(1).join(', ')
+      return options.slice(1).join(', ');
     },
   },
-}
+};
 </script>
 
 <style lang="postcss" scoped>

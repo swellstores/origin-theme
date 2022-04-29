@@ -39,19 +39,19 @@
 
 <script>
 // Helpers
-import 'vue-glide-js/dist/vue-glide.css'
+import 'vue-glide-js/dist/vue-glide.css';
 
 export default {
   name: 'MediaSlider',
 
   components: {
     async VueGlide() {
-      const { Glide } = await import('vue-glide-js')
-      return Glide
+      const { Glide } = await import('vue-glide-js');
+      return Glide;
     },
     async VueGlideSlide() {
-      const { GlideSlide } = await import('vue-glide-js')
-      return GlideSlide
+      const { GlideSlide } = await import('vue-glide-js');
+      return GlideSlide;
     },
   },
 
@@ -75,13 +75,13 @@ export default {
         gap: 0,
         animationTimingFunc: 'cubic-bezier(0.6, 0.2, 0, 1)',
       },
-    }
+    };
   },
 
   methods: {
     setActiveSlide(index) {
-      this.activeSlide = index
+      this.activeSlide = index;
     },
   },
-}
+};
 </script>

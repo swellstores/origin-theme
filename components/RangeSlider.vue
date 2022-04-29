@@ -30,14 +30,14 @@
 
 <script>
 // Helpers
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   name: 'RangeSlider',
 
   components: {
     VueSlider: () => {
-      if (process.client) return import('vue-slider-component')
+      if (process.client) return import('vue-slider-component');
     },
   },
 
@@ -64,40 +64,40 @@ export default {
   data() {
     return {
       value: [0, 1],
-    }
+    };
   },
 
   computed: {
     ...mapState(['currency']),
 
     slider() {
-      const { filter, withIntervals } = this
-      const [min, max] = filter.options
-      let minValue = min.value
-      let maxValue = max.value
-      let interval = Math.ceil((maxValue - minValue || 1) / 10)
+      const { filter, withIntervals } = this;
+      const [min, max] = filter.options;
+      let minValue = min.value;
+      let maxValue = max.value;
+      let interval = Math.ceil((maxValue - minValue || 1) / 10);
 
       if (withIntervals) {
         if (interval > 1000) {
-          interval = 1000
+          interval = 1000;
         } else if (interval > 100) {
-          interval = 100
+          interval = 100;
         } else if (interval > 10) {
-          interval = 10
+          interval = 10;
         } else {
-          interval = 1
+          interval = 1;
         }
 
         if (maxValue % interval > 0) {
-          maxValue = interval + maxValue - (maxValue % interval)
+          maxValue = interval + maxValue - (maxValue % interval);
         }
 
         if (minValue % interval > 0) {
-          minValue = minValue - (minValue % interval)
+          minValue = minValue - (minValue % interval);
         }
 
         while (((maxValue - minValue) / interval) % 1 > 0) {
-          maxValue++
+          maxValue++;
         }
       }
 
@@ -105,7 +105,7 @@ export default {
         minValue,
         maxValue,
         interval,
-      }
+      };
     },
   },
 
@@ -115,54 +115,54 @@ export default {
       if (state) {
         this.$nextTick(() => {
           setTimeout(() => {
-            this.$refs.slider?.refresh()
-          }, 750)
-        })
+            this.$refs.slider?.refresh();
+          }, 750);
+        });
       }
     },
   },
 
   created() {
-    this.setValue()
+    this.setValue();
   },
 
   methods: {
     formatTooltip(value) {
-      const { isPrice, currency, formatMoney } = this
+      const { isPrice, currency, formatMoney } = this;
 
       if (isPrice) {
-        const { rate } = this.$swell.currency.get(currency)
-        const price = rate ? value * rate : value
+        const { rate } = this.$swell.currency.get(currency);
+        const price = rate ? value * rate : value;
 
-        return formatMoney(price, currency)
+        return formatMoney(price, currency);
       }
 
-      return value
+      return value;
     },
 
     setValue() {
-      const [min, max] = this.filter.options
-      const stateValue = this.filterState[this.filter.id]
+      const [min, max] = this.filter.options;
+      const stateValue = this.filterState[this.filter.id];
 
       // Use the state value if it exists, otherwise the filter's min/max
-      this.value = stateValue || [min.value, max.value]
+      this.value = stateValue || [min.value, max.value];
     },
 
     updateValue(value) {
-      const { filter } = this
-      const [min, max] = filter.options
-      let optionValue
+      const { filter } = this;
+      const [min, max] = filter.options;
+      let optionValue;
 
       // If the value isn't the same as the filter's min/max, pass it on
       if (value[0] !== min.value || value[1] !== max.value) {
-        optionValue = value
+        optionValue = value;
       }
 
       // Otherwise, don't pass anything so the filter gets removed
-      this.$emit('change', { filter, optionValue })
+      this.$emit('change', { filter, optionValue });
     },
   },
-}
+};
 </script>
 
 <style lang="postcss" scoped>

@@ -140,12 +140,12 @@ export default {
     return {
       interval: 'immediate',
       pickDateAndTimeisActive: false,
-    }
+    };
   },
 
   computed: {
     paused() {
-      return this.status === 'paused'
+      return this.status === 'paused';
     },
 
     confirmButtonLabel() {
@@ -153,7 +153,7 @@ export default {
         ? this.$t('account.subscriptions.id.popup.resume.continue')
         : this.paused
         ? this.$t('account.subscriptions.id.popup.resume.yes')
-        : this.$t('account.subscriptions.id.popup.pause.yes')
+        : this.$t('account.subscriptions.id.popup.pause.yes');
     },
   },
 
@@ -161,16 +161,16 @@ export default {
     accept() {
       if (this.paused) {
         if (this.interval === 'set') {
-          this.$emit('select-date-time')
-          return
+          this.$emit('select-date-time');
+          return;
         }
-        this.$emit('resume-subscription')
+        this.$emit('resume-subscription');
       } else {
-        this.$emit('pause-subscription', this.interval)
+        this.$emit('pause-subscription', this.interval);
       }
     },
   },
-}
+};
 </script>
 
 <style scoped>

@@ -423,7 +423,7 @@
 
 <script>
 // Helpers
-import padStart from 'lodash/padStart'
+import padStart from 'lodash/padStart';
 
 export default {
   name: 'Order',
@@ -432,55 +432,55 @@ export default {
   data() {
     return {
       order: null,
-    }
+    };
   },
 
   async fetch() {
-    const order = await this.$swell.account.getOrder(this.$route.params.id)
+    const order = await this.$swell.account.getOrder(this.$route.params.id);
 
-    if (order) this.order = order
+    if (order) this.order = order;
   },
 
   computed: {
     shipping() {
-      return this.order.shipping
+      return this.order.shipping;
     },
 
     billing() {
-      return this.order.billing
+      return this.order.billing;
     },
 
     shipments() {
-      if (!this.order.shipments || !this.order.shipments.results.length) return
-      return this.order.shipments.results
+      if (!this.order.shipments || !this.order.shipments.results.length) return;
+      return this.order.shipments.results;
     },
 
     cardExpDate() {
-      const mm = padStart(this.billing.card.expMonth, 2, '0')
-      const yy = this.billing.card.expYear.toString().slice(-2)
-      return `${mm} / ${yy}`
+      const mm = padStart(this.billing.card.expMonth, 2, '0');
+      const yy = this.billing.card.expYear.toString().slice(-2);
+      return `${mm} / ${yy}`;
     },
 
     statusMessage() {
       switch (this.order.status) {
         case 'pending':
-          return this.$t('account.orders.order.status.pending')
+          return this.$t('account.orders.order.status.pending');
         case 'draft':
-          return this.$t('account.orders.order.status.draft')
+          return this.$t('account.orders.order.status.draft');
         case 'payment_pending':
-          return this.$t('account.orders.order.status.pendingPayment')
+          return this.$t('account.orders.order.status.pendingPayment');
         case 'delivery_pending':
-          return this.$t('account.orders.order.status.pendingDelivery')
+          return this.$t('account.orders.order.status.pendingDelivery');
         case 'hold':
-          return this.$t('account.orders.order.status.hold')
+          return this.$t('account.orders.order.status.hold');
         case 'complete':
-          return this.$t('account.orders.order.status.complete')
+          return this.$t('account.orders.order.status.complete');
         case 'canceled':
-          return this.$t('account.orders.order.status.canceled')
+          return this.$t('account.orders.order.status.canceled');
         default:
-          return ''
+          return '';
       }
     },
   },
-}
+};
 </script>

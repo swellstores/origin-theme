@@ -25,7 +25,7 @@
             resolveUrl({
               type: 'product',
               value: item.product.slug,
-            })
+            }),
           )
         "
       >
@@ -68,10 +68,10 @@
 
 <script>
 // Helpers
-import get from 'lodash/get'
-import { validationMixin } from 'vuelidate'
-import { required } from 'vuelidate/lib/validators'
-import { listVisibleOptions } from '~/modules/swell'
+import get from 'lodash/get';
+import { validationMixin } from 'vuelidate';
+import { required } from 'vuelidate/lib/validators';
+import { listVisibleOptions } from '~/modules/swell';
 
 export default {
   name: 'ProductBundleItem',
@@ -92,101 +92,101 @@ export default {
   data() {
     return {
       product: null,
-    }
+    };
   },
 
   async fetch() {
-    const { $swell, item } = this
+    const { $swell, item } = this;
 
     // Fetch product
-    if (!item) return
-    const product = await $swell.products.get(item.productId)
+    if (!item) return;
+    const product = await $swell.products.get(item.productId);
 
     // Set component data
-    this.product = product
+    this.product = product;
 
     // Emit event to check availability of all bundled items
-    this.$emit('check-availability')
+    this.$emit('check-availability');
   },
 
   computed: {
     // Resulting combination of selected product options
     variation() {
-      const { $swell, itemOptionState, product } = this
-      if (!product || !itemOptionState?.options) return null
+      const { $swell, itemOptionState, product } = this;
+      if (!product || !itemOptionState?.options) return null;
       const options = itemOptionState.options.reduce(
         (options, { name, value }) => {
-          options[name] = value
-          return options
+          options[name] = value;
+          return options;
         },
-        {}
-      )
+        {},
+      );
 
-      return $swell.products.variation(product, options)
+      return $swell.products.variation(product, options);
     },
 
     available() {
-      if (!this.variation) return null
-      const { stockStatus, stockTracking, stockPurchasable } = this.variation
+      if (!this.variation) return null;
+      const { stockStatus, stockTracking, stockPurchasable } = this.variation;
 
       return (
         (stockStatus && stockStatus !== 'out_of_stock') ||
         !stockTracking ||
         stockPurchasable
-      )
+      );
     },
 
     customizable() {
-      return this.item.variable === 'choose'
+      return this.item.variable === 'choose';
     },
 
     visibleOptionIds() {
-      const options = get(this.item, 'product.options', [])
-      const optionState = this.optionState
+      const options = get(this.item, 'product.options', []);
+      const optionState = this.optionState;
 
-      return listVisibleOptions(options, optionState).map(({ id }) => id)
+      return listVisibleOptions(options, optionState).map(({ id }) => id);
     },
 
     itemOptionState() {
       return this.optionState.find(
-        (option) => option.productId === this.item.productId
-      )
+        (option) => option.productId === this.item.productId,
+      );
     },
 
     itemValidationState() {
       return this.itemOptionState.options.reduce((obj, option) => {
-        obj[option.name] = option.value
-        return obj
-      }, {})
+        obj[option.name] = option.value;
+        return obj;
+      }, {});
     },
 
     optionInputs() {
-      const options = get(this.item, 'product.options', [])
+      const options = get(this.item, 'product.options', []);
 
       return options.reduce((optionInputs, option) => {
-        let componentName
+        let componentName;
 
         switch (option.inputType) {
           case 'short_text':
-            componentName = 'Text'
-            break
+            componentName = 'Text';
+            break;
           case 'long_text':
-            componentName = 'Text'
-            break
+            componentName = 'Text';
+            break;
           case 'toggle':
-            componentName = 'Checkbox'
-            break
+            componentName = 'Checkbox';
+            break;
           default:
-            componentName = 'Select'
+            componentName = 'Select';
         }
 
         optionInputs.push({
           option,
           component: () => import(`./ProductOption${componentName}.vue`),
-        })
+        });
 
-        return optionInputs
-      }, [])
+        return optionInputs;
+      }, []);
     },
   },
 
@@ -196,37 +196,37 @@ export default {
         option,
         value,
         productId: this.item.productId,
-      })
+      });
 
       // Emit event to check availability of all bundled items
-      this.$emit('check-availability')
+      this.$emit('check-availability');
     },
 
     getCurrentOptionValue(optionName) {
       const option = this.itemOptionState.options.find(
-        (option) => option.name === optionName
-      )
-      return option.value
+        (option) => option.name === optionName,
+      );
+      return option.value;
     },
   },
 
   validations() {
-    const { item } = this
+    const { item } = this;
     // Product options
-    if (!this.customizable) return {}
-    const options = get(item, 'product.options', [])
+    if (!this.customizable) return {};
+    const options = get(item, 'product.options', []);
     const fields = options.reduce((obj, option) => {
       if (option.required) {
-        obj[option.name] = { required }
+        obj[option.name] = { required };
       }
-      return obj
-    }, {})
+      return obj;
+    }, {});
 
     return {
       itemValidationState: {
         ...fields,
       },
-    }
+    };
   },
-}
+};
 </script>

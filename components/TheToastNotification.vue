@@ -63,7 +63,7 @@
                 <NuxtLink
                   :to="
                     localePath(
-                      resolveUrl({ type: 'product', value: product.slug })
+                      resolveUrl({ type: 'product', value: product.slug }),
                     )
                   "
                   class="inline-block"
@@ -129,7 +129,7 @@
 
 <script>
 // Helpers
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   props: {
@@ -150,17 +150,17 @@ export default {
       product: null,
       scrollY: null,
       billingSchedule: null,
-    }
+    };
   },
 
   async fetch() {
-    const { $swell } = this
+    const { $swell } = this;
 
     // Fetch item that has been recently added to the cart
     if (this.addedItem) {
-      const baseProduct = await $swell.products.get(this.addedItem.productId)
-      const { purchaseOption } = this.addedItem
-      let product
+      const baseProduct = await $swell.products.get(this.addedItem.productId);
+      const { purchaseOption } = this.addedItem;
+      let product;
 
       if (
         purchaseOption &&
@@ -173,28 +173,28 @@ export default {
           {
             type: 'subscription',
             plan: purchaseOption.plan,
-          }
-        )
+          },
+        );
         const subscriptionPlan =
           product.purchaseOptions.subscription.plans.find(
-            (plan) => plan.id === purchaseOption.plan
-          )
+            (plan) => plan.id === purchaseOption.plan,
+          );
         if (subscriptionPlan) {
-          this.billingSchedule = subscriptionPlan.billingSchedule
+          this.billingSchedule = subscriptionPlan.billingSchedule;
         }
       } else {
         product = await $swell.products.variation(
           baseProduct,
-          this.addedItem.options
-        )
+          this.addedItem.options,
+        );
       }
 
-      this.product = product
+      this.product = product;
     }
 
     // Set component data
-    this.header = await $swell.settings.get('header')
-    this.logoSrc = await $swell.settings.get('header.logo.file.url')
+    this.header = await $swell.settings.get('header');
+    this.logoSrc = await $swell.settings.get('header.logo.file.url');
   },
 
   computed: {
@@ -209,99 +209,99 @@ export default {
     ]),
 
     options() {
-      if (!this.addedItem) return
+      if (!this.addedItem) return;
 
-      const options = Object.values(this.addedItem.options)
-      return options.join(', ')
+      const options = Object.values(this.addedItem.options);
+      return options.join(', ');
     },
 
     formattedPrice() {
-      const { product, addedItem } = this
-      if (!product) return ''
+      const { product, addedItem } = this;
+      if (!product) return '';
 
-      const { purchaseOption } = addedItem
+      const { purchaseOption } = addedItem;
 
       if (purchaseOption && purchaseOption.type === 'subscription') {
         // Get selected subscription billing schedule
         const plan = product.purchaseOptions.subscription.plans.find((plan) => {
-          return plan.id === purchaseOption.plan
-        })
+          return plan.id === purchaseOption.plan;
+        });
 
-        if (!plan) return ''
+        if (!plan) return '';
 
-        const { interval, intervalCount } = plan.billingSchedule
+        const { interval, intervalCount } = plan.billingSchedule;
 
         const subscriptionInterval = this.$t(
-          `products.slug.purchaseOptions.interval.${interval}.short`
-        )
+          `products.slug.purchaseOptions.interval.${interval}.short`,
+        );
 
         return `${this.formatMoney(product.price, this.currency)}/${
           intervalCount > 1 ? intervalCount : ''
-        }${subscriptionInterval}`
+        }${subscriptionInterval}`;
       }
 
-      return this.formatMoney(product.price, this.currency)
+      return this.formatMoney(product.price, this.currency);
     },
 
     headerHeightOffset() {
       // Set initial height before scroll initiates
       if (this.scrollY === null) {
-        if (!this.headerIsVisible) return 0
-        if (this.headerIsVisible) return this.headerHeight
+        if (!this.headerIsVisible) return 0;
+        if (this.headerIsVisible) return this.headerHeight;
       }
 
-      if (!this.headerIsVisible) return 0
+      if (!this.headerIsVisible) return 0;
 
       if (this.scrollY < this.headerHeight) {
-        return this.headerHeight - (this.headerHeight - this.scrollY)
+        return this.headerHeight - (this.headerHeight - this.scrollY);
       }
-      return this.headerHeight
+      return this.headerHeight;
     },
 
     intervalCount() {
-      if (!this.billingSchedule) return null
-      return this.billingSchedule.intervalCount
+      if (!this.billingSchedule) return null;
+      return this.billingSchedule.intervalCount;
     },
 
     subscriptionInterval() {
-      if (!this.billingSchedule) return null
+      if (!this.billingSchedule) return null;
       return this.$t(
-        `products.slug.purchaseOptions.interval.${this.billingSchedule.interval}.short`
-      )
+        `products.slug.purchaseOptions.interval.${this.billingSchedule.interval}.short`,
+      );
     },
 
     trialDays() {
-      if (!this.billingSchedule) return null
-      return this.billingSchedule.trialDays
+      if (!this.billingSchedule) return null;
+      return this.billingSchedule.trialDays;
     },
   },
 
   watch: {
     // If no added item in notification, hide recently added product
     addedItem(item) {
-      if (!item) this.product = null
+      if (!item) this.product = null;
     },
   },
 
   mounted() {
-    this.onScroll()
-    window.addEventListener('scroll', this.onScroll)
+    this.onScroll();
+    window.addEventListener('scroll', this.onScroll);
   },
 
   beforeDestroy() {
-    window.removeEventListener('scroll', this.onScroll)
+    window.removeEventListener('scroll', this.onScroll);
   },
 
   methods: {
     onScroll() {
-      this.scrollY = window.scrollY
+      this.scrollY = window.scrollY;
     },
 
     openCart() {
       // Open cart and close notification
-      this.$store.commit('setState', { key: 'cartIsActive', value: true })
-      this.$store.commit('setState', { key: 'notification', value: null })
+      this.$store.commit('setState', { key: 'cartIsActive', value: true });
+      this.$store.commit('setState', { key: 'notification', value: null });
     },
   },
-}
+};
 </script>

@@ -38,7 +38,7 @@
 
 <script>
 // Helpers
-import find from 'lodash/find'
+import find from 'lodash/find';
 
 export default {
   name: 'InputDropdown',
@@ -62,86 +62,86 @@ export default {
     return {
       dropdownIsActive: false,
       selected: '',
-    }
+    };
   },
 
   computed: {
     selectedLabel() {
       if (this.selected !== undefined) {
-        return this.selected.label || this.selected
+        return this.selected.label || this.selected;
       }
 
-      return ''
+      return '';
     },
   },
 
   watch: {
     value() {
-      const { value, options } = this
+      const { value, options } = this;
 
       if (value !== undefined) {
         if (options && options.length > 0) {
           const selected =
             find(options, value) ||
             find(options, { value }) ||
-            find(options, { label: value })
+            find(options, { label: value });
           if (selected !== undefined) {
-            this.selected = selected.label || selected
-            return
+            this.selected = selected.label || selected;
+            return;
           }
         }
 
         // Fallback
-        this.selected = value
+        this.selected = value;
       }
     },
   },
 
   created() {
-    const { value, options } = this
+    const { value, options } = this;
 
     if (value !== undefined) {
       if (options && options.length > 0) {
         const selected =
           find(options, value) ||
           find(options, { value }) ||
-          find(options, { label: value })
+          find(options, { label: value });
         if (selected !== undefined) {
-          this.selected = selected.label || selected
-          return
+          this.selected = selected.label || selected;
+          return;
         }
       }
 
       // Fallback
-      this.selected = value
+      this.selected = value;
     }
   },
 
   mounted() {
     // Toggle off dropdown if clicked outside
-    window.addEventListener('click', this.clickOutside)
+    window.addEventListener('click', this.clickOutside);
   },
 
   beforeDestroy() {
     // Remove event listeners
-    window.removeEventListener('click', this.clickOutside)
+    window.removeEventListener('click', this.clickOutside);
   },
 
   methods: {
     toggleDropdown() {
-      this.dropdownIsActive = !this.dropdownIsActive
+      this.dropdownIsActive = !this.dropdownIsActive;
     },
     selectOption(option) {
-      this.selected = option.label || option
-      this.dropdownIsActive = false
-      this.$emit('change', option.value || option)
+      this.selected = option.label || option;
+      this.dropdownIsActive = false;
+      this.$emit('change', option.value || option);
     },
 
     clickOutside(e) {
       if (!this.$el.contains(e.target)) {
-        this.dropdownIsActive = false
+        this.dropdownIsActive = false;
       }
     },
   },
-}
+};
 </script>

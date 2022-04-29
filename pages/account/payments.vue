@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   layout: 'account',
@@ -84,42 +84,42 @@ export default {
       defaultCardId: '',
       newBillingAddress: null,
       isCreating: false,
-    }
+    };
   },
 
   async fetch() {
     // Set page data
-    const { results: cards } = await this.$swell.account.listCards()
+    const { results: cards } = await this.$swell.account.listCards();
 
     if (this.customer.billing)
-      this.defaultCardId = this.customer.billing.accountCardId
-    this.cards = cards
+      this.defaultCardId = this.customer.billing.accountCardId;
+    this.cards = cards;
   },
 
   head() {
     return {
       title: this.$t('account.payments.title'),
-    }
+    };
   },
 
   computed: {
     ...mapState(['customer']),
     defaultCard() {
-      if (!this.defaultCardId || !this.cards) return
-      return this.cards.find((card) => card.id === this.defaultCardId)
+      if (!this.defaultCardId || !this.cards) return;
+      return this.cards.find((card) => card.id === this.defaultCardId);
     },
     otherCards() {
       if (!this.defaultCardId || !this.cards) {
-        return this.cards
+        return this.cards;
       }
-      return this.cards.filter((card) => card.id !== this.defaultCardId)
+      return this.cards.filter((card) => card.id !== this.defaultCardId);
     },
   },
 
   methods: {
     async createAccountAddress(address) {
       try {
-        this.isCreating = true
+        this.isCreating = true;
 
         const {
           firstName,
@@ -131,7 +131,7 @@ export default {
           zip,
           country,
           isDefault,
-        } = address
+        } = address;
 
         const accountAddress = await this.$swell.account.createAddress({
           name: `${firstName.trim()} ${lastName.trim()}`,
@@ -141,7 +141,7 @@ export default {
           state,
           zip,
           country,
-        })
+        });
 
         if (isDefault && accountAddress.id) {
           // Set address as default
@@ -149,41 +149,41 @@ export default {
             shipping: {
               accountAddressId: accountAddress.id,
             },
-          })
+          });
         }
 
-        this.newBillingAddress = accountAddress
+        this.newBillingAddress = accountAddress;
 
         // Close panel and fetch updated data
-        this.isCreating = false
-        this.editAddressPopupIsActive = false
-        this.$store.dispatch('initializeCustomer')
+        this.isCreating = false;
+        this.editAddressPopupIsActive = false;
+        this.$store.dispatch('initializeCustomer');
         this.$store.dispatch('showNotification', {
           message: this.$t('account.addresses.popup.create.success'),
-        })
+        });
       } catch (err) {
         this.$store.dispatch('showNotification', {
           message: this.$t('account.addresses.popup.create.error'),
           type: 'error',
-        })
+        });
       }
     },
 
     openEditPopup(method, existing) {
       switch (method) {
         case 'update':
-          this.editCardPopupIsActive = true
-          this.editCardType = 'update'
-          this.cardToEdit = existing
-          break
+          this.editCardPopupIsActive = true;
+          this.editCardType = 'update';
+          this.cardToEdit = existing;
+          break;
         case 'new':
-          this.editCardPopupIsActive = true
-          this.editCardType = 'new'
-          this.cardToEdit = null
-          break
+          this.editCardPopupIsActive = true;
+          this.editCardType = 'new';
+          this.cardToEdit = null;
+          break;
         default:
       }
     },
   },
-}
+};
 </script>

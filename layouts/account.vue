@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   data() {
@@ -141,15 +141,17 @@ export default {
       logoutPopupIsActive: false,
       searchIsActive: false,
       faviconUrl: '',
-    }
+    };
   },
 
   async fetch() {
-    const faviconUrl = await this.$swell.settings.get('header.favicon.file.url')
+    const faviconUrl = await this.$swell.settings.get(
+      'header.favicon.file.url',
+    );
 
     if (faviconUrl) {
-      const faviconImageTransformation = '?width=64&height=64'
-      this.faviconUrl = faviconUrl + faviconImageTransformation
+      const faviconImageTransformation = '?width=64&height=64';
+      this.faviconUrl = faviconUrl + faviconImageTransformation;
     }
   },
 
@@ -174,7 +176,7 @@ export default {
           ? { rel: 'icon', href: this.faviconUrl, type: 'image/x-icon' }
           : '',
       ],
-    }
+    };
   },
 
   computed: {
@@ -186,80 +188,83 @@ export default {
     ]),
 
     currentRouteValue() {
-      const path = this.$route.path
+      const path = this.$route.path;
 
       const currentRoot = this.views.filter((view) => {
-        return path.includes(view.value)
-      })
+        return path.includes(view.value);
+      });
 
       if (currentRoot.length) {
-        return currentRoot[0].value
+        return currentRoot[0].value;
       }
 
-      return ''
+      return '';
     },
 
     hideOnRouteRoot() {
-      const matchedPath = this.$route.matched[0].path
+      const matchedPath = this.$route.matched[0].path;
       const pathsToHideOn = [
         '/account/orders/:id/',
         '/account/subscriptions/:id/',
-      ]
-      return pathsToHideOn.some((path) => matchedPath.includes(path))
+      ];
+      return pathsToHideOn.some((path) => matchedPath.includes(path));
     },
 
     localizedViews() {
-      const { views } = this
-      return views.map(({ label, value }) => ({ label: this.$t(label), value }))
+      const { views } = this;
+      return views.map(({ label, value }) => ({
+        label: this.$t(label),
+        value,
+      }));
     },
   },
 
   watch: {
     $route(to) {
-      this.searchIsActive = false
+      this.searchIsActive = false;
     },
   },
 
   async mounted() {
     // Initialize customer (if logged in, set customer state)
-    const customer = await this.$swell.account.get()
+    const customer = await this.$swell.account.get();
 
     // Persistent middleware workaround
     if (customer) {
-      this.$store.dispatch('initializeCustomer')
+      this.$store.dispatch('initializeCustomer');
     } else {
       this.$store.dispatch('showNotification', {
         message: this.$t('account.login.notLoggedIn'),
         type: 'error',
-      })
-      this.$router.push(this.localePath('/account/login/'))
+      });
+      this.$router.push(this.localePath('/account/login/'));
     }
   },
 
   methods: {
     async logout() {
       try {
-        await this.$swell.account.logout()
+        await this.$swell.account.logout();
         this.$store.commit('setState', {
           key: 'customerLoggedIn',
           value: false,
-        })
+        });
 
         // Close Popup
-        this.logoutPopupIsActive = false
-        this.$emit('click-close')
+        this.logoutPopupIsActive = false;
+        this.$emit('click-close');
         this.$store.dispatch('showNotification', {
           message: this.$t('account.logout.success'),
-        })
+        });
 
         // Re-route if still in accounts
         if (this.$route.path.includes('/account/')) {
-          this.$router.replace('/')
+          this.$router.replace('/');
         }
       } catch (err) {}
     },
   },
-}
+};
 </script>
 
 <style lang="postcss">

@@ -137,8 +137,8 @@
 
 <script>
 // Helpers
-import { mapState } from 'vuex'
-import { mergeFilterState, listActiveFilters } from '~/modules/swell'
+import { mapState } from 'vuex';
+import { mergeFilterState, listActiveFilters } from '~/modules/swell';
 
 export default {
   name: 'FilterPanel',
@@ -158,29 +158,29 @@ export default {
   data() {
     return {
       localFilterState: {},
-    }
+    };
   },
 
   computed: {
     ...mapState(['currency']),
 
     currencyObj() {
-      return this.$swell.currency.get(this.currency)
+      return this.$swell.currency.get(this.currency);
     },
 
     activeFilters() {
-      return listActiveFilters(this.filters, this.localFilterState)
+      return listActiveFilters(this.filters, this.localFilterState);
     },
 
     activeFilterCountLabel() {
-      const count = this.activeFilters.length
-      return `${count} filter${count === 1 ? '' : 's'} active`
+      const count = this.activeFilters.length;
+      return `${count} filter${count === 1 ? '' : 's'} active`;
     },
   },
 
   created() {
     if (Object.keys(this.filterState).length) {
-      this.localFilterState = this.filterState
+      this.localFilterState = this.filterState;
     }
   },
 
@@ -189,38 +189,38 @@ export default {
       this.localFilterState = mergeFilterState(
         this.localFilterState,
         filter,
-        optionValue
-      )
+        optionValue,
+      );
     },
 
     applyFilters() {
-      this.$emit('change', this.localFilterState)
+      this.$emit('change', this.localFilterState);
     },
 
     resetFilters() {
-      this.localFilterState = {}
-      this.$emit('change')
+      this.localFilterState = {};
+      this.$emit('change');
     },
 
     activeRangeLabel(filter) {
-      const [lower, upper] = filter.options
+      const [lower, upper] = filter.options;
 
-      let lowerLabel = lower.label
-      let upperLabel = upper.label
+      let lowerLabel = lower.label;
+      let upperLabel = upper.label;
 
       if (filter.id === 'price') {
-        if (!this.currency) return lowerLabel + ' – ' + upperLabel
+        if (!this.currency) return lowerLabel + ' – ' + upperLabel;
 
-        const { rate } = this.currencyObj
-        const lowerPrice = rate ? lower.value * rate : lower.value
-        const upperPrice = rate ? upper.value * rate : upper.value
+        const { rate } = this.currencyObj;
+        const lowerPrice = rate ? lower.value * rate : lower.value;
+        const upperPrice = rate ? upper.value * rate : upper.value;
 
-        lowerLabel = this.formatMoney(lowerPrice, this.currency)
-        upperLabel = this.formatMoney(upperPrice, this.currency)
+        lowerLabel = this.formatMoney(lowerPrice, this.currency);
+        upperLabel = this.formatMoney(upperPrice, this.currency);
       }
 
-      return lowerLabel + ' – ' + upperLabel
+      return lowerLabel + ' – ' + upperLabel;
     },
   },
-}
+};
 </script>

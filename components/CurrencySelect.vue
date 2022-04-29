@@ -97,56 +97,56 @@ export default {
       display: null,
       hideSymbolOnList: false,
       currencyList: [],
-    }
+    };
   },
 
   async fetch() {
     // Set component data
-    const { $swell } = this
+    const { $swell } = this;
 
     this.display = await $swell.settings.get(
       'header.currency.display',
-      'symbol-code'
-    )
-    this.currencyList = await $swell.currency.list()
+      'symbol-code',
+    );
+    this.currencyList = await $swell.currency.list();
     this.hideSymbolOnList = await $swell.settings.get(
       'header.currency.hideSymbol',
-      false
-    )
+      false,
+    );
   },
 
   computed: {
     selectedCurrency() {
-      const { currencyList, currentCurrency } = this
-      return currencyList.find((currency) => currency.code === currentCurrency)
+      const { currencyList, currentCurrency } = this;
+      return currencyList.find((currency) => currency.code === currentCurrency);
     },
   },
 
   mounted() {
     // Toggle off dropdown if clicked outside
-    window.addEventListener('click', this.clickOutside)
+    window.addEventListener('click', this.clickOutside);
   },
 
   beforeDestroy() {
     // Remove event listeners
-    window.removeEventListener('click', this.clickOutside)
+    window.removeEventListener('click', this.clickOutside);
   },
 
   methods: {
     toggleDropdown() {
-      this.dropdownIsActive = !this.dropdownIsActive
+      this.dropdownIsActive = !this.dropdownIsActive;
     },
 
     async selectCurrency(currency) {
-      this.dropdownIsActive = false
-      await this.$store.dispatch('selectCurrency', currency)
+      this.dropdownIsActive = false;
+      await this.$store.dispatch('selectCurrency', currency);
     },
 
     clickOutside(e) {
       if (!this.$el.contains(e.target)) {
-        this.dropdownIsActive = false
+        this.dropdownIsActive = false;
       }
     },
   },
-}
+};
 </script>
