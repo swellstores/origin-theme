@@ -421,7 +421,7 @@ export default {
 
     const options = product.purchaseOptions;
 
-    if (options) {
+    if (options && options.subscription && options.subscription.plans) {
       options.subscription.plans = options.subscription.plans.filter(
         (item) => item && item.price > 0,
       );
