@@ -459,6 +459,7 @@ export default {
         }
 
         return {
+          id: item.id,
           productId: item.productId,
           options: optionState,
         };
