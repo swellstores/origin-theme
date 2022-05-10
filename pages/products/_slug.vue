@@ -246,7 +246,10 @@
                       }}</span>
                       <span v-if="billingInterval">{{ billingInterval }}</span>
                       <span
-                        v-if="variation.origPrice"
+                        v-if="
+                          variation.origPrice &&
+                          !(selectedPurchaseOption && selectedPurchaseOption.type === 'subscription')
+                        "
                         class="ml-1 text-primary-med line-through"
                       >
                         {{
