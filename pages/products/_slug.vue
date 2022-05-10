@@ -306,6 +306,7 @@
                 <component
                   :is="getAttributeComponent(attribute.type)"
                   :attribute="attribute"
+                  :currency="currency"
                 />
               </template>
             </div>
@@ -656,6 +657,8 @@ export default {
           return 'AttributeFile';
         case 'image':
           return 'AttributeImage';
+        case 'currency':
+          return 'AttributeCurrency';
         // TODO: add components for other supported attribute types
         default:
           return 'AttributeShortText';
