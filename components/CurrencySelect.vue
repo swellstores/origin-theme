@@ -9,15 +9,16 @@
     >
       <div v-if="appearance === 'popup'" class="grid-icon-label font-semibold">
         <span class="text-center">
-          {{ selectedCurrency.symbol }}
+          {{ selectedCurrency && selectedCurrency.symbol }}
         </span>
 
-        <span class="uppercase">{{ selectedCurrency.code }}</span>
+        <span class="uppercase">{{ selectedCurrency && selectedCurrency.code }}</span>
       </div>
       <div v-else class="flex items-center">
         <span
           v-if="
-            display === 'symbol-code' &&
+            display === 'symbol-code' && 
+            selectedCurrency &&
             selectedCurrency.symbol !== selectedCurrency.code
           "
           class="mr-2"

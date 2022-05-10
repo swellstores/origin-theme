@@ -55,8 +55,8 @@
           class="loader-el mt-2 mb-9 h-10 w-64"
         />
         <div v-else-if="settings.headingPosition !== 'hero_image'" class="mb-7">
-          <h1>{{ category.name }}</h1>
-          <div class="text-lg" v-html="category.description" />
+          <h1>{{ category && category.name }}</h1>
+          <div class="text-lg" v-html="category && category.description" />
         </div>
       </template>
 
@@ -263,7 +263,7 @@ export default {
       const { $swell, page, limit, sortMode, slug } = this;
       return $swell.products.list({
         page,
-        limit,
+        limit: limit <= 100 ? limit : 100,
         sort: typeof sortMode.value === 'undefined' ? sortMode : sortMode.value,
         categories: slug,
         $filters: filterState,
