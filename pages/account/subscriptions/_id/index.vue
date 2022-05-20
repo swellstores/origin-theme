@@ -184,7 +184,10 @@
             <div class="flex text-lg font-semibold">
               <span>{{ $t('account.subscriptions.id.total') }}</span>
               <span class="ml-auto">{{
-                formatMoney(subscription.grandTotal, subscription.currency)
+                formatMoney(
+                  subscriptionOrder.grandTotal,
+                  subscriptionOrder.currency,
+                )
               }}</span>
             </div>
           </div>
