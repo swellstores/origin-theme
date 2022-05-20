@@ -1,7 +1,7 @@
 import postscribe from 'postscribe';
 
 function checkScriptTag(content) {
-  if (content && !content.match('<script>')) {
+  if (content && !content.match('<script')) {
     return `<script>${content}</script>`;
   }
   return content;
