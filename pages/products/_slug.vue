@@ -640,8 +640,8 @@ export default {
       this.quantity = 1;
     },
 
-    variation() {
-      this.exposeProduct();
+    variation(newVariation) {
+      this.exposeProduct(newVariation)
     },
   },
 
@@ -843,7 +843,7 @@ export default {
 
     // Make product data available on the Window object,
     // so that it can be consumed by 3rd party plugins
-    exposeProduct() {
+    exposeProduct(variation) {
       if (!window) return;
 
       const existingData = window.Swell;
@@ -873,7 +873,10 @@ export default {
         },
       };
 
-      window.Swell = swellData;
+      window.Swell = swellData
+
+      const event = new CustomEvent('variation-change', { detail: variation })
+      window.dispatchEvent(event)
     },
   },
 
