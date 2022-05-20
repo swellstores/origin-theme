@@ -248,7 +248,10 @@
                       <span
                         v-if="
                           variation.origPrice &&
-                          !(selectedPurchaseOption && selectedPurchaseOption.type === 'subscription')
+                          !(
+                            selectedPurchaseOption &&
+                            selectedPurchaseOption.type === 'subscription'
+                          )
                         "
                         class="ml-1 text-primary-med line-through"
                       >
@@ -641,7 +644,7 @@ export default {
     },
 
     variation(newVariation) {
-      this.exposeProduct(newVariation)
+      this.exposeProduct(newVariation);
     },
   },
 
@@ -873,10 +876,10 @@ export default {
         },
       };
 
-      window.Swell = swellData
+      window.Swell = swellData;
 
-      const event = new CustomEvent('variation-change', { detail: variation })
-      window.dispatchEvent(event)
+      const event = new CustomEvent('variation-change', { detail: variation });
+      window.dispatchEvent(event);
     },
   },
 
