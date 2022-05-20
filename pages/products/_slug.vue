@@ -238,6 +238,7 @@
                   <div v-show="!cartIsUpdating">
                     <template v-if="variation.price > 0">
                       <span>{{ $t('products.slug.addToCart') }}</span>
+                      <span class="hidden sm:inline">
                       <span
                         class="mx-1 mb-1 inline-block w-5 border-b border-primary-lightest"
                       />
@@ -272,6 +273,7 @@
                       >
                         / {{ intervalCount }}{{ subscriptionInterval }}
                       </span>
+                      </span>
                     </template>
                     <template v-else>
                       <span>{{
@@ -281,9 +283,9 @@
                       }}</span>
                     </template>
                   </div>
-                  <div v-show="cartIsUpdating" class>
+                  <div v-show="cartIsUpdating">
                     <div class="spinner absolute inset-0 mt-3" />
-                    <span class="absolute inset-0 mt-5">{{
+                    <span>{{
                       $t('products.slug.updating')
                     }}</span>
                   </div>
