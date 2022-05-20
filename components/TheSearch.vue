@@ -68,6 +68,7 @@ export default {
       limit,
       sort: 'popularity asc',
       expand: ['variants'],
+      $currency: this.$swell.currency.list().map((currency) => currency.code),
     });
 
     this.products = products.results;

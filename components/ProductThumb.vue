@@ -89,7 +89,7 @@
           <template v-if="displayPrice > 0">
             <div v-if="product.origPrice">
               <span class="mr-1 text-sm">{{
-                formatMoney(product.price, currency)
+                formatMoney(displayPrice, currency)
               }}</span>
               <span
                 class="whitespace-no-wrap text-xs uppercase text-error-default"
@@ -113,7 +113,10 @@
           </template>
           <div v-else-if="product.type === 'giftcard' && product.attributes">
             <span>
-            {{ product.attributes.value[0] }} — {{product.attributes.value[product.attributes.value.length-1]}}
+              {{ product.attributes.value[0] }} —
+              {{
+                product.attributes.value[product.attributes.value.length - 1]
+              }}
             </span>
           </div>
 
@@ -131,6 +134,7 @@
 <script>
 // Helpers
 import { mapState } from 'vuex';
+import { getPriceInCurrency } from '~/utils/getPriceInCurrency';
 
 export default {
   props: {
@@ -180,6 +184,7 @@ export default {
 
     // Set ratio padding
     const [x, y] = this.aspectRatio.split(':');
+
     this.ratioPadding = `${(y / x) * 100}%`;
 
     // Set widths
@@ -202,99 +207,10 @@ export default {
   computed: {
     ...mapState(['currency', 'cartIsUpdating']),
     displayPrice() {
-      const lowestPricesInCurrency = {
-        option: Infinity,
-        variant: Infinity,
-        unpricedOptions: new Set(),
-        unpricedVariants: new Set(),
-        currency: this.currency.toLowerCase(),
-      };
-
-      const variants = this.product.variants.results;
-
-      variants.forEach((variant) => {
-        const price = this.getStandardPriceInCurrency(
-          variant,
-          lowestPricesInCurrency.currency,
-        );
-
-        if (price > 0) {
-          if (price < lowestPricesInCurrency.variant) {
-            lowestPricesInCurrency.variant = price;
-          }
-        } else {
-          lowestPricesInCurrency.unpricedVariants.add(variant.name);
-        }
-      });
-
-      if (
-        lowestPricesInCurrency.variant < Infinity &&
-        lowestPricesInCurrency.unpricedVariants.size === 0
-      ) {
-        // if prices are for all variants, show lowest price for variants
-        return lowestPricesInCurrency.variant;
+      if (this.$swell.currency.list().length > 1) {
+        return getPriceInCurrency(this.product, this.currency);
       }
 
-      const productOptions = this.product.options || [];
-
-      productOptions.forEach((option) => {
-        const values = option.values || [];
-
-        values.forEach((value) => {
-          const price =
-            value.$currency &&
-            value.$currency[lowestPricesInCurrency.currency] &&
-            value.$currency[lowestPricesInCurrency.currency].price;
-          if (price > 0) {
-            if (price < lowestPricesInCurrency.option) {
-              lowestPricesInCurrency.option = price;
-            }
-          } else {
-            lowestPricesInCurrency.unpricedOptions.add(value.name);
-          }
-        });
-      });
-
-      const price =
-        this.getStandardPriceInCurrency(
-          this.product,
-          lowestPricesInCurrency.currency,
-        ) || 0;
-
-      const addedPrice = price + lowestPricesInCurrency.option;
-
-      if (
-        addedPrice < Infinity &&
-        lowestPricesInCurrency.unpricedOptions.size === 0 &&
-        lowestPricesInCurrency.unpricedVariants.size === variants.length
-      ) {
-        // if prices are for all options and no prices for variants, show lowest price for options
-        return addedPrice;
-      }
-
-      for (const option of lowestPricesInCurrency.unpricedOptions) {
-        if (lowestPricesInCurrency.unpricedVariants.has(option)) {
-          // if there is unpriced variant (no price for it in the options and variants sections), use the standard price for the main product
-          return price;
-        }
-      }
-
-      const lowestPrice =
-        addedPrice < lowestPricesInCurrency.variant
-          ? addedPrice
-          : lowestPricesInCurrency.variant;
-
-      if (lowestPrice < Infinity) {
-        return lowestPrice;
-      }
-
-      if (this.product.currency !== this.currency) {
-        return null;
-      }
-
-      if (this.product.price > 0) {
-        return this.product.price;
-      }
       /* If the product's price is 0, this could mean that
       only the options were set a price, so we display the price from
       the variant with the cheapest in-stock price so the price reads as
@@ -306,16 +222,21 @@ export default {
               !this.product.stockTracking ||
               this.product.stockPurchasable ||
               currentValue.stockStatus === 'in_stock';
+
             const priceIsLower =
               currentValue.price < previousValue && currentValue.price > 0;
+
             if (isInStock && priceIsLower) return currentValue.price;
+
             return previousValue;
           },
           Number.MAX_SAFE_INTEGER,
         );
+
         if (cheapestVariantPrice !== Number.MAX_SAFE_INTEGER)
           return cheapestVariantPrice;
       }
+
       return 0;
     },
   },
@@ -328,6 +249,7 @@ export default {
         if (this.currentProductId !== id) return;
         this.quickAddKeepAlive = false;
       }
+
       this.quickAddIsVisible = true;
       this.currentProductId = id;
     },
@@ -346,21 +268,6 @@ export default {
 
     keepQuickAddAlive(bool) {
       this.quickAddKeepAlive = bool;
-    },
-
-    getStandardPriceInCurrency(product, currency) {
-      const options = product.purchaseOptions;
-
-      const standardCurrency =
-        options && options.standard && options.standard.$currency;
-
-      if (standardCurrency) {
-        const price = standardCurrency[currency];
-
-        if (price) {
-          return price.price;
-        }
-      }
     },
   },
 };

@@ -12,12 +12,14 @@
           {{ selectedCurrency && selectedCurrency.symbol }}
         </span>
 
-        <span class="uppercase">{{ selectedCurrency && selectedCurrency.code }}</span>
+        <span class="uppercase">{{
+          selectedCurrency && selectedCurrency.code
+        }}</span>
       </div>
       <div v-else class="flex items-center">
         <span
           v-if="
-            display === 'symbol-code' && 
+            display === 'symbol-code' &&
             selectedCurrency &&
             selectedCurrency.symbol !== selectedCurrency.code
           "
