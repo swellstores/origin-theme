@@ -59,6 +59,7 @@ export default async () => {
       { src: '~/plugins/vue-credit-card-validation', mode: 'client' },
       { src: '~/plugins/directives', mode: 'client' },
       { src: '~/plugins/swell-lang.js' },
+      { src: '~/plugins/filters.js' },
     ],
 
     /*

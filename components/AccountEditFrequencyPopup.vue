@@ -25,14 +25,11 @@
             {{ text }}
           </p>
           <!-- Product options -->
-          <div v-for="input in optionInputs" :key="input.name" class="my-4">
-            <component
-              :is="input.component"
-              v-if="visibleOptionIds.includes(input.option.id)"
-              :option="input.option"
-              :current-value="optionState[input.option.name]"
-              :validation="$v.optionState[input.option.name]"
-              @value-changed="emitValue"
+          <div class="my-4">
+            <ProductFrequencySelect
+              v-if="options.length > 0"
+              v-model="selectedPlanId"
+              :option="options"
             />
           </div>
 
@@ -44,7 +41,7 @@
               :label="acceptLabel"
               :loading-label="loadingLabel"
               :is-loading="isUpdating"
-              @click.native="update()"
+              @click.native="$emit('update', 'frequency', selectedPlanId)"
             />
 
             <BaseButton
@@ -63,8 +60,7 @@
 <script>
 // Helpers
 import { validationMixin } from 'vuelidate';
-import { required } from 'vuelidate/lib/validators';
-import { listVisibleOptions } from '~/modules/swell';
+// import { required } from 'vuelidate/lib/validators';
 
 export default {
   mixins: [validationMixin],
@@ -94,9 +90,9 @@ export default {
       type: Array,
       default: () => [],
     },
-    optionState: {
-      type: [Object, Array],
-      default: () => {},
+    planId: {
+      type: String,
+      default: '',
     },
     isUpdating: {
       type: Boolean,
@@ -104,70 +100,9 @@ export default {
     },
   },
 
-  computed: {
-    visibleOptionIds() {
-      const optionState = this.optionState;
-
-      return listVisibleOptions(this.options, optionState).map(({ id }) => id);
-    },
-
-    optionInputs() {
-      if (!this.options) return {};
-      const options = this.options;
-      return options.reduce((optionInputs, option) => {
-        let componentName;
-
-        switch (option.inputType) {
-          case 'short_text':
-            componentName = 'Text';
-            break;
-          case 'long_text':
-            componentName = 'Text';
-            break;
-          case 'toggle':
-            componentName = 'Checkbox';
-            break;
-          default:
-            componentName = 'Select';
-        }
-
-        // Don't include subscription plan if there's only one option value available
-        if (option.subscription && option.values.length < 2)
-          return optionInputs;
-
-        optionInputs.push({
-          option,
-          component: () => import(`./ProductOption${componentName}.vue`),
-        });
-
-        return optionInputs;
-      }, []);
-    },
-  },
-
-  methods: {
-    // Emit value to parent component
-    emitValue(value) {
-      this.$emit('value-changed', value);
-    },
-
-    // Update an option value based on user input
-    update() {
-      this.$emit('update', this.optionState);
-    },
-  },
-
-  validations() {
-    const { options } = this;
-    const fields = options.reduce((obj, option) => {
-      if (option.required) {
-        obj[option.name] = { required };
-      }
-      return obj;
-    }, {});
-
+  data() {
     return {
-      optionState: fields,
+      selectedPlanId: this.planId,
     };
   },
 };

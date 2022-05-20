@@ -80,7 +80,7 @@
           :id="`option-${option.id}-menu`"
           :class="{ 'rounded-t-none': dropdownIsActive }"
           :aria-labelledby="`option-${option.id}-label`"
-          class="absolute z-10 -mt-px block max-h-25vh w-full overflow-scroll rounded border border-primary-med bg-primary-lightest py-2"
+          class="absolute z-10 -mt-px block max-h-25vh w-full overflow-auto rounded border border-primary-med bg-primary-lightest py-2"
           role="listbox"
         >
           <li
