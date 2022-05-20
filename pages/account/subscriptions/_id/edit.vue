@@ -130,7 +130,7 @@
       </div>
 
       <!-- Change frequency/options popups -->
-      <AccountEditOptionsPopup
+      <AccountEditFrequencyPopup
         v-if="changeFrequencyPopupisActive"
         :heading="
           $t('account.subscriptions.id.edit.popup.changeFrequency.title')
@@ -145,12 +145,11 @@
         :loading-label="
           $t('account.subscriptions.id.edit.popup.changeFrequency.loading')
         "
+        :plan-id="subscription.planId"
         :options="subscriptionOptions"
-        :option-state="optionState"
         :is-updating="isUpdating"
         @click-close="closeAndResetPopups"
-        @value-changed="setOptionValue"
-        @update="updatePlan('frequency')"
+        @update="updatePlan"
       />
 
       <AccountEditOptionsPopup
@@ -195,7 +194,7 @@ import filter from 'lodash/filter';
 import get from 'lodash/get';
 
 export default {
-  name: 'Subscription',
+  name: 'SubscriptionEdit',
   layout: 'account',
 
   data() {
@@ -252,7 +251,7 @@ export default {
     },
 
     subscriptionOptions() {
-      return filter(this.subscription.product.options, 'subscription');
+      return this.subscription.product.purchaseOptions.subscription.plans;
     },
 
     planOptions() {
@@ -343,37 +342,39 @@ export default {
       }
     },
 
-    async updatePlan(type = 'options') {
+    async updatePlan(type = 'options', value) {
       this.isUpdating = true;
-      const optionState = this.optionState;
-      const options = [];
+      let options = {};
 
-      for (const key in optionState) {
-        const value = optionState[key];
-        const { id } = this.subscription.product.options.find(
-          (option) => option.name === key,
-        );
-        options.push({ id, value });
+      if (type === 'frequency') {
+        options = {
+          plan_id: value,
+          billing_schedule: '',
+        };
       }
 
-      await this.$swell.subscriptions.update(this.subscription.id, { options });
+      try {
+        await this.$swell.subscriptions.update(this.subscription.id, options);
+        this.isUpdating = false;
+        this.changeOptionsPopupisActive = false;
+        this.changeFrequencyPopupisActive = false;
 
-      this.isUpdating = false;
-      this.changeOptionsPopupisActive = false;
-      this.changeFrequencyPopupisActive = false;
+        this.$store.dispatch('showNotification', {
+          message:
+            type === 'frequency'
+              ? this.$t(
+                  'account.subscriptions.id.edit.popup.changeFrequency.success',
+                )
+              : this.$t(
+                  'account.subscriptions.id.edit.popup.changeOptions.success',
+                ),
+          type: 'success',
+        });
 
-      this.$store.dispatch('showNotification', {
-        message:
-          type === 'frequency'
-            ? this.$t(
-                'account.subscriptions.id.edit.popup.changeFrequency.success',
-              )
-            : this.$t(
-                'account.subscriptions.id.edit.popup.changeOptions.success',
-              ),
-        type: 'success',
-      });
-      this.$fetch();
+        this.$fetch();
+      } catch (err) {
+        this.$store.dispatch('handleError', err);
+      }
     },
   },
 };
