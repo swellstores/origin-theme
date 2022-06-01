@@ -111,14 +111,6 @@
               }}</span>
             </div>
           </template>
-          <div v-else-if="product.type === 'giftcard' && product.attributes">
-            <span>
-              {{ product.attributes.value[0] }} —
-              {{
-                product.attributes.value[product.attributes.value.length - 1]
-              }}
-            </span>
-          </div>
 
           <div v-else>
             <span>{{
