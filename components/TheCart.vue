@@ -177,6 +177,9 @@ export default {
     return {
       couponCode: null,
       shopLink: null,
+      couponError: {
+        message: 'The coupon code was not valid'
+      },
     };
   },
 
@@ -206,9 +209,19 @@ export default {
       this.$store.commit('setState', { key: 'cartIsActive', value: false });
     },
 
+    validateCouponCode(code) {
+      return code && code.trim().match(/^[a-z0-9]+$/i) !== null;
+    },
+
     async applyDiscount() {
-      // Try to apply a coupon or gift card code
-      await this.$store.dispatch('applyDiscount', this.couponCode);
+      const isValid = this.validateCouponCode(this.couponCode)
+
+      if (isValid) {
+        // Try to apply a coupon or gift card code
+        await this.$store.dispatch('applyDiscount', this.couponCode);
+      } else {
+        await this.$store.dispatch('handleError', this.couponError)
+      }
       // Reset the coupon input
       this.couponCode = null;
     },
