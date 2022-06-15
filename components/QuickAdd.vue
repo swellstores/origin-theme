@@ -1,7 +1,7 @@
 <template>
   <div>
     <BaseButton
-      v-show="!quickAddIsActive && !cartIsUpdating"
+      v-show="!quickAddIsActive && !cartIsUpdating && !isSubscription"
       :label="label"
       class="quick-add-button"
       :disabled="!isPurchaseable"
@@ -65,6 +65,7 @@ import { mapState } from 'vuex';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 import { listVisibleOptions } from '~/modules/swell';
+import { getInitialSelection } from '~/utils/purchaseOptions';
 
 export default {
   mixins: [validationMixin],
@@ -89,6 +90,10 @@ export default {
       quickAddIsActive: false,
       quickAddIndex: 0,
       addToCartError: null,
+      purchaseOption: getInitialSelection(this.product.purchaseOptions),
+      isSubscription:
+        !!(this.product?.purchaseOptions?.subscription?.plans?.length ||
+        this.product?.options?.some(option => option.subscription)),
     };
   },
 
@@ -193,7 +198,7 @@ export default {
         const option = { name, required, isVisible: false };
         if (!inputType || inputType === 'select') {
           // Use first available value as the default value for selects
-          optionsAcc[id] = { ...option, value: values[0].name };
+          optionsAcc[id] = { ...option, value: values[0]?.name };
         } else {
           optionsAcc[id] = option;
         }
@@ -332,6 +337,7 @@ export default {
       try {
         await this.$store.dispatch('addCartItem', {
           productId: this.variation.id,
+          purchaseOption: this.purchaseOption,
           quantity: 1,
           options: this.selectedOptions,
         });
