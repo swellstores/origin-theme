@@ -66,7 +66,7 @@
                 :score="currentReview.score"
                 class="mb-4"
               />
-              <p class="mx-auto mb-4 max-w-128">
+              <p class="mx-auto mb-4 max-w-128 whitespace-pre-line">
                 {{ currentReview.quote || 'No quote added' }}
               </p>
               <p class="label-sm-faded">
