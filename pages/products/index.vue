@@ -31,7 +31,12 @@ export default {
     this.products = [...Array(limit).keys()];
 
     // Fetch all products
-    const products = await $swell.products.list({ page, limit });
+    const products = await $swell.products.list({
+      page,
+      limit,
+      expand: ['variants'],
+      $currency: $swell.currency.list().map((currency) => currency.code),
+    });
 
     // Set component data
     if (products) {
