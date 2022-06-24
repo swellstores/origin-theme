@@ -229,8 +229,7 @@
             fs.init()
         }
     </script>
-<script src="https://font-sampler.vercel.app/dist/fontsampler.js"></script>
-    <script src="https://font-sampler.vercel.app/dist/fontsampler-skin.js"></script>
+
             <!-- Bundle items -->
             <template v-if="bundleItems">
               <div
