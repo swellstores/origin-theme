@@ -119,7 +119,7 @@
       <div class="lg:flex-no-wrap container lg:flex lg:justify-between">
         <!-- Copyright & Settings -->
         <p class="my-3 text-sm">
-          <span>©{{ currentYear }} {{ store.name }}.</span> All rights reserved</a
+          <span>©{{ currentYear }} {{ store.name }}.</span> All rights reserved.</a
           >
         </p>
         <!-- Secondary nav menu -->
