@@ -130,7 +130,6 @@
               </span>
             </div>
             <div class="markdown" v-html="product.description" />
-                <div id="Milago-Sampler" class="Milago">Start Typing Here ...</div>
 <script src="https://font-sampler.vercel.app/dist/fontsampler.js"></script>
     <script src="https://font-sampler.vercel.app/dist/fontsampler-skin.js"></script>
 <script src="https://font-sampler.vercel.app/dist/loader.js"></script>
