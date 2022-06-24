@@ -1,3 +1,68 @@
+1.right-1.bg-primary-darker.text-primary-lightest.hover\:text-accent-default {
+    background: white;
+}
+label.relative.block.w-full.cursor-pointer.rounded.border.border-primary-med.text-sm.font-semibold.hover\:border-primary-darkest.focus\:shadow-outline.border-primary-darkest { background-color: black; color: white; }.radio-selector.relative.mt-1.ml-1.inline-block.text-center { width: 100%; }
+button.btn-icon.absolute.top-1.right-1.bg-primary-darker.text-primary-lightest.hover\:text-accent-default {
+    background-color: #000000;
+    color: white;
+    border-radius: 4px;
+}
+input.outline-none.h-12.w-full.rounded.border.border-primary-med.py-2.pl-4.pr-14.transition.focus\:shadow-outline.border-primary-lightest.bg-primary-darkest {
+    border: 1px solid #00000078;
+    background: #ffffff;
+}
+
+.mr-4.flex.items-center {
+    display: none;
+}
+[for="Milago Thin"]{
+ font-family: Milago Thin; 
+}
+.ml-auto.flex.items-center { font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif; }
+label.label-xs-bold.w-full.text-primary-dark { color: black; font-size: 1.6em; text-transform: capitalize; }
+div#Font-Sampler {
+  margin-top: 5em;
+}
+label.label-xs-bold.w-full.text-primary-dark {
+    color: black;
+    font-size: 1.2em;
+}
+label#option-62ade41707550d1dc406876e-label {
+    font-size: 1.4em;
+    color: black;
+}
+@font-face {
+        font-family: "Milago Thin";
+        src: url("https://font-sampler.vercel.app/fonts/Milago/Milago-Thin.woff") format("woff");
+    }
+@font-face {
+        font-family: "Milago Regular";
+        src: url("https://font-sampler.vercel.app/fonts/Milago/Milago-Regular.woff") format("woff");
+    }
+[for="62ade4d407550d1dc406876f"]:after { content: 'Print: 1 User Web: 100.000 Pageviews/month App: 1.000 Downloads eBook: 10.000 Downloads'; 
+    display: inline-block; margin-left: 6px; padding: 2EM; }
+span.block.min-w-12.p-3 { font-size: 3em; }
+.radio-selector.relative.mt-1.ml-1.inline-block.text-center { margin-bottom: 2em; }
+[for="62ade4d407550d1dc4068771"]:after
+{ content: 'Print: 15 Users Web: 1,500,000 Pageviews/month App: 15,000 Downloads eBook: 150,000 Downloads Broadcasting: 1,500,000 Viewers '; display: inline-block; margin-left: 6px; padding: 2EM; } 
+[for="62ade4d407550d1dc4068770"]:after { content: 'Print: 5 User Web: 500.000 Pageviews/month App: 5.000 Downloads eBook: 50.000 Downloads'; display: inline-block; margin-left: 6px; padding: 2EM; }
+
+
+section#\36 2b49d68d736e37704000005:before {
+    content: 'Milago';
+    font-weight: 400;
+    font-family: Milago Regular;
+    font-size: 6em;
+    color: black;}
+    section#\36 2b49d68d736e37704000005 .container:before {
+    content: 'Available in 12 styles';
+}
+   
+
+section#\36 2b491a45278b16f1a000001 {
+    margin-bottom: -16vw;
+}
+
 html,
 body {
   @apply bg-primary-lightest;
@@ -210,68 +275,4 @@ input[type='number'] {
   }
 }
 
-1.right-1.bg-primary-darker.text-primary-lightest.hover\:text-accent-default {
-    background: white;
-}
-label.relative.block.w-full.cursor-pointer.rounded.border.border-primary-med.text-sm.font-semibold.hover\:border-primary-darkest.focus\:shadow-outline.border-primary-darkest { background-color: black; color: white; }.radio-selector.relative.mt-1.ml-1.inline-block.text-center { width: 100%; }
-button.btn-icon.absolute.top-1.right-1.bg-primary-darker.text-primary-lightest.hover\:text-accent-default {
-    background-color: #000000;
-    color: white;
-    border-radius: 4px;
-}
-input.outline-none.h-12.w-full.rounded.border.border-primary-med.py-2.pl-4.pr-14.transition.focus\:shadow-outline.border-primary-lightest.bg-primary-darkest {
-    border: 1px solid #00000078;
-    background: #ffffff;
-}
-
-.mr-4.flex.items-center {
-    display: none;
-}
-[for="Milago Thin"]{
- font-family: Milago Thin; 
-}
-.ml-auto.flex.items-center { font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif; }
-label.label-xs-bold.w-full.text-primary-dark { color: black; font-size: 1.6em; text-transform: capitalize; }
-div#Font-Sampler {
-  margin-top: 5em;
-}
-label.label-xs-bold.w-full.text-primary-dark {
-    color: black;
-    font-size: 1.2em;
-}
-label#option-62ade41707550d1dc406876e-label {
-    font-size: 1.4em;
-    color: black;
-}
-@font-face {
-        font-family: "Milago Thin";
-        src: url("https://font-sampler.vercel.app/fonts/Milago/Milago-Thin.woff") format("woff");
-    }
-@font-face {
-        font-family: "Milago Regular";
-        src: url("https://font-sampler.vercel.app/fonts/Milago/Milago-Regular.woff") format("woff");
-    }
-[for="62ade4d407550d1dc406876f"]:after { content: 'Print: 1 User Web: 100.000 Pageviews/month App: 1.000 Downloads eBook: 10.000 Downloads'; 
-    display: inline-block; margin-left: 6px; padding: 2EM; }
-span.block.min-w-12.p-3 { font-size: 3em; }
-.radio-selector.relative.mt-1.ml-1.inline-block.text-center { margin-bottom: 2em; }
-[for="62ade4d407550d1dc4068771"]:after
-{ content: 'Print: 15 Users Web: 1,500,000 Pageviews/month App: 15,000 Downloads eBook: 150,000 Downloads Broadcasting: 1,500,000 Viewers '; display: inline-block; margin-left: 6px; padding: 2EM; } 
-[for="62ade4d407550d1dc4068770"]:after { content: 'Print: 5 User Web: 500.000 Pageviews/month App: 5.000 Downloads eBook: 50.000 Downloads'; display: inline-block; margin-left: 6px; padding: 2EM; }
-
-
-section#\36 2b49d68d736e37704000005:before {
-    content: 'Milago';
-    font-weight: 400;
-    font-family: Milago Regular;
-    font-size: 6em;
-    color: black;}
-    section#\36 2b49d68d736e37704000005 .container:before {
-    content: 'Available in 12 styles';
-}
-   
-
-section#\36 2b491a45278b16f1a000001 {
-    margin-bottom: -16vw;
-}
 
