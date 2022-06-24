@@ -133,7 +133,7 @@
 <script src="https://font-sampler.vercel.app/dist/fontsampler.js"></script>
     <script src="https://font-sampler.vercel.app/dist/fontsampler-skin.js"></script>
 <script src="https://font-sampler.vercel.app/dist/loader.js"></script>
-    <link rel="stylesheet" href="https://font-sampler.vercel.app/dist/fontsampler-skin.css">
+    <link rel="stylesheet" href="https://font-sampler.vercel.app/dist/fontsampler-skin.css"><div class="Milago" id="Milago-Sampler">Start Typing Here ...</div>
             <!-- Bundle items -->
             <template v-if="bundleItems">
               <div
