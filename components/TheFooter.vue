@@ -160,7 +160,6 @@
     </div>
   </footer>
 </template>
-
 <script>
 // Helpers
 import get from 'lodash/get';
