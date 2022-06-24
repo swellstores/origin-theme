@@ -199,37 +199,7 @@ export default {
   computed: {
     ...mapState(['currency', 'cartIsUpdating']),
     displayPrice() {
-      if (this.$swell.currency.list().length > 1) {
-        return getPriceInCurrency(this.product, this.currency);
-      }
-
-      /* If the product's price is 0, this could mean that
-      only the options were set a price, so we display the price from
-      the variant with the cheapest in-stock price so the price reads as
-      "starting from X" */
-      if (this.product.variants) {
-        const cheapestVariantPrice = this.product.variants.results.reduce(
-          (previousValue, currentValue) => {
-            const isInStock =
-              !this.product.stockTracking ||
-              this.product.stockPurchasable ||
-              currentValue.stockStatus === 'in_stock';
-
-            const priceIsLower =
-              currentValue.price < previousValue && currentValue.price > 0;
-
-            if (isInStock && priceIsLower) return currentValue.price;
-
-            return previousValue;
-          },
-          Number.MAX_SAFE_INTEGER,
-        );
-
-        if (cheapestVariantPrice !== Number.MAX_SAFE_INTEGER)
-          return cheapestVariantPrice;
-      }
-
-      return 0;
+      return getPriceInCurrency(this.product, this.currency);
     },
   },
 

@@ -1,3 +1,5 @@
+import isNumber from 'lodash/isNumber';
+
 export const getPriceInCurrency = (product, currency) => {
   const prices = {
     currency: currency.toLowerCase(),
@@ -69,7 +71,7 @@ export const getStandardPriceInCurrency = (product, currency) => {
     const price = standardCurrency[currency];
 
     if (price) {
-      if (standard.sale) {
+      if (standard.sale && isNumber(standard.salePrice)) {
         return price.salePrice;
       }
 
@@ -90,7 +92,7 @@ export const getStandardPriceInCurrency = (product, currency) => {
   }
 
   if (product.currency === currency.toUpperCase() && product.price) {
-    if (product.sale) {
+    if (product.sale && isNumber(product.salePrice)) {
       return product.salePrice;
     }
 
