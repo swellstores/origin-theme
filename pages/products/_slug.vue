@@ -130,7 +130,6 @@
               </span>
             </div>
             <div class="markdown" v-html="product.description" />
-            
             <!-- Bundle items -->
             <template v-if="bundleItems">
               <div
