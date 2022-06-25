@@ -129,12 +129,12 @@
                 }}
               </span>
             </div>
-            <div class="markdown" v-html="product.description" />
+            <div class="markdown" v-html="product.description">
      <script src="https://font-sampler.vercel.app/dist/fontsampler.js"></script>
      <script src="https://font-sampler.vercel.app/dist/loader.js"></script>
     <script src="https://font-sampler.vercel.app/dist/fontsampler-skin.js"></script>
  <link rel="stylesheet" href="https://font-sampler.vercel.app/dist/fontsampler-skin.css">
-     <div id="Milago-Sampler" class="Milago">Start Typing Here ...</div>
+     <div id="Milago-Sampler" class="Milago">Start Typing Here ...</div></div>
             <!-- Bundle items -->
             <template v-if="bundleItems">
               <div
