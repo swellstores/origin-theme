@@ -1,6 +1,7 @@
 <template>
   <main><script src="https://font-sampler.vercel.app/dist/fontsampler.js"></script>
     <script src="https://font-sampler.vercel.app/dist/fontsampler-skin.js"></script>
+    <script src="https://font-sampler.vercel.app/dist/loader.js"></script>
  <link rel="stylesheet" href="https://font-sampler.vercel.app/dist/fontsampler-skin.css">
     <!-- Core product content -->
     <section class="mb-12 md:flex">
@@ -901,4 +902,4 @@ export default {
     };
   },
 };
-</script>     <script src="https://font-sampler.vercel.app/dist/loader.js"></script>
+</script>          
