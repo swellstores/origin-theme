@@ -8,8 +8,9 @@ button.btn-icon.absolute.top-1.right-1.bg-primary-darker.text-primary-lightest.h
     border-radius: 4px;
 }
 input.outline-none.h-12.w-full.rounded.border.border-primary-med.py-2.pl-4.pr-14.transition.focus\:shadow-outline.border-primary-lightest.bg-primary-darkest {
-    border: 1px solid #00000078;
-    background: #ffffff;
+    border: 2px solid #5050503d;
+    background: #fafafa;
+    color: black;
 }
 
 .mr-4.flex.items-center {
