@@ -1,6 +1,5 @@
 1.right-1.bg-primary-darker.text-primary-lightest.hover\:text-accent-default {
-    background: white;
-}
+    background: white;}
 
 label.relative.block.w-full.cursor-pointer.rounded.border.border-primary-med.text-sm.font-semibold.hover\:border-primary-darkest.focus\:shadow-outline.border-primary-darkest { background-color: black; color: white; }.radio-selector.relative.mt-1.ml-1.inline-block.text-center { width: 100%; }
 button.btn-icon.absolute.top-1.right-1.bg-primary-darker.text-primary-lightest.hover\:text-accent-default {
