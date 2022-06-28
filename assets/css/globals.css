@@ -1,10 +1,16 @@
+section#\36 2bb33611a7f3ddfe8000001 h2 { font-size: 5em; font-family: King Slayer Regular; font-weight: 400; }
+section#\36 2bb33611a7f3ddfe8000001 { border-top: 1px solid #ddd; }
+section#\36 2bb33611a7f3ddfe8000001 a {
+    color: #000;
+    font-weight: 400;
+}
 .hidden.h-10.p-2.lg\:inline-block {display: block;}
 .container.py-16.text-center.lg\:flex.lg\:flex-row.lg\:text-left a:hover { background: linear-gradient(135deg,#67b5f5 0,#2ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 button.btn-icon.absolute.top-1.right-1.bg-primary-darker.text-primary-lightest.hover\:text-accent-default:hover { background: linear-gradient(135deg,#67b5f5 0,#2ff 100%); }
 .markdown {margin-top: -6em;}
 section#\36 2b8a418d87ac98e97000001 { border-top: 1px solid rgb(221, 221, 221); }p.font-info { color: rgb(137, 137, 137); }
 @media (min-width: 768px) {section#\35 f1b0d8b556f12522e4ddfb5 { text-align: left; max-width: 60rem; } 
-  section#\36 2b8a418d87ac98e97000001 h2 { font-size: 9em !important;  }} 
+  section#\36 2b8a418d87ac98e97000001 h2 { font-size: 9em !important;  } section#\36 2bb33611a7f3ddfe8000001 h2 { font-size: 9em !important;  }} 
 section#\35 f1b0d8b556f12522e4ddfb5 { padding-top: 2.5rem; padding-bottom: 1.5rem; } p.font-info { font-size: 1.302rem; } 
 section#\36 2b8a418d87ac98e97000001 { padding-top: 0; padding-bottom: 0; } strong.font-link { font-size: 1.302rem; }
 section#\36 2b8a418d87ac98e97000001 a { color: black; font-weight: 400; } 
