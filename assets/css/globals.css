@@ -1,4 +1,4 @@
-.hidden.h-10.p-2.lg\:inline-block { display: block; }
+.hidden.h-10.p-2.lg\:inline-block { display: block;}
 .container.py-16.text-center.lg\:flex.lg\:flex-row.lg\:text-left a:hover { background: linear-gradient(135deg,#67b5f5 0,#2ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 button.btn-icon.absolute.top-1.right-1.bg-primary-darker.text-primary-lightest.hover\:text-accent-default:hover { background: linear-gradient(135deg,#67b5f5 0,#2ff 100%); }
 .markdown {
