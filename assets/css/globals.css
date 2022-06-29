@@ -58,7 +58,7 @@ label#option-62ade41707550d1dc406876e-label {
         font-family: "Milago Regular";
         src: url("https://font-sampler.vercel.app/fonts/Milago/Milago-Regular.woff") format("woff");
     }
-[for="62b85f98b1bf1d209a8f7fd2"] [for="62bc382ffecfa50262ec12d0"]:after { content: 'Print: 1 User Web: 100.000 Pageviews/month App: 1.000 Downloads eBook: 10.000 Downloads'; 
+[for="62b85f98b1bf1d209a8f7fd2"] :after { content: 'Print: 1 User Web: 100.000 Pageviews/month App: 1.000 Downloads eBook: 10.000 Downloads'; 
     display: inline-block; margin-left: 6px; padding: 2EM; }
 span.block.min-w-12.p-3 { font-size: 3em; }
 .radio-selector.relative.mt-1.ml-1.inline-block.text-center { margin-bottom: 2em; }
@@ -66,7 +66,8 @@ span.block.min-w-12.p-3 { font-size: 3em; }
 { content: 'Print: 15 Users Web: 1,500,000 Pageviews/month App: 15,000 Downloads eBook: 150,000 Downloads Broadcasting: 1,500,000 Viewers '; display: inline-block; margin-left: 6px; padding: 2EM; } 
 [for="62b85f98b1bf1d209a8f7fd4"]:after { content: 'Print: 5 User Web: 500.000 Pageviews/month App: 5.000 Downloads eBook: 50.000 Downloads'; display: inline-block; margin-left: 6px; padding: 2EM; }
 
-
+[for="62bc382ffecfa50262ec12d0"] :after { content: 'Print: 1 User Web: 100.000 Pageviews/month App: 1.000 Downloads eBook: 10.000 Downloads'; 
+    display: inline-block; margin-left: 6px; padding: 2EM; }
 
 
 html,
