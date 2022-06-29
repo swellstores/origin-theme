@@ -38,14 +38,11 @@ input.outline-none.h-12.w-full.rounded.border.border-primary-med.py-2.pl-4.pr-14
  font-family: Milago Thin; 
 }
 .ml-auto.flex.items-center { font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif; }
-label.label-xs-bold.w-full.text-primary-dark { color: black; font-size: 1.6em; text-transform: capitalize; }
+
 div#Font-Sampler {
   margin-top: 5em;
 }
-label.label-xs-bold.w-full.text-primary-dark {
-    color: black;
-    font-size: 1.2em;
-}
+
 label#option-62ade41707550d1dc406876e-label {
     font-size: 1.4em;
     color: black;
