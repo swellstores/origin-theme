@@ -51,6 +51,9 @@ label#option-62ade41707550d1dc406876e-label {
     color: black;
 }
 @font-face {
+        font-family: "King Slayer Regular";
+src: url("https://font-sampler.vercel.app/fonts/King-Slayer/King-Slayer-Regular.woff") format("woff");}
+@font-face {
         font-family: "Milago Thin";
         src: url("https://font-sampler.vercel.app/fonts/Milago/Milago-Thin.woff") format("woff");
     }
