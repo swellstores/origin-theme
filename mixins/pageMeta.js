@@ -153,7 +153,7 @@ export default {
         {
           hid: 'og:url',
           property: 'og:url',
-          content: url,
+          content: 'https://www.oztype.com',
         },
         {
           hid: 'og:image',
