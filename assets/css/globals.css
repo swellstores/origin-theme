@@ -1,8 +1,7 @@
 section#\36 2bb33611a7f3ddfe8000001 h2 {font-size: 3em; font-family: King Slayer Regular; font-weight: 400;}
 section#\36 2bb33611a7f3ddfe8000001 { border-top: 1px solid #eaeaea;}
 section#\36 2bb33611a7f3ddfe8000001 a {color: #000; font-weight: 400;}
-label.label-xs-bold.w-full.text-primary-dark {
-    color: black;}
+label.label-xs-bold.w-full.text-primary-dark {color: black;}
 .hidden.h-10.p-2.lg\:inline-block {display: block;}
 .container.py-16.text-center.lg\:flex.lg\:flex-row.lg\:text-left a:hover { background: linear-gradient(135deg,#67b5f5 0,#2ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 button.btn-icon.absolute.top-1.right-1.bg-primary-darker.text-primary-lightest.hover\:text-accent-default:hover {background: linear-gradient(135deg,#67b5f5 0,#2ff 100%); }
