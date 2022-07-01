@@ -1,9 +1,9 @@
 {
-  "name": "swell-origin-theme",
+  "name": "OzType",
   "version": "1.0.170",
-  "description": "Origin PWA theme/starter for Swell ecommerce platform",
-  "author": "Swell",
-  "homepage": "https://www.swell.is/",
+  "description": "Oztype, an independent digital font foundry.",
+  "author": "OzType",
+  "homepage": "https://www.oztype.com/",
   "repository": {
     "type": "git",
     "url": "https://github.com/swellstores/origin-theme/"

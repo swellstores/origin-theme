@@ -119,13 +119,7 @@
       <div class="lg:flex-no-wrap container lg:flex lg:justify-between">
         <!-- Copyright & Settings -->
         <p class="my-3 text-sm">
-          <span>©{{ currentYear }} {{ store.name }}.</span> Powered by
-          <a
-            id="powered-by-swell"
-            href="https://www.swell.is/"
-            title="Headless ecommerce platform for brands"
-            class="text-current"
-            >Swell</a
+          <span>©{{ currentYear }} {{ store.name }}.</span> All rights reserved.</a
           >
         </p>
         <!-- Secondary nav menu -->
@@ -166,7 +160,6 @@
     </div>
   </footer>
 </template>
-
 <script>
 // Helpers
 import get from 'lodash/get';

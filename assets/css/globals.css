@@ -1,3 +1,80 @@
+section#\36 2bb33611a7f3ddfe8000001 h2 {font-size: 3em; font-family: King Slayer Regular; font-weight: 400;}
+section#\36 2bb33611a7f3ddfe8000001 { border-top: 1px solid #eaeaea;}
+section#\36 2bb33611a7f3ddfe8000001 a {color: #000; font-weight: 400;}
+label.label-xs-bold.w-full.text-primary-dark {color: black;}
+.hidden.h-10.p-2.lg\:inline-block {display: block;}
+.container.py-16.text-center.lg\:flex.lg\:flex-row.lg\:text-left a:hover { background: linear-gradient(135deg,#67b5f5 0,#2ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+button.btn-icon.absolute.top-1.right-1.bg-primary-darker.text-primary-lightest.hover\:text-accent-default:hover {background: linear-gradient(135deg,#67b5f5 0,#2ff 100%); }
+.markdown {margin-top: -6em;}
+section#\36 2b8a418d87ac98e97000001 { border-top: 1px solid #eaeaea; }p.font-info { color: rgb(137, 137, 137);}
+@media (min-width: 768px) {section#\35 f1b0d8b556f12522e4ddfb5 { text-align: left; max-width: 60rem; } 
+  section#\36 2b8a418d87ac98e97000001 h2 { font-size: 9em !important;  } section#\36 2bb33611a7f3ddfe8000001 h2 { font-size: 7em !important;  }} 
+section#\35 f1b0d8b556f12522e4ddfb5 { padding-top: 2.5rem; padding-bottom: 1.5rem; } p.font-info { font-size: 1.302rem; } 
+section#\36 2b8a418d87ac98e97000001 { padding-top: 0; padding-bottom: 0; } strong.font-link { font-size: 1.302rem; }
+section#\36 2b8a418d87ac98e97000001 a { color: black; font-weight: 400; } 
+section#\36 2b8a418d87ac98e97000001 h2 {
+    font-size: 5em;
+    font-family: Milago Regular;
+    font-weight: 400;}
+1.right-1.bg-primary-darker.text-primary-lightest.hover\:text-accent-default {
+    background: white;
+}
+
+label.relative.block.w-full.cursor-pointer.rounded.border.border-primary-med.text-sm.font-semibold.hover\:border-primary-darkest.focus\:shadow-outline.border-primary-darkest { background-color: black; color: white; }.radio-selector.relative.mt-1.ml-1.inline-block.text-center { width: 100%; }
+button.btn-icon.absolute.top-1.right-1.bg-primary-darker.text-primary-lightest.hover\:text-accent-default {
+    background-color: #000000;
+    color: white;
+    border-radius: 4px;
+}
+input.outline-none.h-12.w-full.rounded.border.border-primary-med.py-2.pl-4.pr-14.transition.focus\:shadow-outline.border-primary-lightest.bg-primary-darkest {
+    border: 2px solid #5050503d;
+    background: #fafafa;
+    color: black;
+}
+
+.mr-4.flex.items-center {
+    display: none;
+}
+[for="Milago Thin"]{
+ font-family: Milago Thin; 
+}
+.ml-auto.flex.items-center { font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif; }
+
+div#Font-Sampler {
+  margin-top: 5em;
+}
+
+label#option-62ade41707550d1dc406876e-label {
+    font-size: 1.4em;
+    color: black;
+}
+@font-face {
+        font-family: "King Slayer Regular";
+src: url("https://font-sampler.vercel.app/fonts/King-Slayer/King-Slayer-Regular.woff") format("woff");}
+@font-face {
+        font-family: "Milago Thin";
+        src: url("https://font-sampler.vercel.app/fonts/Milago/Milago-Thin.woff") format("woff");
+    }
+@font-face {
+        font-family: "Milago Regular";
+        src: url("https://font-sampler.vercel.app/fonts/Milago/Milago-Regular.woff") format("woff");
+    }
+[for="62b85f98b1bf1d209a8f7fd2"] :after { content: 'Print: 1 User Web: 100.000 Pageviews/month App: 1.000 Downloads eBook: 10.000 Downloads'; 
+    display: inline-block; margin-left: 6px; padding: 2EM; 
+    font-size: var(--type-scale--1); }
+span.block.min-w-12.p-3 { font-size: 3em; }
+.radio-selector.relative.mt-1.ml-1.inline-block.text-center { margin-bottom: 2em; }
+[for="62b85f98b1bf1d209a8f7fd3"]:after
+{ content: 'Print: 5 User Web: 500.000 Pageviews/month App: 5.000 Downloads eBook: 50.000 Downloads'; 
+    font-size: var(--type-scale--1); display: inline-block; margin-left: 6px; padding: 2EM; } 
+[for="62b85f98b1bf1d209a8f7fd4"]:after { content: 'Print: 15 Users Web: 1,500,000 Pageviews/month App: 15,000 Downloads eBook: 150,000 Downloads Broadcasting: 1,500,000 Viewers';
+    font-size: var(--type-scale--1); display: inline-block; margin-left: 6px; padding: 2EM; }
+
+[for="62bc382ffecfa50262ec12d0"] :after { content: 'Print: 1 User Web: 100.000 Pageviews/month App: 1.000 Downloads eBook: 10.000 Downloads'; 
+    display: inline-block; margin-left: 6px; padding: 2EM; 
+    font-size: var(--type-scale--1);}
+
+
 html,
 body {
   @apply bg-primary-lightest;
@@ -209,3 +286,5 @@ input[type='number'] {
     @apply mx-auto w-full px-6 lg:px-8 xl:px-10;
   }
 }
+
+
