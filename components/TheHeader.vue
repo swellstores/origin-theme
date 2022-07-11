@@ -125,7 +125,6 @@
               <!-- Currency select -->
               <CurrencySelect
                 v-if="currencyList.length > 1"
-                :current-currency="currency"
                 class="hidden lg:block"
                 appearance="float"
               />
@@ -238,20 +237,19 @@ export default {
   },
 
   watch: {
+    currency: '$fetch',
+    locale: '$fetch',
     $route() {
       // Close mega/mobile nav menu when the page changes
       this.hideHeader = false;
       this.setMobileNavVisibility(false);
     },
-    locale() {
-      this.$fetch();
-    },
   },
 
   created() {
+    const { hideMegaNav } = this;
     // Attach debounce method, to allow it to be cancelled
-    this.hideMegaNav = debounce(this.hideMegaNav, 200);
-    this.$store.dispatch('selectCurrency');
+    this.hideMegaNav = debounce(hideMegaNav, 200);
   },
 
   mounted() {

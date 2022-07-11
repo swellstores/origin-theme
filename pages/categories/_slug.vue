@@ -142,7 +142,8 @@
 import get from 'lodash/get';
 import { mapState } from 'vuex';
 import pageMeta from '~/mixins/pageMeta';
-import { getFilterStateFromQuery } from '~/modules/swell';
+import { getFilterStateFromQuery } from '~/modules/swell/utils/getFilterStateFromQuery';
+import refetchCurrencyMixin from '~/modules/swell/mixins/refetchCurrency';
 
 // Calculate product limit from category rows/cols
 function getProductLimit(category) {
@@ -154,7 +155,7 @@ function getProductLimit(category) {
 
 export default {
   name: 'CategoryDetailPage',
-  mixins: [pageMeta],
+  mixins: [pageMeta, refetchCurrencyMixin],
 
   data() {
     return {

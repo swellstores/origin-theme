@@ -71,7 +71,7 @@
 import get from 'lodash/get';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
-import { listVisibleOptions } from '~/modules/swell';
+import { listVisibleOptions } from '~/modules/swell/utils/listVisibleOptions';
 
 export default {
   name: 'ProductBundleItem',

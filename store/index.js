@@ -4,6 +4,7 @@ export const state = () => ({
   cartIsActive: false,
   cartIsUpdating: false,
   currency: null,
+  refetchCurrency: false,
   customer: null,
   customerLoggedIn: false,
   locale: null,
@@ -19,10 +20,12 @@ export const state = () => ({
 });
 
 export const actions = {
-  selectCurrency({ commit, dispatch }, { code } = {}) {
+  async selectCurrency({ commit, dispatch }, { code } = {}) {
     try {
       if (code) {
         this.$swell.currency.select(code);
+        this.$swell.options.currency = code;
+        await this.$swell.settings.refresh();
         commit('setState', { key: 'currency', value: code });
       } else {
         const selected = this.$swell.currency.selected();

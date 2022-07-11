@@ -5,38 +5,41 @@ export default async function getRoutes(swell) {
   const { defaultLocale, locales } = await getLocales(swell);
   const secondaryLocales = locales.filter(({ code }) => code !== defaultLocale);
 
-  const pages = (await paginateThrough(swell, 'content', 'pages')).reduce(
-    (acc, page) => [
-      ...acc,
-      `/${page.slug}`,
-      ...localizedRoutesFor(`/${page.slug}`, secondaryLocales),
-    ],
-    [],
+  const pages = generateRoutesFor(
+    await paginateThrough(swell, 'content', 'pages'),
+    {
+      defaultLocale,
+      secondaryLocales,
+    },
   );
 
-  const categories = (await paginateThrough(swell, 'categories')).reduce(
-    (acc, category) => [
-      ...acc,
-      `/categories/${category.slug}`,
-      ...localizedRoutesFor(`/categories/${category.slug}`, secondaryLocales),
-    ],
-    [],
+  const categories = generateRoutesFor(
+    await paginateThrough(swell, 'categories'),
+    {
+      defaultLocale,
+      secondaryLocales,
+      path: '/categories/',
+    },
   );
 
-  const products = (
+  const products = generateRoutesFor(
     await paginateThrough(swell, 'products', {
       limit: 100,
-    })
-  ).reduce(
-    (acc, product) => [
-      ...acc,
-      `/products/${product.slug}`,
-      ...localizedRoutesFor(`/products/${product.slug}`, secondaryLocales),
-    ],
-    [],
+    }),
+    {
+      defaultLocale,
+      secondaryLocales,
+      path: '/products/',
+    },
   );
 
-  return [...pages, ...categories, ...products];
+  return [defaultLocale, ...secondaryLocales.map(({ code }) => code)]
+    .map((locale) => [
+      ...pages[locale],
+      ...categories[locale],
+      ...products[locale],
+    ])
+    .reduce((acc, el) => [...acc, ...el], []);
 }
 
 // arguments reference for different arity:
@@ -88,6 +91,28 @@ function fetchList(swell, module, model, params) {
   );
 }
 
-function localizedRoutesFor(path, locales) {
-  return locales.map(({ code }) => `/${code}${path}`);
+function generateRoutesFor(
+  records,
+  { defaultLocale, secondaryLocales, path = '/', pathField = 'slug' },
+) {
+  return records.reduce(
+    (acc, page) => ({
+      ...localizedRoutesFor(`${path}${page[pathField]}`, acc, secondaryLocales),
+      [defaultLocale]: [
+        ...(acc[defaultLocale] || []),
+        `${path}${page[pathField]}`,
+      ],
+    }),
+    {},
+  );
+}
+
+function localizedRoutesFor(path, currentRoutes, locales) {
+  return locales.reduce(
+    (acc, { code }) => ({
+      ...acc,
+      [code]: [...(acc[code] || []), `/${code}${path}`],
+    }),
+    currentRoutes,
+  );
 }

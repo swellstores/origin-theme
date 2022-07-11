@@ -12,10 +12,11 @@
 <script>
 // Helpers
 import pageMeta from '~/mixins/pageMeta';
+import refetchCurrencyMixin from '~/modules/swell/mixins/refetchCurrency';
 
 export default {
   name: 'CategoryIndexPage',
-  mixins: [pageMeta],
+  mixins: [pageMeta, refetchCurrencyMixin],
 
   data() {
     return {

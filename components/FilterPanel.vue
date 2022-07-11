@@ -138,7 +138,8 @@
 <script>
 // Helpers
 import { mapState } from 'vuex';
-import { mergeFilterState, listActiveFilters } from '~/modules/swell';
+import { mergeFilterState } from '~/modules/swell/utils/mergeFilterState';
+import { listActiveFilters } from '~/modules/swell/utils/listActiveFilters';
 
 export default {
   name: 'FilterPanel',

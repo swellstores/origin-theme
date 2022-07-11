@@ -1,9 +1,8 @@
 export default function ({ app, $swell, $swellEditor, store }) {
-  // onBeforeLanguageSwitch called right before setting a new locale
-  app.i18n.onBeforeLanguageSwitch = async (_oldLocale, newLocale) => {
+  app.i18n.onLanguageSwitched = async (_oldLocale, newLocale) => {
     $swell.options.locale = newLocale;
-    await $swell.settings.refresh();
     await $swell.locale.select(newLocale);
+    await $swell.settings.refresh();
     await $swell.settings.load();
 
     $swellEditor?.sendMessage({
@@ -12,14 +11,8 @@ export default function ({ app, $swell, $swellEditor, store }) {
         locale: newLocale,
       },
     });
-  };
 
-  app.i18n.onLanguageSwitched = (_oldLocale, newLocale) => {
     store.commit('setState', { key: 'locale', value: newLocale });
-
-    if ($swellEditor) {
-      window?.location.reload();
-    }
   };
 
   app.nuxt.defaultTransition.beforeEnter = () => {

@@ -7,7 +7,7 @@ export const getPriceInCurrency = (product, currency) => {
     options: new Map(),
   };
 
-  const variants = (product.variants && product.variants.results) || [];
+  const variants = product.variants ? product.variants.results : [];
 
   variants.forEach((variant) => {
     const price = getStandardPriceInCurrency(variant, prices.currency);

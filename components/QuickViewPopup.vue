@@ -301,7 +301,7 @@ import flatten from 'lodash/flatten';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
-import { listVisibleOptions } from '~/modules/swell';
+import { listVisibleOptions } from '~/modules/swell/utils/listVisibleOptions';
 import { getInitialSelection } from '~/utils/purchaseOptions';
 
 export default {
