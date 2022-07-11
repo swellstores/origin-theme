@@ -239,40 +239,46 @@
                     <template v-if="variation.price > 0">
                       <span>{{ $t('products.slug.addToCart') }}</span>
                       <span class="hidden sm:inline">
-                      <span
-                        class="mx-1 mb-1 inline-block w-5 border-b border-primary-lightest"
-                      />
-                      <span>{{
-                        formatMoney(variation.price * quantity, currency, false)
-                      }}</span>
-                      <span v-if="billingInterval">{{ billingInterval }}</span>
-                      <span
-                        v-if="
-                          variation.origPrice &&
-                          !(
-                            selectedPurchaseOption &&
-                            selectedPurchaseOption.type === 'subscription'
-                          )
-                        "
-                        class="ml-1 text-primary-med line-through"
-                      >
-                        {{
+                        <span
+                          class="mx-1 mb-1 inline-block w-5 border-b border-primary-lightest"
+                        />
+                        <span>{{
                           formatMoney(
-                            variation.origPrice * quantity,
+                            variation.price * quantity,
                             currency,
                             false,
                           )
-                        }}
-                      </span>
-                      <span
-                        v-if="
-                          selectedPurchaseOption &&
-                          selectedPurchaseOption.type === 'subscription'
-                        "
-                        class="lowercase"
-                      >
-                        / {{ intervalCount }}{{ subscriptionInterval }}
-                      </span>
+                        }}</span>
+                        <span v-if="billingInterval">{{
+                          billingInterval
+                        }}</span>
+                        <span
+                          v-if="
+                            variation.origPrice &&
+                            !(
+                              selectedPurchaseOption &&
+                              selectedPurchaseOption.type === 'subscription'
+                            )
+                          "
+                          class="ml-1 text-primary-med line-through"
+                        >
+                          {{
+                            formatMoney(
+                              variation.origPrice * quantity,
+                              currency,
+                              false,
+                            )
+                          }}
+                        </span>
+                        <span
+                          v-if="
+                            selectedPurchaseOption &&
+                            selectedPurchaseOption.type === 'subscription'
+                          "
+                          class="lowercase"
+                        >
+                          / {{ intervalCount }}{{ subscriptionInterval }}
+                        </span>
                       </span>
                     </template>
                     <template v-else>
@@ -285,9 +291,7 @@
                   </div>
                   <div v-show="cartIsUpdating">
                     <div class="spinner absolute inset-0 mt-3" />
-                    <span>{{
-                      $t('products.slug.updating')
-                    }}</span>
+                    <span>{{ $t('products.slug.updating') }}</span>
                   </div>
                 </button>
               </div>
@@ -390,12 +394,13 @@ import flatten from 'lodash/flatten';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 import pageMeta from '~/mixins/pageMeta';
-import { listVisibleOptions } from '~/modules/swell';
+import { listVisibleOptions } from '~/modules/swell/utils/listVisibleOptions';
 import { getInitialSelection } from '~/utils/purchaseOptions';
+import refetchCurrencyMixin from '~/modules/swell/mixins/refetchCurrency';
 
 export default {
   name: 'ProductDetailPage',
-  mixins: [pageMeta, validationMixin],
+  mixins: [pageMeta, validationMixin, refetchCurrencyMixin],
 
   data() {
     return {

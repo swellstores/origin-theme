@@ -37,10 +37,11 @@
 // Helpers
 import get from 'lodash/get';
 import pageMeta from '~/mixins/pageMeta';
+import refetchCurrencyMixin from '~/modules/swell/mixins/refetchCurrency';
 
 export default {
   name: 'StandardPage',
-  mixins: [pageMeta],
+  mixins: [pageMeta, refetchCurrencyMixin],
 
   data() {
     return {

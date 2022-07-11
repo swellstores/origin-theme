@@ -68,11 +68,7 @@
               class="mb-8"
               appearance="popup"
             />
-            <CurrencySelect
-              v-if="currency"
-              :current-currency="currency"
-              appearance="popup"
-            />
+            <CurrencySelect v-if="currency" appearance="popup" />
           </div>
         </div>
       </div>

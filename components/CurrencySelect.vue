@@ -52,26 +52,26 @@
       role="listbox"
     >
       <li
-        v-for="currency in currencyList"
-        :key="`option-${currency.code}`"
+        v-for="currencyItem in currencyList"
+        :key="`option-${currencyItem.code}`"
         :class="{
-          'pointer-events-none': currency.code === currentCurrency,
+          'pointer-events-none': currencyItem.code === currency,
         }"
         class="mb-0 flex cursor-pointer items-center border-b border-primary-light px-2 last:border-b-0 hover:bg-primary-lighter"
         role="option"
-        @click="selectCurrency(currency)"
+        @click="selectCurrency(currencyItem)"
       >
         <div class="w-full p-2">
           <span v-if="!hideSymbolOnList" class="mr-2 font-semibold">{{
-            currency.symbol
+            currencyItem.symbol
           }}</span>
           <span
             :class="{
-              'opacity-25': currency.code === currentCurrency,
+              'opacity-25': currencyItem.code === currency,
               'my-2 mx-auto': appearance === 'popup',
             }"
           >
-            {{ currency.name }}
+            {{ currencyItem.name }}
           </span>
         </div>
       </li>
@@ -80,6 +80,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'CurrencySelect',
 
@@ -87,10 +89,6 @@ export default {
     appearance: {
       type: String,
       default: 'float',
-    },
-    currentCurrency: {
-      type: String,
-      default: null,
     },
   },
 
@@ -119,10 +117,16 @@ export default {
   },
 
   computed: {
+    ...mapState(['currency']),
     selectedCurrency() {
-      const { currencyList, currentCurrency } = this;
+      const { currencyList, currency: currentCurrency } = this;
       return currencyList.find((currency) => currency.code === currentCurrency);
     },
+  },
+
+  watch: {
+    currency: '$fetch',
+    locale: '$fetch',
   },
 
   mounted() {
@@ -140,9 +144,9 @@ export default {
       this.dropdownIsActive = !this.dropdownIsActive;
     },
 
-    async selectCurrency(currency) {
+    selectCurrency(currency) {
       this.dropdownIsActive = false;
-      await this.$store.dispatch('selectCurrency', currency);
+      this.$store.dispatch('selectCurrency', currency);
     },
 
     clickOutside(e) {

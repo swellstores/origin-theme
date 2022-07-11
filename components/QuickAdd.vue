@@ -64,7 +64,7 @@ import flatten from 'lodash/flatten';
 import { mapState } from 'vuex';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
-import { listVisibleOptions } from '~/modules/swell';
+import { listVisibleOptions } from '~/modules/swell/utils/listVisibleOptions';
 import { getInitialSelection } from '~/utils/purchaseOptions';
 
 export default {
@@ -91,9 +91,10 @@ export default {
       quickAddIndex: 0,
       addToCartError: null,
       purchaseOption: getInitialSelection(this.product.purchaseOptions),
-      isSubscription:
-        !!(this.product?.purchaseOptions?.subscription?.plans?.length ||
-        this.product?.options?.some(option => option.subscription)),
+      isSubscription: !!(
+        this.product?.purchaseOptions?.subscription?.plans?.length ||
+        this.product?.options?.some((option) => option.subscription)
+      ),
     };
   },
 

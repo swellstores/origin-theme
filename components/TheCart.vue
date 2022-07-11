@@ -190,11 +190,20 @@ export default {
   },
 
   computed: {
-    ...mapState(['cart', 'cartIsUpdating', 'currency']),
+    ...mapState(['cart', 'cartIsUpdating', 'currency', 'locale']),
 
     account() {
       if (!this.cart.account) return;
       return this.cart.account;
+    },
+  },
+
+  watch: {
+    currency() {
+      this.$store.dispatch('initializeCart', {});
+    },
+    locale() {
+      this.$store.dispatch('initializeCart', {});
     },
   },
 

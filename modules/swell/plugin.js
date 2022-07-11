@@ -13,35 +13,49 @@ export default async (context, inject) => {
   }
 
   // Load cookies on server side
-  const cookies = parseCookies(context.req);
+  const cookies = parseCookies(
+    process.browser ? document.cookie : context.req?.headers?.cookie,
+  );
+
+  const currency =
+    cookies['swell-currency'] ||
+    '<%= options.currentSettings.store.currency || "" %>';
   const locale =
     cookies['swell-locale'] ||
-    context.i18n.localeProperties.code ||
-    '<%= options.settings.store.locale || "" %>';
+    '<%= options.currentSettings.store.locale || "" %>';
 
   // Set up swell-js client
   swell.init(storeId, publicKey, {
     useCamelCase: true,
-    previewContent: '<%= options.previewContent %>' === 'true',
+    previewContent: '<%= options.editorMode %>' === 'true',
     url: '<%= options.storeUrl %>',
+    vaultUrl: '<%= options.vaultUrl || "" %>',
     session: cookies['swell-session'],
-    currency: cookies['swell-currency'],
+    currency,
     locale,
   });
 
-  await swell.locale.select(locale);
+  swell.currency.code = currency;
+  swell.currency.state = { code: currency };
+  swell.currency.locale = locale;
+
+  swell.locale.set(locale);
 
   await swell.settings.load();
 
   // Inject client into nuxt context as $swell
+  context.$swell = swell;
   inject('swell', swell);
+
+  context.store.commit('setState', { key: 'currency', value: currency });
+  context.store.commit('setState', { key: 'locale', value: locale });
 };
 
-function parseCookies(req) {
-  if (!req || !req.headers.cookie) {
+function parseCookies(cookie) {
+  if (!cookie) {
     return {};
   }
-  return req.headers.cookie
+  return cookie
     .split(/;\s*/)
     .map((line) => line.split('='))
     .reduce(

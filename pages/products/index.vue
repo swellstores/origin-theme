@@ -7,8 +7,11 @@
 </template>
 
 <script>
+import refetchCurrencyMixin from '~/modules/swell/mixins/refetchCurrency';
+
 export default {
   name: 'ProductIndexPage',
+  mixins: [refetchCurrencyMixin],
 
   data() {
     return {

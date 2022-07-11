@@ -29,7 +29,7 @@
                 class="rounded"
               />
               <div class="pt-4">
-                <h4>{{ item.name }}</h4>
+                <h4>{{ item.value.name }}</h4>
                 <p v-if="item.value.price" class="text-primary-darker">
                   {{ formatMoney(item.value.price, currency) }}
                 </p>

@@ -116,42 +116,35 @@ For more advanced usage and packages you can use in your project:
 ### What's in the box
 
 - PWA functionality is provided by the [@nuxtjs/pwa](https://pwa.nuxtjs.org/) module.
-- Sentry integration for error reporting is provided by the [@nuxtjs/sentry](https://github.com/nuxt-community/sentry-module) module. All you need to do is add your DSN, either as a `SENTRY_DSN` env variable or on the `sentry` object in `nuxt.config.js`.
 - Any components in the `/components` folder are [loaded automatically](https://nuxtjs.org/api/configuration-components), so you don't needed to explicitly import them.
 - Common cart methods are implemented as Vuex actions in `/store/index.js`
-- Swell.js is initialized and injected into the Nuxt context as `$swell` by the `@swell/nuxt-client` TODO module
+- Swell.js is initialized and injected into the Nuxt context as `$swell`
 
 For a detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org/guide/directory-structure).
 
 ## Configuration
 
+### Default settings
+
+`/config/defaults.json` defines the default settings loaded into your store when installing this theme. Useful when adding new language tokens or settings fields available to the Editor.
+
 ### Editor
 
-`/config/editor.json` defines the settings fields available in the 'Design & global settings' section of the theme editor in the Swell dashboard.
-
-### Settings
-
-`/config/settings.json` contains the values of those settings fields, plus a read-only `store` object with things like your store name and currency.
+`/config/editor.json` defines the settings fields available in the 'Design & global settings' and 'Language' sections of the theme editor in the Swell dashboard.
 
 ### Navigation menus
 
 The `menus` array in `/config/editor.json` defines locations/slots in the theme that can display a navigation menu, and the shape of each menu tier. This config is used in the dashboard (under storefront > navigation) to show admins a menu editing UI.
 
-`/config/menus.json` contains all navigation menus that have been set up in the dashboard.
-
-### Syncing data with your live store
-
-Whenever store settings, theme settings, or navigation menus are changed in the dashboard, `settings.json` and `menus.json` will be updated in the remote repo. You can edit this file locally for testing purposes, but keep in mind that pulling from the remote will overwrite your changes.
-
 ### Styles
 
 #### Defining style properties
 
-By default, the contents of the `colors` and `fonts` objects in `settings.json` are treated as style properties, with their child keys and values converted to CSS variables at build time in `assets/css/variables.css`. If you have additional fields that you want to generate variables for, add the keys to the module options.
+By default, the contents of the `colors` and `fonts` in your store settings are treated as style properties, with their child keys and values converted to CSS variables at build time in `assets/css/variables.css`. If you have additional fields that you want to generate variables for, add the keys to the module options.
 
 **Example**
 
-If `colors.primary.darkest` in `settings.json` has a value of `#222222`, because `colors` is configured as a style property, that will generate the CSS variable `--colors-primary-darkest: #222222;`. If you have a field configured in `editor.json` with `id: 'trogdor.the.burninator'`, the following config would convert any properties on the `trogdor` object to variables.
+If `colors.primary.darkest` in your store settings has a value of `#222222`, because `colors` is configured as a style property, that will generate the CSS variable `--colors-primary-darkest: #222222;`. If you have a field configured in `editor.json` with `id: 'trogdor.the.burninator'`, the following config would convert any properties on the `trogdor` object to variables.
 
 ```js
 // nuxt.config.js
@@ -162,7 +155,6 @@ export default {
     [
       '~/modules/swell-editor',
       {
-        useEditorSettings: editorMode,
         cssVariableGroups: ['trogdor']
       }
     ],
@@ -176,10 +168,6 @@ export default {
 The resulting object is turned into a list of root CSS variables by the `swell-editor` module. You can reference these variables in `tailwind.config.js` or anywhere else you need to change how components are displayed.
 
 In dev mode, these will be injected as an inline stylesheet for rapid prototyping. For production, a stylesheet will be written to `/assets/css/variables.css` during the build process and loaded as a global CSS file.
-
-#### Style presets
-
-If you want admins to be able to choose from several predefined style sets for colors, typography, and other design parameters, you can define them in `/config/styles.json`. All properties of the active style set will be merged into `settings.json`.
 
 ---
 

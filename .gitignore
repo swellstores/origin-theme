@@ -91,3 +91,8 @@ sw.*
 # Auto-generated files
 assets/css/variables.css
 static/lang/*.json
+
+# Ignore legacy settings
+config/settings.json
+config/menus.json
+config/styles.json
