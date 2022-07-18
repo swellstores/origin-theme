@@ -15,7 +15,7 @@
           @click="toggleDropdown"
         >
           <BaseIcon icon="uil:sync" class="mr-2" size="w-4 h-4" />
-          <span class="font-normal">{{
+          <span class="font-normal first-letter:uppercase">{{
             currentValue | formatSubscriptionToLabel
           }}</span>
           <div class="ml-auto">
@@ -52,7 +52,7 @@
               role="option"
               @click="selectValue(value)"
             >
-              <span class="m-2 font-semibold">{{
+              <span class="m-2 font-semibold first-letter:uppercase">{{
                 value | formatSubscriptionToLabel
               }}</span>
 
