@@ -65,7 +65,7 @@
         @click="handleSubscriptionClick"
       >
         <BaseIcon icon="uil:sync" class="mr-2" size="w-4 h-4" />
-        <span class="font-normal">{{
+        <span class="font-normal first-letter:uppercase">{{
           formatSubscriptionLabel(selectedSubscription)
         }}</span>
         <div class="ml-auto">
@@ -111,7 +111,9 @@
           role="option"
           @click="() => setSubscription(option)"
         >
-          <span>{{ formatSubscriptionLabel(option) }}</span>
+          <span class="first-letter:uppercase">{{
+            formatSubscriptionLabel(option)
+          }}</span>
 
           <div class="ml-auto">
             <span v-if="option.billingSchedule.trialDays" class="mr-4">{{
@@ -242,7 +244,7 @@ export default {
       return this.$t(
         'products.slug.purchaseOptions.interval.productsInterval',
         {
-          count: 1,
+          count: undefined, // use count when supporting different quantities per interval
           n,
           interval: this.$tc(intervalLabel, intervalCount),
         },
