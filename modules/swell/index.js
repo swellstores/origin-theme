@@ -43,7 +43,9 @@ export default async function (moduleOptions) {
   this.options.pwa.meta = await swell.settings.get('store.name');
 
   this.options.i18n = await getLangSettings(swell);
-  await generateLangFiles(swell, currentSettings.store.locales);
+  const locales = await swell.settings.get('store.locales');
+  const defaultLocale = await swell.settings.get('store.locale');
+  await generateLangFiles(swell, locales.length ? locales : [defaultLocale]);
 
   const extendPluginsFn = this.options.extendPlugins;
   this.options.extendPlugins = (plugins) => {
