@@ -166,30 +166,32 @@
               >
             </div>
 
-            <div
-              v-if="subscriptionOrder && subscriptionOrder.subscriptionDelivery"
-              class="flex pb-2"
-            >
-              <span>{{ $t('account.subscriptions.id.shipping') }}</span>
-              <span class="ml-auto">{{
-                subscriptionOrder.shipmentPrice === 0
-                  ? $t('account.subscriptions.id.freeShipping')
-                  : formatMoney(
-                      subscriptionOrder.shipmentPrice,
-                      subscriptionOrder.currency,
-                    )
-              }}</span>
-            </div>
+            <template v-if="subscriptionOrder">
+              <div
+                v-if="subscriptionOrder.subscriptionDelivery"
+                class="flex pb-2"
+              >
+                <span>{{ $t('account.subscriptions.id.shipping') }}</span>
+                <span class="ml-auto">{{
+                  subscriptionOrder.shipmentPrice === 0
+                    ? $t('account.subscriptions.id.freeShipping')
+                    : formatMoney(
+                        subscriptionOrder.shipmentPrice,
+                        subscriptionOrder.currency,
+                      )
+                }}</span>
+              </div>
 
-            <div class="flex text-lg font-semibold">
-              <span>{{ $t('account.subscriptions.id.total') }}</span>
-              <span class="ml-auto">{{
-                formatMoney(
-                  subscriptionOrder.grandTotal,
-                  subscriptionOrder.currency,
-                )
-              }}</span>
-            </div>
+              <div class="flex text-lg font-semibold">
+                <span>{{ $t('account.subscriptions.id.total') }}</span>
+                <span class="ml-auto">{{
+                  formatMoney(
+                    subscriptionOrder.grandTotal,
+                    subscriptionOrder.currency,
+                  )
+                }}</span>
+              </div>
+            </template>
           </div>
 
           <div v-if="status !== 'canceled'" class="p-4 text-sm">
@@ -270,7 +272,7 @@
               </p>
               <p v-if="shipping.serviceName">
                 {{ shipping.serviceName }}
-                <span v-if="shipping.price">
+                <span v-if="shipping.price && subscriptionOrder">
                   ({{
                     formatMoney(shipping.price, subscriptionOrder.currency)
                   }})
