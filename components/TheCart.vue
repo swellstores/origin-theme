@@ -56,12 +56,22 @@
           >
             <div class="container border-b border-primary-med py-6">
               <div class="flex">
-                <input
-                  v-model="couponCode"
-                  type="text"
-                  placeholder="Add coupon or gift card code"
-                  class="input-coupon focus:outline-none mr-2 w-full rounded border border-primary-med bg-primary-lightest px-4 py-2 text-sm font-medium focus:shadow-outline"
-                />
+                <div class="relative mr-2">
+                  <input
+                    v-model.trim="couponCode"
+                    type="text"
+                    placeholder="Add coupon or gift card code"
+                    class="input-coupon focus:outline-none h-full w-full rounded border border-primary-med bg-primary-lightest px-4 py-2 text-sm font-medium focus:shadow-outline"
+                  />
+                  <transition name="fade">
+                    <div
+                      v-show="couponError"
+                      class="absolute mt-1 w-full rounded bg-error-faded px-3 py-1 text-sm text-error-default"
+                    >
+                      {{ couponError }}
+                    </div>
+                  </transition>
+                </div>
 
                 <BaseButton
                   class="flex-shrink-0"
@@ -133,6 +143,13 @@
                 <span>{{ $t('cart.discounts') }}</span>
                 <span>–{{ formatMoney(cart.discountTotal, currency) }}</span>
               </div>
+              <div
+                v-show="cart.giftcardTotal"
+                class="mb-1 flex justify-between"
+              >
+                <span>{{ $t('cart.giftcards') }}</span>
+                <span>–{{ formatMoney(cart.giftcardTotal, currency) }}</span>
+              </div>
               <div v-show="cart.taxTotal" class="mb-1 flex justify-between">
                 <span>{{ $t('cart.taxes') }}</span>
                 <span>{{ formatMoney(cart.taxTotal, currency) }}</span>
@@ -169,6 +186,7 @@
 <script>
 // Helpers
 import { mapState } from 'vuex';
+import { isGiftCardValid } from '~/utils/giftcards';
 
 export default {
   name: 'TheCart',
@@ -176,10 +194,9 @@ export default {
   data() {
     return {
       couponCode: null,
+      couponError: null,
+      couponTimeout: null,
       shopLink: null,
-      couponError: {
-        message: 'The coupon code was not valid'
-      },
     };
   },
 
@@ -213,23 +230,40 @@ export default {
     this.$store.dispatch('initializeCart', { checkoutId });
   },
 
+  beforeDestroy() {
+    if (this.couponTimeout) {
+      clearTimeout(this.couponTimeout);
+    }
+  },
+
   methods: {
     closeCart() {
       this.$store.commit('setState', { key: 'cartIsActive', value: false });
     },
 
-    validateCouponCode(code) {
-      return code && code.trim().match(/^[a-z0-9]+$/i) !== null;
+    /**
+     * Sets the coupon error message and the timeout to clear it
+     * @param {string} message - The error message to show
+     */
+    setCouponError(message) {
+      this.couponError = message;
+      if (this.couponTimeout) clearTimeout(this.couponTimeout);
+      this.couponTimeout = setTimeout(() => {
+        this.couponError = null;
+      }, 5000);
     },
 
     async applyDiscount() {
-      const isValid = this.validateCouponCode(this.couponCode)
-
-      if (isValid) {
-        // Try to apply a coupon or gift card code
-        await this.$store.dispatch('applyDiscount', this.couponCode);
+      if (!isGiftCardValid(this.couponCode)) {
+        this.setCouponError(this.$i18n.t('errors.invalidGiftCard'));
       } else {
-        await this.$store.dispatch('handleError', this.couponError)
+        const error = await this.$store.dispatch(
+          'applyDiscount',
+          this.couponCode,
+        );
+        if (error) {
+          this.setCouponError(error);
+        }
       }
       // Reset the coupon input
       this.couponCode = null;

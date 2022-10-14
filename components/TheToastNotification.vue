@@ -1,6 +1,6 @@
 <template>
   <transition name="fade-up-out" appear>
-    <div v-if="type !== 'product' || product" class="sticky top-0">
+    <div v-if="type !== 'product' || product" class="sticky top-0 z-100">
       <!-- Duplicate header element  -->
       <div class="absolute top-0 right-0 w-full">
         <div

@@ -3779,6 +3779,13 @@
           "default": "Category not found",
           "type": "short_text",
           "localized": true
+        },
+        {
+          "id": "lang.errors.invalid_gift_card",
+          "label": "Invalid gift card error message",
+          "default": "Invalid gift card code.",
+          "type": "short_text",
+          "localized": true
         }
       ]
     },
@@ -3846,6 +3853,13 @@
           "id": "lang.cart.discounts",
           "label": "Discounts title",
           "default": "Discounts",
+          "type": "short_text",
+          "localized": true
+        },
+        {
+          "id": "lang.cart.giftcards",
+          "label": "Gift cards title",
+          "default": "Gift cards",
           "type": "short_text",
           "localized": true
         },
