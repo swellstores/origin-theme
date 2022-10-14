@@ -139,6 +139,7 @@
       "total": "Total",
       "taxes": "Taxes",
       "discounts": "Discounts",
+      "giftcards": "Gift cards",
       "shipping": "Shipping",
       "subtotal": "Subtotal",
       "gift_card": "{amount} gift card",
@@ -160,7 +161,8 @@
         "title": "Internal server error"
       },
       "return_home": "Return home",
-      "error_code": "{code} error"
+      "error_code": "{code} error",
+      "invalid_gift_card": "Invalid gift card code."
     },
     "email_signup": {
       "email": {

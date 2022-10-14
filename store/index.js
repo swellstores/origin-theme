@@ -1,3 +1,5 @@
+import { isGiftCardValid } from '~/utils/giftcards';
+
 export const state = () => ({
   cart: null,
   cartError: null,
@@ -227,19 +229,28 @@ export const actions = {
    * Applies a coupon or gift card code to the cart
    *
    * @param {string} code - Coupon or gift card code
+   * @returns Error message as a string if the code is invalid
    */
-  async applyDiscount({ commit, dispatch, state }, code) {
+  async applyDiscount({ commit, state }, code) {
     if (state.cartIsUpdating) return;
     commit('setState', { key: 'cartIsUpdating', value: true });
+    const defaultError = this.$i18n.t('errors.invalidGiftCard');
     try {
+      if (!isGiftCardValid(code)) {
+        throw new Error(defaultError);
+      }
       const cart = await this.$swell.cart.applyCoupon(code);
       commit('setState', { key: 'cart', value: cart });
       // dispatch('showNotification', { message: `Code ${code.toUpperCase()} applied` })
     } catch (err) {
-      dispatch('handleError', err);
+      if (err.message) {
+        return err.message;
+      } else {
+        return defaultError;
+      }
+    } finally {
+      commit('setState', { key: 'cartIsUpdating', value: false });
     }
-
-    commit('setState', { key: 'cartIsUpdating', value: false });
   },
 
   /**
