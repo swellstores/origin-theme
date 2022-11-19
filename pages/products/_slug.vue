@@ -26,10 +26,11 @@
           <template v-else>
             <div v-if="productImages">
               <VisualMedia
-                v-for="image in productImages"
+                v-for="(image, index) in productImages"
                 :key="image.id"
                 :source="image"
                 :alt="image.alt"
+                :lazy-load="index > 0"
                 sizes="(min-width: 768px) 50vw, 100vw"
               />
             </div>
