@@ -17,7 +17,7 @@
           <BaseIcon
             icon="uil:camera-slash"
             size="lg"
-            class="center-xy absolute text-primary-med"
+            class="absolute center-xy text-primary-med"
           />
         </div>
         <!-- Media stack for large screens -->
@@ -26,10 +26,11 @@
           <template v-else>
             <div v-if="productImages">
               <VisualMedia
-                v-for="image in productImages"
+                v-for="(image, index) in productImages"
                 :key="image.id"
                 :source="image"
                 :alt="image.alt"
+                :lazy-load="index > 0"
                 sizes="(min-width: 768px) 50vw, 100vw"
               />
             </div>
@@ -39,7 +40,7 @@
               <BaseIcon
                 icon="uil:camera-slash"
                 size="lg"
-                class="center-xy absolute text-primary-med"
+                class="absolute center-xy text-primary-med"
               />
             </div>
           </template>
@@ -48,7 +49,7 @@
         <!-- Back button -->
         <a
           href="#"
-          class="fixed left-6 bottom-6 flex h-9 w-9 items-center justify-center rounded-full bg-primary-lighter shadow-md"
+          class="fixed flex items-center justify-center rounded-full shadow-md left-6 bottom-6 h-9 w-9 bg-primary-lighter"
           @click.prevent="navigateBack"
         >
           <BaseIcon icon="uil:angle-left" class="-ml-px" />
@@ -58,35 +59,35 @@
       <!-- Product overview -->
       <div class="md:w-1/2 lg:px-6 xl:px-12">
         <div
-          class="container top-0 max-w-160 pt-10 transition-all duration-300 ease-in-out md:sticky md:pt-12"
+          class="container top-0 pt-10 transition-all duration-300 ease-in-out max-w-160 md:sticky md:pt-12"
           :class="headerIsVisible ? 'top-20' : 'top-0'"
         >
           <!-- Skeleton loader -->
           <div v-if="$fetchState.pending">
-            <div class="loader-el mb-4 h-3 w-32" />
-            <div class="loader-el mb-7 h-9 w-2/3" />
-            <div class="loader-el mb-4 h-3 w-40" />
-            <div class="loader-el mb-12 h-4 w-20" />
+            <div class="w-32 h-3 mb-4 loader-el" />
+            <div class="w-2/3 loader-el mb-7 h-9" />
+            <div class="w-40 h-3 mb-4 loader-el" />
+            <div class="w-20 h-4 mb-12 loader-el" />
             <div
               v-for="index in 7"
               :key="`skeleton-1-${index}`"
               :style="`width: ${100 - Math.random() * 20}%`"
-              class="loader-el mb-4 h-2"
+              class="h-2 mb-4 loader-el"
             />
-            <div class="mt-12 mb-4 flex justify-between">
-              <div class="loader-el h-3 w-24" />
-              <div class="loader-el h-3 w-48" />
+            <div class="flex justify-between mt-12 mb-4">
+              <div class="w-24 h-3 loader-el" />
+              <div class="w-48 h-3 loader-el" />
             </div>
-            <div class="loader-el mb-10 h-12" />
+            <div class="h-12 mb-10 loader-el" />
             <div
               v-for="index in 3"
               :key="`skeleton-2-${index}`"
-              class="mb-2 flex items-center"
+              class="flex items-center mb-2"
             >
-              <div class="loader-el mr-2 h-5 w-5 rounded-full" />
+              <div class="w-5 h-5 mr-2 rounded-full loader-el" />
               <div
                 :style="`width: ${80 - Math.random() * 30}%`"
-                class="loader-el h-2"
+                class="h-2 loader-el"
               />
             </div>
           </div>
@@ -102,7 +103,7 @@
             <span class="text-sm">{{ reviews.total }} reviews</span>
             -->
             <div
-              class="mt-2 mb-5 flex items-center text-lg font-semibold md:mb-8"
+              class="flex items-center mt-2 mb-5 text-lg font-semibold md:mb-8"
             >
               <span v-if="variation.price > 0">{{
                 formatMoney(variation.price, currency, false)
@@ -117,7 +118,7 @@
               >
               <span
                 v-if="variation.origPrice"
-                class="ml-3 -mt-2px inline-block h-6 rounded bg-error-faded px-2 text-xs uppercase leading-loose text-error-default"
+                class="inline-block h-6 px-2 ml-3 text-xs leading-loose uppercase rounded -mt-2px bg-error-faded text-error-default"
               >
                 {{ $t('products.slug.save') }}
                 {{
@@ -231,7 +232,7 @@
                     disabled: !available,
                   }"
                   type="submit"
-                  class="btn btn--lg relative h-auto w-full"
+                  class="relative w-full h-auto btn btn--lg"
                   :disabled="!available"
                   @click.prevent="addToCart"
                 >
@@ -240,7 +241,7 @@
                       <span>{{ $t('products.slug.addToCart') }}</span>
                       <span class="hidden sm:inline">
                         <span
-                          class="mx-1 mb-1 inline-block w-5 border-b border-primary-lightest"
+                          class="inline-block w-5 mx-1 mb-1 border-b border-primary-lightest"
                         />
                         <span>{{
                           formatMoney(
@@ -260,7 +261,7 @@
                               selectedPurchaseOption.type === 'subscription'
                             )
                           "
-                          class="ml-1 text-primary-med line-through"
+                          class="ml-1 line-through text-primary-med"
                         >
                           {{
                             formatMoney(
@@ -290,7 +291,7 @@
                     </template>
                   </div>
                   <div v-show="cartIsUpdating">
-                    <div class="spinner absolute inset-0 mt-3" />
+                    <div class="absolute inset-0 mt-3 spinner" />
                     <span>{{ $t('products.slug.updating') }}</span>
                   </div>
                 </button>
@@ -304,7 +305,7 @@
                 <li
                   v-for="(benefit, index) in productBenefits"
                   :key="'storeProductBenefit' + index"
-                  class="label-sm my-2 flex"
+                  class="flex my-2 label-sm"
                 >
                   <BaseIcon :icon="benefit.icon" size="sm" class="mr-2 -mb-1" />
                   <span>{{ benefit.text }}</span>
@@ -324,11 +325,11 @@
             </div>
 
             <!-- Share product -->
-            <div v-if="enableSocialSharing" class="flex-no-wrap flex py-3">
+            <div v-if="enableSocialSharing" class="flex flex-no-wrap py-3">
               <strong class="w-1/4 pr-6 text-primary-darkest">{{
                 $t('products.slug.share')
               }}</strong>
-              <div class="flex w-3/4 justify-end">
+              <div class="flex justify-end w-3/4">
                 <SocialShare
                   class="mr-2 cursor-pointer"
                   network="facebook"
