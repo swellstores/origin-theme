@@ -30,7 +30,6 @@ export default async (context, inject) => {
     previewContent: '<%= options.editorMode %>' === 'true',
     url: '<%= options.storeUrl %>',
     vaultUrl: '<%= options.vaultUrl || "" %>',
-    session: cookies['swell-session'],
     currency,
     locale,
   });
