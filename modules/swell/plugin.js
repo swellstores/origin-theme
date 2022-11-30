@@ -35,13 +35,14 @@ export default async (context, inject) => {
     locale,
   });
 
-  swell.currency.code = currency;
-  swell.currency.state = { code: currency };
+  await swell.settings.load();
+
+  // Set currency and locale after loading settings
+  // Settings are necessary for correct execution of currency.set
+  swell.currency.set(currency);
   swell.currency.locale = locale;
 
   swell.locale.set(locale);
-
-  await swell.settings.load();
 
   // Inject client into nuxt context as $swell
   context.$swell = swell;
@@ -55,14 +56,12 @@ function parseCookies(cookie) {
   if (!cookie) {
     return {};
   }
+
   return cookie
     .split(/;\s*/)
     .map((line) => line.split('='))
-    .reduce(
-      (acc, parts) => ({
-        ...acc,
-        [parts[0].toLowerCase()]: decodeURIComponent(parts[1]),
-      }),
-      {},
-    );
+    .reduce((acc, parts) => {
+      acc[parts[0].toLowerCase()] = decodeURIComponent(parts[1]);
+      return acc;
+    }, {});
 }

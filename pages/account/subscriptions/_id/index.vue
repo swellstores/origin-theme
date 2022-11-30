@@ -147,7 +147,7 @@
               <span>{{ $t('account.subscriptions.id.planTotal') }}</span>
               <span class="ml-auto">
                 {{
-                  formatMoney(
+                  formatMoneyRounded(
                     subscription.recurringTotal,
                     subscription.currency,
                   )
@@ -185,7 +185,7 @@
               <div class="flex text-lg font-semibold">
                 <span>{{ $t('account.subscriptions.id.total') }}</span>
                 <span class="ml-auto">{{
-                  formatMoney(
+                  formatMoneyRounded(
                     subscriptionOrder.grandTotal,
                     subscriptionOrder.currency,
                   )

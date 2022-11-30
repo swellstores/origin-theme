@@ -27,7 +27,9 @@
         >
           {{ selectedCurrency.symbol }}
         </span>
-        <span class="uppercase">{{ selectedCurrency.code }}</span>
+        <span class="uppercase">{{
+          selectedCurrency && selectedCurrency.code
+        }}</span>
       </div>
     </div>
 

@@ -156,7 +156,7 @@
               </div>
               <h3 class="mt-3 flex justify-between text-xl font-semibold">
                 <span>{{ $t('cart.total') }}</span>
-                <span>{{ formatMoney(cart.grandTotal, currency) }}</span>
+                <span>{{ formatMoneyRounded(cart.grandTotal, currency) }}</span>
               </h3>
               <div
                 v-if="account && account.balance && account.balance > 0"

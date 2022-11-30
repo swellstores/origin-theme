@@ -62,7 +62,7 @@
             <div>
               <span>{{ $t('account.orders.id.total') }}</span>
               <span class="font-semibold">{{
-                formatMoney(order.grandTotal, order.currency)
+                formatMoneyRounded(order.grandTotal, order.currency)
               }}</span>
             </div>
           </div>
@@ -197,7 +197,7 @@
           <div class="flex text-lg font-semibold">
             <span>{{ $t('account.orders.id.total') }}</span>
             <span class="ml-auto">{{
-              formatMoney(order.grandTotal, order.currency)
+              formatMoneyRounded(order.grandTotal, order.currency)
             }}</span>
           </div>
         </div>

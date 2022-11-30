@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import get from 'lodash/get';
 import { getLocaleDefaults } from '~/modules/swell/utils/getLocaleDefaults';
+import { formatMoneyRounded } from '~/modules/swell/utils/formatMoneyRounded';
 
 // Components
 import VisualMedia from '~/modules/swell/components/VisualMedia';
@@ -13,6 +14,7 @@ Vue.use({
         formatDate,
         resolveUrl,
         getCountryCodeFromLocale,
+        formatMoneyRounded,
       },
     });
 
