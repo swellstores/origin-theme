@@ -225,7 +225,7 @@ export default {
     const menuId = await $swell.settings.get('header.menu', 'header');
 
     // Set component data
-    this.header = await $swell.settings.get('header');
+    this.header = await $swell.settings.get('header', {});
     this.menu = await $swell.settings.menus(menuId);
     this.storeName = await $swell.settings.get('store.name', 'ORIGIN');
     this.logoSrc = await $swell.settings.get('header.logo.file.url');

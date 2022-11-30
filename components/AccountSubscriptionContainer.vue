@@ -48,7 +48,10 @@
         <p class="label-sm-bold mb-4">
           <span class="pr-2"
             >{{
-              formatMoney(subscription.recurringTotal, subscription.currency)
+              formatMoneyRounded(
+                subscription.recurringTotal,
+                subscription.currency,
+              )
             }}
             {{ subscription.interval }}</span
           >

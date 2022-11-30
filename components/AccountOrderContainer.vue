@@ -77,7 +77,7 @@
         <p class="mb-2 text-sm">
           <span class="pr-2">{{ $t('account.orders.order.total') }}</span>
           <span class="font-semibold">{{
-            formatMoney(order.grandTotal, order.currency)
+            formatMoneyRounded(order.grandTotal, order.currency)
           }}</span>
         </p>
 
