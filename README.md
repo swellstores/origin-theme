@@ -2,8 +2,6 @@
 
 Origin is a universal progressive web app for online stores, using modern JavaScript and front-end tooling. It's intended as a reference example and starter project for building custom storefronts powered by Swell.
 
-> Note: this project is in beta and will have major changes made to support Vue/Nuxt 3.
-
 #### Features
 
 - Built with Nuxt.js (the Vue equivalent of Next.js)
