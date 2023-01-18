@@ -1,3 +1,4 @@
+import { isCouponValid } from '~/utils/coupon';
 import { isGiftCardValid } from '~/utils/giftcards';
 
 export const state = () => ({
@@ -236,7 +237,7 @@ export const actions = {
     commit('setState', { key: 'cartIsUpdating', value: true });
     const defaultError = this.$i18n.t('errors.invalidGiftCard');
     try {
-      if (!isGiftCardValid(code)) {
+      if (!(isGiftCardValid(code) || isCouponValid(code))) {
         throw new Error(defaultError);
       }
       const cart = await this.$swell.cart.applyCoupon(code);
