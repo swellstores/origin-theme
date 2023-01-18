@@ -186,6 +186,7 @@
 <script>
 // Helpers
 import { mapState } from 'vuex';
+import { isCouponValid } from '~/utils/coupon';
 import { isGiftCardValid } from '~/utils/giftcards';
 
 export default {
@@ -254,7 +255,9 @@ export default {
     },
 
     async applyDiscount() {
-      if (!isGiftCardValid(this.couponCode)) {
+      if (
+        !(isGiftCardValid(this.couponCode) || isCouponValid(this.couponCode))
+      ) {
         this.setCouponError(this.$i18n.t('errors.invalidGiftCard'));
       } else {
         const error = await this.$store.dispatch(
