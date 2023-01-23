@@ -33,11 +33,16 @@ export default async function getRoutes(swell) {
     },
   );
 
+  /**
+   * Attempts to get from the object the array under the key, and returns an empty array as a fallback.
+   */
+  const safeArray = (obj, key) => (Array.isArray(obj?.[key]) ? obj[key] : []);
+
   return [defaultLocale, ...secondaryLocales.map(({ code }) => code)]
     .map((locale) => [
-      ...pages[locale],
-      ...categories[locale],
-      ...products[locale],
+      ...safeArray(pages, locale),
+      ...safeArray(categories, locale),
+      ...safeArray(products, locale),
     ])
     .reduce((acc, el) => [...acc, ...el], []);
 }
