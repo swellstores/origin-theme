@@ -184,9 +184,9 @@ export default {
             message: this.$t('account.createAccount.success'),
           });
           this.$router.push(this.localePath('/account/orders/'));
-        } else if (account.email && account.email.code === 'UNIQUE') {
+        } else if (account.email && account.email.code === 'INVALID') {
           this.$store.dispatch('showNotification', {
-            message: this.$t('account.createAccount.alreadyExists'),
+            message: this.$t('account.createAccount.invalidEmail'),
             type: 'error',
           });
         }
