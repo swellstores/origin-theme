@@ -426,7 +426,7 @@
       },
       "create_account": {
         "error": "There was an error creating your account. Please try again later.",
-        "already_exists": "An account already exists under this e-mail address. Please log in.",
+        "invalid_email": "Email address is invalid or already in use. Please try again.",
         "success": "You’ve succesfully created an account.",
         "log_in": "Log in",
         "button": {

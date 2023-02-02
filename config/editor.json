@@ -2540,9 +2540,9 @@
           "localized": true
         },
         {
-          "id": "lang.account.create_account.already_exists",
-          "label": "Account already exists message",
-          "default": "An account already exists under this e-mail address. Please log in.",
+          "id": "lang.account.create_account.invalid_email",
+          "label": "Account already exists or email invalid message",
+          "default": "Email address is invalid or already in use. Please try again.",
           "type": "long_text",
           "localized": true
         },
