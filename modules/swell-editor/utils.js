@@ -14,7 +14,8 @@ import cloneDeep from 'lodash/fp/cloneDeep';
 
 import buildUrl from '@googlicius/build-url';
 
-import { toCamel } from 'swell-js/dist/utils';
+import swell from 'swell-js';
+const { toCamel } = swell.utils;
 
 const settingPaths = {
   headingFont: 'typography.headingFont',

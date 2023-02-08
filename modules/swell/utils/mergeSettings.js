@@ -1,5 +1,7 @@
-import { toCamel } from 'swell-js/dist/utils';
+import swell from 'swell-js';
 import merge from 'deepmerge';
+
+const { toCamel } = swell.utils;
 
 function sortById(a, b) {
   if (!a.id) return 1; // put empty ids in last
