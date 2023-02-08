@@ -86,7 +86,7 @@
         </NuxtLink>
         <!-- Sale price -->
         <template v-if="showPrice">
-          <template v-if="displayPrice > 0">
+          <template v-if="displayPrice !== null && displayPrice >= 0">
             <div v-if="product.origPrice">
               <span class="mr-1 text-sm">{{
                 formatMoney(displayPrice, currency)

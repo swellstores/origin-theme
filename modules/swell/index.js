@@ -1,5 +1,7 @@
 import path from 'path';
 import swell from 'swell-js';
+import 'cross-fetch/polyfill';
+
 import { getGoogleFontConfig } from '../swell-editor/utils';
 import { generateLangFiles } from './lang/generateLangFiles';
 import { getLangSettings } from './lang/utils';

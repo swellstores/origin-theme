@@ -105,9 +105,14 @@
             <div
               class="mt-2 mb-5 flex items-center text-lg font-semibold md:mb-8"
             >
-              <span v-if="variation.price > 0">{{
-                formatMoney(variation.price, currency, false)
-              }}</span>
+              <span
+                v-if="
+                  variation.price !== null &&
+                  variation.price >= 0 &&
+                  variationCurrency === currency
+                "
+                >{{ formatMoney(variation.price, currency, false) }}</span
+              >
               <span v-else>{{
                 $t('products.slug.unavailableInCurrency', {
                   currency,
@@ -192,7 +197,7 @@
             </div>
             <!-- Purchase options -->
             <ProductPurchaseOptions
-              v-if="product.purchaseOptions"
+              v-if="product.purchaseOptions && variationCurrency === currency"
               v-model="selectedPurchaseOption"
               :options="product.purchaseOptions"
               :option-state="selectedOptions"
@@ -237,7 +242,13 @@
                   @click.prevent="addToCart"
                 >
                   <div v-show="!cartIsUpdating">
-                    <template v-if="variation.price > 0">
+                    <template
+                      v-if="
+                        variation.price !== null &&
+                        variation.price >= 0 &&
+                        variationCurrency === currency
+                      "
+                    >
                       <span>{{ $t('products.slug.addToCart') }}</span>
                       <span class="hidden sm:inline">
                         <span
@@ -438,7 +449,7 @@ export default {
 
     if (options && options.subscription && options.subscription.plans) {
       options.subscription.plans = options.subscription.plans.filter(
-        (item) => item && item.price > 0,
+        (item) => item && item.price >= 0,
       );
     }
 
@@ -520,6 +531,19 @@ export default {
       );
     },
 
+    variationCurrency() {
+      if (!this.variation) return this.product.currency;
+
+      const id = this.variation.variantId;
+      const activeVariant = this.variation.variants?.results.find(
+        (variant) => variant.id === id,
+      );
+
+      return (
+        (activeVariant && activeVariant.currency) || this.variation.currency
+      );
+    },
+
     activeVariantOptionIds() {
       if (!this.product?.variants.results.length) return [];
       return this.product?.variants.results.reduce((arr, variant) => {
@@ -537,7 +561,12 @@ export default {
     available() {
       const { stockStatus, stockTracking, stockPurchasable } = this.variation;
 
-      if (!this.bundleItemsAvailable || this.variation.price <= 0) return false;
+      if (
+        !this.bundleItemsAvailable ||
+        this.variation.price < 0 ||
+        this.variationCurrency !== this.currency
+      )
+        return false;
 
       return (
         (stockStatus && stockStatus !== 'out_of_stock') ||

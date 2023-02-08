@@ -1,3 +1,5 @@
+'use strict';
+
 const isProduction = process.env.NODE_ENV === 'production';
 const editorMode = process.env.SWELL_EDITOR === 'true';
 const storeId = process.env.SWELL_STORE_ID;
