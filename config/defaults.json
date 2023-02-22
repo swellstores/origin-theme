@@ -364,7 +364,7 @@
         "title": "Payment methods"
       },
       "login": {
-        "error": "Your email or password was entered incorrectly.",
+        "error": "Your email or password is incorrect, please try again.",
         "success": "You’ve succesfully logged in.",
         "button": {
           "loading_label": "Logging in",
@@ -426,7 +426,7 @@
       },
       "create_account": {
         "error": "There was an error creating your account. Please try again later.",
-        "invalid_email": "Email address is invalid or already in use. Please try again.",
+        "invalid_email": "There was a problem creating your account. Please check your email and password.",
         "success": "You’ve succesfully created an account.",
         "log_in": "Log in",
         "button": {

@@ -2542,7 +2542,7 @@
         {
           "id": "lang.account.create_account.invalid_email",
           "label": "Account already exists or email invalid message",
-          "default": "Email address is invalid or already in use. Please try again.",
+          "default": "There was a problem creating your account. Please check your email and password.",
           "type": "long_text",
           "localized": true
         },
@@ -2839,7 +2839,7 @@
         {
           "id": "lang.account.login.error",
           "label": "Login error message",
-          "default": "Your email or password was entered incorrectly.",
+          "default": "Your email or password is incorrect, please try again.",
           "type": "long_text",
           "localized": true
         },
