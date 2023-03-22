@@ -79,7 +79,7 @@
         class="mt-2 text-error-default"
       >
         <span v-if="!validation.required" class="label-sm text-error-default">{{
-          $t('products.slug.options.required')
+          $t('products._slug.options.required')
         }}</span>
       </div>
     </template>

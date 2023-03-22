@@ -5,9 +5,9 @@ export default (context) => {
   Vue.filter('formatSubscriptionToLabel', function (option) {
     if (!option) return '';
     const { interval, intervalCount } = option.billingSchedule;
-    const intervalLabel = `products.slug.purchaseOptions.interval.${interval}.label`;
+    const intervalLabel = `products._slug.purchaseOptions.interval.${interval}.label`;
     const n = intervalCount > 1 ? intervalCount : undefined;
-    return i18n.t('products.slug.purchaseOptions.interval.productsInterval', {
+    return i18n.t('products._slug.purchaseOptions.interval.productsInterval', {
       count: 1,
       n,
       interval: i18n.tc(intervalLabel, intervalCount),
@@ -18,7 +18,7 @@ export default (context) => {
     if (!option) return '';
     const { interval, intervalCount } = option.billingSchedule;
     const subscriptionInterval = i18n.t(
-      `products.slug.purchaseOptions.interval.${interval}.short`,
+      `products._slug.purchaseOptions.interval.${interval}.short`,
     );
     return `${$swell.currency.format(option.price, {
       code: store.getters.currency,

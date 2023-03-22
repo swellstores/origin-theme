@@ -114,7 +114,7 @@
                 >{{ formatMoney(variation.price, currency, false) }}</span
               >
               <span v-else>{{
-                $t('products.slug.unavailableInCurrency', {
+                $t('products._slug.unavailableInCurrency', {
                   currency,
                 })
               }}</span>
@@ -125,7 +125,7 @@
                 v-if="variation.origPrice"
                 class="ml-3 -mt-2px inline-block h-6 rounded bg-error-faded px-2 text-xs uppercase leading-loose text-error-default"
               >
-                {{ $t('products.slug.save') }}
+                {{ $t('products._slug.save') }}
                 {{
                   formatMoney(
                     variation.origPrice - variation.price,
@@ -143,7 +143,7 @@
                 class="my-8 border-b border-primary-med"
                 :class="{ 'hidden md:block': bundleItems.length > 3 }"
               >
-                <h2 class="text-xl">{{ $t('products.slug.bundle.title') }}</h2>
+                <h2 class="text-xl">{{ $t('products._slug.bundle.title') }}</h2>
 
                 <ProductBundleItem
                   v-for="(item, index) in bundleItems"
@@ -160,7 +160,7 @@
               <div v-if="bundleItems.length > 3" class="block md:hidden">
                 <AccordionItem
                   ref="bundleItemAccordion"
-                  :heading="$t('products.slug.bundle.title')"
+                  :heading="$t('products._slug.bundle.title')"
                 >
                   <ProductBundleItem
                     v-for="(item, index) in bundleItems"
@@ -249,7 +249,7 @@
                         variationCurrency === currency
                       "
                     >
-                      <span>{{ $t('products.slug.addToCart') }}</span>
+                      <span>{{ $t('products._slug.addToCart') }}</span>
                       <span class="hidden sm:inline">
                         <span
                           class="mx-1 mb-1 inline-block w-5 border-b border-primary-lightest"
@@ -295,7 +295,7 @@
                     </template>
                     <template v-else>
                       <span>{{
-                        $t('products.slug.unavailableInCurrencyAddToCart', {
+                        $t('products._slug.unavailableInCurrencyAddToCart', {
                           currency,
                         })
                       }}</span>
@@ -303,7 +303,7 @@
                   </div>
                   <div v-show="cartIsUpdating">
                     <div class="spinner absolute inset-0 mt-3" />
-                    <span>{{ $t('products.slug.updating') }}</span>
+                    <span>{{ $t('products._slug.updating') }}</span>
                   </div>
                 </button>
               </div>
@@ -338,7 +338,7 @@
             <!-- Share product -->
             <div v-if="enableSocialSharing" class="flex-no-wrap flex py-3">
               <strong class="w-1/4 pr-6 text-primary-darkest">{{
-                $t('products.slug.share')
+                $t('products._slug.share')
               }}</strong>
               <div class="flex w-3/4 justify-end">
                 <SocialShare
@@ -388,7 +388,7 @@
     </section>
 
     <section v-if="upsellProducts" class="container mb-12">
-      <h2 class="mb-12">{{ $t('products.slug.upSell.title') }}</h2>
+      <h2 class="mb-12">{{ $t('products._slug.upSell.title') }}</h2>
       <ProductPreviews
         :products="upsellProducts"
         :slider="true"
@@ -610,7 +610,7 @@ export default {
     subscriptionInterval() {
       if (!this.intervalData) return;
       return this.$t(
-        `products.slug.purchaseOptions.interval.${this.intervalData.interval}.short`,
+        `products._slug.purchaseOptions.interval.${this.intervalData.interval}.short`,
       );
     },
 

@@ -113,7 +113,7 @@
                     :class="{ 'hidden md:block': bundleItems.length > 3 }"
                   >
                     <h2 class="text-xl">
-                      {{ $t('products.slug.bundle.title') }}
+                      {{ $t('products._slug.bundle.title') }}
                     </h2>
 
                     <ProductBundleItem
@@ -131,7 +131,7 @@
                   <div v-if="bundleItems.length > 3" class="block md:hidden">
                     <AccordionItem
                       ref="bundleItemAccordion"
-                      :heading="$t('products.slug.bundle.title')"
+                      :heading="$t('products._slug.bundle.title')"
                     >
                       <ProductBundleItem
                         v-for="(item, index) in bundleItems"
@@ -238,7 +238,7 @@
                 >
                   <div v-show="!cartIsUpdating">
                     <template v-if="product.price !== null">
-                      <span>{{ $t('products.slug.addToCart') }}</span>
+                      <span>{{ $t('products._slug.addToCart') }}</span>
                       <span
                         class="mx-1 mb-1 inline-block w-5 border-b border-primary-lightest"
                       />
@@ -270,7 +270,7 @@
                     </template>
                     <template v-else>
                       <span>{{
-                        $t('products.slug.addToCart.unavailableInCurrency', {
+                        $t('products._slug.addToCart.unavailableInCurrency', {
                           currency,
                         })
                       }}</span>
@@ -279,7 +279,7 @@
                   <div v-show="cartIsUpdating" class>
                     <div class="spinner absolute inset-0 mt-3" />
                     <span class="absolute inset-0 mt-5">{{
-                      $t('products.slug.updating')
+                      $t('products._slug.updating')
                     }}</span>
                   </div>
                 </button>
@@ -513,7 +513,7 @@ export default {
     subscriptionInterval() {
       if (!this.intervalData) return;
       return this.$t(
-        `products.slug.purchaseOptions.interval.${this.intervalData.interval}.short`,
+        `products._slug.purchaseOptions.interval.${this.intervalData.interval}.short`,
       );
     },
   },

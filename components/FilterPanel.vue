@@ -12,7 +12,7 @@
         class="panel absolute left-0 h-full w-full overflow-scroll bg-primary-lightest md:max-w-112"
       >
         <div class="flex items-center border-b border-primary-light p-6">
-          <h3>{{ $t('categories.slug.refine') }}</h3>
+          <h3>{{ $t('categories._slug.refine') }}</h3>
           <button class="ml-auto" @click="$emit('click-close')">
             <BaseIcon icon="uil:times" size="lg" />
           </button>
@@ -26,7 +26,7 @@
           <div class="flex items-center justify-between">
             <span class="text-primary-dark">{{ activeFilterCountLabel }}</span>
             <button class="font-semibold" @click="resetFilters">
-              {{ $t('categories.slug.clear') }}
+              {{ $t('categories._slug.clear') }}
             </button>
           </div>
 
@@ -126,7 +126,7 @@
           <BaseButton
             appearance="dark"
             size="lg"
-            :label="$t('categories.slug.apply')"
+            :label="$t('categories._slug.apply')"
             @click.native="applyFilters"
           />
         </div>

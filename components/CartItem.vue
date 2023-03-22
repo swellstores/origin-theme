@@ -210,7 +210,7 @@ export default {
     subscriptionInterval() {
       if (this.billingSchedule) {
         return this.$t(
-          `products.slug.purchaseOptions.interval.${this.billingSchedule.interval}.short`,
+          `products._slug.purchaseOptions.interval.${this.billingSchedule.interval}.short`,
         );
       }
       return null;

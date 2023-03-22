@@ -238,7 +238,7 @@ export default {
         this.label = this.$t('products.preview.quickAdd.quickView');
         this.flow = 'quick-view';
       } else if (!this.isPurchaseable) {
-        this.label = this.$t('products.slug.stockStatus.outOfStock.label');
+        this.label = this.$t('products._slug.stockStatus.outOfStock.label');
         this.flow = 'out-of-stock';
       } else if (optionInputs.length > 0 && optionInputs.length < 3) {
         this.label = this.$t('products.preview.quickAdd.quickAdd');

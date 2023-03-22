@@ -60,7 +60,7 @@
         v-if="variation && !available"
         class="label-sm mt-4 block text-error-default"
       >
-        {{ $t('products.slug.bundle.outOfStock') }}
+        {{ $t('products._slug.bundle.outOfStock') }}
       </span>
     </div>
   </div>

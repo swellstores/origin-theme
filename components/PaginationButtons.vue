@@ -10,10 +10,12 @@
         :to="localePath({ query: { ...$route.query, page: prevPage } })"
         class="btn sm:w-32"
       >
-        {{ $t('categories.slug.pagination.previous') }}
+        {{ $t('categories._slug.pagination.previous') }}
       </NuxtLink>
       <div class="text-center">
-        {{ $t('categories.slug.pagination.page', { currentPage, pagesCount }) }}
+        {{
+          $t('categories._slug.pagination.page', { currentPage, pagesCount })
+        }}
       </div>
       <NuxtLink
         :tabindex="nextPage ? 0 : -1"
@@ -21,7 +23,7 @@
         :to="localePath({ query: { ...$route.query, page: nextPage } })"
         class="btn sm:w-32"
       >
-        {{ $t('categories.slug.pagination.next') }}
+        {{ $t('categories._slug.pagination.next') }}
       </NuxtLink>
     </aside>
 
@@ -31,7 +33,7 @@
           <NuxtLink
             v-if="el !== 'break'"
             :key="index"
-            :class="{ disabled: currentPage == el }"
+            :class="{ disabled: currentPage === el }"
             :to="localePath({ query: { page: el } })"
             class="btn h-auto px-3 py-2"
           >
@@ -45,7 +47,9 @@
       </div>
 
       <div class="text-center">
-        {{ $t('categories.slug.pagination.page', { currentPage, pagesCount }) }}
+        {{
+          $t('categories._slug.pagination.page', { currentPage, pagesCount })
+        }}
       </div>
     </div>
   </div>
@@ -57,6 +61,14 @@ export default {
 
   props: {
     currentPage: {
+      type: Number,
+      default: 1,
+    },
+    count: {
+      type: Number,
+      default: 1,
+    },
+    limit: {
       type: Number,
       default: 1,
     },
@@ -72,6 +84,10 @@ export default {
   },
 
   computed: {
+    pagesCount() {
+      const { count, limit } = this;
+      return Math.ceil((count || 1) / (limit || 1));
+    },
     pageButtons() {
       const pages = [...Array(this.pagesCount).keys()].map((x) => ++x);
 
@@ -96,9 +112,6 @@ export default {
       }
 
       return pages;
-    },
-    pagesCount() {
-      return Object.keys(this.pages).length;
     },
     prevPage() {
       return this.currentPage > 1 ? this.currentPage - 1 : 0;

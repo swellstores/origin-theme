@@ -12,7 +12,7 @@
         v-if="showStockLevel && stockLevel > 0 && bundleItemsAvailable"
         class="label-xs-bold text-primary-dark"
       >
-        • {{ $t('products.slug.stockRemaining', { n: stockLevel }) }}
+        • {{ $t('products._slug.stockRemaining', { n: stockLevel }) }}
       </span>
     </div>
     <div class>
@@ -32,28 +32,28 @@ import get from 'lodash/get';
 const statuses = {
   custom: {
     color: 'warning',
-    label: 'products.slug.stockStatus.custom.label',
-    message: 'products.slug.stockStatus.custom.message',
+    label: 'products._slug.stockStatus.custom.label',
+    message: 'products._slug.stockStatus.custom.message',
   },
   in_stock: {
     color: 'ok',
-    label: 'products.slug.stockStatus.inStock.label',
-    message: 'products.slug.stockStatus.inStock.message',
+    label: 'products._slug.stockStatus.inStock.label',
+    message: 'products._slug.stockStatus.inStock.message',
   },
   limited_availability: {
     color: 'warning',
-    label: 'products.slug.stockStatus.limitedAvailability.label',
-    message: 'products.slug.stockStatus.limitedAvailability.message',
+    label: 'products._slug.stockStatus.limitedAvailability.label',
+    message: 'products._slug.stockStatus.limitedAvailability.message',
   },
   out_of_stock: {
     color: 'error',
-    label: 'products.slug.stockStatus.outOfStock.label',
-    message: 'products.slug.stockStatus.outOfStock.message',
+    label: 'products._slug.stockStatus.outOfStock.label',
+    message: 'products._slug.stockStatus.outOfStock.message',
   },
   bundle_items_unavailable: {
     color: 'error',
-    label: 'products.slug.stockStatus.bundleItemsUnavailable.label',
-    message: 'products.slug.stockStatus.bundleItemsUnavailable.message',
+    label: 'products._slug.stockStatus.bundleItemsUnavailable.label',
+    message: 'products._slug.stockStatus.bundleItemsUnavailable.message',
   },
 };
 

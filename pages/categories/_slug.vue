@@ -79,19 +79,19 @@
           <div v-show="!activeFilterCount">
             <BaseIcon icon="uil:filter" />
           </div>
-          <span class="ml-1">{{ $t('categories.slug.filters') }}</span>
+          <span class="ml-1">{{ $t('categories._slug.filters') }}</span>
         </button>
         <span class="ml-1 hidden sm:inline">{{
           $fetchState.pending
             ? ''
-            : $tc('categories.slug.productsCount', productsCount, {
+            : $tc('categories._slug.productsCount', productsCount, {
                 count: productsCount,
               })
         }}</span>
         <!-- Sort -->
         <div class="ml-auto">
           <div class="flex items-center">
-            <span class="pr-2">{{ $t('categories.slug.sort') }}&nbsp;</span>
+            <span class="pr-2">{{ $t('categories._slug.sort') }}&nbsp;</span>
             <InputDropdown
               class="w-40"
               :options="sortModes"
@@ -112,17 +112,17 @@
         v-else-if="activeFilterCount > 0"
         class="rounded bg-primary-lighter py-16 text-center"
       >
-        <p>{{ $t('categories.slug.filterProductsNotFound') }}</p>
+        <p>{{ $t('categories._slug.filterProductsNotFound') }}</p>
         <BaseButton
           class="mt-4"
           appearance="light"
           fit="static"
-          :label="$t('categories.slug.editFilters')"
+          :label="$t('categories._slug.editFilters')"
           @click.native="toggleFilterModal"
         />
       </div>
       <div v-else class="rounded bg-primary-lighter py-16 text-center">
-        <p>{{ $t('categories.slug.categoryProductsNotFound') }}</p>
+        <p>{{ $t('categories._slug.categoryProductsNotFound') }}</p>
       </div>
 
       <!-- Category pagination controls -->
@@ -130,6 +130,8 @@
         <PaginationButtons
           :current-page="page"
           :pages="pages"
+          :count="productsCount"
+          :limit="limit"
           :appearance="paginationStyle"
         />
       </div>
@@ -242,19 +244,19 @@ export default {
     this.sortModes = [
       {
         value: '',
-        label: this.$t('categories.slug.sortModes.latest'),
+        label: this.$t('categories._slug.sortModes.latest'),
       },
       {
         value: 'popularity',
-        label: this.$t('categories.slug.sortModes.popularity'),
+        label: this.$t('categories._slug.sortModes.popularity'),
       },
       {
         value: 'price_asc',
-        label: this.$t('categories.slug.sortModes.priceAsc'),
+        label: this.$t('categories._slug.sortModes.priceAsc'),
       },
       {
         value: 'price_desc',
-        label: this.$t('categories.slug.sortModes.priceDesc'),
+        label: this.$t('categories._slug.sortModes.priceDesc'),
       },
     ];
   },

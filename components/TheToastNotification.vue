@@ -232,7 +232,7 @@ export default {
         const { interval, intervalCount } = plan.billingSchedule;
 
         const subscriptionInterval = this.$t(
-          `products.slug.purchaseOptions.interval.${interval}.short`,
+          `products._slug.purchaseOptions.interval.${interval}.short`,
         );
 
         return `${this.formatMoney(product.price, this.currency)}/${
@@ -266,7 +266,7 @@ export default {
     subscriptionInterval() {
       if (!this.billingSchedule) return null;
       return this.$t(
-        `products.slug.purchaseOptions.interval.${this.billingSchedule.interval}.short`,
+        `products._slug.purchaseOptions.interval.${this.billingSchedule.interval}.short`,
       );
     },
 

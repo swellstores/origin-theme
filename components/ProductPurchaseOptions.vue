@@ -21,7 +21,7 @@
       >
         <span>{{
           options.standard.name ||
-          $t('products.slug.purchaseOptions.standard.defaultLabel')
+          $t('products._slug.purchaseOptions.standard.defaultLabel')
         }}</span>
         <span class="ml-auto inline-block font-semibold">
           <span>
@@ -74,7 +74,7 @@
             class="mr-4 font-normal"
             >{{
               $tc(
-                'products.slug.purchaseOptions.interval.trialDays',
+                'products._slug.purchaseOptions.interval.trialDays',
                 selectedSubscription.billingSchedule.trialDays,
               )
             }}</span
@@ -118,7 +118,7 @@
           <div class="ml-auto">
             <span v-if="option.billingSchedule.trialDays" class="mr-4">{{
               $tc(
-                'products.slug.purchaseOptions.interval.trialDays',
+                'products._slug.purchaseOptions.interval.trialDays',
                 option.billingSchedule.trialDays,
               )
             }}</span>
@@ -239,10 +239,10 @@ export default {
 
     formatSubscriptionLabel(option) {
       const { interval, intervalCount } = option.billingSchedule;
-      const intervalLabel = `products.slug.purchaseOptions.interval.${interval}.label`;
+      const intervalLabel = `products._slug.purchaseOptions.interval.${interval}.label`;
       const n = intervalCount > 1 ? intervalCount : undefined;
       return this.$t(
-        'products.slug.purchaseOptions.interval.productsInterval',
+        'products._slug.purchaseOptions.interval.productsInterval',
         {
           count: undefined, // use count when supporting different quantities per interval
           n,
@@ -254,7 +254,7 @@ export default {
     formatSubscriptionPrice(option) {
       const { interval, intervalCount } = option.billingSchedule;
       const subscriptionInterval = this.$t(
-        `products.slug.purchaseOptions.interval.${interval}.short`,
+        `products._slug.purchaseOptions.interval.${interval}.short`,
       );
 
       const matchingVariation = this.$swell.products.variation(
