@@ -296,12 +296,13 @@
 
 <script>
 // Helpers
-import get from 'lodash/get';
-import flatten from 'lodash/flatten';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
+import get from 'lodash/get';
+
 import { listVisibleOptions } from '~/modules/swell/utils/listVisibleOptions';
+import { getVariantOptionIds } from '~/modules/swell/utils/getVariantOptionIds';
 import { getInitialSelection } from '~/utils/purchaseOptions';
 
 export default {
@@ -400,11 +401,7 @@ export default {
     },
 
     activeVariantOptionIds() {
-      if (!this.product?.variants.results.length) return [];
-      return this.product?.variants.results.reduce((arr, variant) => {
-        arr.push(variant.optionValueIds);
-        return arr;
-      }, []);
+      return getVariantOptionIds(this.product?.variants?.results);
     },
 
     bundleItems() {
@@ -464,7 +461,7 @@ export default {
         // If this is the only singular option, only show values that will result in an active variant
         if (hasSingleSelectOption) {
           const activeValues = option.values.filter((value) =>
-            flatten(this.activeVariantOptionIds).includes(value.id),
+            this.activeVariantOptionIds.has(value.id),
           );
           option.values = activeValues;
         }
@@ -563,7 +560,7 @@ export default {
             // If this is the only select option, only include values that result in an active variant
             if (isSingleSelectOption) {
               const activeValues = values.filter((value) =>
-                flatten(this.activeVariantOptionIds).includes(value.id),
+                this.activeVariantOptionIds.has(value.id),
               );
               optionsAcc[id] = { ...option, value: activeValues[0].name };
             } else {
