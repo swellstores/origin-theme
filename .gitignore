@@ -96,3 +96,6 @@ static/lang/*.json
 config/settings.json
 config/menus.json
 config/styles.json
+
+# asdf
+.tool-versions
