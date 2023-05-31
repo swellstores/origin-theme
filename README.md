@@ -67,8 +67,10 @@ Add your Swell store ID, public key and url to `.env`.
 
 ```
 SWELL_STORE_ID=your_store
-SWELL_PUBLIC_KEY=GET_YOUR_PK_FROM_THE_ADMIN_DASHBOARD
+SWELL_PUBLIC_KEY=Admin Dashboard > Developer > API keys > Public keys
 SWELL_STORE_URL=https://your_store.swell.store
+SWELL_SECRET_KEY=Admin Dashboard > Developer > API keys > Secret keys
+SWELL_STOREFRONT_ID=Admin Dashboard > Storefronts > Your storefront > Developer
 ```
 
 ### Installation
