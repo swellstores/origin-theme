@@ -83,8 +83,8 @@
   "scripts": {
     "dev": "nuxt",
     "watch": "nuxt",
-    "build": "nuxt build",
-    "generate": "nuxt generate",
+    "build": "yarn sync && nuxt build",
+    "generate": "yarn sync && nuxt generate",
     "start": "nuxt start",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint:style": "stylelint \"**/*.{css,scss,sass,html,vue}\" --ignore-path .gitignore",
@@ -92,7 +92,7 @@
     "lint": "yarn lint:js && yarn lint:style && yarn lint:prettier",
     "lintfix:prettier": "prettier --write --list-different .",
     "lintfix": "prettier --write --list-different . && yarn lint:js --fix && yarn lint:style --fix",
-    "prepare": "husky install && yarn sync",
+    "prepare": "husky install",
     "test": "jest",
     "sync": "node -r dotenv/config ./build-utils/sync-storefront.mjs"
   }
