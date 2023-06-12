@@ -13,6 +13,12 @@ export default () => {
 
     build: {
       analyze: !isProduction,
+      hotMiddleware: {
+        client: {
+          // Turn off client overlay when errors are present
+          overlay: false,
+        },
+      },
     },
 
     vue: {
