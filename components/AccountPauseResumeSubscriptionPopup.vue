@@ -17,8 +17,8 @@
             <h3>
               {{
                 paused
-                  ? $t('account.subscriptions.id.popup.resume.title')
-                  : $t('account.subscriptions.id.popup.pause.title')
+                  ? $t('account.subscriptions._id.popup.resume.title')
+                  : $t('account.subscriptions._id.popup.pause.title')
               }}
             </h3>
             <button class="ml-auto" @click.prevent="$emit('click-close')">
@@ -28,8 +28,8 @@
           <p class="pb-6">
             {{
               paused
-                ? $t('account.subscriptions.id.popup.resume.message')
-                : $t('account.subscriptions.id.popup.pause.message')
+                ? $t('account.subscriptions._id.popup.resume.message')
+                : $t('account.subscriptions._id.popup.pause.message')
             }}
           </p>
 
@@ -54,8 +54,8 @@
                 ></span>
                 {{
                   paused
-                    ? $t('account.subscriptions.id.popup.resume.resumeNow')
-                    : $t('account.subscriptions.id.popup.pause.pauseNow')
+                    ? $t('account.subscriptions._id.popup.resume.resumeNow')
+                    : $t('account.subscriptions._id.popup.pause.pauseNow')
                 }}</label
               >
             </div>
@@ -80,8 +80,8 @@
                 ></span>
                 {{
                   paused
-                    ? $t('account.subscriptions.id.popup.resume.chooseDate')
-                    : $t('account.subscriptions.id.popup.pause.skipCycle')
+                    ? $t('account.subscriptions._id.popup.resume.chooseDate')
+                    : $t('account.subscriptions._id.popup.pause.skipCycle')
                 }}
               </label>
             </div>
@@ -95,8 +95,8 @@
               :label="confirmButtonLabel"
               :loading-label="
                 paused
-                  ? $t('account.subscriptions.id.popup.resume.loading')
-                  : $t('account.subscriptions.id.popup.pause.loading')
+                  ? $t('account.subscriptions._id.popup.resume.loading')
+                  : $t('account.subscriptions._id.popup.pause.loading')
               "
               :is-loading="isLoading"
               @click.native="accept()"
@@ -107,8 +107,8 @@
               appearance="light"
               :label="
                 paused
-                  ? $t('account.subscriptions.id.popup.resume.no')
-                  : $t('account.subscriptions.id.popup.pause.no')
+                  ? $t('account.subscriptions._id.popup.resume.no')
+                  : $t('account.subscriptions._id.popup.pause.no')
               "
               @click.native="$emit('click-close')"
             />
@@ -150,10 +150,10 @@ export default {
 
     confirmButtonLabel() {
       return this.paused && this.interval === 'set'
-        ? this.$t('account.subscriptions.id.popup.resume.continue')
+        ? this.$t('account.subscriptions._id.popup.resume.continue')
         : this.paused
-        ? this.$t('account.subscriptions.id.popup.resume.yes')
-        : this.$t('account.subscriptions.id.popup.pause.yes');
+        ? this.$t('account.subscriptions._id.popup.resume.yes')
+        : this.$t('account.subscriptions._id.popup.pause.yes');
     },
   },
 

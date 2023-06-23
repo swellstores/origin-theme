@@ -15,14 +15,14 @@
           class="mb-6 flex cursor-pointer items-center"
         >
           <BaseIcon icon="uil:angle-left" size="sm" /><span class="ml-1">
-            {{ $t('account.subscriptions.id.edit.backToSubscription') }}
+            {{ $t('account.subscriptions._id.edit.backToSubscription') }}
             {{ subscriptionName }}
           </span>
         </NuxtLink>
 
         <div class="mb-6">
           <h2 class="mb-2 text-2xl">
-            {{ $t('account.subscriptions.id.edit.title') }}
+            {{ $t('account.subscriptions._id.edit.title') }}
           </h2>
 
           <div class="mb-6">
@@ -58,7 +58,7 @@
           :href="'mailto:' + supportEmail"
           class="btn light mb-6 md:w-auto"
         >
-          {{ $t('account.subscriptions.id.edit.contact') }}
+          {{ $t('account.subscriptions._id.edit.contact') }}
         </a>
 
         <!-- Edit frequency of plan -->
@@ -67,13 +67,13 @@
           class="mb-6"
           fit="auto"
           appearance="light"
-          :label="$t('account.subscriptions.id.edit.changeFrequency')"
+          :label="$t('account.subscriptions._id.edit.changeFrequency')"
           @click.native="changeFrequencyPopupisActive = true"
         />
 
         <!-- Plan items -->
         <span class="label-xs-bold-faded block">{{
-          $t('account.subscriptions.id.edit.plan')
+          $t('account.subscriptions._id.edit.plan')
         }}</span>
 
         <div class="mb-6 border-b border-primary-light">
@@ -86,7 +86,7 @@
               <h4 class="pb-2">{{ subscription.product.name }}</h4>
               <p v-if="subscription.quantity > 1">
                 {{
-                  $tc('account.orders.id.quantity', subscription.quantity, {
+                  $tc('account.orders._id.quantity', subscription.quantity, {
                     count: subscription.quantity,
                   })
                 }}
@@ -113,7 +113,7 @@
             class="mb-6 block"
             fit="auto"
             appearance="light"
-            :label="$t('account.subscriptions.id.edit.changeOptions')"
+            :label="$t('account.subscriptions._id.edit.changeOptions')"
             @click.native="changeOptionsPopupisActive = true"
           />
         </div>
@@ -124,7 +124,7 @@
           class="mb-6 block"
           fit="auto"
           appearance="light-error"
-          :label="$t('account.subscriptions.id.cancelSubscription')"
+          :label="$t('account.subscriptions._id.cancelSubscription')"
           @click.native="cancelPopupIsActive = true"
         />
       </div>
@@ -133,17 +133,17 @@
       <AccountEditFrequencyPopup
         v-if="changeFrequencyPopupisActive"
         :heading="
-          $t('account.subscriptions.id.edit.popup.changeFrequency.title')
+          $t('account.subscriptions._id.edit.popup.changeFrequency.title')
         "
-        :text="$t('account.subscriptions.id.edit.popup.changeFrequency.text')"
+        :text="$t('account.subscriptions._id.edit.popup.changeFrequency.text')"
         :accept-label="
-          $t('account.subscriptions.id.edit.popup.changeFrequency.yes')
+          $t('account.subscriptions._id.edit.popup.changeFrequency.yes')
         "
         :refuse-label="
-          $t('account.subscriptions.id.edit.popup.changeFrequency.no')
+          $t('account.subscriptions._id.edit.popup.changeFrequency.no')
         "
         :loading-label="
-          $t('account.subscriptions.id.edit.popup.changeFrequency.loading')
+          $t('account.subscriptions._id.edit.popup.changeFrequency.loading')
         "
         :plan-id="subscription.planId"
         :options="subscriptionOptions"
@@ -154,15 +154,17 @@
 
       <AccountEditOptionsPopup
         v-if="changeOptionsPopupisActive"
-        :heading="$t('account.subscriptions.id.edit.popup.changeOptions.title')"
+        :heading="
+          $t('account.subscriptions._id.edit.popup.changeOptions.title')
+        "
         :accept-label="
-          $t('account.subscriptions.id.edit.popup.changeOptions.yes')
+          $t('account.subscriptions._id.edit.popup.changeOptions.yes')
         "
         :refuse-label="
-          $t('account.subscriptions.id.edit.popup.changeOptions.no')
+          $t('account.subscriptions._id.edit.popup.changeOptions.no')
         "
         :loading-label="
-          $t('account.subscriptions.id.edit.popup.changeOptions.loading')
+          $t('account.subscriptions._id.edit.popup.changeOptions.loading')
         "
         :options="planOptions"
         :option-state="optionState"
@@ -174,12 +176,12 @@
 
       <AccountConfirmationPopup
         v-if="cancelPopupIsActive"
-        :heading="$t('account.subscriptions.id.popup.cancel.title')"
-        :prompt-message="$t('account.subscriptions.id.popup.cancel.text')"
-        :accept-label="$t('account.subscriptions.id.popup.cancel.yes')"
-        :refuse-label="$t('account.subscriptions.id.popup.cancel.no')"
+        :heading="$t('account.subscriptions._id.popup.cancel.title')"
+        :prompt-message="$t('account.subscriptions._id.popup.cancel.text')"
+        :accept-label="$t('account.subscriptions._id.popup.cancel.yes')"
+        :refuse-label="$t('account.subscriptions._id.popup.cancel.no')"
         :is-loading="isCanceling"
-        :loading-label="$t('account.subscriptions.id.popup.cancel.loading')"
+        :loading-label="$t('account.subscriptions._id.popup.cancel.loading')"
         @accept="cancelSubscription"
         @click-close="cancelPopupIsActive = false"
       />
@@ -332,7 +334,7 @@ export default {
         this.cancelPopupIsActive = false;
 
         this.$store.dispatch('showNotification', {
-          message: this.$t('account.subscriptions.id.popup.cancel.success'),
+          message: this.$t('account.subscriptions._id.popup.cancel.success'),
           type: 'success',
         });
         this.$fetch();
@@ -363,10 +365,10 @@ export default {
           message:
             type === 'frequency'
               ? this.$t(
-                  'account.subscriptions.id.edit.popup.changeFrequency.success',
+                  'account.subscriptions._id.edit.popup.changeFrequency.success',
                 )
               : this.$t(
-                  'account.subscriptions.id.edit.popup.changeOptions.success',
+                  'account.subscriptions._id.edit.popup.changeOptions.success',
                 ),
           type: 'success',
         });

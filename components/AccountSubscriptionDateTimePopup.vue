@@ -13,15 +13,15 @@
       >
         <div class="container h-full">
           <h3 class="pb-2">
-            {{ $t('account.subscriptions.id.popup.chooseDate.title') }}
+            {{ $t('account.subscriptions._id.popup.chooseDate.title') }}
           </h3>
           <p class="pb-6">
-            {{ $t('account.subscriptions.id.popup.chooseDate.message') }}
+            {{ $t('account.subscriptions._id.popup.chooseDate.message') }}
           </p>
 
           <!-- Options -->
           <label class="label-xs-bold-faded mb-2 block">{{
-            $t('account.subscriptions.id.popup.chooseDate.date.label')
+            $t('account.subscriptions._id.popup.chooseDate.date.label')
           }}</label>
           <div class="mb-6">
             <div class="relative mb-2">
@@ -41,7 +41,7 @@
                 v-if="!$v.date.required"
                 class="label-sm mt-2 text-error-default"
                 >{{
-                  $t('account.subscriptions.id.popup.chooseDate.date.required')
+                  $t('account.subscriptions._id.popup.chooseDate.date.required')
                 }}</span
               >
 
@@ -49,14 +49,14 @@
                 v-else-if="!$v.date.validDate"
                 class="label-sm mt-2 text-error-default"
                 >{{
-                  $t('account.subscriptions.id.popup.chooseDate.date.valid')
+                  $t('account.subscriptions._id.popup.chooseDate.date.valid')
                 }}</span
               >
             </template>
           </div>
 
           <label class="label-xs-bold-faded mb-2 block">{{
-            $t('account.subscriptions.id.popup.chooseDate.time.label')
+            $t('account.subscriptions._id.popup.chooseDate.time.label')
           }}</label>
           <div class="mb-6">
             <div class="relative mb-2">
@@ -75,7 +75,7 @@
                 v-if="!$v.time.required"
                 class="label-sm mt-2 text-error-default"
                 >{{
-                  $t('account.subscriptions.id.popup.chooseDate.time.required')
+                  $t('account.subscriptions._id.popup.chooseDate.time.required')
                 }}</span
               >
 
@@ -83,7 +83,7 @@
                 v-else-if="!$v.time.validDateTime"
                 class="label-sm mt-2 text-error-default"
                 >{{
-                  $t('account.subscriptions.id.popup.chooseDate.time.valid')
+                  $t('account.subscriptions._id.popup.chooseDate.time.valid')
                 }}</span
               >
             </template>
@@ -103,9 +103,9 @@
           <BaseButton
             class="mt-4"
             appearance="dark"
-            :label="$t('account.subscriptions.id.popup.chooseDate.yes')"
+            :label="$t('account.subscriptions._id.popup.chooseDate.yes')"
             :loading-label="
-              $t('account.subscriptions.id.popup.chooseDate.loading')
+              $t('account.subscriptions._id.popup.chooseDate.loading')
             "
             :is-loading="isLoading"
             @click.native="resumeOnDate"
@@ -114,7 +114,7 @@
           <BaseButton
             class="mt-4"
             appearance="light"
-            :label="$t('account.subscriptions.id.popup.chooseDate.no')"
+            :label="$t('account.subscriptions._id.popup.chooseDate.no')"
             @click.native="$emit('click-close')"
           />
         </div>
