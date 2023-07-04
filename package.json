@@ -11,7 +11,7 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": ">=16.20.0",
+    "node": "16.20",
     "npm": ">=8.19.4"
   },
   "dependencies": {
