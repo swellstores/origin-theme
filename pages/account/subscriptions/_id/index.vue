@@ -7,7 +7,7 @@
         class="mb-6 flex cursor-pointer items-center"
       >
         <BaseIcon icon="uil:angle-left" size="sm" /><span class="ml-1">
-          {{ $t('account.subscriptions.id.backToSubscriptions') }}
+          {{ $t('account.subscriptions._id.backToSubscriptions') }}
         </span>
       </NuxtLink>
     </div>
@@ -41,7 +41,7 @@
         <!-- Plan items -->
         <template v-if="planItems">
           <span class="label-xs-bold-faded">{{
-            $t('account.subscriptions.id.planItems')
+            $t('account.subscriptions._id.planItems')
           }}</span>
 
           <div class="md:col-gap-4 mb-6 md:grid md:grid-cols-2">
@@ -60,7 +60,7 @@
                 </h4>
                 <p v-if="item.quantity > 1" class="text-sm text-primary-darker">
                   {{
-                    $tc('account.orders.id.quantity', item.quantity, {
+                    $tc('account.orders._id.quantity', item.quantity, {
                       count: item.quantity,
                     })
                   }}
@@ -79,7 +79,7 @@
 
         <template v-else>
           <span class="label-xs-bold-faded">{{
-            $t('account.subscriptions.id.plan')
+            $t('account.subscriptions._id.plan')
           }}</span>
 
           <div class="md:col-gap-4 mb-6 md:grid md:grid-cols-2">
@@ -121,7 +121,7 @@
                   class="text-sm text-primary-darker"
                 >
                   {{
-                    $tc('account.orders.id.quantity', subscription.quantity, {
+                    $tc('account.orders._id.quantity', subscription.quantity, {
                       count: subscription.quantity,
                     })
                   }}
@@ -144,7 +144,7 @@
             :class="{ 'border-b border-primary-med': status !== 'canceled' }"
           >
             <div class="flex pb-2">
-              <span>{{ $t('account.subscriptions.id.planTotal') }}</span>
+              <span>{{ $t('account.subscriptions._id.planTotal') }}</span>
               <span class="ml-auto">
                 {{
                   formatMoneyRounded(
@@ -171,10 +171,10 @@
                 v-if="subscriptionOrder.subscriptionDelivery"
                 class="flex pb-2"
               >
-                <span>{{ $t('account.subscriptions.id.shipping') }}</span>
+                <span>{{ $t('account.subscriptions._id.shipping') }}</span>
                 <span class="ml-auto">{{
                   subscriptionOrder.shipmentPrice === 0
-                    ? $t('account.subscriptions.id.freeShipping')
+                    ? $t('account.subscriptions._id.freeShipping')
                     : formatMoney(
                         subscriptionOrder.shipmentPrice,
                         subscriptionOrder.currency,
@@ -183,7 +183,7 @@
               </div>
 
               <div class="flex text-lg font-semibold">
-                <span>{{ $t('account.subscriptions.id.total') }}</span>
+                <span>{{ $t('account.subscriptions._id.total') }}</span>
                 <span class="ml-auto">{{
                   formatMoneyRounded(
                     subscriptionOrder.grandTotal,
@@ -198,13 +198,13 @@
             <div class="mb-2 flex items-center">
               <BaseIcon icon="uil:calender" size="sm" class="mr-2" />
               <p v-if="status === 'trial'">
-                {{ $t('account.subscriptions.id.trialEnds') }}
+                {{ $t('account.subscriptions._id.trialEnds') }}
                 <span class="label-sm-bold">{{
                   formatDate(subscription.dateTrialEnd)
                 }}</span>
               </p>
               <p v-else-if="status === 'active'">
-                {{ $t('account.subscriptions.id.nextOrder') }}
+                {{ $t('account.subscriptions._id.nextOrder') }}
                 <span class="label-sm-bold">{{
                   formatDate(subscription.datePeriodEnd)
                 }}</span>
@@ -214,7 +214,7 @@
             <div class="flex items-center">
               <BaseIcon icon="uil:sync" size="sm" class="mr-2" />
               <p>
-                {{ $t('account.subscriptions.id.planRenews') }}
+                {{ $t('account.subscriptions._id.planRenews') }}
                 <span class="label-sm-bold">{{ subscription.interval }}</span>
               </p>
             </div>
@@ -224,7 +224,7 @@
               class="mt-6 block w-full"
               fit="auto"
               appearance="dark"
-              :label="$t('account.subscriptions.id.editPlan')"
+              :label="$t('account.subscriptions._id.editPlan')"
               :link="
                 localePath(`/account/subscriptions/${subscription.id}/edit/`)
               "
@@ -237,13 +237,13 @@
         <!-- Delivery details -->
         <template v-if="shipping">
           <p class="pb-4 text-base font-semibold">
-            {{ $t('account.subscriptions.id.deliveryDetails') }}
+            {{ $t('account.subscriptions._id.deliveryDetails') }}
           </p>
 
           <div class="mb-8">
             <div class="rounded border border-primary-med p-4 text-sm">
               <p class="pb-2 font-semibold">
-                {{ $t('account.subscriptions.id.deliveryAddress') }}
+                {{ $t('account.subscriptions._id.deliveryAddress') }}
               </p>
               <p>
                 {{ shipping.name }}<br />
@@ -257,7 +257,7 @@
               class="-mt-px rounded border border-primary-med p-4 text-sm"
             >
               <p class="pb-2 font-semibold">
-                {{ $t('account.subscriptions.id.phoneNumber') }}
+                {{ $t('account.subscriptions._id.phoneNumber') }}
               </p>
               <p>
                 {{ shipping.phone }}
@@ -268,7 +268,7 @@
               class="-mt-px rounded border border-primary-med p-4 text-sm"
             >
               <p class="pb-2 font-semibold">
-                {{ $t('account.subscriptions.id.deliveryMethod') }}
+                {{ $t('account.subscriptions._id.deliveryMethod') }}
               </p>
               <p v-if="shipping.serviceName">
                 {{ shipping.serviceName }}
@@ -286,7 +286,7 @@
             class="mb-8"
             appearance="light"
             fit="auto"
-            :label="$t('account.subscriptions.id.changeDelivery')"
+            :label="$t('account.subscriptions._id.changeDelivery')"
             @click.native="editShippingAddressPopupIsActive = true"
           />
         </template>
@@ -294,7 +294,7 @@
         <!-- Payment details -->
         <div class="mb-8">
           <p class="pb-4 text-base font-semibold">
-            {{ $t('account.subscriptions.id.paymentMethod') }}
+            {{ $t('account.subscriptions._id.paymentMethod') }}
           </p>
 
           <div
@@ -336,7 +336,7 @@
             <div v-if="billing" class="flex p-4 md:text-sm">
               <div>
                 <p class="pb-2 font-semibold">
-                  {{ $t('account.subscriptions.id.billingAddress') }}
+                  {{ $t('account.subscriptions._id.billingAddress') }}
                 </p>
                 <p>
                   {{ billing.name }}<br />
@@ -352,7 +352,7 @@
                 class="mt-auto ml-auto px-2"
                 @click="editBillingAddressPopupIsActive = true"
               >
-                {{ $t('account.subscriptions.id.editBillingAddress') }}
+                {{ $t('account.subscriptions._id.editBillingAddress') }}
               </button>
             </div>
           </div>
@@ -368,18 +368,18 @@
           <p class="pb-4 text-base font-semibold">
             {{
               status === 'paused'
-                ? $t('account.subscriptions.id.resume.title')
-                : $t('account.subscriptions.id.pause.title')
+                ? $t('account.subscriptions._id.resume.title')
+                : $t('account.subscriptions._id.pause.title')
             }}
           </p>
 
           <p class="pb-10">
             {{
               status === 'paused'
-                ? $t('account.subscriptions.id.resume.message', {
+                ? $t('account.subscriptions._id.resume.message', {
                     date: formatDate(subscription.datePaused),
                   })
-                : $t('account.subscriptions.id.pause.message')
+                : $t('account.subscriptions._id.pause.message')
             }}
           </p>
 
@@ -388,8 +388,8 @@
             fit="auto"
             :label="
               status === 'paused'
-                ? $t('account.subscriptions.id.resume.label')
-                : $t('account.subscriptions.id.pause.label')
+                ? $t('account.subscriptions._id.resume.label')
+                : $t('account.subscriptions._id.pause.label')
             "
             @click.native="pauseResumeSubscriptionPopupIsActive = true"
           />
@@ -400,7 +400,7 @@
         <!-- Orders -->
         <div v-if="orders" class="mb-10">
           <p class="pt-10 pb-4 text-base font-semibold">
-            {{ $t('account.subscriptions.id.orders') }}
+            {{ $t('account.subscriptions._id.orders') }}
           </p>
 
           <NuxtLink
@@ -422,7 +422,7 @@
           class="block md:inline-block"
           appearance="light-error"
           fit="auto"
-          :label="$t('account.subscriptions.id.cancelSubscription')"
+          :label="$t('account.subscriptions._id.cancelSubscription')"
           @click.native="cancelPopupIsActive = true"
         />
       </div>
@@ -470,12 +470,12 @@
 
     <AccountConfirmationPopup
       v-if="cancelPopupIsActive"
-      :heading="$t('account.subscriptions.id.popup.cancel.title')"
-      :prompt-message="$t('account.subscriptions.id.popup.cancel.text')"
-      :accept-label="$t('account.subscriptions.id.popup.cancel.yes')"
-      :refuse-label="$t('account.subscriptions.id.popup.cancel.no')"
+      :heading="$t('account.subscriptions._id.popup.cancel.title')"
+      :prompt-message="$t('account.subscriptions._id.popup.cancel.text')"
+      :accept-label="$t('account.subscriptions._id.popup.cancel.yes')"
+      :refuse-label="$t('account.subscriptions._id.popup.cancel.no')"
       :is-loading="isUpdating"
-      :loading-label="$t('account.subscriptions.id.popup.cancel.loading')"
+      :loading-label="$t('account.subscriptions._id.popup.cancel.loading')"
       @accept="cancelSubscription"
       @click-close="cancelPopupIsActive = false"
     />
@@ -702,7 +702,7 @@ export default {
 
           this.$store.dispatch('showNotification', {
             message: this.$t(
-              'account.subscriptions.id.popup.pause.skipCycleSuccess',
+              'account.subscriptions._id.popup.pause.skipCycleSuccess',
             ),
             type: 'success',
           });
@@ -714,7 +714,7 @@ export default {
           });
 
           this.$store.dispatch('showNotification', {
-            message: this.$t('account.subscriptions.id.popup.pause.success'),
+            message: this.$t('account.subscriptions._id.popup.pause.success'),
             type: 'success',
           });
         }
@@ -751,10 +751,10 @@ export default {
         this.selectDateTimePopupIsActive = false;
         this.$store.dispatch('showNotification', {
           message: date
-            ? this.$t('account.subscriptions.id.popup.chooseDate.success', {
+            ? this.$t('account.subscriptions._id.popup.chooseDate.success', {
                 date: this.formatDate(date),
               })
-            : this.$t('account.subscriptions.id.popup.resume.success'),
+            : this.$t('account.subscriptions._id.popup.resume.success'),
           type: 'success',
         });
         this.$fetch();
@@ -776,7 +776,7 @@ export default {
         this.cancelPopupIsActive = false;
 
         this.$store.dispatch('showNotification', {
-          message: this.$t('account.subscriptions.id.popup.cancel.success'),
+          message: this.$t('account.subscriptions._id.popup.cancel.success'),
           type: 'success',
         });
         this.$fetch();
