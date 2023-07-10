@@ -40,23 +40,23 @@ executeCommand([
   `--store $SWELL_STORE_ID`,
 ]);
 
-executeCommand([
-  'swell storefronts push',
-  '--id $SWELL_STOREFRONT_ID',
-  '-t editor',
-  '-f ./config/editor.json',
-  '--secret-key $SWELL_SECRET_KEY',
-  '--store $SWELL_STORE_ID',
-]);
+// executeCommand([
+//   'swell storefronts push',
+//   '--id $SWELL_STOREFRONT_ID',
+//   '-t editor',
+//   '-f ./config/editor.json',
+//   '--secret-key $SWELL_SECRET_KEY',
+//   '--store $SWELL_STORE_ID',
+// ]);
 
-executeCommand([
-  'swell storefronts push',
-  '--id $SWELL_STOREFRONT_ID',
-  '-t settings',
-  '-f ./config/defaults.json',
-  '--secret-key $SWELL_SECRET_KEY',
-  '--store $SWELL_STORE_ID',
-]);
+// executeCommand([
+//   'swell storefronts push',
+//   '--id $SWELL_STOREFRONT_ID',
+//   '-t settings',
+//   '-f ./config/defaults.json',
+//   '--secret-key $SWELL_SECRET_KEY',
+//   '--store $SWELL_STORE_ID',
+// ]);
 
 fs.readdirSync('./config/content').forEach((file) => {
   executeCommand([
