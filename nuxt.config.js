@@ -28,6 +28,8 @@ export default () => {
       },
     },
 
+    css: [],
+
     /*
      ** Make all components in the /components folder available in templates without
      *  needing to import them explicitly or define them on the Vue instance object.
@@ -48,16 +50,18 @@ export default () => {
     plugins: [
       { src: '~/plugins/global-scripts', mode: 'client' },
       { src: '~/plugins/vue-credit-card-validation', mode: 'client' },
+
       { src: '~/plugins/directives', mode: 'client' },
       { src: '~/plugins/swell-lang.js' },
       { src: '~/plugins/filters.js' },
+      // { src: '~/plugins/portal-vue.js', mode: 'client' },
     ],
 
     /*
      ** Nuxt.js modules
      */
     modules: [
-      ['@nuxtjs/gtm'],
+      ['@nuxtjs/gtm', 'portal-vue/nuxt'],
 
       // [
       //   '@nuxtjs/sentry',

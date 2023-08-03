@@ -1,7 +1,7 @@
 <template>
   <main>
     <!-- Core product content -->
-    <section class="mb-12 md:flex">
+    <section class="relative z-20 mb-12 md:flex">
       <div class="relative md:w-1/2">
         <!-- Media slider for small screens -->
         <MediaSlider
@@ -188,6 +188,9 @@
                 :current-value="optionState[input.option.id].value"
                 :active-dropdown-u-i-d="activeDropdownUID"
                 :validation="$v.selectedOptions[input.option.name]"
+                :duration-in-minutes="
+                  Number.parseInt(product.attributes.duration.value)
+                "
                 @value-changed="
                   (args) =>
                     setOptionValue({ ...args, optionId: input.option.id })
@@ -445,6 +448,7 @@ export default {
     const product = await $swell.products.get($route.params.slug, {
       expand: ['up_sells.product', 'cross_sells'],
     });
+    // console.log('product: ', product);
 
     const options = product.purchaseOptions;
 
@@ -634,7 +638,13 @@ export default {
 
         switch (option.inputType) {
           case 'short_text':
-            componentName = 'Text';
+            if (option.attributeId === 'event_date') {
+              // console.log('option: ', option);
+              componentName = 'DateTimePicker';
+            } else {
+              componentName = 'Text';
+            }
+
             break;
           case 'long_text':
             componentName = 'Text';

@@ -1,5 +1,10 @@
 <template>
-  <component :is="link ? 'BaseLink' : 'div'" :link="link" :target="target">
+  <component
+    :is="link ? 'BaseLink' : 'div'"
+    :link="link"
+    class=""
+    :target="target"
+  >
     <button
       class="relative"
       :class="[
@@ -7,7 +12,7 @@
           'w-full': fit === 'full',
           'w-full md:w-auto': fit === 'auto',
           loading: isLoading,
-          disabled: disabled,
+
           btn: type === 'button_primary',
           'cta-link': type === 'text',
           lighter: textColor === 'light',
@@ -16,6 +21,7 @@
           'light-error': appearance === 'light-error',
           'btn--lg': size === 'lg',
           'flex items-center justify-center': icon,
+          'disabled !cursor-not-allowed opacity-70': disabled,
         },
       ]"
       :type="buttonType"

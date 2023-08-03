@@ -11,3 +11,5 @@
 /* Utilities */
 @import 'tailwindcss/utilities';
 @import './utilities.css';
+
+@import './datepicker.css';
