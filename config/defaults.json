@@ -223,6 +223,9 @@
         },
         "stock_remaining": "{n} remaining",
         "options": {
+          "event_date": {
+            "placeholder": "Choose date and time"
+          },
           "required": "Please enter a value."
         },
         "stock_status": {

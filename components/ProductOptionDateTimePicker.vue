@@ -3,13 +3,23 @@
     <ProductOptionLabel v-bind="option" />
 
     <input
-      v-model="finalDateStr"
+      :value="finalDateStr"
       class="text-input bg-primary-lightest font-normal"
       placeholder="Choose your date and time"
       @click="toggleOpenModal"
+      @input="emitValue"
     />
 
-    <!-- </button> -->
+    <template v-if="validation">
+      <div
+        v-if="validation.$dirty && validation.$error"
+        class="mt-2 text-error-default"
+      >
+        <span v-if="!validation.required" class="label-sm text-error-default">{{
+          $t('products._slug.options.required')
+        }}</span>
+      </div>
+    </template>
 
     <transition v-if="isOpenModal" name="popup" :duration="700" appear>
       <div class="fixed inset-0 z-100">
@@ -33,8 +43,8 @@
               Choose timezone, date, and time for your event
             </h3>
 
-            <div class="my-4 flex items-start justify-between">
-              <div>
+            <div class="my-4 flex flex-wrap items-start justify-between gap-3">
+              <div class="w-max">
                 <p>
                   <b>Timezone</b>
                 </p>
@@ -55,7 +65,7 @@
                   </option>
                 </select>
               </div>
-              <div>
+              <div class="w-max">
                 <p>
                   <b>Duration</b>
                   <span class="mt-3 block">
@@ -106,7 +116,7 @@
                   <button
                     class="border-gray-300 hover:bg-gray-100 focus:bg-gray-100 flex w-full items-center justify-center rounded border py-3 px-6"
                     :class="{
-                      'bg-accent-default !text-primary-lightest hover:text-primary-lightest':
+                      'timeslot-active bg-accent-default !text-primary-lightest hover:text-primary-lightest':
                         selectedTimeslot === timeslot,
                     }"
                     @click="selectedTimeslot = timeslot"
@@ -147,11 +157,9 @@ import timezonesJSON from '~/utils/timezones.json';
 import { dateTimeFormatter } from '~/utils/formatters';
 import { dayjs } from '~/utils/dayjs';
 
-// console.log('timezonesJSON: ', timezonesJSON);
 const MINUTES_IN_DAY = 24 * 60;
 const MIN_HOURS = 48;
 const MAX_DAYS = 180;
-// const timezonesList = timezonesJSON.map((tz) => tz.text)
 
 export default {
   name: 'OptionDateTimePicker',
@@ -189,9 +197,6 @@ export default {
 
   data() {
     return {
-      // MINUTES_IN_DAY: 24 * 60,
-      // MAX_DAYS: 180,
-
       locale: '',
 
       isOpenModal: false,
@@ -205,21 +210,7 @@ export default {
       defaultValue: dayjs()
         .add(MIN_HOURS, 'hours')
         .tz(this.detectUserTimezoneId())
-        .format('YYYY-MM-DD'),
-      /* defaultValue: dayjs()
-        .add(MIN_HOURS, 'hours')
-        .tz(this.detectUserTimezoneId())
-        .valueOf(), */
-      /* defaultValue: dayjs()
-        .tz(this.detectUserTimezoneId(), true)
-        .add(MIN_HOURS, 'hours')
-        .valueOf(), */ // default date value at least 48 hours from now
-      /* defaultValue: dayjs()
-        .add(MIN_HOURS, 'hours')
-        .tz(this.detectUserTimezoneId())
-        .valueOf(), */ // default date value at least 48 hours from now
-      // defaultValue: new Date(Date.now() + MIN_HOURS * 60 * 60 * 1000), // default date value at least 48 hours from now
-      // defaultValue: null, // default date value at least 48 hours from now
+        .format('YYYY-MM-DD'), // default date value at least 48 hours from now
       date: null, // date
       finalDateStr: '',
     };
@@ -229,16 +220,13 @@ export default {
     disableDates() {
       const tzId = this.selectedTimezoneInfo.utc;
 
-      // console.log('this.defaultValue in disableDates', this.defaultValue);
-
       const afterTomorrow = dayjs(this.defaultValue)
         .set('hours', 0)
         .set('minutes', 0)
         .set('millisecond', 0)
-        // .subtract(24, 'hour')
+
         .tz(tzId)
         .valueOf();
-      // console.log('tomorrow: ', tomorrow);
 
       const maxDay = dayjs(this.defaultValue)
         .set('hours', 0)
@@ -248,51 +236,8 @@ export default {
         .tz(tzId)
         .valueOf();
 
-      /* const tomorrow = dayjs
-        .tz(this.defaultValue)
-        .set('hours', 0)
-        .set('minutes', 0)
-        .set('millisecond', 0)
-        .subtract(24, 'hour')
-        // .tz(tzId)
-        .valueOf();
-      // console.log('tomorrow: ', tomorrow);
-
-      const maxDay = dayjs
-        .tz(this.defaultValue)
-        .set('hours', 0)
-        .set('minutes', 0)
-        .set('millisecond', 0)
-        .add(MAX_DAYS, 'day')
-        // .tz(tzId)
-        .valueOf(); */
-
       return (date) => {
-        // console.log('maxDay: ', maxDay);
-
-        // console.log('date in Disable dates: ', date);
-
         return date < afterTomorrow || date > maxDay;
-        /* return (
-          date < new Date(this.defaultValue.getTime() - 24 * 60 * 60 * 1000) ||
-          date >
-            new Date(
-              this.defaultValue.getTime() + MAX_DAYS * 24 * 60 * 60 * 1000,
-            )
-        ); */
-        //* when date is timestamp
-        /* const newTzId = this.selectedTimezoneInfo.utc[0];
-
-        const tomorrow = this.defa */
-        /* console.log('recompute disableDates');
-        console.log('date: ', date);
-        const tomorrow = this.defaultValue - 24 * 60 * 60 * 1000;
-        console.log('tomorrow: ', tomorrow);
-        const maxDateNotDisabled =
-          this.defaultValue + MAX_DAYS * 24 * 60 * 60 * 1000;
-        console.log('maxDateNotDisabled: ', maxDateNotDisabled);
-
-        return date < tomorrow || date > maxDateNotDisabled; */
       };
     },
 
@@ -321,14 +266,12 @@ export default {
       const foundTz = this.timezonesList.find(
         (tz) => tz.text === this.selectedTimezone,
       );
-      // console.log('foundTz: ', foundTz);
 
       const [utcStr] = foundTz.text.split(' ');
 
       const utcOnlyStr = utcStr.slice(1, utcStr.length - 1);
 
       const abbr = foundTz?.abbr;
-      // console.log('abbr: ', abbr);
 
       return {
         utcOnlyStr,
@@ -340,6 +283,7 @@ export default {
     selectedTimezoneUtcOnlyStr() {
       return this.selectedTimezoneInfo.utcOnlyStr;
     },
+
     selectedTimezoneAbbr() {
       return this.selectedTimezoneInfo.abbr;
     },
@@ -350,43 +294,26 @@ export default {
 
     timeSlots() {
       //* if selected day is same as default day (2 days from now), then filter slotArr
-      // console.log('!timeSlots, this.defaultValue: ', this.defaultValue);
-      // if (dayjs(this.date).isSame(dayjs(this.defaultValue), 'day')) {
+
       const dTimeslots = dayjs(this.date).tz(this.selectedTimezoneUtcId);
-      console.log('dTimeslots: ', dTimeslots);
 
       const dDefaultValueTimeslots = dayjs(this.defaultValue).tz(
         this.selectedTimezoneUtcId,
       );
-      console.log('dDefaultValueTimeslots: ', dDefaultValueTimeslots);
 
       if (dTimeslots.isSame(dDefaultValueTimeslots, 'day')) {
-        console.log('time slots, same day');
-
         const d = dayjs().tz(this.selectedTimezoneUtcId);
-        // console.log('d: ', d);
 
         const hours = d.get('hour');
         const minutes = d.get('minute');
 
-        console.log({ hours, minutes });
-
-        // console.log('hours: ', hours);
-        // console.log('minutes: ', minutes);
-
         const minutesPassed = hours * 60 + minutes;
-        // console.log('minutesPassed: ', minutesPassed);
-
-        // return this.slotArr.map((s) => s.timeStr);
 
         const filteredSlots = this.slotArr
           .filter((item) => {
-            // console.log({ minutesStart: item.minutesStart, minutesPassed });
             return item.minutesStart > minutesPassed;
           })
           .map((s) => s.timeStr);
-
-        console.log('filteredSlots: ', filteredSlots);
 
         return filteredSlots;
       }
@@ -401,16 +328,12 @@ export default {
 
   watch: {
     date(newVal, oldVal) {
-      console.log('date', this.date);
-
-      /* if (newVal && newVal !== oldVal) {
-        
-      } */
+      if (newVal && newVal !== oldVal) {
+        this.resetSelectedTimeslot();
+      }
     },
 
-    defaultValue(newVal, oldVal) {
-      console.log({ oldVal, newVal });
-    },
+    defaultValue(newVal, oldVal) {},
 
     isOpenModal(newVal) {
       if (newVal) {
@@ -439,15 +362,10 @@ export default {
     this.handleInitialTimezone();
     this.handleInitialDatePicker();
     this.handleInitialeTimeslots();
-
-    /* setTimeout(() => {
-      this.defaultValue = dayjs(this.defaultValue).add(10, 'days').valueOf();
-    }, 5000); */
   },
 
   methods: {
     updateDefaultValue() {
-      console.log('update default value');
       const tzId = this.selectedTimezoneInfo.utc;
       const newDefaultValue = dayjs()
         .add(MIN_HOURS, 'hours')
@@ -458,10 +376,11 @@ export default {
       this.defaultValue = newDefaultValue;
       this.date = newDefaultValue;
 
-      /* this.defaultValue = dayjs(this.defaultValue)
-        .add(MIN_HOURS, 'hours')
-        .tz(tzId)
-        .valueOf(); */
+      this.resetSelectedTimeslot();
+    },
+
+    resetSelectedTimeslot() {
+      this.selectedTimeslot = '';
     },
 
     toggleOpenModal() {
@@ -477,8 +396,6 @@ export default {
     detectUserTimezoneId() {
       try {
         const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        // console.log('tzid: ', tzid);
-        // console.log(tzid);
 
         return tzid;
       } catch (error) {
@@ -507,30 +424,7 @@ export default {
       this.selectedTimezone = tz.text;
     },
 
-    /**
-     * disable date before 2 days from now and not
-     * @param {date} Date
-     */
-    /* disableDates(date) {
-      return (
-        date < new Date(this.defaultValue.getTime() - 24 * 60 * 60 * 1000) ||
-        date >
-          new Date(this.defaultValue.getTime() + MAX_DAYS * 24 * 60 * 60 * 1000)
-      );
-    }, */
-
     handleInitialDatePicker() {
-      /**
-       * @constant
-       * @type Date
-       */
-      /*
-       this.date = new Date(
-        d.getFullYear(),
-        d.getMonth(),
-        d.getDate(),
-      ).getTime(); */
-      // const [initialUtc] = this.selectedTimezoneInfo.utc;
       this.date = this.defaultValue;
     },
 
@@ -564,7 +458,6 @@ export default {
       }
 
       return `${hours}:${m < 10 ? '0' + m : m}`;
-      // return `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
     },
 
     /**
@@ -592,7 +485,7 @@ export default {
           minutesEnd: 0,
           timeStr: '',
         };
-        // slotObj[minutes] = formatMinutes(minutes);
+
         slotObj.minutesStart = minutesStart;
         slotObj.minutesEnd = minutesEnd;
         slotObj.timeStr = `${this.formatMinutes(
@@ -615,79 +508,35 @@ export default {
           minute: undefined,
         },
       });
-      /* const d = dateTimeFormatter({
-        date: new this.date,
-        locale: this.locale,
-        options: {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          hour: undefined,
-          minute: undefined,
-        },
-      }); */
 
       const finalStr = `${d}, ${this.selectedTimeslot}, ${this.selectedTimezoneInfo.utcOnlyStr}, ${this.selectedTimezoneInfo.abbr}`;
-      // console.log('finalStr: ', finalStr);
 
       return finalStr;
     },
 
+    emitValue(event) {
+      const { value } = event.target;
+      if (this.emitOnEnter) {
+        this.internalValue = value;
+      } else {
+        this.$emit('value-changed', {
+          option: this.option.name,
+          value,
+        });
+      }
+    },
+
     handleAddDate() {
-      console.log('click add date');
       if (this.isDisabledAddDate) {
-        console.log('disabled');
         return;
       }
 
       this.finalDateStr = this.formatFinalDateStr();
 
       this.toggleOpenModal();
-      // console.log('close modal');
     },
   },
 };
-
-//* watch
-/* selectedTimezone(newVal, oldVal) {
-      if (newVal && newVal !== oldVal) {
-        console.log('selectedTimezone: ', this.selectedTimezone);
-
-        const newTzId = this.selectedTimezoneInfo.utc[0];
-        console.log('!!! timezone id', newTzId);
-
-        dayjs.tz.setDefault(newTzId);
-
-        // const dayJsDateAfterTomorrow = dayjs.tz(newTzId).add(MIN_HOURS, 'hour');
-        const oldDefaultValue = this.defaultValue;
-
-        const dayJsDateAfterTomorrow = dayjs()
-          .add(MIN_HOURS, 'hour')
-          .tz(newTzId);
-        console.log('dayJsDateAfterTomorrow: ', dayJsDateAfterTomorrow);
-
-        const newDefaultValue = dayJsDateAfterTomorrow.valueOf();
-
-        console.log({ oldDefaultValue, newDefaultValue });
-
-        // this.defaultValue = dayJsDateAfterTomorrow.valueOf();
-        this.defaultValue = dayjs()
-          .add(MIN_HOURS, 'hour')
-          .tz(newTzId)
-          .valueOf();
-        console.log('this.defaultValue: ', this.defaultValue);
-
-        // this.date = dayjs.tz(this.date).valueOf();
-        this.date = dayjs(this.date).tz().valueOf();
-        console.log('this.date: ', this.date);
-        // this.defaultValue = dayJsDateAfterTomorrow.toDate();
-        // console.log('this.date: ', this.date);
-
-      //   const [utcSelected] = this.selectedTimezoneInfo.utc;
-      // const formattedInDisableDates = dayjs(this.defaultValue).tz(utcSelected);
-      // console.log('formattedInDisableDates: ', formattedInDisableDates);
-      } 
-    }, */
 </script>
 
 <style lang="postcss" scoped>
