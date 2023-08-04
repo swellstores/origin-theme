@@ -108,7 +108,7 @@
               </p>
 
               <ul
-                class="timeslot-list max-h-60 mt-2 grid gap-2 overflow-y-auto"
+                class="timeslot-list mt-2 grid max-h-60 gap-2 overflow-y-auto"
               >
                 <li
                   v-for="timeslot in timeSlots"

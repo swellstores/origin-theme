@@ -770,8 +770,6 @@ export default {
 
     // Update an option value based on user input
     setOptionValue({ optionId, option: name, value }) {
-      console.log('set option value');
-      console.log({ optionId, option: name, value });
       // Get the option from optionState whose value is being updated.
       const option = this.optionState[optionId] || {};
       // Update its properties based on input
