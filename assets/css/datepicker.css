@@ -35,10 +35,11 @@
   transform: rotate(135deg) scale(0.7);
 }
 .mx-btn {
+  @apply text-base;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   line-height: 1;
-  font-size: 14px;
+  /* font-size: 14px; */
   font-weight: 500;
   padding: 7px 15px;
   margin: 0;
@@ -124,9 +125,10 @@
   transform: scaleY(0);
 }
 .mx-datepicker {
+  @apply w-full max-w-72;
   position: relative;
   display: inline-block;
-  width: 210px;
+  /* width: 210px; */
 }
 .mx-datepicker svg {
   width: 1em;
@@ -139,7 +141,8 @@
   width: 320px;
 }
 .mx-datepicker-inline {
-  width: auto;
+  /* width: auto; */
+  width: 100%;
 }
 .mx-input-wrapper {
   position: relative;
@@ -197,8 +200,10 @@
   color: rgba(0, 0, 0, 0.8);
 }
 .mx-datepicker-main {
-  font: 14px/1.5 'Helvetica Neue', Helvetica, Arial, 'Microsoft Yahei',
+  /* font: 14px/1.5 'Helvetica Neue', Helvetica, Arial, 'Microsoft Yahei', sans-serif; */
+  font: 16px/1.5 'Helvetica Neue', Helvetica, Arial, 'Microsoft Yahei',
     sans-serif;
+
   color: #73879c;
   background-color: #fff;
   border: 1px solid #e8e8e8;
@@ -258,9 +263,10 @@
   border-top: 1px solid #e8e8e8;
 }
 .mx-calendar {
+  @apply w-full max-w-72;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  width: 248px;
+  /* width: 248px; */
   padding: 6px 12px;
 }
 .mx-calendar + .mx-calendar {
@@ -268,23 +274,27 @@
 }
 .mx-calendar-header,
 .mx-time-header {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  height: 34px;
-  line-height: 34px;
-  text-align: center;
-  overflow: hidden;
+  @apply box-border h-10 overflow-hidden text-center leading-10;
+  /* -webkit-box-sizing: border-box; */
+  /* box-sizing: border-box; */
+  /* height: 34px; */
+  /* line-height: 34px; */
+  /* text-align: center; */
+  /* overflow: hidden; */
 }
 .mx-btn-icon-left,
 .mx-btn-icon-double-left {
-  float: left;
+  @apply float-left;
+  /* float: left; */
 }
 .mx-btn-icon-right,
 .mx-btn-icon-double-right {
-  float: right;
+  @apply float-right;
+  /* float: right; */
 }
 .mx-calendar-header-label {
-  font-size: 14px;
+  /* font-size: 14px; */
+  @apply text-base;
 }
 .mx-calendar-decade-separator {
   margin: 0 2px;
@@ -293,13 +303,15 @@
   content: '~';
 }
 .mx-calendar-content {
-  position: relative;
-  height: 224px;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+  @apply relative box-border h-max min-h-56;
+  /* height: 224px; */
+
+  /* -webkit-box-sizing: border-box; */
+  /* box-sizing: border-box; */
 }
 .mx-calendar-content .cell {
-  cursor: pointer;
+  @apply cursor-pointer;
+  /* cursor: pointer; */
 }
 .mx-calendar-content .cell:hover {
   /* color: #73879c; */
@@ -309,9 +321,9 @@
   /* @apply bg-accent-default opacity-90; */
 }
 .mx-calendar-content .cell.active {
-  color: #fff;
+  /* color: #fff; */
   /* background-color: #1284e7; */
-  @apply bg-accent-default;
+  @apply bg-accent-default text-primary-lightest;
 }
 .mx-calendar-content .cell.in-range,
 .mx-calendar-content .cell.hover-in-range {
@@ -364,8 +376,9 @@
 }
 .mx-table-date td,
 .mx-table-date th {
-  height: 32px;
-  font-size: 12px;
+  @apply h-9 text-sm;
+  /* height: 32px; */
+  /* font-size: 12px; */
 }
 .mx-table-date .today {
   color: #2a90e9;
@@ -430,10 +443,11 @@
   height: 192px;
 }
 .mx-time-column .mx-time-item {
-  cursor: pointer;
-  font-size: 12px;
-  height: 32px;
-  line-height: 32px;
+  /* cursor: pointer; */
+  /* font-size: 12px; */
+  @apply /* height: 32px; */
+  /* line-height: 32px; */
+  h-9 cursor-pointer text-sm leading-[36px];
 }
 .mx-time-column .mx-time-item:hover {
   color: #73879c;

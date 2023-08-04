@@ -40,7 +40,7 @@
           class="panel h-vh-gap md:center-xy absolute bottom-0 z-100 w-full overflow-y-auto rounded-t bg-primary-lighter p-3 md:relative md:mt-8 md:h-auto md:max-h-80vh md:w-160 md:rounded md:p-6"
         >
           <button
-            class="aspect-square group absolute top-4 right-4 inline-flex items-center justify-center rounded p-3 leading-none hover:bg-error-default focus:bg-error-default focus:text-primary-lightest"
+            class="aspect-square group absolute top-2 right-2 inline-flex items-center justify-center rounded p-3 leading-none hover:bg-error-default focus:bg-error-default focus:text-primary-lightest md:top-4 md:right-4"
             @click="toggleOpenModal"
           >
             <BaseIcon
@@ -62,7 +62,7 @@
 
                 <select
                   v-model="selectedTimezone"
-                  class="timezone-select mt-3 block w-full max-w-[35ch] cursor-pointer rounded-lg border border-primary-dark bg-primary-lighter p-2 text-sm text-primary-darkest focus:border-outline focus:ring-outline"
+                  class="timezone-select mt-3 block w-full max-w-[35ch] cursor-pointer rounded-lg border border-primary-dark bg-primary-lighter p-2 text-sm text-primary-darkest focus:border-outline focus:ring-outline md:text-base"
                   role="listbox"
                 >
                   <option
@@ -89,7 +89,7 @@
 
           <!-- modal-body -->
           <div
-            class="modal-body grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] grid-rows-[1fr] gap-4"
+            class="modal-body mt-3 grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] grid-rows-[1fr] gap-4"
           >
             <div class="">
               <DatePicker
@@ -108,7 +108,7 @@
               </p>
 
               <ul
-                class="timeslot-list mt-2 grid max-h-60 gap-2 overflow-y-auto"
+                class="timeslot-list mt-2 grid max-h-68 gap-2 overflow-y-auto"
               >
                 <li
                   v-for="timeslot in timeSlots"
@@ -123,9 +123,8 @@
                     }"
                     @click="selectedTimeslot = timeslot"
                   >
-                    <b>{{ timeslot }}</b
-                    >,
-                    {{ selectedTimezoneInfo.abbr }}
+                    <b>{{ timeslot }}</b>
+                    &nbsp;({{ selectedTimezoneInfo.abbr }})
                   </button>
                 </li>
               </ul>
@@ -156,6 +155,7 @@ import { dayjs } from '~/utils/dayjs';
 const MINUTES_IN_DAY = 24 * 60;
 const MIN_HOURS = 48;
 const MAX_DAYS = 180;
+const START_TIME = '9:00 AM';
 
 export default {
   name: 'OptionDateTimePicker',
@@ -329,25 +329,6 @@ export default {
       }
     },
 
-    isOpenModal(newVal) {
-      if (newVal) {
-        /* const cells = document.querySelectorAll(
-          '.cell:not(.active, .disabled)',
-        ); */
-        /* this.$nextTick(() => {
-          const cells = document.querySelectorAll('.cell');
-          console.log('cells: ', cells);
-
-          cells.forEach((cell) => {
-            cell.classList.add('disabled');
-
-            cell.removeEventListener('click', () => {}, true);
-          });
-          // cells.forEach();
-        }); */
-      }
-    },
-
     finalDateStr(newVal, oldVal) {
       if (newVal && newVal !== oldVal) {
         this.$emit('value-changed', {
@@ -436,64 +417,80 @@ export default {
     },
 
     handleInitialeTimeslots() {
-      this.slotArr = this.generateTimeslots(this.eventsInterval, 0);
+      this.slotArr = this.generateTimeslots(this.eventsInterval, 0, START_TIME);
     },
 
     /**
      * @param {number} minutes
      */
-    formatMinutes(minutes) {
-      const h = Math.floor(minutes / 60);
+    formatMinutesToTime(minutes) {
+      const hoursTotal = Math.floor(minutes / 60);
       const m = minutes % 60;
 
-      let hours = '';
+      let h = 0;
 
-      if (h >= 10 && h <= 23) {
-        hours = h;
+      if (hoursTotal < 13) {
+        h = hoursTotal;
+      } else {
+        h = hoursTotal - 12;
       }
 
-      if (h < 10) {
-        hours = `0${h}`;
+      let AMOrPM = '';
+
+      if (hoursTotal < 12 || h === 12) {
+        AMOrPM = 'AM';
+      } else {
+        AMOrPM = 'PM';
       }
 
-      if (h > 23) {
-        hours = `00`;
-      }
+      return `${h}:${m < 10 ? '0' : ''}${m} ${AMOrPM}`;
+    },
 
-      return `${hours}:${m < 10 ? '0' + m : m}`;
+    /**
+     * @param {string} timeStr - time string, eg 11:40 PM
+     */
+    convertTimeToMinutes(timeStr) {
+      const [time] = timeStr.split(' ');
+      const [hours, minutes] = time.split(':');
+
+      return parseInt(hours) * 60 + parseInt(minutes);
     },
 
     /**
      * @param {string} interval - duration of the event, in minutes.
      * @param {string} bufferTime - time interval between event, in minutes
+     * @param {string} startTime - formatted time string from which time start
      * @returns {{minutesStart: number, minutesEnd: number, timeStr: string}[] }
      */
-    generateTimeslots(interval, bufferTime) {
+    generateTimeslots(interval, bufferTime, startTime) {
       /**
        * @constant
        * @type {{minutesStart: number, minutesEnd: number, timeStr: string}[] | []}
        */
       const slotArray = [];
 
+      let startMinutes = 0;
+
+      if (startTime) {
+        startMinutes = this.convertTimeToMinutes(startTime);
+      }
+
       const slotsToCreate = Math.floor(
-        MINUTES_IN_DAY / (interval + bufferTime),
+        (MINUTES_IN_DAY - startMinutes) / (interval + bufferTime),
       );
 
       for (let i = 0; i < slotsToCreate; i++) {
-        const minutesStart = (interval + bufferTime) * i;
+        const minutesStart = startMinutes + (interval + bufferTime) * i;
         const minutesEnd = minutesStart + this.durationInMinutes;
 
         const slotObj = {
-          minutesStart: 0,
-          minutesEnd: 0,
-          timeStr: '',
+          minutesStart,
+          minutesEnd,
+          timeStr: `${this.formatMinutesToTime(
+            minutesStart,
+          )} - ${this.formatMinutesToTime(minutesEnd)}`,
         };
 
-        slotObj.minutesStart = minutesStart;
-        slotObj.minutesEnd = minutesEnd;
-        slotObj.timeStr = `${this.formatMinutes(
-          minutesStart,
-        )} - ${this.formatMinutes(minutesEnd)}`;
         slotArray.push(slotObj);
       }
       return slotArray;
