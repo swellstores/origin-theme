@@ -100,15 +100,6 @@
                 inline
                 value-type="format"
               ></DatePicker>
-              <!-- value-type="timestamp" -->
-              <!-- value-type="format" -->
-              <!-- :show-second="false" -->
-              <!-- type="datetime" -->
-              <!-- :time-picker-options="{
-                  start: '00:00',
-                  step: '00:30',
-                  end: '23:30',
-                }" -->
             </div>
 
             <div class="">
@@ -117,7 +108,7 @@
               </p>
 
               <ul
-                class="timeslot-list mt-2 grid max-h-64 gap-2 overflow-y-auto"
+                class="timeslot-list max-h-60 mt-2 grid gap-2 overflow-y-auto"
               >
                 <li
                   v-for="timeslot in timeSlots"
@@ -135,11 +126,6 @@
                     <b>{{ timeslot }}</b
                     >,
                     {{ selectedTimezoneInfo.abbr }}
-                    <!-- {{
-										selectedTimezone.name ? `${selectedTimezone.name},` : ''
-									}}
-									{{ selectedTimezone.town }} -->
-                    <!-- {{ selectedTimezone.text }} -->
                   </button>
                 </li>
               </ul>
@@ -162,7 +148,6 @@
 
 <script>
 import DatePicker from 'vue2-datepicker';
-// import '~/assets/css/datepicker.css';
 
 import timezonesJSON from '~/utils/timezones.json';
 import { dateTimeFormatter } from '~/utils/formatters';
@@ -343,8 +328,6 @@ export default {
         this.resetSelectedTimeslot();
       }
     },
-
-    defaultValue(newVal, oldVal) {},
 
     isOpenModal(newVal) {
       if (newVal) {
@@ -552,11 +535,6 @@ export default {
       }
 
       this.finalDateStr = this.formatFinalDateStr();
-
-      this.$emit('value-changed', {
-        option: this.option.name,
-        value: this.finalDateStr,
-      });
 
       this.toggleOpenModal();
     },
