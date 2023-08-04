@@ -2,13 +2,21 @@
   <div>
     <ProductOptionLabel v-bind="option" />
 
-    <input
-      :value="finalDateStr"
-      class="text-input bg-primary-lightest font-normal"
-      placeholder="Choose your date and time"
-      @click="toggleOpenModal"
-      @input="emitValue"
-    />
+    <div class="relative">
+      <input
+        :value="finalDateStr"
+        class="text-input bg-primary-lightest !pl-10 font-normal"
+        placeholder="Choose your date and time"
+        @click="toggleOpenModal"
+        @input="emitValue"
+      />
+
+      <BaseIcon
+        class="center-y absolute left-3"
+        icon="fa-solid:calendar"
+        size="w-3 h-4"
+      />
+    </div>
 
     <template v-if="validation">
       <div
@@ -32,10 +40,13 @@
           class="panel h-vh-gap md:center-xy absolute bottom-0 z-100 w-full overflow-y-auto rounded-t bg-primary-lighter p-3 md:relative md:mt-8 md:h-auto md:max-h-80vh md:w-160 md:rounded md:p-6"
         >
           <button
-            class="aspect-square absolute top-4 right-4 inline-flex items-center justify-center rounded p-3 leading-none hover:bg-error-default hover:text-primary-lightest focus:bg-error-default focus:text-primary-lightest"
+            class="aspect-square group absolute top-4 right-4 inline-flex items-center justify-center rounded p-3 leading-none hover:bg-error-default focus:bg-error-default focus:text-primary-lightest"
             @click="toggleOpenModal"
           >
-            X
+            <BaseIcon
+              class="fill-primary-darkest text-primary-darkest group-hover:text-primary-lightest group-focus:text-primary-lightest"
+              icon="uil:times"
+            />
           </button>
 
           <header class="modal-header">
@@ -354,6 +365,15 @@ export default {
       }
     },
 
+    finalDateStr(newVal, oldVal) {
+      if (newVal && newVal !== oldVal) {
+        this.$emit('value-changed', {
+          option: this.option.name,
+          value: this.finalDateStr,
+        });
+      }
+    },
+
     selectedTimezone: 'updateDefaultValue',
   },
 
@@ -502,7 +522,7 @@ export default {
         locale: this.locale,
         options: {
           year: 'numeric',
-          month: '2-digit',
+          month: 'long',
           day: '2-digit',
           hour: undefined,
           minute: undefined,
@@ -532,6 +552,11 @@ export default {
       }
 
       this.finalDateStr = this.formatFinalDateStr();
+
+      this.$emit('value-changed', {
+        option: this.option.name,
+        value: this.finalDateStr,
+      });
 
       this.toggleOpenModal();
     },
