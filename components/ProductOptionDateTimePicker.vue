@@ -46,12 +46,7 @@
                 >
                   <option
                     v-for="timezone in timezonesList"
-                    :key="
-                      timezone.text +
-                      timezone.value +
-                      timezone.abbr +
-                      timezone.offset
-                    "
+                    :key="timezone.text"
                     role="option"
                     class=""
                     :value="timezone.text"
@@ -82,7 +77,9 @@
                 :default-value="defaultValue"
                 :disabled-date="disableDates"
                 inline
+                value-type="format"
               ></DatePicker>
+              <!-- value-type="timestamp" -->
               <!-- value-type="format" -->
               <!-- :show-second="false" -->
               <!-- type="datetime" -->
@@ -148,6 +145,8 @@ import DatePicker from 'vue2-datepicker';
 
 import timezonesJSON from '~/utils/timezones.json';
 import { dateTimeFormatter } from '~/utils/formatters';
+import { dayjs } from '~/utils/dayjs';
+
 // console.log('timezonesJSON: ', timezonesJSON);
 const MINUTES_IN_DAY = 24 * 60;
 const MIN_HOURS = 48;
@@ -203,13 +202,100 @@ export default {
       slotArr: [], // all timeSlots available
       selectedTimeslot: '', // selected timeslot
 
-      defaultValue: new Date(Date.now() + MIN_HOURS * 60 * 60 * 1000), // default date value at least 48 hours from now
+      defaultValue: dayjs()
+        .add(MIN_HOURS, 'hours')
+        .tz(this.detectUserTimezoneId())
+        .format('YYYY-MM-DD'),
+      /* defaultValue: dayjs()
+        .add(MIN_HOURS, 'hours')
+        .tz(this.detectUserTimezoneId())
+        .valueOf(), */
+      /* defaultValue: dayjs()
+        .tz(this.detectUserTimezoneId(), true)
+        .add(MIN_HOURS, 'hours')
+        .valueOf(), */ // default date value at least 48 hours from now
+      /* defaultValue: dayjs()
+        .add(MIN_HOURS, 'hours')
+        .tz(this.detectUserTimezoneId())
+        .valueOf(), */ // default date value at least 48 hours from now
+      // defaultValue: new Date(Date.now() + MIN_HOURS * 60 * 60 * 1000), // default date value at least 48 hours from now
+      // defaultValue: null, // default date value at least 48 hours from now
       date: null, // date
       finalDateStr: '',
     };
   },
 
   computed: {
+    disableDates() {
+      const tzId = this.selectedTimezoneInfo.utc;
+
+      // console.log('this.defaultValue in disableDates', this.defaultValue);
+
+      const afterTomorrow = dayjs(this.defaultValue)
+        .set('hours', 0)
+        .set('minutes', 0)
+        .set('millisecond', 0)
+        // .subtract(24, 'hour')
+        .tz(tzId)
+        .valueOf();
+      // console.log('tomorrow: ', tomorrow);
+
+      const maxDay = dayjs(this.defaultValue)
+        .set('hours', 0)
+        .set('minutes', 0)
+        .set('millisecond', 0)
+        .add(MAX_DAYS, 'day')
+        .tz(tzId)
+        .valueOf();
+
+      /* const tomorrow = dayjs
+        .tz(this.defaultValue)
+        .set('hours', 0)
+        .set('minutes', 0)
+        .set('millisecond', 0)
+        .subtract(24, 'hour')
+        // .tz(tzId)
+        .valueOf();
+      // console.log('tomorrow: ', tomorrow);
+
+      const maxDay = dayjs
+        .tz(this.defaultValue)
+        .set('hours', 0)
+        .set('minutes', 0)
+        .set('millisecond', 0)
+        .add(MAX_DAYS, 'day')
+        // .tz(tzId)
+        .valueOf(); */
+
+      return (date) => {
+        // console.log('maxDay: ', maxDay);
+
+        // console.log('date in Disable dates: ', date);
+
+        return date < afterTomorrow || date > maxDay;
+        /* return (
+          date < new Date(this.defaultValue.getTime() - 24 * 60 * 60 * 1000) ||
+          date >
+            new Date(
+              this.defaultValue.getTime() + MAX_DAYS * 24 * 60 * 60 * 1000,
+            )
+        ); */
+        //* when date is timestamp
+        /* const newTzId = this.selectedTimezoneInfo.utc[0];
+
+        const tomorrow = this.defa */
+        /* console.log('recompute disableDates');
+        console.log('date: ', date);
+        const tomorrow = this.defaultValue - 24 * 60 * 60 * 1000;
+        console.log('tomorrow: ', tomorrow);
+        const maxDateNotDisabled =
+          this.defaultValue + MAX_DAYS * 24 * 60 * 60 * 1000;
+        console.log('maxDateNotDisabled: ', maxDateNotDisabled);
+
+        return date < tomorrow || date > maxDateNotDisabled; */
+      };
+    },
+
     onlyDateFormatted() {
       if (!this.date || !process.client) return;
 
@@ -237,20 +323,74 @@ export default {
       );
       // console.log('foundTz: ', foundTz);
 
-      const [utc] = foundTz.text.split(' ');
+      const [utcStr] = foundTz.text.split(' ');
 
-      const utcOnly = utc.slice(1, utc.length - 1);
+      const utcOnlyStr = utcStr.slice(1, utcStr.length - 1);
 
       const abbr = foundTz?.abbr;
       // console.log('abbr: ', abbr);
 
       return {
-        utcOnly,
+        utcOnlyStr,
         abbr,
+        utc: foundTz.utc[0],
       };
     },
 
+    selectedTimezoneUtcOnlyStr() {
+      return this.selectedTimezoneInfo.utcOnlyStr;
+    },
+    selectedTimezoneAbbr() {
+      return this.selectedTimezoneInfo.abbr;
+    },
+
+    selectedTimezoneUtcId() {
+      return this.selectedTimezoneInfo.utc;
+    },
+
     timeSlots() {
+      //* if selected day is same as default day (2 days from now), then filter slotArr
+      // console.log('!timeSlots, this.defaultValue: ', this.defaultValue);
+      // if (dayjs(this.date).isSame(dayjs(this.defaultValue), 'day')) {
+      const dTimeslots = dayjs(this.date).tz(this.selectedTimezoneUtcId);
+      console.log('dTimeslots: ', dTimeslots);
+
+      const dDefaultValueTimeslots = dayjs(this.defaultValue).tz(
+        this.selectedTimezoneUtcId,
+      );
+      console.log('dDefaultValueTimeslots: ', dDefaultValueTimeslots);
+
+      if (dTimeslots.isSame(dDefaultValueTimeslots, 'day')) {
+        console.log('time slots, same day');
+
+        const d = dayjs().tz(this.selectedTimezoneUtcId);
+        // console.log('d: ', d);
+
+        const hours = d.get('hour');
+        const minutes = d.get('minute');
+
+        console.log({ hours, minutes });
+
+        // console.log('hours: ', hours);
+        // console.log('minutes: ', minutes);
+
+        const minutesPassed = hours * 60 + minutes;
+        // console.log('minutesPassed: ', minutesPassed);
+
+        // return this.slotArr.map((s) => s.timeStr);
+
+        const filteredSlots = this.slotArr
+          .filter((item) => {
+            // console.log({ minutesStart: item.minutesStart, minutesPassed });
+            return item.minutesStart > minutesPassed;
+          })
+          .map((s) => s.timeStr);
+
+        console.log('filteredSlots: ', filteredSlots);
+
+        return filteredSlots;
+      }
+
       return this.slotArr.map((s) => s.timeStr);
     },
 
@@ -260,23 +400,70 @@ export default {
   },
 
   watch: {
-    date() {
+    date(newVal, oldVal) {
       console.log('date', this.date);
+
+      /* if (newVal && newVal !== oldVal) {
+        
+      } */
     },
 
-    selectedTimezone() {
-      console.log('selectedTimezone: ', this.selectedTimezone);
+    defaultValue(newVal, oldVal) {
+      console.log({ oldVal, newVal });
     },
+
+    isOpenModal(newVal) {
+      if (newVal) {
+        /* const cells = document.querySelectorAll(
+          '.cell:not(.active, .disabled)',
+        ); */
+        /* this.$nextTick(() => {
+          const cells = document.querySelectorAll('.cell');
+          console.log('cells: ', cells);
+
+          cells.forEach((cell) => {
+            cell.classList.add('disabled');
+
+            cell.removeEventListener('click', () => {}, true);
+          });
+          // cells.forEach();
+        }); */
+      }
+    },
+
+    selectedTimezone: 'updateDefaultValue',
   },
 
   mounted() {
-    this.handleInitialeTimeslots();
     this.handleInitialLocale();
     this.handleInitialTimezone();
     this.handleInitialDatePicker();
+    this.handleInitialeTimeslots();
+
+    /* setTimeout(() => {
+      this.defaultValue = dayjs(this.defaultValue).add(10, 'days').valueOf();
+    }, 5000); */
   },
 
   methods: {
+    updateDefaultValue() {
+      console.log('update default value');
+      const tzId = this.selectedTimezoneInfo.utc;
+      const newDefaultValue = dayjs()
+        .add(MIN_HOURS, 'hours')
+        .tz(tzId)
+        .utc(true)
+        .format('YYYY-MM-DD');
+
+      this.defaultValue = newDefaultValue;
+      this.date = newDefaultValue;
+
+      /* this.defaultValue = dayjs(this.defaultValue)
+        .add(MIN_HOURS, 'hours')
+        .tz(tzId)
+        .valueOf(); */
+    },
+
     toggleOpenModal() {
       if (!this.isOpenModal) {
         document.querySelector('body').classList.add('overflow-y-hidden');
@@ -313,6 +500,7 @@ export default {
 
     handleInitialTimezone() {
       const id = this.detectUserTimezoneId();
+      this.tzId = id;
 
       const tz = this.findTimezoneOnTzId(id);
 
@@ -323,13 +511,13 @@ export default {
      * disable date before 2 days from now and not
      * @param {date} Date
      */
-    disableDates(date) {
+    /* disableDates(date) {
       return (
         date < new Date(this.defaultValue.getTime() - 24 * 60 * 60 * 1000) ||
         date >
           new Date(this.defaultValue.getTime() + MAX_DAYS * 24 * 60 * 60 * 1000)
       );
-    },
+    }, */
 
     handleInitialDatePicker() {
       /**
@@ -342,6 +530,7 @@ export default {
         d.getMonth(),
         d.getDate(),
       ).getTime(); */
+      // const [initialUtc] = this.selectedTimezoneInfo.utc;
       this.date = this.defaultValue;
     },
 
@@ -360,7 +549,22 @@ export default {
       const h = Math.floor(minutes / 60);
       const m = minutes % 60;
 
-      return `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
+      let hours = '';
+
+      if (h >= 10 && h <= 23) {
+        hours = h;
+      }
+
+      if (h < 10) {
+        hours = `0${h}`;
+      }
+
+      if (h > 23) {
+        hours = `00`;
+      }
+
+      return `${hours}:${m < 10 ? '0' + m : m}`;
+      // return `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
     },
 
     /**
@@ -389,7 +593,8 @@ export default {
           timeStr: '',
         };
         // slotObj[minutes] = formatMinutes(minutes);
-        slotObj.minutes = minutesStart;
+        slotObj.minutesStart = minutesStart;
+        slotObj.minutesEnd = minutesEnd;
         slotObj.timeStr = `${this.formatMinutes(
           minutesStart,
         )} - ${this.formatMinutes(minutesEnd)}`;
@@ -400,7 +605,7 @@ export default {
 
     formatFinalDateStr() {
       const d = dateTimeFormatter({
-        date: this.date,
+        date: dayjs(this.date).toDate(),
         locale: this.locale,
         options: {
           year: 'numeric',
@@ -410,8 +615,19 @@ export default {
           minute: undefined,
         },
       });
+      /* const d = dateTimeFormatter({
+        date: new this.date,
+        locale: this.locale,
+        options: {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: undefined,
+          minute: undefined,
+        },
+      }); */
 
-      const finalStr = `${d}, ${this.selectedTimeslot}, ${this.selectedTimezoneInfo.utcOnly}, ${this.selectedTimezoneInfo.abbr}`;
+      const finalStr = `${d}, ${this.selectedTimeslot}, ${this.selectedTimezoneInfo.utcOnlyStr}, ${this.selectedTimezoneInfo.abbr}`;
       // console.log('finalStr: ', finalStr);
 
       return finalStr;
@@ -431,6 +647,47 @@ export default {
     },
   },
 };
+
+//* watch
+/* selectedTimezone(newVal, oldVal) {
+      if (newVal && newVal !== oldVal) {
+        console.log('selectedTimezone: ', this.selectedTimezone);
+
+        const newTzId = this.selectedTimezoneInfo.utc[0];
+        console.log('!!! timezone id', newTzId);
+
+        dayjs.tz.setDefault(newTzId);
+
+        // const dayJsDateAfterTomorrow = dayjs.tz(newTzId).add(MIN_HOURS, 'hour');
+        const oldDefaultValue = this.defaultValue;
+
+        const dayJsDateAfterTomorrow = dayjs()
+          .add(MIN_HOURS, 'hour')
+          .tz(newTzId);
+        console.log('dayJsDateAfterTomorrow: ', dayJsDateAfterTomorrow);
+
+        const newDefaultValue = dayJsDateAfterTomorrow.valueOf();
+
+        console.log({ oldDefaultValue, newDefaultValue });
+
+        // this.defaultValue = dayJsDateAfterTomorrow.valueOf();
+        this.defaultValue = dayjs()
+          .add(MIN_HOURS, 'hour')
+          .tz(newTzId)
+          .valueOf();
+        console.log('this.defaultValue: ', this.defaultValue);
+
+        // this.date = dayjs.tz(this.date).valueOf();
+        this.date = dayjs(this.date).tz().valueOf();
+        console.log('this.date: ', this.date);
+        // this.defaultValue = dayJsDateAfterTomorrow.toDate();
+        // console.log('this.date: ', this.date);
+
+      //   const [utcSelected] = this.selectedTimezoneInfo.utc;
+      // const formattedInDisableDates = dayjs(this.defaultValue).tz(utcSelected);
+      // console.log('formattedInDisableDates: ', formattedInDisableDates);
+      } 
+    }, */
 </script>
 
 <style lang="postcss" scoped>

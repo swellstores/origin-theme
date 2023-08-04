@@ -1,19 +1,11 @@
 [
   {
-    "value": "Dateline Standard Time",
-    "abbr": "DST",
-    "offset": -12,
-    "isdst": false,
-    "text": "(UTC-12:00) International Date Line West",
-    "utc": ["Etc/GMT+12"]
-  },
-  {
     "value": "UTC-11",
     "abbr": "U",
     "offset": -11,
     "isdst": false,
     "text": "(UTC-11:00) Coordinated Universal Time-11",
-    "utc": ["Etc/GMT+11", "Pacific/Midway", "Pacific/Niue", "Pacific/Pago_Pago"]
+    "utc": ["Pacific/Midway", "Pacific/Niue", "Pacific/Pago_Pago"]
   },
   {
     "value": "Hawaiian Standard Time",
@@ -22,7 +14,6 @@
     "isdst": false,
     "text": "(UTC-10:00) Hawaii",
     "utc": [
-      "Etc/GMT+10",
       "Pacific/Honolulu",
       "Pacific/Johnston",
       "Pacific/Rarotonga",
@@ -1208,7 +1199,6 @@
     "isdst": false,
     "text": "(UTC+12:00) Coordinated Universal Time+12",
     "utc": [
-      "Etc/GMT-12",
       "Pacific/Funafuti",
       "Pacific/Kwajalein",
       "Pacific/Majuro",
@@ -1253,12 +1243,7 @@
     "offset": 13,
     "isdst": false,
     "text": "(UTC+13:00) Nuku'alofa",
-    "utc": [
-      "Etc/GMT-13",
-      "Pacific/Enderbury",
-      "Pacific/Fakaofo",
-      "Pacific/Tongatapu"
-    ]
+    "utc": ["Pacific/Enderbury", "Pacific/Fakaofo", "Pacific/Tongatapu"]
   },
   {
     "value": "Samoa Standard Time",
