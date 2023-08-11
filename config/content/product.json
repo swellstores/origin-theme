@@ -70,6 +70,28 @@
       "type": "select",
       "options": [2, 3, 4],
       "default": 4
+    },
+    {
+      "id": "expandable_details",
+      "label": "Expandable Details",
+      "type": "collection",
+      "fields": [
+        {
+          "id": "label",
+          "label": "Label",
+          "type": "text",
+          "required": true,
+          "localized": true
+        },
+        {
+          "id": "details",
+          "label": "Details",
+          "type": "text",
+          "required": true,
+          "localized": true
+        }
+      ],
+      "admin_zone": "content"
     }
   ],
   "source_type": "theme",
