@@ -68,7 +68,7 @@ export default {
 
   data() {
     return {
-      activeSlide: -1, // setting to -1, allows for first slide to be initial
+      activeSlide: -1,
       glideOptions: {
         type: 'carousel',
         perView: 1,

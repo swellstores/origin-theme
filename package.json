@@ -42,6 +42,7 @@
     "vue-server-renderer": "^2.6.14",
     "vue-slider-component": "^2.8.16",
     "vue-template-compiler": "^2.6.14",
+    "vue-youtube-embed": "^2.2.2",
     "vue2-datepicker": "^3.11.1",
     "vuelidate": "^0.7.7",
     "vuex": "^3.6.2"

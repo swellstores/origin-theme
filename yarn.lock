@@ -13313,6 +13313,11 @@ vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
+vue-youtube-embed@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/vue-youtube-embed/-/vue-youtube-embed-2.2.2.tgz#e4fc27bc09ecd77488e6709f7c6694585c972d2d"
+  integrity sha512-l/EJuFMRK43AN73N+qxJnN0LB3uPl2xAghmr3dCvODWGCRWGjmGfrHaOtD93fu9J4co+CZLv1KP3akAsldC1aw==
+
 vue2-datepicker@^3.11.1:
   version "3.11.1"
   resolved "https://registry.yarnpkg.com/vue2-datepicker/-/vue2-datepicker-3.11.1.tgz#b2124e15f694d0fd43a92558f6929ec29338d241"

@@ -160,6 +160,9 @@ module.exports = {
       gridTemplateColumns: {
         '2-max': 'max-content 1fr',
       },
+      aspectRatio: {
+        square: '1/1',
+      },
     },
   },
   variants: {

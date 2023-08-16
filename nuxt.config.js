@@ -54,14 +54,14 @@ export default () => {
       { src: '~/plugins/directives', mode: 'client' },
       { src: '~/plugins/swell-lang.js' },
       { src: '~/plugins/filters.js' },
-      // { src: '~/plugins/portal-vue.js', mode: 'client' },
+      { src: '~/plugins/vue-youtube-embed.js', mode: 'client' },
     ],
 
     /*
      ** Nuxt.js modules
      */
     modules: [
-      ['@nuxtjs/gtm', 'portal-vue/nuxt'],
+      ['@nuxtjs/gtm'],
 
       // [
       //   '@nuxtjs/sentry',
