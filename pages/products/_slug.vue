@@ -621,7 +621,6 @@ export default {
     const product = await $swell.products.get($route.params.slug, {
       expand: ['up_sells.product', 'cross_sells'],
     });
-    // console.log('product: ', product);
     const options = product.purchaseOptions;
     if (options && options.subscription && options.subscription.plans) {
       options.subscription.plans = options.subscription.plans.filter(
@@ -677,8 +676,6 @@ export default {
     this.selectedPurchaseOption = getInitialSelection(product.purchaseOptions);
     // Set component data
     this.product = product;
-    console.log('this.product: ', this.product);
-    // console.log('this.product.images: ', this.product.images);
     this.getInitialOptions(product);
     this.relatedProducts = relatedProducts;
     this.productBenefits = get(product, 'content.productBenefits', []);
@@ -816,7 +813,6 @@ export default {
         switch (option.inputType) {
           case 'short_text':
             if (option.attributeId === 'event_date') {
-              // console.log('option: ', option);
               componentName = 'DateTimePicker';
             } else {
               componentName = 'Text';
@@ -1075,9 +1071,7 @@ export default {
       return img?.file?.url.toLowerCase().includes('thumbnail');
     },
     generateVideoInfo() {
-      console.log('generateVideoInfo');
       const youtubeUrl = this?.product?.attributes?.youtubeUrl;
-      console.log('youtubeUrl: ', youtubeUrl);
       if (!youtubeUrl) {
         return;
       }
@@ -1088,21 +1082,12 @@ export default {
         thumbnailUrl: '',
         isVideo: true,
       };
-      /* const youtubeVideoId = youtubeUrl.value
-              .match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/)
-              .pop();
-            console.log('youtubeVideoId: ', youtubeVideoId);
-      
-            if (youtubeVideoId && youtubeVideoId.length === 11) {
-              videoInfo.thumbnailUrl = `//img.youtube.com/vi/${youtubeVideoId}/0.jpg`;
-            } */
+
       const youtubeVideoId = youtubeUrl.value.split('/').pop();
-      console.log('youtubeVideoId: ', youtubeVideoId);
       if (youtubeVideoId) {
         videoInfo.thumbnailUrl = `//img.youtube.com/vi/${youtubeVideoId}/0.jpg`;
         videoInfo.videoId = youtubeVideoId;
       }
-      console.log('videoInfo: ', videoInfo);
       this.videoInfo = videoInfo;
     },
     /**
@@ -1110,20 +1095,17 @@ export default {
      * @param {number} num active slide number, -1 - first slide
      */
     openSliderWithActiveSlide(num) {
-      console.log('num: ', num);
       this.activeSlide = num;
       this.handleTogglePopupSlider();
     },
 
     handleTogglePopupSlider() {
-      console.log('handleTogglePopupSlider');
       if (!this.isPopupSliderOpen) {
         document.querySelector('body').classList.add('overflow-y-hidden');
       } else {
         document.querySelector('body').classList.remove('overflow-y-hidden');
       }
       this.isPopupSliderOpen = !this.isPopupSliderOpen;
-      console.log('this.isPopupSliderOpen: ', this.isPopupSliderOpen);
     },
     popupCalendly() {
       // eslint-disable-next-line no-undef

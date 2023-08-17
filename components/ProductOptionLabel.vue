@@ -53,10 +53,6 @@ export default {
     };
   },
 
-  onMounted() {
-    console.log('label this.name', this.name);
-  },
-
   methods: {
     toggleHint() {
       this.isHintVisible = !this.isHintVisible;

@@ -146,33 +146,12 @@ export default {
     };
   },
 
-  computed: {},
-
-  watch: {
-    active(newIndex) {
-      console.log('newIndex: ', newIndex);
-    },
-  },
-
-  mounted() {
-    // console.log('this.images', this.images);
-    console.log('this.items.length', this.items.length);
-
-    // eslint-disable-next-line nuxt/no-env-in-hooks
-    /* if (process.client) {
-      const Glide = await import('@glidejs/glide');
-
-      new Glide('.glide').mount();
-    } */
-  },
-
   methods: {
     toggleOpenModal() {
       this.$emit('toggle-popup');
     },
 
     setActiveSlide(index) {
-      console.log('index: ', index);
       this.active = index;
     },
   },
