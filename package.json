@@ -34,6 +34,7 @@
     "p-map": "^5.4.0",
     "postscribe": "^2.0.8",
     "swell-js": "^3.19.5",
+    "uuid": "^9.0.0",
     "vue": "^2.6.14",
     "vue-country-region-select": "^2.0.16",
     "vue-credit-card-validation": "^0.1.11",

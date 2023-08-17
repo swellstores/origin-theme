@@ -19,7 +19,7 @@
           />
         </button>
 
-        <header class="py-3">
+        <header class="pb-3">
           <slot name="header"></slot>
         </header>
 

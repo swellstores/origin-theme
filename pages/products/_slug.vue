@@ -15,7 +15,7 @@
                   alt="thumbnail image"
                 />
               </div>
-              <!-- class="grid-cols-[repeat(auto-fit, minmax(80px, 1fr))] grid gap-4 overflow-auto" -->
+
               <div class="flex gap-4 overflow-auto">
                 <div
                   v-if="productMedia.videoInfo"
@@ -147,6 +147,14 @@
                 <BaseIcon icon="mdi:envelope" />
               </SocialShare>
             </div>
+          </div>
+
+          <!-- faq collapseable -->
+          <div
+            v-if="product.content.expandableDetails"
+            class="my-8 hidden md:block"
+          >
+            <ProductFaq :details="product.content.expandableDetails" />
           </div>
 
           <!-- Back button -->
@@ -530,6 +538,14 @@
                   </SocialShare>
                 </div>
               </div>
+
+              <!-- faq collapseable -->
+              <div
+                v-if="product.content.expandableDetails"
+                class="my-8 md:hidden"
+              >
+                <ProductFaq :details="product.content.expandableDetails" />
+              </div>
             </div>
           </div>
         </div>
@@ -557,6 +573,7 @@ import get from 'lodash/get';
 import ProductOptionLabel from '~/components/ProductOptionLabel.vue';
 import BaseButton from '~/components/BaseButton.vue';
 import ProductSliderPopup from '~/components/ProductSliderPopup.vue';
+import ProductFaq from '~/components/ProductFaq.vue';
 
 import pageMeta from '~/mixins/pageMeta';
 import { listVisibleOptions } from '~/modules/swell/utils/listVisibleOptions';
@@ -566,7 +583,12 @@ import { getInitialSelection } from '~/utils/purchaseOptions';
 
 export default {
   name: 'ProductDetailPage',
-  components: { ProductOptionLabel, BaseButton, ProductSliderPopup },
+  components: {
+    ProductOptionLabel,
+    BaseButton,
+    ProductSliderPopup,
+    ProductFaq,
+  },
   mixins: [pageMeta, validationMixin, refetchCurrencyMixin],
   data() {
     return {
