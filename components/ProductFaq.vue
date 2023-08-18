@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div v-if="details">
     <ProductOptionLabel
-      :id="generateUuid"
+      :id="generateUuid()"
       :name="'Frequently Asked Questions'"
     />
 
@@ -25,8 +25,8 @@ export default {
   components: { InfoAccordion },
   props: {
     details: {
-      type: Object,
-      default: null,
+      type: Array,
+      default: () => [],
     },
   },
 

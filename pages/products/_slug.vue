@@ -8,23 +8,27 @@
             <div v-if="$fetchState.pending" class="h-full bg-primary-lighter" />
 
             <div v-else class="grid gap-4">
-              <div class="cursor-pointer" @click="openSliderWithActiveSlide(0)">
+              <div
+                v-if="productThumbnail"
+                class="cursor-pointer"
+                @click="openSliderWithActiveSlide(0)"
+              >
                 <img
                   class="h-auto max-w-full rounded-lg"
-                  :src="productMedia.thumbnailImage.file.url"
+                  :src="productThumbnail.file.url"
                   alt="thumbnail image"
                 />
               </div>
 
               <div class="flex gap-4 overflow-auto">
                 <div
-                  v-if="productMedia.videoInfo"
+                  v-if="productVideo"
                   class="relative w-18 cursor-pointer md:w-20"
                   @click="openSliderWithActiveSlide(0)"
                 >
                   <img
                     class="h-full max-w-full rounded-lg object-cover"
-                    :src="productMedia.videoInfo.thumbnailUrl"
+                    :src="productVideo.thumbnailUrl"
                     alt="thumbnail video"
                   />
                   <button
@@ -38,18 +42,20 @@
                   </button>
                 </div>
 
-                <div
-                  v-for="(media, i) in productMedia.otherMedia"
-                  :key="media.id"
-                  class="relative w-18 cursor-pointer md:w-20"
-                  @click="openSliderWithActiveSlide(i + 1)"
-                >
-                  <img
-                    class="h-full max-w-full rounded-lg object-cover"
-                    :src="media.file.url"
-                    :alt="`image ${i + 1} of product`"
-                  />
-                </div>
+                <template v-if="productImages">
+                  <div
+                    v-for="(media, i) in productImages"
+                    :key="media.id"
+                    class="relative w-18 cursor-pointer md:w-20"
+                    @click="openSliderWithActiveSlide(i + 1)"
+                  >
+                    <img
+                      class="h-full max-w-full rounded-lg object-cover"
+                      :src="media.file.url"
+                      :alt="`image ${i + 1} of product`"
+                    />
+                  </div>
+                </template>
               </div>
             </div>
           </div>
@@ -57,14 +63,14 @@
           <div v-if="productMedia">
             <ProductSliderPopup
               :is-open-modal="isPopupSliderOpen"
-              :youtube-video="productMedia.videoInfo"
-              :thumbnail-image="productMedia.thumbnailImage"
-              :images="productMedia.otherMedia"
+              :youtube-video="productVideo"
+              :thumbnail-image="productThumbnail"
+              :images="productImages"
               :indicator-color="'dark'"
               @toggle-popup="handleTogglePopupSlider"
             >
               <template #header>
-                <h2 class="text-center">{{ product.name }}</h2>
+                <h2 class="text-left">{{ product.name }}</h2>
               </template>
             </ProductSliderPopup>
           </div>
@@ -150,12 +156,14 @@
           </div>
 
           <!-- faq collapseable -->
-          <div
-            v-if="product.content.expandableDetails"
-            class="my-8 hidden md:block"
-          >
-            <ProductFaq :details="product.content.expandableDetails" />
-          </div>
+          <template v-if="product">
+            <div
+              v-if="product.content.expandableDetails"
+              class="my-8 hidden md:block"
+            >
+              <ProductFaq :details="product.content.expandableDetails" />
+            </div>
+          </template>
 
           <!-- Back button -->
           <a
@@ -540,12 +548,14 @@
               </div>
 
               <!-- faq collapseable -->
-              <div
-                v-if="product.content.expandableDetails"
-                class="my-8 md:hidden"
-              >
-                <ProductFaq :details="product.content.expandableDetails" />
-              </div>
+              <template v-if="product">
+                <div
+                  v-if="product.content.expandableDetails"
+                  class="my-8 md:hidden"
+                >
+                  <ProductFaq :details="product.content.expandableDetails" />
+                </div>
+              </template>
             </div>
           </div>
         </div>
@@ -610,7 +620,7 @@ export default {
       enableSocialSharing: false,
       showStockLevel: false,
       activeDropdownUID: null,
-      videoInfo: {},
+      videoInfo: null,
       isPopupSliderOpen: false,
       activeSlide: -1,
     };
@@ -684,9 +694,6 @@ export default {
     this.enableQuantity = get(product, 'content.enableQuantity');
     this.upsellProductCols = get(product, 'content.upSellCols') || 4;
     this.maxQuantity = maxQuantity;
-    /* if (this.product.attributes?.youtubeUrl) {
-          this.generateVideoInfo();
-        } */
   },
   computed: {
     ...mapState(['cartIsUpdating', 'headerIsVisible', 'currency']),
@@ -731,10 +738,33 @@ export default {
         stockPurchasable
       );
     },
-    productImages() {
-      if (!this.product?.images?.length) return null;
-      return this.product.images;
+
+    productThumbnail() {
+      const thumbnailImage = this.product.images.find((img) =>
+        this.isThumbnail(img),
+      );
+
+      if (!thumbnailImage) return null;
+
+      return thumbnailImage;
     },
+
+    productVideo() {
+      return this.videoInfo ? this.videoInfo : null;
+    },
+
+    productImages() {
+      const images = this.product.images.filter(
+        (img) => !this.isThumbnail(img),
+      );
+
+      if (!images || images.length === 0) {
+        return null;
+      }
+
+      return images;
+    },
+
     // generate media object with thumbnailImage and otherMedia
     productMedia() {
       if (!this.product?.images?.length && !this.attributes?.youtubeUrl)

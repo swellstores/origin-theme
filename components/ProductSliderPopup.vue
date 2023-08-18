@@ -7,7 +7,7 @@
       ></div>
 
       <div
-        class="panel h-vh-gap md:center-xy absolute bottom-0 z-100 w-full overflow-y-auto overflow-x-hidden rounded-t bg-primary-lighter p-3 md:relative md:mt-8 md:h-auto md:max-h-80vh md:w-160 md:rounded md:p-6"
+        class="panel h-vh-gap md:center-xy absolute bottom-0 z-100 w-full overflow-y-auto overflow-x-hidden rounded-t bg-primary-lighter p-3 md:relative md:mt-8 md:h-auto md:max-h-80vh md:w-160 md:rounded md:p-6 lg:w-180 xl:w-256"
       >
         <button
           class="aspect-square group absolute top-2 right-2 inline-flex items-center justify-center rounded p-3 leading-none hover:bg-error-default focus:bg-error-default focus:text-primary-lightest md:top-4 md:right-4"
@@ -19,7 +19,7 @@
           />
         </button>
 
-        <header class="pb-3">
+        <header class="pr-1/5 pb-3">
           <slot name="header"></slot>
         </header>
 
@@ -27,7 +27,7 @@
         <div class="modal-body">
           <!-- Media -->
           <ClientOnly>
-            <VueGlide v-model="active" :options="glideOptions">
+            <VueGlide v-model="active" :options="glideOptions" class="relative">
               <VueGlideSlide v-if="thumbnailImage" :key="thumbnailImage.id">
                 <VisualMedia
                   :lazy="false"
@@ -38,24 +38,43 @@
 
               <VueGlideSlide v-if="youtubeVideo" :key="youtubeVideo.id">
                 <ClientOnly>
-                  <VueYouTubeEmbed
-                    player-width="100%"
-                    :video-id="youtubeVideo.videoId"
-                  ></VueYouTubeEmbed>
+                  <div class="relative w-full pb-[56.25%]">
+                    <VueYouTubeEmbed
+                      class="absolute inset-0"
+                      player-width="100%"
+                      player-height="100%"
+                      :video-id="youtubeVideo.videoId"
+                    ></VueYouTubeEmbed>
+                  </div>
                 </ClientOnly>
               </VueGlideSlide>
 
-              <VueGlideSlide v-for="image in images" :key="image.id">
-                <VisualMedia :lazy="false" :source="image" :alt="image.alt" />
-              </VueGlideSlide>
+              <template v-if="images">
+                <VueGlideSlide v-for="image in images" :key="image.id">
+                  <VisualMedia :lazy="false" :source="image" :alt="image.alt" />
+                </VueGlideSlide>
+              </template>
 
               <template slot="control">
                 <button
-                  v-for="index in items.length"
+                  class="absolute top-1/2 left-0 z-20 translate-y-[-90%] transform rounded-sm bg-primary-lighter p-2 opacity-70 hover:opacity-100"
+                  data-glide-dir="<"
+                >
+                  <BaseIcon icon="uil:angle-left" size="lg" />
+                </button>
+                <button
+                  class="absolute top-1/2 right-0 z-20 translate-y-[-90%] transform rounded-sm bg-primary-lighter p-2 opacity-70 hover:opacity-100"
+                  data-glide-dir=">"
+                >
+                  <BaseIcon icon="uil:angle-right" size="lg" />
+                </button>
+                <button
+                  v-for="index in items"
                   :key="index"
                   :class="{
-                    'ml-auto': index === 1,
-                    'mr-auto': index === items.length,
+                    'ml-auto': index === 1 && items !== 1,
+                    'mr-auto': index === items && items !== 1,
+                    '!mx-auto': items === 1,
                     'bg-primary-lighter':
                       indicatorColor === 'light' && active === index - 1,
                     'bg-primary-darkest':
@@ -76,10 +95,6 @@
 </template>
 
 <script>
-// Helpers
-
-// import '@glidejs/glide/dist/css/glide.core.min.css';
-
 export default {
   name: 'ProductSliderPopup',
 
@@ -118,7 +133,7 @@ export default {
 
     images: {
       type: Array,
-      default: null,
+      default: () => [],
     },
 
     indicatorColor: {
@@ -129,7 +144,7 @@ export default {
 
   data() {
     return {
-      active: 0,
+      active: 1,
       glideOptions: {
         type: 'carousel',
 
@@ -137,13 +152,27 @@ export default {
         gap: 0,
         animationTimingFunc: 'cubic-bezier(0.6, 0.2, 0, 1)',
       },
-
-      items: [
-        this.thumbnailImage,
-        this.youtubeVideo,
-        ...(this.images && this.images.length > 0 && this.images),
-      ],
     };
+  },
+
+  computed: {
+    items() {
+      const media = [];
+
+      if (this.thumbnailImage) {
+        media.push(this.thumbnailImage);
+      }
+
+      if (this.youtubeVideo) {
+        media.push(this.youtubeVideo);
+      }
+
+      if (this.images && this.images?.length > 0) {
+        media.push(this.images);
+      }
+
+      return media.length;
+    },
   },
 
   methods: {
