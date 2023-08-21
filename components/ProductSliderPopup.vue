@@ -30,6 +30,7 @@
             <VueGlide v-model="active" :options="glideOptions" class="relative">
               <VueGlideSlide v-if="thumbnailImage" :key="thumbnailImage.id">
                 <VisualMedia
+                  class="object-contain"
                   :lazy="false"
                   :source="thumbnailImage"
                   :alt="thumbnailImage.alt"
@@ -40,7 +41,7 @@
                 <ClientOnly>
                   <div class="relative w-full pb-[56.25%]">
                     <VueYouTubeEmbed
-                      class="absolute inset-0"
+                      class="absolute inset-0 object-contain"
                       player-width="100%"
                       player-height="100%"
                       :video-id="youtubeVideo.videoId"
@@ -51,7 +52,12 @@
 
               <template v-if="images">
                 <VueGlideSlide v-for="image in images" :key="image.id">
-                  <VisualMedia :lazy="false" :source="image" :alt="image.alt" />
+                  <VisualMedia
+                    class="object-contain"
+                    :lazy="false"
+                    :source="image"
+                    :alt="image.alt"
+                  />
                 </VueGlideSlide>
               </template>
 
@@ -140,11 +146,17 @@ export default {
       type: String,
       default: 'light',
     },
+
+    /* activeSlide: {
+      type: Number,
+      default: -1,
+    }, */
   },
 
   data() {
     return {
-      active: 1,
+      active: -1,
+      // active: this.activeSlide,
       glideOptions: {
         type: 'carousel',
 
@@ -168,7 +180,7 @@ export default {
       }
 
       if (this.images && this.images?.length > 0) {
-        media.push(this.images);
+        media.push(...this.images);
       }
 
       return media.length;
@@ -178,6 +190,7 @@ export default {
   methods: {
     toggleOpenModal() {
       this.$emit('toggle-popup');
+      this.active = -1;
     },
 
     setActiveSlide(index) {

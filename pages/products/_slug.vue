@@ -11,7 +11,7 @@
               <div
                 v-if="productThumbnail"
                 class="cursor-pointer"
-                @click="openSliderWithActiveSlide(0)"
+                @click="handleTogglePopupSlider"
               >
                 <img
                   class="h-auto max-w-full rounded-lg"
@@ -20,23 +20,38 @@
                 />
               </div>
 
-              <div class="flex gap-4 overflow-auto">
+              <!-- Fallback image -->
+              <div
+                v-else
+                class="relative cursor-pointer rounded bg-primary-lighter pb-full"
+                @click="handleTogglePopupSlider"
+              >
+                <BaseIcon
+                  icon="uil:camera-slash"
+                  size="lg"
+                  class="center-xy absolute text-primary-med"
+                />
+              </div>
+
+              <div
+                :class="`grid gap-4 overflow-auto grid-cols-${mediaFilesColumns}`"
+              >
                 <div
                   v-if="productVideo"
-                  class="relative w-18 cursor-pointer md:w-20"
-                  @click="openSliderWithActiveSlide(0)"
+                  class="basis-full aspect-video relative cursor-pointer"
+                  @click="handleTogglePopupSlider"
                 >
                   <img
-                    class="h-full max-w-full rounded-lg object-cover"
+                    class="h-full w-full rounded-lg object-cover"
                     :src="productVideo.thumbnailUrl"
                     alt="thumbnail video"
                   />
                   <button
-                    class="center-xy absolute inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary-lightest p-2 md:p-2"
+                    class="center-xy absolute inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-lightest p-2"
                   >
                     <BaseIcon
                       icon="uil:play"
-                      size="lg"
+                      size="md"
                       class="text-primary-dark"
                     />
                   </button>
@@ -46,11 +61,11 @@
                   <div
                     v-for="(media, i) in productImages"
                     :key="media.id"
-                    class="relative w-18 cursor-pointer md:w-20"
+                    class="basis-full aspect-video relative cursor-pointer"
                     @click="openSliderWithActiveSlide(i + 1)"
                   >
                     <img
-                      class="h-full max-w-full rounded-lg object-cover"
+                      class="h-full w-full rounded-lg object-cover"
                       :src="media.file.url"
                       :alt="`image ${i + 1} of product`"
                     />
@@ -65,6 +80,7 @@
               :is-open-modal="isPopupSliderOpen"
               :youtube-video="productVideo"
               :thumbnail-image="productThumbnail"
+              :active-slide="activeSlide"
               :images="productImages"
               :indicator-color="'dark'"
               @toggle-popup="handleTogglePopupSlider"
@@ -754,6 +770,10 @@ export default {
     },
 
     productImages() {
+      /**
+       * @constant
+       * @type {{}[] | []}
+       */
       const images = this.product.images.filter(
         (img) => !this.isThumbnail(img),
       );
@@ -762,7 +782,11 @@ export default {
         return null;
       }
 
-      return images;
+      return images.reverse();
+    },
+
+    mediaFilesColumns() {
+      return Number(Boolean(this.productVideo)) + this.productImages.length + 1;
     },
 
     // generate media object with thumbnailImage and otherMedia

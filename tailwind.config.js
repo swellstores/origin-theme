@@ -162,7 +162,14 @@ module.exports = {
         '2-max': 'max-content 1fr',
       },
       aspectRatio: {
+        222: '222',
+        395: '395',
+        460: '460',
+        805: '805',
+        '3/4': '3/4',
         square: '1/1',
+        video: '16/9',
+        '4/3': '4/3',
       },
     },
   },
@@ -173,6 +180,8 @@ module.exports = {
     translate: ['responsive', 'hover', 'focus', 'group-hover'],
   },
   plugins: [
+    require('@tailwindcss/aspect-ratio'),
+
     function ({ addUtilities, config, e }) {
       const rotateUtilities = Object.entries(config('theme.rotate')).map(
         ([key, value]) => {
