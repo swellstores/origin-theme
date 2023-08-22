@@ -173,11 +173,8 @@
 
           <!-- faq collapseable -->
           <template v-if="product">
-            <div
-              v-if="product.content.expandableDetails"
-              class="my-8 hidden md:block"
-            >
-              <ProductFaq :details="product.content.expandableDetails" />
+            <div v-if="expandableDetailsReverse" class="my-8 hidden md:block">
+              <ProductFaq :details="expandableDetailsReverse" />
             </div>
           </template>
 
@@ -702,6 +699,7 @@ export default {
     this.selectedPurchaseOption = getInitialSelection(product.purchaseOptions);
     // Set component data
     this.product = product;
+
     this.getInitialOptions(product);
     this.relatedProducts = relatedProducts;
     this.productBenefits = get(product, 'content.productBenefits', []);
@@ -756,9 +754,7 @@ export default {
     },
 
     productThumbnail() {
-      const thumbnailImage = this.product.images.find((img) =>
-        this.isThumbnail(img),
-      );
+      const thumbnailImage = this.product.images[0];
 
       if (!thumbnailImage) return null;
 
@@ -774,15 +770,14 @@ export default {
        * @constant
        * @type {{}[] | []}
        */
-      const images = this.product.images.filter(
-        (img) => !this.isThumbnail(img),
-      );
 
-      if (!images || images.length === 0) {
+      if (!this.product.images || this.product.images.length === 0) {
         return null;
       }
 
-      return images.reverse();
+      const sliced = this.product.images.slice(1);
+
+      return sliced;
     },
 
     mediaFilesColumns() {
@@ -793,32 +788,34 @@ export default {
     productMedia() {
       if (!this.product?.images?.length && !this.attributes?.youtubeUrl)
         return null;
-      /* if (!this.product?.images?.length) {
-              return this.attributes?.youtubeUrl;
-            } */
-      const [thumbnailImage, ...otherImages] = this.product.images.reduce(
-        (acc, img) => {
-          this.isThumbnail(img) ? acc.unshift(img) : acc.push(img);
-          return acc;
-        },
-        [],
-      );
-      /* .map((item) => ({
-          id: item.id,
-          url: item.file.url,
-        })); */
+
+      const [thumbnailImage, ...otherImages] = this.product.images;
+
       if (!thumbnailImage) return null;
       const media = {
         thumbnailImage,
         videoInfo: null,
-        otherMedia: [],
+        images: [],
       };
+
       if (this.videoInfo) {
         media.videoInfo = this.videoInfo;
       }
-      media.otherMedia.push(...otherImages);
+
+      media.images.push(...otherImages);
       return media;
     },
+
+    expandableDetailsReverse() {
+      const details = this.product?.content?.expandableDetails;
+
+      if (!details) {
+        return null;
+      }
+
+      return details.reverse();
+    },
+
     billingInterval() {
       return get(this, 'selectedOptions.Plan');
     },

@@ -1,7 +1,7 @@
 <template>
   <div class="rounded bg-primary-light">
     <button
-      class="flex w-full cursor-pointer items-center justify-between py-4 px-6"
+      class="flex w-full cursor-pointer items-center justify-between gap-2 py-4 px-6"
       @click="toggleAccordion"
     >
       <span
@@ -13,7 +13,7 @@
       <!-- plus -->
       <svg
         v-if="!isOpen"
-        class="fill-primary-dark"
+        class="fill-primary-dark block flex-shrink-0 flex-grow-0"
         width="20"
         height="20"
         viewBox="0 0 20 20"
@@ -26,7 +26,7 @@
 
       <svg
         v-else
-        class="fill-primary-dark"
+        class="fill-primary-dark block flex-shrink-0 flex-grow-0"
         width="20"
         height="2"
         viewBox="0 0 20 2"
@@ -36,7 +36,6 @@
       </svg>
     </button>
 
-    <!-- <TransitionCollapseHeight v-show="isOpen"> -->
     <div
       class="pointer-events-none px-6 text-sm text-primary-darker transition-all duration-150 ease-in-out"
       :class="{
@@ -45,7 +44,6 @@
       }"
       v-html="content"
     ></div>
-    <!-- </TransitionCollapseHeight> -->
   </div>
 </template>
 

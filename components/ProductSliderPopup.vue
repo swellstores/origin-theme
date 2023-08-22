@@ -29,12 +29,14 @@
           <ClientOnly>
             <VueGlide v-model="active" :options="glideOptions" class="relative">
               <VueGlideSlide v-if="thumbnailImage" :key="thumbnailImage.id">
+                <!-- <div class="aspect-video"> -->
                 <VisualMedia
                   class="object-contain"
                   :lazy="false"
                   :source="thumbnailImage"
                   :alt="thumbnailImage.alt"
                 />
+                <!-- </div> -->
               </VueGlideSlide>
 
               <VueGlideSlide v-if="youtubeVideo" :key="youtubeVideo.id">
@@ -52,12 +54,14 @@
 
               <template v-if="images">
                 <VueGlideSlide v-for="image in images" :key="image.id">
+                  <!-- <div class="aspect-video"> -->
                   <VisualMedia
                     class="object-contain"
                     :lazy="false"
                     :source="image"
                     :alt="image.alt"
                   />
+                  <!-- </div> -->
                 </VueGlideSlide>
               </template>
 
@@ -228,6 +232,11 @@ export default {
 
 [data-glide-el='controls'] {
   @apply flex w-full flex-row justify-center;
+}
+
+/* stylelint-disable */
+.glide__slide > * {
+  @apply !pb-[56.25%];
 }
 </style>
 
