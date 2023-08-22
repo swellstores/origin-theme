@@ -89,9 +89,26 @@
           "type": "text",
           "required": true,
           "localized": true
+        },
+        {
+          "id": "position",
+          "label": "Position",
+          "type": "number",
+          "required": false,
+          "increment": 1
         }
       ],
       "admin_zone": "content"
+    },
+    {
+      "id": "sections",
+      "type": "collection",
+      "item_types": [
+        "email_signup",
+        "full_width_media",
+        "large_media",
+        "heading_with_text"
+      ]
     }
   ],
   "source_type": "theme",
