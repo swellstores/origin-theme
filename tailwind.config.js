@@ -91,6 +91,7 @@ module.exports = {
       120: '30rem',
       128: '32rem',
       160: '40rem',
+      180: '45rem',
       256: '64rem',
       '1/2': '50%',
       '1/3': '33.33333%',
@@ -160,6 +161,16 @@ module.exports = {
       gridTemplateColumns: {
         '2-max': 'max-content 1fr',
       },
+      aspectRatio: {
+        222: '222',
+        395: '395',
+        460: '460',
+        805: '805',
+        '3/4': '3/4',
+        square: '1/1',
+        video: '16/9',
+        '4/3': '4/3',
+      },
     },
   },
   variants: {
@@ -169,6 +180,8 @@ module.exports = {
     translate: ['responsive', 'hover', 'focus', 'group-hover'],
   },
   plugins: [
+    require('@tailwindcss/aspect-ratio'),
+
     function ({ addUtilities, config, e }) {
       const rotateUtilities = Object.entries(config('theme.rotate')).map(
         ([key, value]) => {

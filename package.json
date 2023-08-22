@@ -34,6 +34,7 @@
     "p-map": "^5.4.0",
     "postscribe": "^2.0.8",
     "swell-js": "^3.19.5",
+    "uuid": "^9.0.0",
     "vue": "^2.6.14",
     "vue-country-region-select": "^2.0.16",
     "vue-credit-card-validation": "^0.1.11",
@@ -42,6 +43,7 @@
     "vue-server-renderer": "^2.6.14",
     "vue-slider-component": "^2.8.16",
     "vue-template-compiler": "^2.6.14",
+    "vue-youtube-embed": "^2.2.2",
     "vue2-datepicker": "^3.11.1",
     "vuelidate": "^0.7.7",
     "vuex": "^3.6.2"
@@ -56,6 +58,7 @@
     "@nuxtjs/stylelint-module": "^5.1.0",
     "@nuxtjs/tailwindcss": "^4.2.1",
     "@swell/cli": "^1.0.2",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "autoprefixer": "^10.4.7",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-plugin-module-resolver": "^4.1.0",

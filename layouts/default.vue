@@ -12,7 +12,7 @@
         :type="notification.type"
       />
       <div class="flex flex-grow flex-col">
-        <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
+        <nuxt keep-alive :keep-alive-props="{ max: 20 }" />
       </div>
       <TheFooter />
     </div>
@@ -60,6 +60,13 @@ export default {
           async: true,
           body: true,
         },
+        // calendly script
+        {
+          type: 'text/javascript',
+          src: 'https://assets.calendly.com/assets/external/widget.js',
+          async: true,
+          body: true,
+        },
       ],
       link: [
         {
@@ -70,6 +77,12 @@ export default {
         this.faviconUrl
           ? { rel: 'icon', href: this.faviconUrl, type: 'image/x-icon' }
           : '',
+
+        // calendly stylesheet
+        {
+          rel: 'stylesheet',
+          href: 'https://assets.calendly.com/assets/external/widget.css',
+        },
       ],
     };
   },

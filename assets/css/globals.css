@@ -209,3 +209,8 @@ input[type='number'] {
     @apply mx-auto w-full px-6 lg:px-8 xl:px-10;
   }
 }
+
+[data-glide-el='controls'] {
+  display: flex;
+  justify-content: center;
+}

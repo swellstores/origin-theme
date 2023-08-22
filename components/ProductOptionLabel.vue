@@ -52,6 +52,7 @@ export default {
       isHintVisible: false,
     };
   },
+
   methods: {
     toggleHint() {
       this.isHintVisible = !this.isHintVisible;
