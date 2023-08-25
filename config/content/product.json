@@ -70,6 +70,10 @@
       "type": "select",
       "options": [2, 3, 4],
       "default": 4
+    },
+    {
+      "id": "sections",
+      "type": "content/pages"
     }
   ],
   "source_type": "theme",
