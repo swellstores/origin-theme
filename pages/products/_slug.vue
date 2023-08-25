@@ -173,8 +173,8 @@
 
           <!-- faq collapseable -->
           <template v-if="product">
-            <div v-if="expandableDetailsReverse" class="my-8 hidden md:block">
-              <ProductFaq :details="expandableDetailsReverse" />
+            <div v-if="expandableDetailsInOrder" class="my-8 hidden md:block">
+              <ProductFaq :details="expandableDetailsInOrder" />
             </div>
           </template>
 
@@ -226,8 +226,66 @@
 
             <!-- Main content -->
             <div v-else>
+              <!-- breadcrumbs -->
+              <nav class="flex" aria-label="Breadcrumbs">
+                <ol
+                  class="inline-flex flex-wrap items-center space-x-1 md:space-x-3"
+                >
+                  <li class="inline-flex items-center">
+                    <NuxtLink
+                      to="/"
+                      class="w-max text-sm font-medium text-primary-dark"
+                    >
+                      All Events
+                    </NuxtLink>
+                  </li>
+                  <li>
+                    <div class="flex items-center">
+                      <svg
+                        class="fill-grey w-1.5 mx-1 h-3"
+                        viewBox="0 0 5 11"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M0.157568 10.4358C-0.0436482 10.2467 -0.0534543 9.93022 0.135666 9.72901L3.92592 5.69633C4.02469 5.59124 4.02469 5.40878 3.92592 5.3037L0.135667 1.27102C-0.0534536 1.0698 -0.0436474 0.753369 0.157569 0.564249C0.358786 0.375128 0.675216 0.384934 0.864336 0.586151L4.65459 4.61883C5.11514 5.10883 5.11514 5.89119 4.65459 6.38119L0.864336 10.4139C0.675215 10.6151 0.358785 10.6249 0.157568 10.4358Z"
+                        />
+                      </svg>
+
+                      <NuxtLink
+                        :to="`/categories/${productCategory.slug}`"
+                        class="ml-1 w-max text-sm font-medium text-primary-dark md:ml-2"
+                      >
+                        {{ productCategory.name }}
+                      </NuxtLink>
+                    </div>
+                  </li>
+                  <li aria-current="page">
+                    <div class="flex items-center">
+                      <svg
+                        class="fill-grey w-1.5 mx-1 h-3"
+                        viewBox="0 0 5 11"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M0.157568 10.4358C-0.0436482 10.2467 -0.0534543 9.93022 0.135666 9.72901L3.92592 5.69633C4.02469 5.59124 4.02469 5.40878 3.92592 5.3037L0.135667 1.27102C-0.0534536 1.0698 -0.0436474 0.753369 0.157569 0.564249C0.358786 0.375128 0.675216 0.384934 0.864336 0.586151L4.65459 4.61883C5.11514 5.10883 5.11514 5.89119 4.65459 6.38119L0.864336 10.4139C0.675215 10.6151 0.358785 10.6249 0.157568 10.4358Z"
+                        />
+                      </svg>
+                      <span
+                        class="ml-1 text-sm font-medium text-primary-dark md:ml-2"
+                      >
+                        {{ product.name }}
+                      </span>
+                    </div>
+                  </li>
+                </ol>
+              </nav>
+
               <!--TODO<div class="mb-2 label-xs-bold text-primary-dark">{{ breadcrumb }}</div>-->
-              <h1 class="mb-4 leading-tight">
+              <h1 class="mt-6 mb-4 leading-tight md:mt-10">
                 {{ product.name }}
               </h1>
               <!--TODO awaiting customer reviews feature
@@ -237,13 +295,23 @@
               <div
                 class="mt-2 mb-5 flex items-center text-lg font-semibold md:mb-8"
               >
-                <span
+                <!-- <span
                   v-if="
                     variation.price !== null &&
                     variation.price >= 0 &&
                     variationCurrency === currency
                   "
                   >{{ formatMoney(variation.price, currency, false) }}</span
+                > -->
+                <span
+                  v-if="
+                    product.pricePerPerson && variationCurrency === currency
+                  "
+                  class="text-xl"
+                  >{{
+                    formatMoney(product.pricePerPerson, currency, false)
+                  }}
+                  per person</span
                 >
                 <span v-else>{{
                   $t('products._slug.unavailableInCurrency', {
@@ -476,6 +544,25 @@
                 </div>
               </div>
 
+              <div class="my-8 flex flex-col gap-4 lg:flex-row">
+                <!-- for logo -->
+                <div class="max-w-24 flex-shrink-0">
+                  <img
+                    class="block h-full w-full object-contain"
+                    src="/evenchilada-taco.png"
+                    alt="brand logo"
+                  />
+                </div>
+
+                <p class="text-base/tight md:text-lg/tight text-primary-darker">
+                  Evenchilada is a diverse offering of events that can all be
+                  mixed and matched to achieve the most unique event experience
+                  around. Evenchilada offers different types of trivia, bingo,
+                  murder mysteries, workshops, and games that are available
+                  in-person, hybridly, or virtually.
+                </p>
+              </div>
+
               <!-- Store features -->
               <div class="my-8 md:hidden">
                 <ul class="flex flex-wrap gap-x-6">
@@ -583,6 +670,39 @@
         :column-count="upsellProductCols"
       />
     </section>
+
+    <div v-if="sections.length">
+      <transition-group name="page-section">
+        <div
+          v-for="(section, index) in sections"
+          :key="`${index}.${section.type}`"
+        >
+          <SectionAsyncLoader
+            v-if="section"
+            :section="section"
+            :collection-index="index"
+            :fetch-is-pending="!loaded && $fetchState.pending"
+          />
+        </div>
+      </transition-group>
+    </div>
+
+    <div
+      v-else-if="$fetchState.pending"
+      class="flex flex-col items-center justify-center py-32 md:container"
+    >
+      <div class="mb-2 h-7 w-1/2 bg-primary-light" />
+      <div class="mb-6 h-7 w-1/3 bg-primary-light" />
+      <div class="mb-4 h-2 w-3/5 bg-primary-light" />
+      <div class="mb-8 h-2 w-4/5 bg-primary-light" />
+      <div class="h-10 w-40 bg-primary-light" />
+    </div>
+
+    <!-- <SectionUndefined
+      v-else
+      :heading="`${page ? page.name : 'Standard'} page`"
+      description="No sections added"
+    /> -->
   </main>
 </template>
 
@@ -636,13 +756,16 @@ export default {
       videoInfo: null,
       isPopupSliderOpen: false,
       activeSlide: -1,
+      page: null,
+      sections: [],
+      loaded: false,
     };
   },
   async fetch() {
     const { $swell, $route } = this;
     // Fetch product
     const product = await $swell.products.get($route.params.slug, {
-      expand: ['up_sells.product', 'cross_sells'],
+      expand: ['up_sells.product', 'cross_sells', 'categories'],
     });
     const options = product.purchaseOptions;
     if (options && options.subscription && options.subscription.plans) {
@@ -657,6 +780,7 @@ export default {
         message: this.$t('errors.productNotFound'),
       });
     }
+
     if (product.bundle && product.bundleItems?.length) {
       const bundleItemsOptionState = product.bundleItems.map((item) => {
         let optionState = [];
@@ -708,6 +832,21 @@ export default {
     this.enableQuantity = get(product, 'content.enableQuantity');
     this.upsellProductCols = get(product, 'content.upSellCols') || 4;
     this.maxQuantity = maxQuantity;
+
+    const homePage = await $swell.settings.get('store.homePage');
+    const slug = $route.params.slug || homePage || 'home';
+
+    const page = await $swell.content.get('pages', `/products/${slug}`);
+
+    if (!page) {
+      return;
+      // return this.$nuxt.error({ statusCode: 404 });
+    }
+
+    // Set component data
+    this.setSections(page);
+    this.page = page;
+    this.loaded = true;
   },
   computed: {
     ...mapState(['cartIsUpdating', 'headerIsVisible', 'currency']),
@@ -806,14 +945,41 @@ export default {
       return media;
     },
 
-    expandableDetailsReverse() {
+    expandableDetailsInOrder() {
       const details = this.product?.content?.expandableDetails;
 
       if (!details) {
         return null;
       }
 
-      return details.reverse();
+      const detailsWithPosition = [];
+      const detailsWithoutPosition = [];
+
+      details.forEach((d) => {
+        if (d?.position) {
+          detailsWithPosition.push(d);
+        } else {
+          detailsWithoutPosition.push(d);
+        }
+      });
+      detailsWithPosition.sort((a, b) => a.position - b.position);
+
+      return [...detailsWithPosition, ...detailsWithoutPosition];
+    },
+
+    productCategory() {
+      const categories = this.product?.categories;
+
+      if (!categories || !categories.length) {
+        return null;
+      }
+
+      const [first] = categories;
+
+      return {
+        slug: first.slug,
+        name: first.name,
+      };
     },
 
     billingInterval() {
@@ -1164,6 +1330,34 @@ export default {
         url: 'https://calendly.com/cirqus/20min',
       });
     },
+
+    // Update individual sections as-needed so there's less flashing and
+    // the transition group works without scrolling to the page top
+    // TODO remove in Vue 3 because it shouldn't be needed
+    setSections(page) {
+      const newSections = get(page, 'sections');
+      if (!Array.isArray(newSections) || !Array.isArray(this.sections)) return;
+
+      // We don't want to set sections individually if the array lengths are different,
+      // because that means we're either on first load, or a section has been deleted
+      const sectionCountIsEqual = newSections.length === this.sections.length;
+
+      if (this.$swellEditor && sectionCountIsEqual) {
+        newSections.forEach((section, index) => {
+          if (
+            JSON.stringify(section) !== JSON.stringify(this.sections[index])
+          ) {
+            // Update section if current data isn't identical
+            const cleanSection = { ...section };
+            delete cleanSection.$locale; // $locale is not a valid attribute name
+            this.$set(this.sections, index, cleanSection);
+          }
+        });
+      } else {
+        // Set the quick way since the editor isn't active
+        this.sections = newSections;
+      }
+    },
   },
   validations() {
     const fields = Object.values(this.optionState).reduce((acc, option) => {
@@ -1178,3 +1372,9 @@ export default {
   },
 };
 </script>
+
+<style lang="postcss">
+.page-section-move {
+  @apply transition-transform duration-500 ease-in-out;
+}
+</style>
