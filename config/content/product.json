@@ -21,20 +21,30 @@
           "type": "text",
           "required": true,
           "localized": true
+        },
+        {
+          "id": "description",
+          "label": "Description",
+          "type": "text",
+          "required": false,
+          "localized": true
         }
       ],
       "default": [
         {
           "icon": "uil:truck",
-          "text": "Free US shipping on all orders over $100"
+          "text": "Free US shipping on all orders over $100",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo."
         },
         {
           "icon": "uil:clock-two",
-          "text": "Free returns up to 30 days"
+          "text": "Free returns up to 30 days",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo."
         },
         {
           "icon": "uil:award",
-          "text": "98% customer satisfaction rating"
+          "text": "98% customer satisfaction rating",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo."
         }
       ]
     },
@@ -99,16 +109,6 @@
         }
       ],
       "admin_zone": "content"
-    },
-    {
-      "id": "sections",
-      "type": "collection",
-      "item_types": [
-        "email_signup",
-        "full_width_media",
-        "large_media",
-        "heading_with_text"
-      ]
     }
   ],
   "source_type": "theme",
