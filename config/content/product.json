@@ -47,7 +47,8 @@
           "text": "98% customer satisfaction rating",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo."
         }
-      ]
+      ],
+      "admin_zone": "content"
     },
     {
       "id": "enable_social_sharing",
@@ -107,6 +108,46 @@
           "type": "number",
           "required": false,
           "increment": 1
+        }
+      ],
+      "admin_zone": "content"
+    },
+    {
+      "id": "product_reviews",
+      "label": "Product Reviews",
+      "type": "collection",
+      "fields": [
+        {
+          "id": "name",
+          "label": "Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "quote",
+          "label": "Quote",
+          "type": "long_text",
+          "required": true
+        },
+        {
+          "id": "rating",
+          "label": "Rating",
+          "type": "select",
+          "options": [1, 2, 3, 4, 5],
+          "required": true
+        },
+        {
+          "id": "date",
+          "label": "Date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "logo",
+          "label": "Logo",
+          "type": "lookup",
+          "model": "content/logos",
+          "required": true
         }
       ],
       "admin_zone": "content"
