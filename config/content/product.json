@@ -25,7 +25,8 @@
         {
           "id": "description",
           "label": "Description",
-          "type": "text",
+          "type": "long_text",
+          "ui": "markdown",
           "required": false,
           "localized": true
         }
