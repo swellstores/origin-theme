@@ -33,17 +33,17 @@
       ],
       "default": [
         {
-          "icon": "uil:truck",
+          "icon": "ps:promo",
           "text": "Cirqus Guarantee",
           "description": "🛡️ Free protection with every booking. 🔄 Host cancels? We'll find a better gig or refund you. 🔍 Event not as promised? Tell us within 3 days, and we'll fix it. 😊 Not thrilled post-event? We're on it to make you smile. 🗨️ Day-of dilemmas? Chat with our team anytime for instant help!"
         },
         {
-          "icon": "uil:clock-two",
+          "icon": "ion:people",
           "text": "Flexible Headcount",
           "description": "Event planning comes with its challenges, and we're here to simplify them for you. Instead of requesting a precise headcount, we ask for an estimated range to gauge the event's scale. And here's the best part: Should the actual turnout vary, we'll adjust our fees accordingly. If fewer guests attend than anticipated, you'll receive a credit for your next event."
         },
         {
-          "icon": "uil:award",
+          "icon": "icon-park-outline:virtual-reality-glasses",
           "text": "Virtual & Hybrid",
           "description": "Cirqus brings the magic to virtual and hybrid events! 🎪 🛡️ Dive into virtual events: Fully online gatherings that connect participants from all over the globe. 🔄 Embrace hybrid events: A blend of in-person and online elements, offering the best of both worlds. 🔍 Tailored experiences: Whether fully digital or a mix, we curate events to fit every need. 😊 Engaging and interactive: Our platforms ensure active participation and memorable moments. 🗨️ Always evolving: With Cirqus, stay updated with the latest in event technology and trends!"
         }
