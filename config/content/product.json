@@ -113,6 +113,14 @@
       "admin_zone": "content"
     },
     {
+      "id": "brand",
+      "label": "Brand",
+      "type": "lookup",
+      "model": "content/brands",
+      "required": true,
+      "admin_zone": "content"
+    },
+    {
       "id": "product_reviews",
       "label": "Product Reviews",
       "type": "collection",
