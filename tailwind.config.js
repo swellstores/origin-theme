@@ -67,6 +67,7 @@ module.exports = {
       10: '2.5rem',
       12: '3rem',
       14: '3.5rem',
+      15: '3.75rem',
       16: '4rem',
       18: '4.5rem',
       20: '5rem',
@@ -180,7 +181,7 @@ module.exports = {
     translate: ['responsive', 'hover', 'focus', 'group-hover'],
   },
   plugins: [
-    require('@tailwindcss/aspect-ratio'),
+    // require('@tailwindcss/aspect-ratio'),
 
     function ({ addUtilities, config, e }) {
       const rotateUtilities = Object.entries(config('theme.rotate')).map(
