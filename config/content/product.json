@@ -110,6 +110,16 @@
           "increment": 1
         }
       ],
+      "default": [
+        {
+          "label": "Test Details",
+          "details": "Birthday Party, Corporate Event, Wedding, etc."
+        },
+        {
+          "label": "Something goes here.",
+          "details": "Number of guests expected to attend."
+        }
+      ],
       "admin_zone": "content"
     },
     {
@@ -119,6 +129,28 @@
       "model": "content/brands",
       "required": true,
       "admin_zone": "content"
+    },
+    {
+      "id": "previous_customers",
+      "label": "Previous Customers",
+      "type": "collection",
+      "fields": [
+        {
+          "id": "name",
+          "label": "Customer name",
+          "type": "text",
+          "required": true,
+          "localized": false
+        },
+        {
+          "id": "logo_url",
+          "label": "Logo link",
+          "type": "text",
+          "ui": "url",
+          "required": true,
+          "localized": false
+        }
+      ]
     },
     {
       "id": "product_reviews",
@@ -151,11 +183,12 @@
           "required": true
         },
         {
-          "id": "logo",
-          "label": "Logo",
-          "type": "lookup",
-          "model": "content/logos",
-          "required": true
+          "id": "logo_url",
+          "label": "Logo link",
+          "type": "text",
+          "ui": "url",
+          "required": true,
+          "localized": false
         }
       ],
       "admin_zone": "content"
