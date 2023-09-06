@@ -23,11 +23,6 @@
     </div>
 
     <blockquote class="mt-4 text-sm md:mt-5">"{{ review.quote }}"</blockquote>
-
-    <span class="mt-5 block text-primary-dark">
-      <!-- {{ review.date }} -->
-      {{ reviewDate(review.date) }}
-    </span>
   </div>
 </template>
 

@@ -88,46 +88,62 @@
           </header>
 
           <!-- modal-body -->
-          <div
-            class="modal-body mt-3 grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] grid-rows-[1fr] gap-4"
-          >
-            <div class="">
-              <DatePicker
-                v-model="date"
-                type="date"
-                :default-value="defaultValue"
-                :disabled-date="disableDates"
-                inline
-                value-type="format"
-              ></DatePicker>
-            </div>
+          <div>
+            <div
+              class="modal-body mt-3 grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] grid-rows-[1fr] gap-4"
+            >
+              <div class="">
+                <DatePicker
+                  v-model="date"
+                  type="date"
+                  :default-value="defaultValue"
+                  :disabled-date="disableDates"
+                  inline
+                  value-type="format"
+                ></DatePicker>
+              </div>
 
-            <div class="">
-              <p class="text-center text-lg font-bold">
-                {{ onlyDateFormatted }}
-              </p>
+              <div class="">
+                <p class="text-center text-lg font-bold">
+                  {{ onlyDateFormatted }}
+                </p>
 
-              <ul
-                class="timeslot-list mt-2 grid max-h-68 gap-2 overflow-y-auto"
-              >
-                <li
-                  v-for="timeslot in timeSlots"
-                  :key="timeslot.timeStr"
-                  class="pr-2"
+                <ul
+                  class="timeslot-list mt-2 grid max-h-68 gap-2 overflow-y-auto"
                 >
-                  <button
-                    class="border-gray-300 hover:bg-gray-100 focus:bg-gray-100 flex w-full items-center justify-center rounded border py-3 px-6"
-                    :class="{
-                      'timeslot-active bg-accent-default !text-primary-lightest hover:text-primary-lightest':
-                        selectedTimeslot === timeslot,
-                    }"
-                    @click="selectedTimeslot = timeslot"
+                  <li
+                    v-for="timeslot in timeSlots"
+                    :key="timeslot.timeStr"
+                    class="pr-2"
                   >
-                    <b>{{ timeslot }}</b>
-                    &nbsp;({{ selectedTimezoneInfo.abbr }})
-                  </button>
-                </li>
-              </ul>
+                    <button
+                      class="border-gray-300 hover:bg-gray-100 focus:bg-gray-100 flex w-full items-center justify-center rounded border py-3 px-6"
+                      :class="{
+                        'timeslot-active bg-accent-default !text-primary-lightest hover:text-primary-lightest':
+                          selectedTimeslot === timeslot,
+                      }"
+                      @click="selectedTimeslot = timeslot"
+                    >
+                      <b>{{ timeslot }}</b>
+                      &nbsp;({{ selectedTimezoneInfo.abbr }})
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="checkbox my-4 flex justify-start">
+              <input
+                id="decide-later"
+                v-model="isDecideLater"
+                type="checkbox"
+              />
+
+              <label class="" for="decide-later">
+                <div class="indicator mr-2 text-primary-lighter">
+                  <BaseIcon icon="uil:check" size="sm" />
+                </div>
+                <p class="text-sm">or you can decide the date later</p>
+              </label>
             </div>
           </div>
 
@@ -156,6 +172,8 @@ const MINUTES_IN_DAY = 24 * 60;
 const MIN_HOURS = 48;
 const MAX_DAYS = 180;
 const START_TIME = '9:00 AM';
+
+const DECIDE_LATER_STR = 'TBD';
 
 export default {
   name: 'OptionDateTimePicker',
@@ -209,6 +227,8 @@ export default {
         .format('YYYY-MM-DD'), // default date value at least 48 hours from now
       date: null, // date
       finalDateStr: '',
+
+      isDecideLater: false,
     };
   },
 
@@ -318,6 +338,11 @@ export default {
     },
 
     isDisabledAddDate() {
+      // return !this.date || !this.selectedTimezone || !this.selectedTimeslot;
+      if (this.isDecideLater) {
+        return false;
+      }
+
       return !this.date || !this.selectedTimezone || !this.selectedTimeslot;
     },
   },
@@ -326,6 +351,7 @@ export default {
     date(newVal, oldVal) {
       if (newVal && newVal !== oldVal) {
         this.resetSelectedTimeslot();
+        this.isDecideLater = false;
       }
     },
 
@@ -336,6 +362,17 @@ export default {
           value: this.finalDateStr,
         });
       }
+    },
+
+    isDecideLater: {
+      handler(newVal, oldVal) {
+        if (newVal && newVal !== oldVal) {
+          this.resetSelectedTimeslot();
+          this.date = null;
+          this.finalDateStr = DECIDE_LATER_STR;
+        }
+      },
+      immediate: true,
     },
 
     selectedTimezone: 'updateDefaultValue',
@@ -526,8 +563,21 @@ export default {
       }
     },
 
+    setDecideLater() {
+      this.resetSelectedTimeslot();
+      this.date = null;
+      this.finalDateStr = DECIDE_LATER_STR;
+    },
+
     handleAddDate() {
       if (this.isDisabledAddDate) {
+        return;
+      }
+
+      if (this.isDecideLater) {
+        this.setDecideLater();
+        this.toggleOpenModal();
+
         return;
       }
 

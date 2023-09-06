@@ -34,7 +34,7 @@
               </div>
 
               <div
-                :class="`grid gap-4 overflow-auto grid-cols-${mediaFilesColumns}`"
+                :class="`grid grid-flow-col gap-4 overflow-auto grid-cols-${mediaFilesColumns}`"
               >
                 <div
                   v-if="productVideo"
@@ -94,7 +94,7 @@
           <!-- Store features -->
           <!-- product benefits -->
           <div class="mt-8 hidden md:block">
-            <ul class="relativeflex flex-wrap gap-x-6">
+            <ul class="relative flex flex-wrap gap-x-6">
               <li
                 v-for="(benefit, index) in productBenefits"
                 :key="'storeProductBenefit' + index"
@@ -551,11 +551,13 @@
               >
                 <!-- for logo -->
                 <div class="max-w-24 flex-shrink-0">
-                  <img
-                    class="block h-full w-full object-contain"
-                    :src="brandDetails.logoUrl"
-                    :alt="`${brandDetails.name} logo`"
-                  />
+                  <a :href="`https://${brandDetails.websiteUrl}`">
+                    <img
+                      class="block h-full w-full object-contain"
+                      :src="brandDetails.logoUrl"
+                      :alt="`${brandDetails.name} logo`"
+                    />
+                  </a>
                 </div>
 
                 <p class="text-base/tight md:text-lg/tight text-primary-darker">
@@ -713,9 +715,9 @@
           class="grid grid-cols-2 gap-x-4 gap-y-2 md:grid-cols-3 md:gap-x-12 md:gap-y-6 xl:gap-x-15 xl:gap-y-10"
         >
           <div
-            v-for="client in randomPreviousCustomers"
+            v-for="client in randomBrandCustomers"
             :key="client.id"
-            class="h-10"
+            class="h-10 md:h-12"
           >
             <img
               class="h-full object-contain"
@@ -781,6 +783,7 @@ export default {
       activeSlide: -1,
 
       brandDetails: null,
+      brandCustomers: null,
       previousCustomers: null,
       productReviews: null,
     };
@@ -847,11 +850,6 @@ export default {
     this.selectedPurchaseOption = getInitialSelection(product.purchaseOptions);
     // Set component data
     this.product = product;
-    console.log('this.product: ', this.product);
-    console.log(
-      'this.product.content.productBenefits: ',
-      this.product.content.productBenefits,
-    );
 
     this.getInitialOptions(product);
     this.relatedProducts = relatedProducts;
@@ -863,6 +861,7 @@ export default {
     this.maxQuantity = maxQuantity;
 
     //* brandDetails
+
     if (
       this.product.content.brandDetails &&
       this.product.content.brandDetails.length > 0
@@ -871,11 +870,21 @@ export default {
     }
 
     //* previousCustomer
+
     if (
       this.product.content.previousCustomers &&
       this.product.content.previousCustomers.length > 0
     ) {
       this.previousCustomers = this.product.content.previousCustomers;
+    }
+
+    //* brandCustomers
+
+    if (
+      this.product.content.brandCustomers &&
+      this.product.content.brandCustomers.length > 0
+    ) {
+      this.brandCustomers = this.product.content.brandCustomers;
     }
 
     //* productReviews
@@ -884,7 +893,6 @@ export default {
       this.product.content.productReviews.length > 0
     ) {
       this.productReviews = this.product.content.productReviews;
-      // console.log('this.productReviews: ', this.productReviews);
     }
   },
   computed: {
@@ -964,7 +972,7 @@ export default {
 
     // generate media object with thumbnailImage and otherMedia
     productMedia() {
-      if (!this.product?.images?.length && !this.attributes?.youtubeUrl)
+      if (!this.product?.images?.length && !this.product?.content.youtubeUrl)
         return null;
 
       const [thumbnailImage, ...otherImages] = this.product.images;
@@ -1129,6 +1137,34 @@ export default {
 
       return random;
     },
+
+    // random previous clients
+    randomBrandCustomers() {
+      if (!this.brandCustomers) {
+        return null;
+      }
+
+      const customers = this.previousCustomers;
+
+      const uniqueNames = [];
+
+      const unique = customers.filter((customer) => {
+        const isDuplicate = uniqueNames.includes(customer.name);
+
+        if (!isDuplicate) {
+          uniqueNames.push(customer.name);
+
+          return true;
+        }
+
+        return false;
+      });
+
+      // random array
+      const random = unique.sort(() => 0.5 - Math.random()).slice(0, 6);
+
+      return random;
+    },
   },
   watch: {
     currency: '$fetch',
@@ -1140,7 +1176,7 @@ export default {
       this.exposeProduct(newVariation);
     },
     product(newProduct) {
-      if (newProduct.attributes?.youtubeUrl) {
+      if (newProduct.content?.youtubeUrl) {
         this.generateVideoInfo();
       }
     },
@@ -1355,7 +1391,6 @@ export default {
       return img?.file?.url.toLowerCase().includes('thumbnail');
     },
     generateVideoInfo() {
-      // const youtubeUrl = this?.product?.attributes?.youtubeUrl;
       const youtubeUrl = this?.product?.content?.youtubeUrl;
       if (!youtubeUrl) {
         return;
