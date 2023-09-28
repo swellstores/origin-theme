@@ -570,6 +570,12 @@ export default {
     }
   },
 
+  head() {
+    if (!this.subscription)
+      return { title: this.$t('account.subscriptions.title') };
+    return { title: this.subscription.product.name };
+  },
+
   computed: {
     ...mapState(['currency']),
 
