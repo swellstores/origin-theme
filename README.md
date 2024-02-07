@@ -4,7 +4,7 @@ Origin is a universal progressive web app for online stores, using modern JavaSc
 
 #### Features
 
-- Built with Nuxt.js (the Vue equivalent of Next.js)
+- Built with Nuxt.js v2 (the Vue equivalent of Next.js)
 - Uses Tailwind CSS, so it's easy to change the design
 - Connects to a hosted git repo for syncing code and settings with your live store
 - Supports custom content types and fields that can be edited in Swell's dashboard (with live preview 👀)
