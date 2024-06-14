@@ -73,7 +73,14 @@ export default async function (moduleOptions) {
     return extendPluginsFn ? extendPluginsFn(plugins) : plugins;
   };
 
-  this.options.generate.routes = () => getRoutes(swell);
+  // add Swell routes to existing routes
+  const nuxtRoutes = this.options.generate.routes;
+  if (typeof nuxtRoutes === 'function') {
+    this.options.generate.routes = async () => (await nuxtRoutes()).concat(await getRoutes(swell));
+  }
+  if (Array.isArray(nuxtRoutes)) {
+    this.options.generate.routes = async () => nuxtRoutes.concat(await getRoutes(swell));
+  }
 
   this.nuxt.hook('generate:done', (context) => {
     const { locales } = context.options.i18n;
